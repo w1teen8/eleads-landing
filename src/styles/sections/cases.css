@@ -1,0 +1,633 @@
+/* 06 Кейси: асимметричная сетка, Cryptonite — крупная карточка; цифра CPA/CPS — главный элемент.
+   Модалка кейса — нативный <dialog> во весь экран с вуалью, панель въезжает transform + opacity. */
+
+.cases__grid {
+  display: grid;
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.cases__item {
+  display: flex;
+  min-width: 0;
+}
+
+.cases__card {
+  --pad: clamp(1.25rem, 2.2vw, 2rem);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  min-height: 300px;
+  padding: var(--pad);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card-sm);
+  background: color-mix(in srgb, var(--card) 72%, var(--navy));
+  text-align: left;
+  isolation: isolate;
+  overflow: hidden;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+/* обводка-градиент на hover: отдельный слой, меняется только opacity */
+.cases__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--grad);
+  -webkit-mask: linear-gradient(var(--ink) 0 0) content-box, linear-gradient(var(--ink) 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(var(--ink) 0 0) content-box exclude, linear-gradient(var(--ink) 0 0);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.cases__card:hover,
+.cases__card:focus-visible {
+  transform: translateY(-4px);
+}
+
+.cases__card:hover::before,
+.cases__card:focus-visible::before {
+  opacity: 1;
+}
+
+.cases__card:focus-visible {
+  outline-offset: 4px;
+  border-radius: var(--r-card-sm);
+}
+
+.cases__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cases__tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+  white-space: nowrap;
+}
+
+.cases__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.cases__more svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.cases__card:hover .cases__more svg,
+.cases__card:focus-visible .cases__more svg {
+  transform: translate(3px, -3px);
+}
+
+.cases__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 1rem + 0.7vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.cases__figure {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: auto;
+}
+
+.cases__figure-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* самый крупный элемент карточки */
+.cases__figure-value {
+  justify-self: start;
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 1.8rem + 2.6vw, 4rem);
+  font-weight: 700;
+  line-height: 0.9;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  overflow-wrap: anywhere;
+}
+
+.cases__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.cases__fact {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.cases__fact-label {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.cases__fact-value {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* «уточнити» — честная заглушка: видно, что цифры ещё нет */
+.cases__card .is-tbd {
+  position: relative;
+}
+
+.cases__fact-value.is-tbd {
+  color: var(--sun);
+}
+
+/* слово длиннее цифры — кегль ниже, но всё ещё самый крупный на карточке */
+.cases__figure-value.is-tbd {
+  font-size: clamp(2rem, 1.5rem + 1.4vw, 2.75rem);
+  white-space: nowrap;
+}
+
+.cases__item--featured .cases__figure-value.is-tbd {
+  font-size: clamp(2.75rem, 1.6rem + 4vw, 5.25rem);
+}
+
+.cases__figure-value.is-tbd::after {
+  content: '';
+  display: block;
+  margin-top: 0.12em;
+  height: 0;
+  border-bottom: 2px dashed color-mix(in srgb, var(--sun) 70%, transparent);
+}
+
+/* ——— главный кейс ——— */
+.cases__item--featured .cases__card {
+  min-height: 420px;
+  border-radius: var(--r-card-lg);
+  border-color: var(--line-strong);
+  background:
+    radial-gradient(80% 70% at 100% 100%, color-mix(in srgb, var(--ember) 26%, transparent), transparent 70%),
+    radial-gradient(60% 50% at 0% 0%, color-mix(in srgb, var(--sun) 10%, transparent), transparent 70%),
+    var(--card);
+}
+
+.cases__item--featured .cases__card::after {
+  content: '';
+  position: absolute;
+  right: -12%;
+  top: -18%;
+  z-index: -1;
+  width: 60%;
+  aspect-ratio: 1;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 48px color-mix(in srgb, var(--fg) 2%, transparent),
+    0 0 0 96px color-mix(in srgb, var(--fg) 1.5%, transparent);
+  pointer-events: none;
+}
+
+.cases__item--featured .cases__tag {
+  color: var(--ink);
+  border-color: transparent;
+  background: var(--grad);
+}
+
+.cases__item--featured .cases__name {
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.4rem);
+}
+
+.cases__item--featured .cases__figure-value {
+  font-size: clamp(3.6rem, 2rem + 6vw, 7.5rem);
+}
+
+.cases__item--featured .cases__fact-value {
+  font-size: var(--fs-base);
+}
+
+/* ——— раскладка ——— */
+@media (min-width: 700px) {
+  .cases__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .cases__item {
+    grid-column: span 3;
+  }
+
+  .cases__item--featured {
+    grid-column: 1 / -1;
+  }
+
+  /* предпоследний — широкий, горизонтальный: имя слева, цифра справа */
+  .cases__item:nth-child(6) {
+    grid-column: span 4;
+  }
+
+  .cases__item:nth-child(7) {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1100px) {
+  .cases__grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .cases__item {
+    grid-column: span 3;
+  }
+
+  .cases__item--featured {
+    grid-column: 1 / span 6;
+    grid-row: span 2;
+  }
+
+  .cases__item:nth-child(6) {
+    grid-column: span 7;
+  }
+
+  .cases__item:nth-child(7) {
+    grid-column: span 5;
+  }
+
+  .cases__item--featured .cases__card {
+    min-height: 100%;
+  }
+}
+
+@media (min-width: 700px) {
+  .cases__item:nth-child(6) .cases__card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'top top'
+      'name figure'
+      'facts figure';
+    align-items: end;
+    column-gap: 2rem;
+    background:
+      linear-gradient(100deg, color-mix(in srgb, var(--sun) 7%, transparent), transparent 55%),
+      color-mix(in srgb, var(--card) 72%, var(--navy));
+  }
+
+  .cases__item:nth-child(6) .cases__top {
+    grid-area: top;
+    align-self: start;
+  }
+
+  .cases__item:nth-child(6) .cases__name {
+    grid-area: name;
+  }
+
+  .cases__item:nth-child(6) .cases__figure {
+    grid-area: figure;
+    justify-items: end;
+    text-align: right;
+  }
+
+  .cases__item:nth-child(6) .cases__figure-value {
+    justify-self: end;
+  }
+
+  .cases__item:nth-child(6) .cases__facts {
+    grid-area: facts;
+  }
+
+  /* последний — «тихий»: прозрачный фон и только контур */
+  .cases__item:nth-child(7) .cases__card {
+    background: transparent;
+    border-style: dashed;
+    border-color: var(--line-strong);
+  }
+
+  .cases__item:nth-child(7) .cases__facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* чётные малые карточки чуть другого тона — сетка не выглядит набором клонов */
+.cases__item:nth-child(3) .cases__card,
+.cases__item:nth-child(4) .cases__card {
+  background: color-mix(in srgb, var(--card) 45%, var(--ink));
+}
+
+.cases__item:nth-child(4) .cases__card {
+  border-radius: var(--r-card);
+}
+
+/* ——— модалка ——— */
+.case-modal {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: clamp(0.75rem, 4vw, 3rem);
+  border: 0;
+  color: var(--fg);
+  background: color-mix(in srgb, var(--ink) 82%, transparent);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  opacity: 0;
+  transition: opacity 260ms var(--ease-out);
+}
+
+.case-modal[open] {
+  display: grid;
+  place-items: center;
+}
+
+.case-modal::backdrop {
+  background: transparent;
+}
+
+.case-modal.is-open {
+  opacity: 1;
+}
+
+.case-modal__panel {
+  position: relative;
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  width: 100%;
+  max-width: 1120px;
+  padding: clamp(1.25rem, 4vw, 3.25rem);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-card-lg);
+  background:
+    radial-gradient(60% 60% at 100% 0%, color-mix(in srgb, var(--ember) 16%, transparent), transparent 70%),
+    var(--navy);
+  transform: translate3d(0, 28px, 0) scale(0.98);
+  transition: transform 420ms var(--ease-out);
+}
+
+.case-modal.is-open .case-modal__panel {
+  transform: none;
+}
+
+@media (min-width: 900px) {
+  .case-modal__panel {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  /* не под кнопкой закрытия */
+  .case-modal__review {
+    margin-top: 3rem;
+  }
+}
+
+.case-modal__close {
+  position: absolute;
+  top: clamp(0.75rem, 2vw, 1.5rem);
+  right: clamp(0.75rem, 2vw, 1.5rem);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--fg);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.case-modal__close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.case-modal__close:hover {
+  transform: rotate(90deg);
+}
+
+.case-modal__main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.case-modal__badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 0.85rem;
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+  background: var(--grad);
+}
+
+.case-modal__title {
+  padding-right: 3rem;
+  font-size: clamp(2.4rem, 1.6rem + 4vw, 5rem);
+  line-height: 0.9;
+}
+
+.case-modal__sub {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+.case-modal__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 1.5rem;
+  width: 100%;
+  margin: 0.75rem 0 0.5rem;
+  padding-block: 1.5rem;
+  border-block: 1px solid var(--line);
+}
+
+@media (min-width: 600px) {
+  .case-modal__metrics {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .case-modal__metric {
+    grid-column: span 2;
+  }
+
+  .case-modal__metric:nth-child(4),
+  .case-modal__metric:nth-child(5) {
+    grid-column: span 3;
+  }
+}
+
+.case-modal__metric {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.case-modal__metric dt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.case-modal__metric dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.case-modal__metric--accent dd {
+  font-size: clamp(1.9rem, 1.3rem + 2.2vw, 3rem);
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.case-modal .is-tbd {
+  color: var(--sun);
+  opacity: 0.85;
+}
+
+.case-modal__metric--accent dd.is-tbd {
+  color: transparent;
+}
+
+.case-modal__subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.5rem);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.case-modal__done {
+  display: grid;
+  gap: 0.6rem;
+  color: var(--fg-soft);
+}
+
+.case-modal__done-item {
+  position: relative;
+  padding-left: 1.6rem;
+}
+
+.case-modal__done-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: 0.9rem;
+  height: 1px;
+  background: var(--grad);
+}
+
+.case-modal__done-item .is-tbd {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  border-bottom: 1px dashed currentColor;
+}
+
+.case-modal__cta {
+  margin-top: 1rem;
+}
+
+.case-modal__review {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-media);
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.case-modal__review-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.case-modal__shot {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  min-height: 180px;
+  border-radius: var(--r-media);
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(135deg, var(--line) 0 1px, transparent 1px 14px),
+    color-mix(in srgb, var(--card) 60%, transparent);
+}
+
+.case-modal__shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.case-modal__shot-empty {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.case-modal__quote {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--fg-soft);
+}
+
+@media (max-width: 599px) {
+  .case-modal__cta {
+    align-self: stretch;
+    white-space: normal;
+  }
+}

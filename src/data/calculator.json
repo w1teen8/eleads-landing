@@ -1,3 +1,31 @@
 {
-  "demo": true
+  "demo": true,
+  "spread": 0.15,
+  "budget": {
+    "min": 650,
+    "max": 10000,
+    "default": 1500,
+    "scale": [
+      { "upTo": 2000, "step": 50 },
+      { "upTo": 10000, "step": 250 }
+    ]
+  },
+  "defaults": { "niche": "business", "geo": "ua", "goal": "subscribers" },
+  "cpm": { "ua": 2.5, "worldwide": 1.8 },
+  "ctr": { "business": 0.012, "crypto": 0.016, "education": 0.014, "auto": 0.009 },
+  "cr": { "subscribers": 0.35, "bot_users": 0.45 },
+  "niches": [
+    { "id": "business", "label": { "ua": "Business", "en": "Business" } },
+    { "id": "crypto", "label": { "ua": "Crypto", "en": "Crypto" } },
+    { "id": "education", "label": { "ua": "Education", "en": "Education" } },
+    { "id": "auto", "label": { "ua": "Auto", "en": "Auto" } }
+  ],
+  "geos": [
+    { "id": "ua", "label": { "ua": "Україна", "en": "Ukraine" } },
+    { "id": "worldwide", "label": { "ua": "Worldwide", "en": "Worldwide" } }
+  ],
+  "goals": [
+    { "id": "subscribers", "label": { "ua": "Підписники", "en": "Subscribers" }, "step": { "ua": "Підписники", "en": "Subscribers" } },
+    { "id": "bot_users", "label": { "ua": "Користувачі бота", "en": "Bot users" }, "step": { "ua": "Користувачі", "en": "Users" } }
+  ]
 }

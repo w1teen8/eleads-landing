@@ -94,8 +94,63 @@
   "stats": { "eyebrow": "02 / МАСШТАБ КАНАЛУ", "title": "Telegram — масовий канал в Україні та глобально" },
   "niches": { "eyebrow": "03 / НІШІ", "title": "Де Telegram Ads розкривається найкраще" },
   "formats": { "eyebrow": "04 / AD FORMATS", "title": "Як ваша реклама виглядатиме в Telegram" },
-  "calculator": { "eyebrow": "05 / ІНТЕРАКТИВ", "title": "Розрахуйте потенціал Telegram Ads" },
-  "cases": { "eyebrow": "06 / SOCIAL PROOF", "title": "Результати в різних нішах і GEO" },
+  "calculator": {
+    "eyebrow": "05 / ІНТЕРАКТИВ",
+    "title": "Розрахуйте потенціал Telegram Ads",
+    "paramsTitle": "Параметри кампанії",
+    "niche": "Ніша",
+    "geo": "GEO",
+    "goal": "Ціль",
+    "budget": "Рекламний бюджет",
+    "forecastTitle": "Орієнтовний прогноз",
+    "demoBadge": "демо-коефіцієнти",
+    "funnelLabel": "Воронка кампанії",
+    "steps": {
+      "impressions": "Покази",
+      "clicks": "Кліки"
+    },
+    "metrics": {
+      "impressions": "Покази",
+      "ctr": "CTR",
+      "clicks": "Кліки",
+      "cpc": "CPC",
+      "conversions": "Конверсії",
+      "cpa": "CPA / CPS"
+    },
+    "cta": {
+      "label": "Отримати точний прогноз",
+      "arrow": "→"
+    },
+    "disclaimer": "Розрахунок базується на історичних кампаніях eLeads. Фактичний результат залежить від GEO, оферу, посадкової та креативів.",
+    "note": {
+      "lead": "Не знайшли свою нішу?",
+      "link": "Напишіть мені",
+      "tail": "— перевірю, чи є релевантний досвід, і дам окремий прогноз."
+    },
+    "live": "Прогноз на {budget}: покази {impressions}, кліки {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}."
+  },
+  "cases": {
+    "eyebrow": "06 / SOCIAL PROOF",
+    "title": "Результати в різних нішах і GEO",
+    "labels": {
+      "budget": "Бюджет",
+      "result": "Результат",
+      "cpa": "CPA / CPS",
+      "task": "Задача",
+      "geo": "GEO",
+      "done": "Що було зроблено",
+      "review": "Відгук / screenshot"
+    },
+    "more": "Детальніше",
+    "badge": "CASE STUDY",
+    "channel": "Telegram Ads",
+    "reviewEmpty": "заглушка",
+    "cta": {
+      "label": "Написати Володимиру",
+      "arrow": "→"
+    },
+    "close": "Закрити"
+  },
   "process": { "eyebrow": "07 / ПРОЦЕС", "title": "Від аналізу до масштабування" },
   "geo": { "eyebrow": "08 / GEO", "title": "Аудиторія в Україні та по всьому світу" },
   "targeting": { "eyebrow": "09 / TARGETING", "title": "Як знаходимо потрібну аудиторію" },

@@ -1,3 +1,384 @@
 {
-  "cases": []
+  "_note": "Цифр і текстів по кейсах ще немає: «уточнити» / «TBD» — заглушки. «done» — шаблон з вайрфрейму клієнта, підтвердити по кожному кейсу. screenshot — шлях до /img/cases/<id>.webp, коли буде.",
+  "cases": [
+    {
+      "id": "cryptonite",
+      "featured": true,
+      "niche": {
+        "ua": "Crypto",
+        "en": "Crypto"
+      },
+      "name": {
+        "ua": "Cryptonite",
+        "en": "Cryptonite"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "finmap",
+      "niche": {
+        "ua": "Finance / B2B",
+        "en": "Finance / B2B"
+      },
+      "name": {
+        "ua": "Finmap",
+        "en": "Finmap"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "global-auto-logistic",
+      "niche": {
+        "ua": "Auto",
+        "en": "Auto"
+      },
+      "name": {
+        "ua": "Global Auto Logistic",
+        "en": "Global Auto Logistic"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "kniaziev",
+      "niche": {
+        "ua": "Auto / Korea",
+        "en": "Auto / Korea"
+      },
+      "name": {
+        "ua": "Князєв",
+        "en": "Kniaziev"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "mukhin",
+      "niche": {
+        "ua": "Expert",
+        "en": "Expert"
+      },
+      "name": {
+        "ua": "Олександр Мухін",
+        "en": "Oleksandr Mukhin"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "dombovetskyi",
+      "niche": {
+        "ua": "Expert",
+        "en": "Expert"
+      },
+      "name": {
+        "ua": "Віктор Домбовецький",
+        "en": "Viktor Dombovetskyi"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "trackdesk",
+      "niche": {
+        "ua": "SaaS / B2B",
+        "en": "SaaS / B2B"
+      },
+      "name": {
+        "ua": "Trackdesk",
+        "en": "Trackdesk"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    }
+  ]
 }

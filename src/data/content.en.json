@@ -95,8 +95,63 @@
   "stats": { "eyebrow": "02 / CHANNEL SCALE", "title": "Telegram is a mass channel in Ukraine and worldwide" },
   "niches": { "eyebrow": "03 / NICHES", "title": "Where Telegram Ads perform best" },
   "formats": { "eyebrow": "04 / AD FORMATS", "title": "How your ad will look in Telegram" },
-  "calculator": { "eyebrow": "05 / INTERACTIVE", "title": "Estimate your Telegram Ads potential" },
-  "cases": { "eyebrow": "06 / SOCIAL PROOF", "title": "Results across niches and GEOs" },
+  "calculator": {
+    "eyebrow": "05 / INTERACTIVE",
+    "title": "Estimate your Telegram Ads potential",
+    "paramsTitle": "Campaign settings",
+    "niche": "Niche",
+    "geo": "GEO",
+    "goal": "Goal",
+    "budget": "Ad budget",
+    "forecastTitle": "Estimated forecast",
+    "demoBadge": "demo coefficients",
+    "funnelLabel": "Campaign funnel",
+    "steps": {
+      "impressions": "Impressions",
+      "clicks": "Clicks"
+    },
+    "metrics": {
+      "impressions": "Impressions",
+      "ctr": "CTR",
+      "clicks": "Clicks",
+      "cpc": "CPC",
+      "conversions": "Conversions",
+      "cpa": "CPA / CPS"
+    },
+    "cta": {
+      "label": "Get an exact forecast",
+      "arrow": "→"
+    },
+    "disclaimer": "The estimate is based on past eLeads campaigns. Actual results depend on GEO, offer, landing page and creatives.",
+    "note": {
+      "lead": "Didn't find your niche?",
+      "link": "Message me",
+      "tail": "— I'll check whether I have relevant experience and give you a separate forecast."
+    },
+    "live": "Forecast for {budget}: impressions {impressions}, clicks {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}."
+  },
+  "cases": {
+    "eyebrow": "06 / SOCIAL PROOF",
+    "title": "Results across niches and GEOs",
+    "labels": {
+      "budget": "Budget",
+      "result": "Result",
+      "cpa": "CPA / CPS",
+      "task": "Task",
+      "geo": "GEO",
+      "done": "What was done",
+      "review": "Review / screenshot"
+    },
+    "more": "Details",
+    "badge": "CASE STUDY",
+    "channel": "Telegram Ads",
+    "reviewEmpty": "placeholder",
+    "cta": {
+      "label": "Message Volodymyr",
+      "arrow": "→"
+    },
+    "close": "Close"
+  },
   "process": { "eyebrow": "07 / PROCESS", "title": "From analysis to scaling" },
   "geo": { "eyebrow": "08 / GEO", "title": "Audiences in Ukraine and all over the world" },
   "targeting": { "eyebrow": "09 / TARGETING", "title": "How we find the right audience" },
