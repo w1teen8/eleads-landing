@@ -67,6 +67,7 @@ export async function initMotion() {
     html.classList.add('motion-ok');
 
     autoReveal();
+    watchInserted();
     while (queue.length) {
       try {
         queue.shift()(api);
@@ -85,20 +86,81 @@ export async function initMotion() {
   }
 }
 
-/** [data-reveal] — ревил блока, [data-reveal="stagger"] — ревил детей со стагером. */
-function autoReveal() {
-  for (const node of document.querySelectorAll('[data-reveal]')) {
-    if (node.dataset.reveal === 'stagger') reveal(node.children, { trigger: node });
+// Узлы, за которые отвечает reveal(): остальное, что появится в DOM позже, показывается сразу.
+const tracked = new WeakSet();
+
+function settle(gsap, nodes) {
+  for (const node of nodes) node.classList.add('is-revealed');
+  gsap.set(nodes, { clearProps: 'opacity,transform' });
+}
+
+/** [data-reveal] — ревил блока, [data-reveal="stagger"] — ревил детей со стагером; .reveal из разметки — тоже. */
+function autoReveal(root = document) {
+  const scope = root === document ? [] : [root];
+  const containers = [...scope.filter((n) => n.matches('[data-reveal]')), ...root.querySelectorAll('[data-reveal]')];
+  for (const node of containers) {
+    if (tracked.has(node) || node.classList.contains('is-revealed')) continue;
+    if (node.dataset.reveal === 'stagger') revealChildren(node);
     else reveal(node);
+  }
+  const loose = [...scope.filter((n) => n.matches('.reveal')), ...root.querySelectorAll('.reveal')];
+  for (const node of loose) {
+    if (tracked.has(node) || node.classList.contains('is-revealed')) continue;
+    if (root === document) reveal(node);
+    else node.classList.add('is-revealed'); // вставлено после старта и никем не анимируется — просто видно
   }
 }
 
-/** opacity 0→1 + translateY, стагер по элементам; один раз при входе в экран. */
+/**
+ * Узлы, вставленные или перерисованные после initMotion (смена языка, списки из JSON),
+ * не остаются с начальным opacity:0: новые [data-reveal] получают свой ревил,
+ * остальное видно сразу. Дети, добавленные в ещё не проявленный stagger-контейнер,
+ * проявятся вместе с ним — список детей берётся в момент входа в экран.
+ */
+function watchInserted() {
+  if (!('MutationObserver' in window)) return;
+  new MutationObserver((records) => {
+    for (const record of records) {
+      for (const node of record.addedNodes) {
+        if (node.nodeType === 1) autoReveal(node);
+      }
+    }
+  }).observe(document.body, { childList: true, subtree: true });
+}
+
+/** Ревил детей контейнера со стагером. Состав детей читается при входе в экран, а не при вызове. */
+function revealChildren(container, opts = {}) {
+  if (reduced || !container) return;
+  tracked.add(container);
+  run(({ gsap, ScrollTrigger }) => {
+    ScrollTrigger.create({
+      trigger: container,
+      start: opts.start || 'top 86%',
+      once: true,
+      onEnter: () => {
+        const kids = Array.from(container.children);
+        gsap.to(kids, {
+          opacity: 1,
+          y: 0,
+          duration: opts.duration ?? 0.8,
+          ease: opts.ease ?? 'power3.out',
+          stagger: opts.stagger ?? 0.075,
+          onComplete: () => settle(gsap, [container, ...container.children]),
+        });
+      },
+    });
+  });
+}
+
+/** opacity 0→1 + translateY, стагер по элементам; один раз при входе в экран. После — .is-revealed. */
 export function reveal(target, opts = {}) {
   if (reduced) return;
   const els = toArray(target);
   if (!els.length) return;
-  for (const node of els) node.classList.add('reveal');
+  for (const node of els) {
+    node.classList.add('reveal');
+    tracked.add(node);
+  }
   run(({ gsap }) => {
     gsap.to(els, {
       opacity: 1,
@@ -107,6 +169,7 @@ export function reveal(target, opts = {}) {
       ease: opts.ease ?? 'power3.out',
       stagger: opts.stagger ?? 0.075,
       delay: opts.delay ?? 0,
+      onComplete: () => settle(gsap, els),
       scrollTrigger: {
         trigger: opts.trigger || els[0],
         start: opts.start || 'top 86%',

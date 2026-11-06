@@ -10,7 +10,6 @@
   position: relative;
   z-index: 2;
   pointer-events: auto;
-  transition: transform var(--dur) var(--ease-out);
 }
 
 /* подложка с размытием — отдельный слой, появляется через opacity */
@@ -30,10 +29,6 @@
 .header.is-scrolled .header__bar::before,
 .header.is-menu-open .header__bar::before {
   opacity: 1;
-}
-
-.header.is-hidden:not(.is-menu-open) .header__bar {
-  transform: translate3d(0, -100%, 0);
 }
 
 .header__inner {

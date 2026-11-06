@@ -1,4 +1,4 @@
-// Шапка: липнет и проявляет подложку при скролле, прячется при скролле вниз и возвращается вверх,
+// Шапка: липнет и проявляет подложку при скролле (не прячется никогда),
 // подсвечивает текущую секцию, переключает язык, на < 900px — бургер с полноэкранным меню.
 import { $, $$, focusables } from '../core/dom.js';
 import { t, onLangChange } from '../core/i18n.js';
@@ -18,21 +18,14 @@ export function init(root) {
   if (burger && menu) initMenu(root, burger, menu);
 }
 
+// Шапка всегда на экране (бриф: «Sticky»; история 7 — «на любой прокрутке вижу шапку»):
+// при скролле только проявляется размытая подложка.
 function initScrollState(root) {
-  let lastY = window.scrollY;
   let ticking = false;
-
   const update = () => {
     ticking = false;
-    const y = window.scrollY;
-    root.classList.toggle('is-scrolled', y > 24);
-    const goingDown = y > lastY + 4;
-    const goingUp = y < lastY - 4;
-    if (goingDown && y > window.innerHeight * 0.6) root.classList.add('is-hidden');
-    else if (goingUp || y < 120) root.classList.remove('is-hidden');
-    if (goingDown || goingUp) lastY = y;
+    root.classList.toggle('is-scrolled', window.scrollY > 24);
   };
-
   window.addEventListener(
     'scroll',
     () => {
@@ -43,8 +36,6 @@ function initScrollState(root) {
     },
     { passive: true },
   );
-  // фокус с клавиатуры внутри шапки всегда возвращает её на экран
-  root.addEventListener('focusin', () => root.classList.remove('is-hidden'));
   update();
 }
 

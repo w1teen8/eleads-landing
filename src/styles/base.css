@@ -321,9 +321,10 @@ html.lenis body {
 
 /* — ревилы: начальное состояние ставит только класс .js-anim (его вешает JS).
      Без JS, при reduced-motion и при сбое GSAP класса нет — всё видно. — */
-.js-anim .reveal,
-.js-anim [data-reveal]:not([data-reveal='stagger']),
-.js-anim [data-reveal='stagger'] > * {
+/* .is-revealed снимает скрытие навсегда: узлы, вставленные или перерисованные позже, видны сразу */
+.js-anim .reveal:not(.is-revealed),
+.js-anim [data-reveal]:not([data-reveal='stagger']):not(.is-revealed),
+.js-anim [data-reveal='stagger']:not(.is-revealed) > *:not(.is-revealed) {
   opacity: 0;
   transform: translate3d(0, 32px, 0);
 }
