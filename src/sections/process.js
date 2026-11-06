@@ -1,4 +1,4 @@
-// 07 Процес: линия прорисовывается stroke-dashoffset по скроллу, шаги загораются по очереди.
+// 07 Процес: линия прорисовывается по скроллу — scaleX / scaleY отдельного слоя (только transform), шаги загораются по очереди.
 // На десктопе секция закрепляется (pinSection) на время прорисовки. reduced / без JS — линия нарисована целиком.
 import { $, $$ } from '../core/dom.js';
 import { reduced, motionReady } from '../core/motion.js';
@@ -10,10 +10,10 @@ export function init(root) {
   const host = $('[data-process]', root);
   if (!host || reduced) return;
   const steps = $$('.process__step', host);
-  const draws = $$('.process__draw', host);
+  const fills = $$('.process__line', host).map(splitLine);
 
   const paint = (p) => {
-    for (const d of draws) d.style.strokeDashoffset = String(1 - p);
+    for (const { node, axis } of fills) node.style.transform = axis === 'x' ? `scaleX(${p})` : `scaleY(${p})`;
     steps.forEach((s, i) => s.classList.toggle('is-lit', p >= i / (steps.length - 1) - 0.001));
   };
 
@@ -53,4 +53,15 @@ export function init(root) {
       scrubTrack();
     });
   });
+}
+
+// Рельс и прорисовка — в разных слоях: копия <svg> только с линией прорисовки масштабируется целиком
+// (transform-origin — начало линии), рельс под ней стоит. Без JS в разметке остаётся одна целая линия.
+function splitLine(svg) {
+  const fill = svg.cloneNode(true);
+  for (const rail of $$('.process__rail', fill)) rail.remove();
+  for (const draw of $$('.process__draw', svg)) draw.remove();
+  fill.classList.add('process__fill');
+  svg.after(fill);
+  return { node: fill, axis: svg.classList.contains('process__line--v') ? 'y' : 'x' };
 }

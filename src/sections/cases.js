@@ -1,7 +1,7 @@
 // 06 Кейси: карточки из src/data/cases.json по <template>, модалка кейса без перехода со страницы.
 // Модалка — нативный <dialog>: Esc, клик вне, кнопка; фокус заперт и возвращается на карточку;
 // фон не скроллится (lockScroll ставит Lenis на паузу).
-import { $, el, on, focusables } from '../core/dom.js';
+import { $, el, on, trapFocus } from '../core/dom.js';
 import { t, getLang, onLangChange, applyTranslations } from '../core/i18n.js';
 import { lockScroll, reduced } from '../core/motion.js';
 import { track } from '../core/analytics.js';
@@ -126,22 +126,12 @@ export function init(root) {
     on(modal, 'click', (e) => {
       if (e.target === modal) close();
     });
-    // ловушка фокуса: Tab ходит по кругу внутри модалки
+    // без нативного <dialog> Esc не даёт 'cancel' — закрываем сами
     on(modal, 'keydown', (e) => {
       if (e.key === 'Escape' && !('showModal' in modal)) close();
-      if (e.key !== 'Tab') return;
-      const items = focusables(modal);
-      if (!items.length) return;
-      const first = items[0];
-      const last = items.at(-1);
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
     });
+    // ловушка фокуса: Tab ходит по кругу внутри модалки
+    trapFocus(modal);
   }
 
   onLangChange((lang) => {

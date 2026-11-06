@@ -45,3 +45,25 @@ export function focusables(root) {
     root,
   ).filter((node) => !node.hidden && node.getClientRects().length > 0);
 }
+
+/**
+ * Ловушка фокуса для меню и модалок: на keydown у target Tab / Shift+Tab ходят по кругу по items().
+ * Фокус вне списка — возвращается на первый (Shift+Tab — на последний). Возвращает отписку.
+ */
+export function trapFocus(target, items = () => focusables(target)) {
+  return on(target, 'keydown', (event) => {
+    if (event.key !== 'Tab') return;
+    const list = items();
+    if (!list.length) return;
+    const first = list[0];
+    const last = list[list.length - 1];
+    const active = globalThis.document?.activeElement;
+    let next = null;
+    if (!list.includes(active)) next = event.shiftKey ? last : first;
+    else if (event.shiftKey && active === first) next = last;
+    else if (!event.shiftKey && active === last) next = first;
+    if (!next) return;
+    event.preventDefault();
+    next.focus();
+  });
+}

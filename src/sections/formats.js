@@ -1,6 +1,6 @@
 // 04 Формати: клик по скриншоту-плейсхолдеру открывает лайтбокс (нативный <dialog>).
 // Esc, клик вне, кнопка; фокус возвращается на открывавший элемент; фон не скроллится (lockScroll).
-import { $, $$, on, focusables } from '../core/dom.js';
+import { $, $$, on, trapFocus } from '../core/dom.js';
 import { lockScroll, reduced } from '../core/motion.js';
 
 const CLOSE_MS = 240;
@@ -46,16 +46,5 @@ export function init(root) {
   on(dialog, 'click', (e) => {
     if (e.target === dialog || e.target === stage) close();
   });
-  on(dialog, 'keydown', (e) => {
-    if (e.key !== 'Tab') return;
-    const items = focusables(dialog);
-    if (!items.length) return;
-    if (e.shiftKey && document.activeElement === items[0]) {
-      e.preventDefault();
-      items.at(-1).focus();
-    } else if (!e.shiftKey && document.activeElement === items.at(-1)) {
-      e.preventDefault();
-      items[0].focus();
-    }
-  });
+  trapFocus(dialog);
 }

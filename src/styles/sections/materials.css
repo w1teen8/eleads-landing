@@ -34,17 +34,25 @@
   transform: translateY(-5px);
 }
 
+/* свечение — слой размером с карточку, центр градиента в его середине; слой стоит центром в (0,0)
+   карточки и сдвигается transform-ом на --gx / --gy (materials.js пишет их в % карточки = % слоя) */
 .mat__glow {
   position: absolute;
-  inset: 0;
+  top: -50%;
+  left: -50%;
   z-index: -1;
-  background: radial-gradient(60% 50% at var(--gx) var(--gy), var(--ember-glow), transparent 70%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(60% 50% at center, var(--ember-glow), transparent 70%);
+  transform: translate3d(var(--gx), var(--gy), 0);
+  pointer-events: none;
   opacity: 0.35;
   transition: opacity var(--dur) var(--ease-out);
 }
 
 .mat__card:hover .mat__glow {
   opacity: 0.7;
+  will-change: transform;
 }
 
 .mat__badge {

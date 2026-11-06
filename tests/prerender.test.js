@@ -57,3 +57,13 @@ test('сборка кладёт robots.txt в dist (иначе хостинг о
   assert.ok(robots, 'robots.txt не попал в сборку');
   assert.match(String(robots.source), /^User-agent: \*\s+Allow: \//);
 });
+
+test('сборка проходит, когда cwd пришёл с буквой диска в нижнем регистре (Git Bash / VS Code на Windows)', { skip: process.platform !== 'win32' }, async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { fileURLToPath } = await import('node:url');
+  const root = fileURLToPath(new URL('..', import.meta.url)).replace(/[\/]$/, '');
+  const lower = root.replace(/^([A-Za-z]):/, (_, d) => `${d.toLowerCase()}:`);
+  const script = "const v = await import('vite'); await v.build({ logLevel: 'silent', build: { write: false } });";
+  const run = spawnSync(process.execPath, ['--input-type=module', '-e', script], { cwd: lower, encoding: 'utf8' });
+  assert.equal(run.status, 0, `сборка из ${lower} упала:\n${run.stderr.slice(0, 600)}`);
+});

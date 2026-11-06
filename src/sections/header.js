@@ -1,6 +1,6 @@
 // Шапка: липнет и проявляет подложку при скролле (не прячется никогда),
 // подсвечивает текущую секцию, переключает язык, на < 900px — бургер с полноэкранным меню.
-import { $, $$, focusables } from '../core/dom.js';
+import { $, $$, focusables, trapFocus } from '../core/dom.js';
 import { t, onLangChange } from '../core/i18n.js';
 import { lockScroll } from '../core/motion.js';
 import { bindLangSwitch } from '../core/lang-switch.js';
@@ -70,25 +70,12 @@ function initMenu(root, burger, menu) {
     burger.setAttribute('aria-label', t(open ? 'nav.menuClose' : 'nav.menuOpen'));
   };
 
-  const trapTargets = () => [burger, ...focusables(menu)];
+  let releaseFocus = null;
 
   const onKeydown = (event) => {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      close();
-      return;
-    }
-    if (event.key !== 'Tab') return;
-    const items = trapTargets();
-    const first = items[0];
-    const last = items[items.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
+    if (event.key !== 'Escape') return;
+    event.preventDefault();
+    close();
   };
 
   function openMenu() {
@@ -103,6 +90,8 @@ function initMenu(root, burger, menu) {
     setLabel();
     lockScroll(true);
     document.addEventListener('keydown', onKeydown);
+    // Tab ходит по кругу: бургер (он же «закрыть») и пункты меню
+    releaseFocus = trapFocus(document, () => [burger, ...focusables(menu)]);
     const firstLink = $('.menu__link', menu);
     firstLink?.focus({ preventScroll: true });
   }
@@ -116,6 +105,8 @@ function initMenu(root, burger, menu) {
     setLabel();
     lockScroll(false);
     document.removeEventListener('keydown', onKeydown);
+    releaseFocus?.();
+    releaseFocus = null;
     closeTimer = setTimeout(() => {
       menu.hidden = true;
     }, 460);

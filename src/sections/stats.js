@@ -1,16 +1,24 @@
 // 02 Telegram у цифрах: вкладки Україна / Worldwide (role=tablist, стрелки), цифры перекручиваются.
 import { $, $$, on } from '../core/dom.js';
-import { getLang } from '../core/i18n.js';
+import { t, getLang } from '../core/i18n.js';
 import { countTo, formatInt } from '../core/format.js';
 import { reduced } from '../core/motion.js';
 
 // «81%», «4 500», «1B+», «200+ GEO»: докручивается первое целое число, остальное — как в тексте
 const NUMBER = /\d[\d\s  ,]*/;
 
+// Итоговая строка — всегда из словаря текущего языка (а не закэшированный текст первого показа):
+// после UA → EN докрутка кончается на строке из content.en.json.
+function finalText(node) {
+  const key = node.dataset.i18n;
+  const value = key ? t(key) : null;
+  return typeof value === 'string' && value !== key ? value : node.textContent;
+}
+
 function roll(node) {
-  const original = node.dataset.final || node.textContent;
-  node.dataset.final = original;
-  const match = original.match(NUMBER);
+  const start = finalText(node);
+  node.textContent = start;
+  const match = start.match(NUMBER);
   if (!match || reduced) return;
   const target = Number(match[0].replace(/\D/g, ''));
   if (!target) return;
@@ -18,9 +26,12 @@ function roll(node) {
   countTo(node, 0, target, {
     duration: 1100,
     format: (v) => {
+      // язык могли переключить посреди докрутки — каждый кадр строится от строки текущего языка
+      const text = finalText(node);
       const n = Math.round(v);
-      if (n >= target) return original;
-      return original.replace(match[0], grouped ? formatInt(n, getLang()) : String(n));
+      const m = text.match(NUMBER);
+      if (n >= target || !m) return text;
+      return text.replace(m[0], grouped ? formatInt(n, getLang()) : String(n));
     },
   });
 }

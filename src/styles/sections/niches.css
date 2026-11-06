@@ -17,8 +17,9 @@
 }
 
 .niches__card {
-  --mx: 50%;
-  --my: 0%;
+  /* px от левого верхнего угла; до первого движения мыши подсветка у верхнего края */
+  --mx: 160px;
+  --my: 0px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -35,19 +36,27 @@
   transition: transform var(--dur) var(--ease-out);
 }
 
-/* подсветка под курсором — отдельный слой, меняется только opacity */
+/* подсветка под курсором — отдельный слой-круг 520px с центром в (0,0) карточки; за курсором он
+   сдвигается transform-ом (niches.js пишет --mx / --my в px), сам градиент не перерисовывается */
 .niches__card::before {
   content: '';
   position: absolute;
-  inset: 0;
+  top: -260px;
+  left: -260px;
   z-index: -1;
-  background: radial-gradient(260px circle at var(--mx) var(--my), var(--sun-glow), transparent 70%);
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(260px circle at center, var(--sun-glow), transparent 70%);
   opacity: 0;
+  transform: translate3d(var(--mx), var(--my), 0);
+  pointer-events: none;
   transition: opacity var(--dur) var(--ease-out);
 }
 
+/* слой выносится в композитор только на время hover — не держим 6 лишних слоёв на мобильном */
 .niches__card:hover::before {
   opacity: 0.55;
+  will-change: transform;
 }
 
 .niches__card:hover {

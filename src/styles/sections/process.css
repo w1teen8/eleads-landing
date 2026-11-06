@@ -1,4 +1,4 @@
-/* 07 Процес: 7 шагов на линии; линия прорисовывается stroke-dashoffset (JS), шаги загораются.
+/* 07 Процес: 7 шагов на линии; линия прорисовывается scaleX / scaleY слоя .process__fill (JS), шаги загораются.
    Без JS и при reduced-motion линия нарисована, шаги горят (класс .is-armed ставит JS). */
 
 .process__track {
@@ -41,9 +41,13 @@
 .process__draw {
   stroke: var(--sun);
   stroke-width: 2;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
   fill: none;
+}
+
+/* слой прорисовки (копия линии без рельса, её делает process.js): растёт от начала линии */
+.process__fill {
+  transform-origin: 0 0;
+  will-change: transform;
 }
 
 .process__step {

@@ -42,12 +42,67 @@ export function init(root) {
     y: ((lat0 - region.lat) / (rows * step)) * h,
   });
 
+  // Суша (≈2400 точек) рисуется один раз на размер/DPR в канвас вне DOM и становится CSS-фоном
+  // единственного <canvas> страницы; в кадре рисуются только регионы и кольца пульса.
+  const landLayer = document.createElement('canvas');
+  let landKey = '';
+  let landUrl = '';
+  let dprQuery = null;
+
+  // слой суши готовится, только когда карта близко к экрану: рисунок и PNG-кодирование не ложатся на загрузку
+  let nearView = false;
+
+  function paintLand() {
+    const key = `${canvas.width}x${canvas.height}/${w}`;
+    if (!nearView || !w || !h || key === landKey) return;
+    landKey = key;
+    landLayer.width = canvas.width;
+    landLayer.height = canvas.height;
+    const lctx = landLayer.getContext('2d');
+    if (!lctx) return;
+    lctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    lctx.clearRect(0, 0, w, h);
+    const cell = w / cols;
+    lctx.globalAlpha = 0.34;
+    lctx.fillStyle = palette.land;
+    lctx.beginPath();
+    for (const [c, r] of land) {
+      const x = (c + 0.5) * cell;
+      const y = (r + 0.5) * cell;
+      lctx.moveTo(x + cell * 0.27, y);
+      lctx.arc(x, y, cell * 0.27, 0, Math.PI * 2);
+    }
+    lctx.fill();
+    landLayer.toBlob((blob) => {
+      if (!blob || key !== landKey) return;
+      const url = URL.createObjectURL(blob);
+      canvas.style.backgroundImage = `url("${url}")`;
+      if (landUrl) URL.revokeObjectURL(landUrl);
+      landUrl = url;
+    });
+  }
+
+  // смена DPR (окно перетащили на другой монитор, зум) не меняет clientWidth — ResizeObserver молчит
+  function watchDpr() {
+    dprQuery?.removeEventListener?.('change', onDprChange);
+    dprQuery = window.matchMedia?.(`(resolution: ${window.devicePixelRatio || 1}dppx)`) || null;
+    dprQuery?.addEventListener?.('change', onDprChange);
+  }
+  function onDprChange() {
+    watchDpr();
+    resize();
+  }
+
+  canvas.style.backgroundSize = '100% 100%';
+  canvas.style.backgroundRepeat = 'no-repeat';
+
   function resize() {
     dpr = Math.min(2, window.devicePixelRatio || 1);
     w = canvas.clientWidth;
     h = canvas.clientHeight;
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
+    paintLand();
     draw(performance.now());
     placeCard();
   }
@@ -55,17 +110,6 @@ export function init(root) {
   function draw(now) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    const cell = w / cols;
-    ctx.globalAlpha = 0.34;
-    ctx.fillStyle = palette.land;
-    ctx.beginPath();
-    for (const [c, r] of land) {
-      const x = (c + 0.5) * cell;
-      const y = (r + 0.5) * cell;
-      ctx.moveTo(x + cell * 0.27, y);
-      ctx.arc(x, y, cell * 0.27, 0, Math.PI * 2);
-    }
-    ctx.fill();
 
     for (const region of regions) {
       const { x, y } = pos(region);
@@ -201,9 +245,17 @@ export function init(root) {
     inView = entry.isIntersecting;
     sync();
   }).observe(canvas);
+  new IntersectionObserver(
+    ([entry]) => {
+      nearView = nearView || entry.isIntersecting;
+      paintLand();
+    },
+    { rootMargin: '600px 0px' },
+  ).observe(canvas);
   document.addEventListener('visibilitychange', sync);
 
   getLang();
+  watchDpr();
   select(active);
   resize();
 }
