@@ -214,3 +214,14 @@ export function forecast(input, rates): Forecast
 - Меню — `data-lenis-prevent`; линия процесса — слой `.process__fill` со `scaleX/scaleY`; свечения — слои с `translate3d`; суша GEO — кэш вне DOM как CSS-фон единственного `<canvas>`.
 - **F1, дозапрос:** дедлайн intro считается от старта прелоадера (`markIntroStart()`), `INTRO_DEADLINE_MS` = 4200; по таймауту сначала уход шторки `is-leaving`, потом снятие `js-preload`. Новое в `intro.js`: `PRELOADER_MAX_MS, PRELOADER_SAFETY_MS, INTRO_EXIT_MS, INTRO_DEADLINE_MS, markIntroStart(), failIntro(err?)`; `signalIntroDone(reason='done')`, `whenIntroDone() → 'done'|'failed'|'timeout'`.
 
+
+
+## Сборка 2 — границы
+
+- `core/transition.js` (новый): `cover({label, badge}) → Promise` — полоса закрывает экран, резолвится, когда закрыто; `uncover() → Promise` — полоса уезжает; `sweep({label, badge}, midFn) → Promise` — cover → `await midFn()` → uncover. Один DOM-узел полосы, создаётся модулем. При `reduced` — только `midFn`, без анимации.
+- Якорные переходы: обработчик кликов по `a[href^="#"]` внутри шапки, `#menu` и подвала вызывает `sweep({label: название раздела из nav.*, badge: номер секции})`, а в `midFn` — `scrollToTarget(target, {immediate: true})`. Остальные якоря на странице прокручиваются как раньше.
+- `core/i18n` + `build/i18n-prerender.js`: новый атрибут `data-i18n-mark="key"` — текст из JSON, где `[[…]]` → `<span class="hl">…</span>`, остальное экранировано. Отсутствующий ключ так же валит сборку. `data-i18n` (обычный текст) не меняется.
+- `core/motion`: новый `tiltOnScroll(el, {deg = 4, scale = 0.94})` — скраб наклона по прокрутке, при `reduced` — no-op; маркеры `.hl` в `[data-i18n-mark]` растут слева направо при входе в экран автоматически, как `[data-reveal]` — секции их руками не зовут.
+- `core/intro`: дедлайн пересчитывается из новой длительности заставки — длина сценария (~5000 мс) плюс ожидание `load` (≤2000 мс); правило «hero никогда не обрывается раньше ухода полосы» сохраняется.
+- Новый `data-place`: `founder` (кнопка Telegram в bento-плитке основателя).
+- Ключи заставки — раздел `preloader` в `content.*.json`: запрос, заголовок и адрес результата, подписи SKIP / SEARCHING / LOADING.

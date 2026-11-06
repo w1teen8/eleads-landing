@@ -13,8 +13,8 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "1899f41",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-06T17:25:28+02:00",
-  "finishedAt": "2026-11-06T17:25:28+02:00",
+  "updatedAt": "2026-11-06T18:36:21+02:00",
+  "finishedAt": null,
   "stages": [
     {
       "id": "preflight",
@@ -25,50 +25,43 @@ window.STATE =
     {
       "id": "manifest",
       "status": "done",
-      "startedAt": "2026-11-06T11:50:27+02:00",
-      "finishedAt": "2026-11-06T11:56:21+02:00"
+      "startedAt": "2026-11-06T18:31:59+02:00",
+      "finishedAt": "2026-11-06T18:32:17+02:00"
     },
     {
       "id": "briefing",
       "status": "done",
-      "startedAt": "2026-11-06T11:56:21+02:00",
-      "finishedAt": "2026-11-06T13:31:12+02:00"
+      "startedAt": "2026-11-06T18:32:23+02:00",
+      "finishedAt": "2026-11-06T18:32:23+02:00"
     },
     {
       "id": "spec",
       "status": "done",
-      "startedAt": "2026-11-06T13:31:12+02:00",
-      "finishedAt": "2026-11-06T13:49:34+02:00"
+      "startedAt": "2026-11-06T18:32:17+02:00",
+      "finishedAt": "2026-11-06T18:35:53+02:00"
     },
     {
       "id": "plan",
-      "status": "done",
-      "startedAt": "2026-11-06T13:49:34+02:00",
-      "finishedAt": "2026-11-06T13:55:35+02:00"
+      "status": "active",
+      "startedAt": "2026-11-06T18:35:53+02:00"
     },
     {
       "id": "build",
-      "status": "done",
-      "startedAt": "2026-11-06T13:55:35+02:00",
-      "finishedAt": "2026-11-06T15:42:38+02:00"
+      "status": "pending"
     },
     {
       "id": "review",
-      "status": "done",
-      "startedAt": "2026-11-06T15:42:38+02:00",
-      "finishedAt": "2026-11-06T17:00:12+02:00"
+      "status": "pending"
     },
     {
       "id": "final",
-      "status": "done",
-      "startedAt": "2026-11-06T17:00:12+02:00",
-      "finishedAt": "2026-11-06T17:25:28+02:00"
+      "status": "pending"
     }
   ],
   "requirements": {
-    "total": 103,
+    "total": 109,
     "done": 99,
-    "inTicket": 0,
+    "inTicket": 6,
     "inSpec": 0,
     "placeholder": 3,
     "deferred": 1,
@@ -334,6 +327,110 @@ window.STATE =
       "commit": "e9e6f25"
     },
     {
+      "id": "05",
+      "title": "Загрузка «поиск находит eLeads» и фирменный переход полосой",
+      "requirements": [
+        "G03",
+        "G07",
+        "G08",
+        "R39"
+      ],
+      "blockedBy": [],
+      "wave": 6,
+      "zone": [
+        "src/sections/preloader.js",
+        "src/styles/sections/preloader.css",
+        "src/core/transition.js",
+        "src/core/intro.js",
+        "src/sections/header.js",
+        "src/sections/footer.js",
+        "src/main.js",
+        "transition.js",
+        ".preloader",
+        "index.html",
+        "preloader",
+        "nav",
+        "src/data/content.ua.json",
+        "content.en.json",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "06",
+      "title": "Маркер в заголовках, линза в hero, номер процесса, вордмарк, наклон portfolea",
+      "requirements": [
+        "G04",
+        "G06"
+      ],
+      "blockedBy": [
+        "05"
+      ],
+      "wave": 7,
+      "zone": [
+        "build/i18n-prerender.js",
+        "src/core/i18n.js",
+        "src/core/motion.js",
+        "src/sections/hero.js",
+        "src/styles/sections/hero.css",
+        "src/styles/sections/photos.css",
+        "src/sections/process.js",
+        "src/styles/sections/process.css",
+        "src/sections/footer.js",
+        "src/styles/sections/footer.css",
+        "src/styles/base.css",
+        ".hl",
+        "index.html",
+        "src/data/content.ua.json",
+        "content.en.json",
+        "[[…]]",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "07",
+      "title": "Bento-секции, наклон portfolea на картинках и перепроверка скорости",
+      "requirements": [
+        "G05",
+        "G06",
+        "R30"
+      ],
+      "blockedBy": [
+        "06"
+      ],
+      "wave": 8,
+      "zone": [
+        "src/sections/{targeting,reviews,materials,formats}.js",
+        "src/styles/sections/{targeting,reviews,materials,formats}.css",
+        "#targeting",
+        "#reviews",
+        "#materials",
+        "#formats",
+        "index.html",
+        "targeting",
+        "reviews",
+        "founder",
+        "materials",
+        "content.*.json",
+        "docs/qa-report.md",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "обычная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
       "id": "F1",
       "title": "Исправления по ревью ветки",
       "requirements": [
@@ -363,18 +460,18 @@ window.STATE =
       "review": "да — ремонт ветки",
       "model": "сильная",
       "status": "done",
-      "retries": 0,
-      "repairs": 1,
       "startedAt": "2026-11-06T16:25:44+02:00",
       "finishedAt": "2026-11-06T17:00:11+02:00",
+      "retries": 0,
+      "repairs": 1,
+      "repairFindings": [
+        "дедлайн intro не срабатывает раньше потолка прелоадера + его ухода; hero виден за 3 с при упавшем прелоадере"
+      ],
       "tests": {
         "passed": 61,
         "failed": 0
       },
-      "commit": "9f69550",
-      "repairFindings": [
-        "дедлайн intro не срабатывает раньше потолка прелоадера + его ухода; hero виден за 3 с при упавшем прелоадере"
-      ]
+      "commit": "9f69550"
     }
   ],
   "tests": {
@@ -399,8 +496,8 @@ window.STATE =
   },
   "additions": [],
   "coverage": {
-    "found": 14,
-    "fixed": 14,
+    "found": 3,
+    "fixed": 3,
     "deferred": 0,
     "items": []
   },
@@ -427,16 +524,7 @@ window.STATE =
     "src/sections/preloader.js — подзаголовок hero виден под шторкой ради LCP, прелоадер 1.0 с",
     "Тап по GEO-карте на тач-устройстве вживую не проверялся, только Chrome"
   ],
-  "blind": {
-    "checked": 52,
-    "matched": 48,
-    "mismatches": [
-      "R30 — Lighthouse mobile Performance 82–84 в чистом клоне при цели 85+ (у T04/F1 было 86–96 — разброс на одной машине; LCP 3,4–3,6 с на подзаголовке hero)",
-      "R86 — «превью при наведении» у услуг экосистемы: раскрывается строка описания, превью-изображения нет",
-      "R48/R50 — карточка «4 500 … Суспільного / Gradus Research» (бриф) и сноска «Суспільне, Mediatrack 2025, n=4 500» (вайрфрейм) называют разные источники",
-      "G02 — на момент проверки в GitHub ничего не отправлено"
-    ]
-  },
+  "blind": null,
   "beats": [
     "2026-11-06T11:50:20+02:00",
     "2026-11-06T11:50:27+02:00",
@@ -478,9 +566,17 @@ window.STATE =
     "2026-11-06T17:00:11+02:00",
     "2026-11-06T17:00:12+02:00",
     "2026-11-06T17:24:19+02:00",
-    "2026-11-06T17:25:28+02:00"
+    "2026-11-06T17:25:28+02:00",
+    "2026-11-06T18:31:58+02:00",
+    "2026-11-06T18:32:17+02:00",
+    "2026-11-06T18:32:23+02:00",
+    "2026-11-06T18:32:24+02:00",
+    "2026-11-06T18:35:53+02:00",
+    "2026-11-06T18:35:55+02:00",
+    "2026-11-06T18:35:56+02:00",
+    "2026-11-06T18:36:21+02:00"
   ],
-  "rev": 53,
+  "rev": 62,
   "waiting": null,
   "waits": [
     {
@@ -865,6 +961,71 @@ window.STATE =
       "t": "2026-11-06T17:25:28+02:00",
       "k": "finish",
       "result": "Макет лендинга eLeads: 14 секций, калькулятор и кейсы в полном качестве, UA/EN, аналитика, статика в dist/"
+    },
+    {
+      "t": "2026-11-06T18:31:58+02:00",
+      "k": "reopen"
+    },
+    {
+      "t": "2026-11-06T18:32:17+02:00",
+      "k": "gate",
+      "g": "G1",
+      "ok": false,
+      "open": 6,
+      "total": 109
+    },
+    {
+      "t": "2026-11-06T18:32:17+02:00",
+      "k": "stage",
+      "id": "spec",
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T18:32:23+02:00",
+      "k": "stage",
+      "id": "briefing",
+      "act": "done"
+    },
+    {
+      "t": "2026-11-06T18:32:24+02:00",
+      "k": "gate",
+      "g": "G1",
+      "ok": false,
+      "open": 6,
+      "total": 109
+    },
+    {
+      "t": "2026-11-06T18:32:24+02:00",
+      "k": "stage",
+      "id": "spec",
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T18:35:53+02:00",
+      "k": "stage",
+      "id": "plan",
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T18:35:55+02:00",
+      "k": "tickets",
+      "n": 8
+    },
+    {
+      "t": "2026-11-06T18:35:56+02:00",
+      "k": "gate",
+      "g": "G3",
+      "ok": true,
+      "problems": 0
+    },
+    {
+      "t": "2026-11-06T18:36:21+02:00",
+      "k": "gate",
+      "g": "G2",
+      "ok": true,
+      "found": 3,
+      "fixed": 3,
+      "deferred": 0
     }
   ],
   "reqList": [
@@ -1386,35 +1547,59 @@ window.STATE =
       "id": "G02",
       "text": "«можешь закинуть на гитхаб»",
       "status": "done"
+    },
+    {
+      "id": "G03",
+      "text": "«https://shining-three-588967.framer.app/ отсюда надо взять загрузку сайта, типо пишется запрос находится наш сайт и потом переход на сам сайт»",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G04",
+      "text": "«https://shining-three-588967.framer.app/ анимации и переходы тоже отсюда»",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G05",
+      "text": "«https://neu-bento.framer.website/ секции под бриф»",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G06",
+      "text": "«https://portfolea.framer.website/ тут ахуенные анимации их надо будет где-то использовать»",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G07",
+      "text": "«5 секунд давай» — длительность загрузки",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G08",
+      "text": "«давай твой вариант» — в поиске набирается «просування telegram ads» / EN «telegram ads promotion», результат «eLeads — Telegram Ads · Володимир Кучер»",
+      "status": "in-ticket"
     }
   ],
   "gates": {
     "G1": {
       "ok": false,
-      "at": "2026-11-06T13:31:12+02:00",
-      "open": 101,
-      "total": 102
-    },
-    "G2": {
-      "ok": true,
-      "at": "2026-11-06T13:48:20+02:00",
-      "found": 14,
-      "fixed": 14,
-      "deferred": 0
+      "at": "2026-11-06T18:32:24+02:00",
+      "open": 6,
+      "total": 109
     },
     "G3": {
       "ok": true,
-      "at": "2026-11-06T16:25:43+02:00",
+      "at": "2026-11-06T18:35:56+02:00",
       "problems": 0
     },
-    "G4": {
-      "ok": false,
-      "at": "2026-11-06T17:24:19+02:00",
-      "checked": 52,
-      "matched": 48
+    "G2": {
+      "ok": true,
+      "at": "2026-11-06T18:36:21+02:00",
+      "found": 3,
+      "fixed": 3,
+      "deferred": 0
     }
   },
-  "result": "Макет лендинга eLeads: 14 секций, калькулятор и кейсы в полном качестве, UA/EN, аналитика, статика в dist/",
+  "result": null,
   "report": [
     "Пре-рендер молча пропускает узел [data-i18n] с вложенными тегами — сейчас таких нет, но следующая правка вёрстки может выпустить пустой узел",
     "Мёртвый код: pinSection в motion.js не используется, лишний getLang() в geo.js",
