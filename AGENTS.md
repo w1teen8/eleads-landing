@@ -1,15 +1,41 @@
 <!-- autopilot:start -->
 # eLeads — лендинг експерта з Telegram Ads
 
-Односторінковий сайт Володимира Кучера (бренд eLeads): Vite + vanilla JS, GSAP, Lenis, увесь контент у JSON.
-
 ## Команды
 
-| Команда | Что делает |
-|---------|------------|
-| `npm install` | Установить зависимости |
-| `npm run dev` | Запустить локально |
-| `npm run build` | Собрать статику в `dist/` |
+- `npm ci` — зависимости (предупреждение npm про esbuild postinstall сборке не мешает)
+- `npm run dev` — локально
+- `npm run check` — тесты + сборка; единственная проверка перед сдачей (61 тест)
+- `npm test` / `node --test tests/<file>.test.js` — все тесты / один файл
+- `npm run build` — статика в `dist/`
+- `npm run preview -- --port 4178 --strictPort` — http://localhost:4178/
+- `?nomotion=1` в URL — сайт без анимаций
+- Lighthouse (после preview): `CHROME_PATH="C:/Program Files/Google/Chrome/Application/chrome.exe" npx -y lighthouse@12 http://localhost:4178/ --form-factor=mobile --chrome-flags="--headless=new"`
+
+## Где что
+
+- `index.html` — вся разметка 14 секций без текстов (`data-i18n`); сюда подключают материалы клиента
+- `src/data/content.ua.json`, `content.en.json` — тексты; новый ключ в оба; остальные данные в `src/data/` (`cases.json`, `faq.json`, `calculator.json`, `config.json`)
+- `src/sections/<name>.js` + `src/styles/sections/<name>.css` — секция; `calculator-model.js` — формулы
+- `src/core/` — i18n, motion (Lenis/GSAP), analytics, intro; `src/styles/tokens.css` — палитра
+- `build/i18n-prerender.js`, `vite.config.js` — пре-рендер UA в HTML
+- `public/` — материалы клиента (`video/`, `img/`), состав и имена файлов в `README.md`
+- `docs/qa-report.md` — результаты проверки скорости и экранов
+- Архитектура, поток данных, соглашения: `docs/architecture.md`; решения: `docs/adr/`; термины: `CONTEXT.md`
+
+## Подводные камни
+
+- Сборка падает, если в `content.ua.json` / `content.en.json` нет ключа из `data-i18n` (пре-рендер в `build/`).
+- `vite.config.js` фиксирует `root`: из cwd с маленькой буквой диска (`/c/…`) сборка иначе падала.
+- Новая секция: `[data-section]` в `index.html` + файл в `src/sections/` + CSS в `src/styles/sections/`; `main.js` не править.
+- Меню под остановленным Lenis скроллится только благодаря `data-lenis-prevent` (также у лайтбокса и модалки кейса).
+- `vite preview` на отсутствующий `/video/hero-1080.mp4` отдаёт 200 text/html (SPA-fallback), не 404: видео уходит в error, остаётся градиент.
+- Фото, логотипы и скриншоты рекламы пока CSS-заглушки в `index.html`; видео подхватывается из `public/video` по именам из `README.md`.
+- Анимировать только `transform` и `opacity`.
+
+## Окружение
+
+`.env` нет. ID аналитики (`ga4Id`, `metaPixelId`) — в `src/data/config.json`, пустые = аналитика не подключается. Windows, Git Bash; `python3` — заглушка, использовать `python`.
 
 ## Как здесь работает Autopilot
 

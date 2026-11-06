@@ -2,7 +2,7 @@ window.STATE =
 {
   "version": 2,
   "slug": "eleads-landing",
-  "dir": "2026-11-06-eleads-landing--wip",
+  "dir": "2026-11-06-eleads-landing",
   "title": "Лендинг eLeads — эксперт по Telegram Ads",
   "mode": "semi",
   "depth": "normal",
@@ -11,10 +11,10 @@ window.STATE =
   "memoryFile": "AGENTS.md",
   "memoryOwner": "autopilot",
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
-  "baseCommit": null,
+  "baseCommit": "1899f41",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-06T13:54:30+02:00",
-  "finishedAt": null,
+  "updatedAt": "2026-11-06T17:25:28+02:00",
+  "finishedAt": "2026-11-06T17:25:28+02:00",
   "stages": [
     {
       "id": "preflight",
@@ -42,28 +42,35 @@ window.STATE =
     },
     {
       "id": "plan",
-      "status": "active",
-      "startedAt": "2026-11-06T13:49:34+02:00"
+      "status": "done",
+      "startedAt": "2026-11-06T13:49:34+02:00",
+      "finishedAt": "2026-11-06T13:55:35+02:00"
     },
     {
       "id": "build",
-      "status": "pending"
+      "status": "done",
+      "startedAt": "2026-11-06T13:55:35+02:00",
+      "finishedAt": "2026-11-06T15:42:38+02:00"
     },
     {
       "id": "review",
-      "status": "pending"
+      "status": "done",
+      "startedAt": "2026-11-06T15:42:38+02:00",
+      "finishedAt": "2026-11-06T17:00:12+02:00"
     },
     {
       "id": "final",
-      "status": "pending"
+      "status": "done",
+      "startedAt": "2026-11-06T17:00:12+02:00",
+      "finishedAt": "2026-11-06T17:25:28+02:00"
     }
   ],
   "requirements": {
     "total": 103,
-    "done": 0,
-    "inTicket": 102,
+    "done": 99,
+    "inTicket": 0,
     "inSpec": 0,
-    "placeholder": 0,
+    "placeholder": 3,
     "deferred": 1,
     "dropped": 0
   },
@@ -153,9 +160,19 @@ window.STATE =
       ],
       "review": "да — фундамент",
       "model": "сильная",
-      "status": "pending",
+      "status": "done",
+      "startedAt": "2026-11-06T13:57:38+02:00",
+      "finishedAt": "2026-11-06T14:30:59+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 1,
+      "repairFindings": [
+        "контент, вставленный в [data-reveal] после initMotion, виден без твина; шапка не прячется при скролле"
+      ],
+      "tests": {
+        "passed": 37,
+        "failed": 0
+      },
+      "commit": "e570636"
     },
     {
       "id": "02",
@@ -202,9 +219,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "pending",
+      "status": "done",
+      "startedAt": "2026-11-06T14:24:35+02:00",
+      "finishedAt": "2026-11-06T14:39:14+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 37,
+        "failed": 0
+      },
+      "commit": "7717dab"
     },
     {
       "id": "03",
@@ -266,9 +290,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "обычная",
-      "status": "pending",
+      "status": "done",
+      "startedAt": "2026-11-06T14:59:24+02:00",
+      "finishedAt": "2026-11-06T15:17:56+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 48,
+        "failed": 0
+      },
+      "commit": "53b6508"
     },
     {
       "id": "04",
@@ -291,14 +322,78 @@ window.STATE =
       ],
       "review": "нет",
       "model": "обычная",
-      "status": "pending",
+      "status": "done",
+      "startedAt": "2026-11-06T15:17:58+02:00",
+      "finishedAt": "2026-11-06T15:42:37+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 51,
+        "failed": 0
+      },
+      "commit": "e9e6f25"
+    },
+    {
+      "id": "F1",
+      "title": "Исправления по ревью ветки",
+      "requirements": [
+        "R24",
+        "R29",
+        "R04",
+        "R36",
+        "R47",
+        "R76",
+        "R78",
+        "R101i"
+      ],
+      "blockedBy": [],
+      "wave": 5,
+      "zone": [
+        "tests/prerender.test.js",
+        "vite.config.js",
+        "index.html",
+        "#menu",
+        "src/core/dom.js",
+        "src/core/intro.js",
+        "src/core/motion.js",
+        "src/sections/{header,cases,formats,hero,process,geo,stats}.js",
+        "src/styles/sections/{niches,materials,process}.css",
+        "tests/"
+      ],
+      "review": "да — ремонт ветки",
+      "model": "сильная",
+      "status": "done",
+      "retries": 0,
+      "repairs": 1,
+      "startedAt": "2026-11-06T16:25:44+02:00",
+      "finishedAt": "2026-11-06T17:00:11+02:00",
+      "tests": {
+        "passed": 61,
+        "failed": 0
+      },
+      "commit": "9f69550",
+      "repairFindings": [
+        "дедлайн intro не срабатывает раньше потолка прелоадера + его ухода; hero виден за 3 с при упавшем прелоадере"
+      ]
     }
   ],
-  "tests": null,
+  "tests": {
+    "passed": 61,
+    "failed": 0
+  },
   "debt": {
-    "placeholders": [],
+    "placeholders": [
+      "Фото Володимира — силуэт 4/5 в hero",
+      "Видео hero — брендовый градиент до прихода файлов",
+      "Подвал — «Design & development — [ІМ'Я]», ссылка #",
+      "EN — черновой перевод, draft: true",
+      "Коэффициенты калькулятора — демо (demo: true, плашка на странице)",
+      "Кейсы — все цифры, задачи, GEO и отзывы «уточнити»",
+      "Скриншоты рекламы — CSS-макеты, лайтбокс показывает их же",
+      "Отзывы — три текста «уточнити»",
+      "Материалы — заголовки постов 2–4 «уточнити», ссылки ведут на @Kucherflow",
+      "FAQ — ответы 6, 7, 9 «уточнити»"
+    ],
     "assumptions": [],
     "emptyEnv": []
   },
@@ -309,8 +404,39 @@ window.STATE =
     "deferred": 0,
     "items": []
   },
-  "concerns": [],
-  "blind": null,
+  "concerns": [
+    "og:image относительный /og.jpg — адрес сайта неизвестен",
+    "Шрифты с Google Fonts: preload таблицы стилей, не woff2 — self-host вне зоны T01",
+    "Не проверено в браузере: фолбэк при офлайн-GSAP и восстановление языка при втором визите",
+    "build/i18n-prerender.js:261,310 — [data-i18n] с дочерними тегами молча пропускается, рантайм стирает детей",
+    "src/sections/hero.js:428 + src/core/intro.js:246 — whenIntroDone без таймаута: если прелоадер упал, hero остаётся скрытым",
+    "src/sections/hero.js:364 — «Мені довіряють» не перерисовывается при смене языка",
+    "index.html:16 — og:image относительный, мессенджеры не развернут",
+    "index.html:24-31 — preload таблицы стилей вместо woff2 основного начертания",
+    "src/core/motion.js:100-104 — контейнер [data-reveal], заменённый целиком при смене языка, снова проигрывает появление (мигание); перерисовывать детей, а не контейнер",
+    "src/core/motion.js:107-110 — .reveal внутри ещё не раскрытого stagger-контейнера показывается раньше соседей",
+    "tests/visibility.test.js — проверяет исходник grep-ом, поведение не исполняет",
+    "client-data/calculator-template.csv — шаблон просит значение на каждую комбинацию ниша×GEO×цель, а calculator.json по брифу держит три отдельные таблицы (CPM по GEO, CTR по нише, CR по цели)",
+    "src/data/cases.json — done[] собран из общей фразы вайрфрейма 07, нужна сверка по каждому кейсу",
+    "src/data/faq.json — ответы 3, 4, 5, 8 собраны исполнителем из текстов страницы; клиенту подтвердить",
+    "src/data/geo-dots.json — контуры суши нарисованы вручную, сетка 2.5°, грубо",
+    "src/sections/process.js — pin на десктопе не проверен в браузере",
+    "src/sections/formats.js — в макете формата использован текст MONOLIT из вайрфрейма",
+    "T03 — тесты написаны после кода, red-proof только мутацией",
+    "Lighthouse Perf плавает 86–96 на этой машине, запас над 85 небольшой; на реальном Android не проверялось",
+    "src/sections/preloader.js — подзаголовок hero виден под шторкой ради LCP, прелоадер 1.0 с",
+    "Тап по GEO-карте на тач-устройстве вживую не проверялся, только Chrome"
+  ],
+  "blind": {
+    "checked": 52,
+    "matched": 48,
+    "mismatches": [
+      "R30 — Lighthouse mobile Performance 82–84 в чистом клоне при цели 85+ (у T04/F1 было 86–96 — разброс на одной машине; LCP 3,4–3,6 с на подзаголовке hero)",
+      "R86 — «превью при наведении» у услуг экосистемы: раскрывается строка описания, превью-изображения нет",
+      "R48/R50 — карточка «4 500 … Суспільного / Gradus Research» (бриф) и сноска «Суспільне, Mediatrack 2025, n=4 500» (вайрфрейм) называют разные источники",
+      "G02 — на момент проверки в GitHub ничего не отправлено"
+    ]
+  },
   "beats": [
     "2026-11-06T11:50:20+02:00",
     "2026-11-06T11:50:27+02:00",
@@ -322,9 +448,39 @@ window.STATE =
     "2026-11-06T13:49:34+02:00",
     "2026-11-06T13:54:28+02:00",
     "2026-11-06T13:54:29+02:00",
-    "2026-11-06T13:54:30+02:00"
+    "2026-11-06T13:54:30+02:00",
+    "2026-11-06T13:55:13+02:00",
+    "2026-11-06T13:55:35+02:00",
+    "2026-11-06T13:57:38+02:00",
+    "2026-11-06T14:24:29+02:00",
+    "2026-11-06T14:24:30+02:00",
+    "2026-11-06T14:24:35+02:00",
+    "2026-11-06T14:27:43+02:00",
+    "2026-11-06T14:27:44+02:00",
+    "2026-11-06T14:29:53+02:00",
+    "2026-11-06T14:30:59+02:00",
+    "2026-11-06T14:31:00+02:00",
+    "2026-11-06T14:39:14+02:00",
+    "2026-11-06T14:39:15+02:00",
+    "2026-11-06T14:39:16+02:00",
+    "2026-11-06T14:59:21+02:00",
+    "2026-11-06T14:59:24+02:00",
+    "2026-11-06T15:17:56+02:00",
+    "2026-11-06T15:17:57+02:00",
+    "2026-11-06T15:17:58+02:00",
+    "2026-11-06T15:42:37+02:00",
+    "2026-11-06T15:42:38+02:00",
+    "2026-11-06T16:25:42+02:00",
+    "2026-11-06T16:25:43+02:00",
+    "2026-11-06T16:25:44+02:00",
+    "2026-11-06T16:54:14+02:00",
+    "2026-11-06T16:56:15+02:00",
+    "2026-11-06T17:00:11+02:00",
+    "2026-11-06T17:00:12+02:00",
+    "2026-11-06T17:24:19+02:00",
+    "2026-11-06T17:25:28+02:00"
   ],
-  "rev": 12,
+  "rev": 53,
   "waiting": null,
   "waits": [
     {
@@ -412,288 +568,585 @@ window.STATE =
       "g": "G3",
       "ok": true,
       "problems": 0
+    },
+    {
+      "t": "2026-11-06T13:55:35+02:00",
+      "k": "stage",
+      "id": "build",
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T13:57:38+02:00",
+      "k": "ticket",
+      "ids": [
+        "01"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T14:24:29+02:00",
+      "k": "ticket",
+      "ids": [
+        "01"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 23,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-06T14:24:30+02:00",
+      "k": "add",
+      "key": "debt.placeholders",
+      "n": 4
+    },
+    {
+      "t": "2026-11-06T14:24:30+02:00",
+      "k": "add",
+      "key": "concerns",
+      "n": 3
+    },
+    {
+      "t": "2026-11-06T14:24:35+02:00",
+      "k": "ticket",
+      "ids": [
+        "01"
+      ],
+      "act": "review"
+    },
+    {
+      "t": "2026-11-06T14:24:35+02:00",
+      "k": "ticket",
+      "ids": [
+        "02"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T14:27:43+02:00",
+      "k": "ticket",
+      "ids": [
+        "01"
+      ],
+      "act": "repair",
+      "note": "контент, вставленный в [data-reveal] после initMotion, виден без твина; шапка не прячется при скролле"
+    },
+    {
+      "t": "2026-11-06T14:27:44+02:00",
+      "k": "add",
+      "key": "concerns",
+      "n": 5
+    },
+    {
+      "t": "2026-11-06T14:29:53+02:00",
+      "k": "ticket",
+      "ids": [
+        "01"
+      ],
+      "act": "review"
+    },
+    {
+      "t": "2026-11-06T14:30:59+02:00",
+      "k": "ticket",
+      "ids": [
+        "01"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 37,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-06T14:31:00+02:00",
+      "k": "add",
+      "key": "concerns",
+      "n": 3
+    },
+    {
+      "t": "2026-11-06T14:39:14+02:00",
+      "k": "ticket",
+      "ids": [
+        "02"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 37,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-06T14:39:14+02:00",
+      "k": "add",
+      "key": "debt.placeholders",
+      "n": 2
+    },
+    {
+      "t": "2026-11-06T14:39:15+02:00",
+      "k": "add",
+      "key": "concerns",
+      "n": 2
+    },
+    {
+      "t": "2026-11-06T14:39:16+02:00",
+      "k": "ticket",
+      "ids": [
+        "03"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T14:59:21+02:00",
+      "k": "ticket",
+      "ids": [
+        "03"
+      ],
+      "act": "reset"
+    },
+    {
+      "t": "2026-11-06T14:59:24+02:00",
+      "k": "ticket",
+      "ids": [
+        "03"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T15:17:56+02:00",
+      "k": "ticket",
+      "ids": [
+        "03"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 48,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-06T15:17:57+02:00",
+      "k": "add",
+      "key": "debt.placeholders",
+      "n": 4
+    },
+    {
+      "t": "2026-11-06T15:17:58+02:00",
+      "k": "add",
+      "key": "concerns",
+      "n": 5
+    },
+    {
+      "t": "2026-11-06T15:17:58+02:00",
+      "k": "ticket",
+      "ids": [
+        "04"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T15:42:37+02:00",
+      "k": "ticket",
+      "ids": [
+        "04"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 51,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-06T15:42:37+02:00",
+      "k": "add",
+      "key": "concerns",
+      "n": 3
+    },
+    {
+      "t": "2026-11-06T15:42:38+02:00",
+      "k": "stage",
+      "id": "review",
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T16:25:42+02:00",
+      "k": "tickets",
+      "n": 5
+    },
+    {
+      "t": "2026-11-06T16:25:43+02:00",
+      "k": "gate",
+      "g": "G3",
+      "ok": true,
+      "problems": 0
+    },
+    {
+      "t": "2026-11-06T16:25:44+02:00",
+      "k": "add",
+      "key": "report",
+      "n": 12
+    },
+    {
+      "t": "2026-11-06T16:25:44+02:00",
+      "k": "ticket",
+      "ids": [
+        "F1"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T16:54:14+02:00",
+      "k": "ticket",
+      "ids": [
+        "F1"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 59,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-06T16:54:14+02:00",
+      "k": "ticket",
+      "ids": [
+        "F1"
+      ],
+      "act": "review"
+    },
+    {
+      "t": "2026-11-06T16:56:15+02:00",
+      "k": "ticket",
+      "ids": [
+        "F1"
+      ],
+      "act": "repair",
+      "note": "дедлайн intro не срабатывает раньше потолка прелоадера + его ухода; hero виден за 3 с при упавшем прелоадере"
+    },
+    {
+      "t": "2026-11-06T17:00:11+02:00",
+      "k": "ticket",
+      "ids": [
+        "F1"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 61,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-06T17:00:12+02:00",
+      "k": "add",
+      "key": "report",
+      "n": 1
+    },
+    {
+      "t": "2026-11-06T17:00:12+02:00",
+      "k": "stage",
+      "id": "final",
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T17:24:19+02:00",
+      "k": "gate",
+      "g": "G4",
+      "ok": false,
+      "checked": 52,
+      "matched": 48
+    },
+    {
+      "t": "2026-11-06T17:25:28+02:00",
+      "k": "tests",
+      "passed": 61,
+      "failed": 0
+    },
+    {
+      "t": "2026-11-06T17:25:28+02:00",
+      "k": "finish",
+      "result": "Макет лендинга eLeads: 14 секций, калькулятор и кейсы в полном качестве, UA/EN, аналитика, статика в dist/"
     }
   ],
   "reqList": [
     {
       "id": "R01",
       "text": "«одностраничный лендинг эксперта по Telegram Ads — Володимира Кучера (бренд eLeads, Telegram @Kucherflow)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R02",
       "text": "«давать «вау» с первого экрана»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R03",
       "text": "«выглядеть как дорогой кастомный проект, а не шаблон»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R04",
       "text": "«летать на среднем Android»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R05",
       "text": "«этап МАКЕТА: делаем шапку, hero, калькулятор и кейсы в полном качестве»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R06",
       "text": "«остальные блоки каркасом с реальным контентом»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R07",
       "text": "«Изучи все файлы в /reference: это вайрфрейм клиента (структура) и обложка поста (бренд)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R08",
       "text": "«Vite + vanilla JS (без React), чистый HTML/CSS»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R09",
       "text": "«GSAP + ScrollTrigger для анимаций»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R10",
       "text": "«Lenis для плавного скролла»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R11",
       "text": "«Весь контент вынести в JSON в /src/data: content.ua.json, content.en.json, cases.json, faq.json, calculator.json»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R12",
       "text": "«Клиент и я должны менять тексты и цифры без правки вёрстки»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R13",
       "text": "«Сборка в статику (dist/), деплой на обычный хостинг клиента»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R14",
       "text": "«Никаких тяжёлых UI-фреймворков и Tailwind-шаблонности»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R15",
       "text": "«Цвета берутся из Telegram-канала клиента» — палитра из 10 переменных (--ink … --tg)",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R16",
       "text": "«Синие кнопки из вайрфрейма заменить на бренд»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R17",
       "text": "«заголовки: узкий жирный гротеск КАПСОМ … (Oswald или аналог, подбери лучший с кириллицей)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R18",
       "text": "«текст: Onest или Manrope»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R19",
       "text": "«цифры и подписи: моноширинный (JetBrains Mono)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R20",
       "text": "«Фото Володимира: вырезанное, на тёмном фоне, с мягким тёплым оранжевым свечением сзади … Пока фото нет, поставь аккуратный плейсхолдер такого же размера»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R21",
       "text": "«Чистий premium-tech / performance marketing. Багато повітря, сильна типографіка … Не перетворювати на \"велике агентство з 30 послугами\"»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R22",
       "text": "«Запрещено: шаблонный AI-вид (фиолетово-синие градиенты, одинаковые карточки с одинаковым радиусом везде, эмодзи как иконки, всё по центру)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R23",
       "text": "«Каждая секция со своей раскладкой»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R24",
       "text": "«Анимировать только transform и opacity. Не анимировать blur, filter, box-shadow, размеры»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R25",
       "text": "«backdrop-filter только в шапке»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R26",
       "text": "«Не больше одного canvas/WebGL на странице, ставить его на паузу вне экрана»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R27",
       "text": "«Изображения в WebP/AVIF, lazy-load всё ниже первого экрана»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R28",
       "text": "«Поддержать prefers-reduced-motion: эффекты выключаются, контент виден»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R29",
       "text": "«Контент виден без JS-анимаций: ничего не прячем через opacity: 0 навсегда»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R30",
       "text": "«Цель: Lighthouse на мобильном 85+ по Performance»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R31",
       "text": "«0 горизонтального скролла на 360px»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R32",
       "text": "«Sticky, полупрозрачная с blur»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R33",
       "text": "«Логотип eLeads, якоря на блоки»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R34",
       "text": "«переключатель UA/EN» (в шапке)",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R35",
       "text": "«кнопка «Написати» → https://t.me/Kucherflow»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R36",
       "text": "«На мобильном бургер с полноэкранным меню»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R37",
       "text": "«Фон: видео /public/video/hero-1080.mp4 (мобильный hero-720.mp4, постер poster.jpg), autoplay muted loop playsinline. Пока файла нет, сделай плейсхолдер-градиент в бренде»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R38",
       "text": "«Поверх тёмный градиент 50–70%, чтобы текст читался»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R39",
       "text": "«Прелоадер 1–1,5 сек: проценты огромным condensed-шрифтом в градиенте, потом шторка уходит вверх»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R40",
       "text": "«Надзаголовок: TELEGRAM PERFORMANCE MARKETING»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R41",
       "text": "«Заголовок «ПРОСУВАННЯ ЧЕРЕЗ TELEGRAM ADS»: выезжает по строкам из маски, «TELEGRAM ADS» в градиенте»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R42",
       "text": "«Подзаголовок: «Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу»»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R43",
       "text": "«Цифры-счётчики: 7+ років у digital · $2M+ рекламних бюджетів · десятки проєктів»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R44",
       "text": "«CTA: «Обговорити проєкт у Telegram →»»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R45",
       "text": "«Фото справа: параллакс слоёв (фото, свечение, фон двигаются с разной скоростью), свечение слегка следует за курсором. Только на десктопе»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R46",
       "text": "«Мені довіряють»: бегущая строка логотипов (Finmap, Cryptonite, Global Auto Logistic, Олександр Мухін, Віктор Домбовецький, Monolit, Trackdesk), пауза при наведении. Пока логотипов нет, названия текстом»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R47",
       "text": "«Переключатель Україна / Worldwide, цифры меняются с анимацией»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R48",
       "text": "«UA: 81% користувачів месенджерів 18–70 використовували Telegram; 18–70 високе проникнення в усіх вікових групах; 4 500 респондентів дослідження Суспільного / Gradus Research; блок «У Telegram присутні різні сегменти аудиторії»»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R49",
       "text": "«Worldwide: 1B+ MAU; TOP-5 застосунків світу; 200+ GEO; «Що рекламуємо: Telegram-канали · боти · сайти · застосунки»»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R50",
       "text": "«Сноска с источниками мелким текстом (из вайрфрейма)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R51",
       "text": "«Подача bento: карточки разного размера, одна главная цифра крупно»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R52",
       "text": "«8 карточек: Бізнес (Finmap), Експерти (eLeads · Мухін · Домбовецький), Crypto (Cryptonite), Education (Anna Haustova), Auto (Global Auto Logistic), Finance / Investments (Monolit), SaaS / B2B (Trackdesk)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R53",
       "text": "«Інша ніша? Напишіть мені» (акцентная, ведёт в Telegram)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R54",
       "text": "«3 формата: у каналах, у відео / медіаконтенті, у ботах»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R55",
       "text": "«Скриншоты из /public/img/ads/ (пока плейсхолдеры)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R56",
       "text": "«Клик увеличивает скриншот в лайтбоксе»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R57",
@@ -704,232 +1157,235 @@ window.STATE =
     {
       "id": "R58",
       "text": "«Ввод: ніша (Business, Crypto, Education, Auto), GEO (Україна, Worldwide), ціль (Підписники, Користувачі бота)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R59",
       "text": "«бюджет слайдером €650 – €10 000+»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R60",
       "text": "«Пересчёт мгновенно, без перезагрузки, цифры плавно «докручиваются»»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R61",
       "text": "«Вывод диапазонами: Покази, CTR, Кліки, CPC, Конверсії, CPA/CPS»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R62",
       "text": "«Подача НЕ таблицей: сделай живую воронку «Покази → Кліки → Підписники/Ліди», ступени меняют ширину при движении слайдера»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R63",
       "text": "«Предложи мне ещё 1 альтернативу в плане»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R64",
       "text": "«Все коэффициенты в calculator.json (CPM по GEO, CTR по нише, CR по цели, разброс ±15%) … правдоподобные демо-значения и пометь \"demo\": true»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R65",
       "text": "«Подпись: «Розрахунок базується на історичних кампаніях eLeads. Фактичний результат залежить від GEO, оферу, посадкової та креативів»»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R66",
       "text": "«CTA «Отримати точний прогноз →» в Telegram»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R67",
       "text": "«Под блоком: «Не знайшли свою нішу? Напишіть мені — перевірю, чи є релевантний досвід, і дам окремий прогноз»»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R68",
       "text": "«Доступность: управление с клавиатуры, aria-live на результате»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R69",
       "text": "«Карточки: Cryptonite, Finmap, Global Auto Logistic, Князєв (Auto / Korea), Олександр Мухін, Віктор Домбовецький, Trackdesk»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R70",
       "text": "«На карточке ниша-тег, название, бюджет, результат, CPA/CPS крупными цифрами»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R71",
       "text": "«Один кейс крупнее остальных»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R72",
       "text": "«Клик открывает модалку без перехода: задача, GEO, бюджет, результат, CPA/CPS, «Що було зроблено», отзыв/скриншот»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R73",
       "text": "«кнопка «Написати Володимиру →»» (в модалке кейса)",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R74",
       "text": "«Данные в cases.json, пока плейсхолдеры с пометкой «уточнити»»",
-      "status": "in-ticket"
+      "status": "placeholder",
+      "why": "реальных цифр кейсов нет"
     },
     {
       "id": "R75",
       "text": "«7 шагов: Аналізую проєкт → Формую стратегію → Готую рекламу та погоджую → Готую/допрацьовую посадкову → Запускаю кампанії → Аналізую та оптимізую → Масштабую те, що працює»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R76",
       "text": "«Линия прорисовывается по скроллу, шаги загораются по очереди»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R77",
       "text": "«Клієнту не потрібно самостійно розбиратися в Telegram Ads: я підключаюсь до задачі від стратегії та рекламних матеріалів до оптимізації й масштабування»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R78",
       "text": "«Точечная (dot-map) карта мира, пульсирующие точки в регионах»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R79",
       "text": "«Hover/tap по региону — карточка с данными»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R80",
       "text": "«Список справа: Україна (локальна аудиторія), Європа (українці + міжнародні сегменти, 4.43M під temporary protection у ЄС), UK, USA, Canada, Australia (Tier-1), Asia (окремі GEO за задачею)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R81",
       "text": "«Карту делай лёгкой (SVG или canvas, без картографических библиотек)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R82",
       "text": "«6 карточек: GEO, Мова, Інтереси, Тематики, Конкретні канали, Аудиторії. Hover раскрывает 1–2 предложения пояснения»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R83",
       "text": "«Слайдер отзывов (desktop 3 карточки, mobile swipe): Мухін, Домбовецький, третий отзыв»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R84",
       "text": "«блок засновника с фото: «За eLeads стоїть особиста експертиза. Привіт, я Володимир — засновник eLeads …»»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R85",
       "text": "«Цепочка Traffic → Telegram → Content → Funnel → Lead → Sale как анимированный поток»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R86",
       "text": "«Услуги нумерованным списком крупным капсом с превью при наведении: Telegram Ads, Meta Ads, Посіви / закуп реклами, Упаковка каналу, Контент, Боти, Воронки, Органічний / UBT traffic, Консультації»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R87",
       "text": "«Клієнт може прийти лише за Telegram Ads або передати eLeads повну Telegram-систему»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R88",
       "text": "«4 карточки постов из канала в стиле обложек (жёлтый капс на тёмном), «Читати в Telegram →»»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R89",
       "text": "«FAQ-аккордеон» из 9 вопросов, начиная со «Скільки потрібно для старту? (мін. бюджет €650)»",
-      "status": "in-ticket"
+      "status": "placeholder",
+      "why": "текстов ответов нет"
     },
     {
       "id": "R90",
       "text": "«Тёмный блок с фото. «Обговоримо ваш проєкт?» огромным капсом»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R91",
       "text": "«Кнопка «Написати Володимиру в Telegram →», под ней @Kucherflow» + текст блока",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R92",
       "text": "«Подвал: Логотип, якоря, Telegram, © 2026 eLeads, переключатель UA/EN»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R93",
       "text": "«строка «Design & development — [ИМЯ]» со ссылкой (имя вставлю сам)»",
-      "status": "in-ticket"
+      "status": "placeholder",
+      "why": "имя и ссылка не переданы"
     },
     {
       "id": "R94",
       "text": "«UA по умолчанию, EN через JSON. Структура и UX одинаковые»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R95",
       "text": "«Выбор языка сохранять в localStorage, lang на <html> менять»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R96",
       "text": "«отправлять в window.dataLayer событиями: cta_telegram_click (с местом клика), calculator_change (ниша, GEO, цель, бюджет), calculator_cta_click, case_open (название кейса)»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R97",
       "text": "«GA4 и Meta Pixel подключатся через ID в конфиге, пока пустые»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R98",
       "text": "«Title, description, Open Graph-картинка, favicon, семантичные заголовки, alt у картинок, lang»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R99",
       "text": "«Проверка: 360px, 768px, 1440px, Lighthouse mobile, reduced motion, клавиатура. Пришли отчёт и что не дотянуто»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R100i",
       "text": "(подразумевается) английские переводы всех украинских текстов, которых в брифе нет",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "R101i",
       "text": "(подразумевается) сайт должен открываться по одному адресу как статика — нужен способ запустить и собрать (npm run dev / build)",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "G01",
       "text": "«https://fintap.framer.website/ Анимации как тут сделай»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "G02",
       "text": "«можешь закинуть на гитхаб»",
-      "status": "in-ticket"
+      "status": "done"
     }
   ],
   "gates": {
@@ -948,9 +1404,30 @@ window.STATE =
     },
     "G3": {
       "ok": true,
-      "at": "2026-11-06T13:54:30+02:00",
+      "at": "2026-11-06T16:25:43+02:00",
       "problems": 0
+    },
+    "G4": {
+      "ok": false,
+      "at": "2026-11-06T17:24:19+02:00",
+      "checked": 52,
+      "matched": 48
     }
   },
-  "result": null
+  "result": "Макет лендинга eLeads: 14 секций, калькулятор и кейсы в полном качестве, UA/EN, аналитика, статика в dist/",
+  "report": [
+    "Пре-рендер молча пропускает узел [data-i18n] с вложенными тегами — сейчас таких нет, но следующая правка вёрстки может выпустить пустой узел",
+    "Мёртвый код: pinSection в motion.js не используется, лишний getLang() в geo.js",
+    "Таргетинг и экосистема: при наведении ставят aria-expanded=true закрытой панели — скринридер скажет «развёрнуто»",
+    "Проверка заглушки «уточнити»/«TBD» захардкожена в cases.js и faq.js отдельно от common.tbd",
+    "lockScroll — флаг, а не счётчик: лайтбокс внутри модалки разблокировал бы страницу",
+    "tests/visibility.test.js проверяет исходник, а не поведение появления",
+    "Шаблон client-data/calculator-template.csv (16 строк ниша×GEO×цель) не ложится в три таблицы calculator.json — нужно решение, как сводить",
+    "Фото, логотипы и скриншоты рекламы подключаются правкой index.html, когда клиент их пришлёт (описано в README)",
+    "og:image относительный — превью в мессенджерах появится, когда будет домен; шрифты с Google Fonts, не self-host",
+    "Клиенту подтвердить: ответы FAQ 3, 4, 5, 8, шаги «Що було зроблено» в кейсах, имя MONOLIT в макете формата — собраны из текстов страницы",
+    "Градиентный дрейф фона hero (22 с) крутится и вне экрана — дёшево, но не на паузе",
+    "Не проверено: реальный Android, Safari, Firefox, живой тап по карте, страница с упавшим GSAP; видео hero даёт 404, пока нет файлов",
+    "Если прелоадер падает на самом шаге ухода (около 2,6 с), hero показывается сразу, но шторка уходит ещё до 1,3 с"
+  ]
 }

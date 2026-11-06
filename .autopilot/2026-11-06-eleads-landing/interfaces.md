@@ -170,3 +170,47 @@ export function forecast(input, rates): Forecast
 ## Что построили готовые таски
 
 <!-- сюда исполнители дописывают по строке: что реально экспортируется -->
+
+### T01 — фундамент (коммит ниже)
+
+- **Цветов в брифе 9, не 10** (ink, navy, card, line, fg, muted, sun, ember, tg) — в `tokens.css` ровно они + `--grad`; тест это держит.
+- `core/i18n`: `initI18n, t, getLang, setLang, onLangChange, applyTranslations`; ключ `localStorage` — `"eleads-lang"`; `<html lang>` — `uk` / `en`.
+- `core/motion`: `reduced, initMotion, reveal(target,{stagger,y,delay,start,trigger}), parallax, pinSection(section,{...ScrollTrigger, onCreate}), marquee(track,{speed}) → stop, refreshMotion`, плюс `motionReady() → Promise<{gsap,ScrollTrigger,lenis}|null>`, `scrollToTarget(el|sel|number,{offset})`, `lockScroll(bool)`. Любой `a[href^="#"]` скроллит через Lenis. Атрибуты `[data-reveal]` и `[data-reveal="stagger"]` раскрываются сами — секциям не нужно звать `reveal` руками.
+- `core/format`: `formatInt(n,lang)` (узкий nbsp для ua, запятая для en), `formatMoney` (< 10 → `€0.21`, иначе `€1 500`), `formatRange(lo,hi,fmt)`, `countTo(node,from,to,{duration,format})`; не-число → «—».
+- `core/analytics`: `initAnalytics(config), track(event,payload)`; **любой** `a[href*="t.me/"]` сам шлёт `cta_telegram_click` с `place` из `data-place` ссылки или ближайшего предка — секциям достаточно поставить `data-place`.
+- `core/dom`: `$, $$, el, on, focusables(root)`. `core/intro`: `signalIntroDone, whenIntroDone`. `core/lang-switch`: `bindLangSwitch(container[data-lang-switch])`.
+- **`main.js` сам подхватывает** `src/sections/<name>.js` для каждого `[data-section="<name>"]` и все `src/styles/sections/*.css` через `import.meta.glob` — последующие таски **не правят `main.js`**. Контракт секции — `init(root)`.
+- Пре-рендер: `data-i18n="a.b.0"` (текст, индекс массива можно), `data-i18n-attr="attr:key;attr2:key2"`, `{{config.key}}`. Отсутствующий ключ **валит `build`** со списком ключей, в dev — предупреждение.
+- Данные: `config.json` `{telegramUrl, telegramHandle, analytics:{ga4Id:"",metaPixelId:""}}`; `cases.json {cases:[]}`, `faq.json {items:[]}`, `calculator.json {demo:true}` — заготовки. В `content.*` у секций 02–14 пока только `{eyebrow,title}`. Секции чередуют классы `.section` / `.section--alt`.
+- Тесты: `tests/{helpers,i18n-keys,prerender,markup,styles}.test.js`.
+
+### T01 — ремонт по ревью
+
+- `reveal()` после твина ставит `.is-revealed` на узлы и снимает инлайн `opacity`/`transform`; у stagger-контейнера — на контейнер и детей.
+- Начальное состояние в CSS: `.js-anim .reveal:not(.is-revealed)`, `[data-reveal]:not(.is-revealed)`, `[data-reveal='stagger']:not(.is-revealed) > *:not(.is-revealed)`.
+- После `initMotion` `MutationObserver` на `body` ловит вставленные узлы: новый `[data-reveal]` раскрывается сам, ничейный `.reveal` показывается сразу, дети stagger-контейнера читаются при входе в экран. **Перерисовка списков при смене языка безопасна** — секции ничего специально делать не нужно.
+- Шапка: только `.is-scrolled` (появляется подложка); `.is-hidden` больше нет, шапка видна всегда.
+
+### T02 — калькулятор и кейсы
+
+- `calculator-model.js`: `forecast(input,rates) → {impressions,ctr,clicks,cpc,conversions,cpa: {lo,hi}|null, issues: string[]}`; `budgetScale({min,max,scale:[{upTo,step}]}) → number[]` (значение слайдера — индекс в этом массиве); `funnelWidths(fc,{floor=100,min=0.14}) → [1,w2,w3]`.
+- `calculator.json`: `{demo, spread, budget:{min,max,default,scale}, defaults:{niche,geo,goal}, cpm:{ua,worldwide}, ctr:{business,crypto,education,auto}, cr:{subscribers,bot_users}, niches|geos:[{id,label:{ua,en}}], goals:[{id,label,step:{ua,en}}]}`.
+- `cases.json`: `{cases:[{id, featured?, niche, name, budget, result, cpa, task, geo, review:{ua,en}, done:[{ua,en}], screenshot:""}]}` — двуязычные значения внутри записи.
+- События: `calculator_change` / `calculator_cta_click {niche,geo,goal,budget}`; `case_open {case: name.ua}`; `data-place`: `calculator`, `calculator_note`, `case_modal`.
+- Пилюли и карточки кейсов рисует JS — без JS у калькулятора видны только заголовки, дисклеймер и ссылки.
+
+### T03 — остальные десять секций
+
+- Разделы `content.*`: `stats, niches, formats, process, geo, targeting, reviews, founder, ecosystem, materials, faq, cta` (EN — черновик).
+- `faq.json`: `{items:[{id, q:{ua,en}, a:{ua,en}}]}`. `geo-dots.json`: `{step, lon0, lat0, cols, rows, rowsData:string[], regions:[{id,lon,lat}]}` — сетка суши 2.5°, контуры грубые.
+- `data-place`: `niches_other`, `materials` (4 ссылки), `final_cta`. Новых событий нет. Контракт `init(root)` у 11 модулей.
+- Браузером не проверялось: пин процесса, карта, раскладка — только чтением кода и сборкой.
+
+### F1 — ремонт ветки
+
+- `core/dom`: `trapFocus(target, items = () => focusables(target)) → () => void` — единая ловушка фокуса для меню, модалки кейса и лайтбокса.
+- `core/intro`: `INTRO_DEADLINE_MS = 2600`, `introTimeLeft(deadline?) → ms`, `whenIntroDone({deadline}?) → Promise<'done'|'timeout'>`; по таймауту снимает `html.js-preload` и сигналит done.
+- `vite.config.js` задаёт `root` явно — сборка не зависит от регистра буквы диска в cwd.
+- Меню — `data-lenis-prevent`; линия процесса — слой `.process__fill` со `scaleX/scaleY`; свечения — слои с `translate3d`; суша GEO — кэш вне DOM как CSS-фон единственного `<canvas>`.
+- **F1, дозапрос:** дедлайн intro считается от старта прелоадера (`markIntroStart()`), `INTRO_DEADLINE_MS` = 4200; по таймауту сначала уход шторки `is-leaving`, потом снятие `js-preload`. Новое в `intro.js`: `PRELOADER_MAX_MS, PRELOADER_SAFETY_MS, INTRO_EXIT_MS, INTRO_DEADLINE_MS, markIntroStart(), failIntro(err?)`; `signalIntroDone(reason='done')`, `whenIntroDone() → 'done'|'failed'|'timeout'`.
+
