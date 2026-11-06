@@ -1,0 +1,171 @@
+/* 07 Процес: 7 шагов на линии; линия прорисовывается stroke-dashoffset (JS), шаги загораются.
+   Без JS и при reduced-motion линия нарисована, шаги горят (класс .is-armed ставит JS). */
+
+.process__track {
+  position: relative;
+}
+
+.process__steps {
+  position: relative;
+  display: grid;
+  gap: 1.75rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.process__line {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.process__line--h {
+  display: none;
+}
+
+/* мобильная линия — вертикаль через центры кружков */
+.process__line--v {
+  top: 24px;
+  bottom: 24px;
+  left: 23px;
+  width: 2px;
+  height: auto;
+  inset-block: 24px;
+}
+
+.process__rail {
+  stroke: var(--line-strong);
+  stroke-width: 2;
+  fill: none;
+}
+
+.process__draw {
+  stroke: var(--sun);
+  stroke-width: 2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  fill: none;
+}
+
+.process__step {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.process__node {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+  background: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--grad);
+  border-color: transparent;
+  transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+
+.process__label {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1rem + 0.5vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+/* до прокрутки: контурные кружки, приглушённые подписи */
+.process.is-armed .process__node {
+  background: var(--ink);
+  border-color: var(--line-strong);
+  color: var(--muted);
+}
+
+.process.is-armed .process__label {
+  opacity: 0.4;
+}
+
+.process.is-armed .process__step.is-lit .process__node {
+  background: var(--grad);
+  border-color: transparent;
+  color: var(--ink);
+  transform: scale(1.12);
+}
+
+.process.is-armed .process__step.is-lit .process__label {
+  opacity: 1;
+}
+
+.process__note {
+  position: relative;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+  border-radius: var(--r-card-lg);
+  border: 1px solid var(--line-strong);
+  background: var(--navy);
+  font-size: var(--fs-lg);
+  max-width: 62ch;
+}
+
+.process__note::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 3px;
+  margin-bottom: 1rem;
+  border-radius: 2px;
+  background: var(--grad);
+}
+
+@media (min-width: 900px) {
+  .section--process {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .section--process > .container {
+    width: 100%;
+  }
+
+  .process__steps {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .process__step {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding-right: 0.75rem;
+  }
+
+  .process__node {
+    width: 56px;
+    height: 56px;
+  }
+
+  .process__label {
+    font-size: clamp(1rem, 0.5rem + 0.9vw, 1.35rem);
+  }
+
+  .process__line--v {
+    display: none;
+  }
+
+  .process__line--h {
+    display: block;
+    top: 27px;
+    height: 2px;
+    inset-inline: 28px calc(100% / 7 - 28px + 0.1rem);
+  }
+}

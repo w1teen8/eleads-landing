@@ -1,0 +1,145 @@
+/* 03 Ніші: 4 колонки, ряды смещены по вертикали (шахматный ритм); восьмая карточка — акцентная, ведёт в Telegram. */
+
+.niches__lead {
+  margin-top: calc(-1 * clamp(1.25rem, 3vw, 2.5rem));
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.niches__grid {
+  display: grid;
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.niches__item {
+  display: flex;
+  min-width: 0;
+}
+
+.niches__card {
+  --mx: 50%;
+  --my: 0%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 220px;
+  padding: clamp(1.1rem, 2vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card-sm);
+  background: color-mix(in srgb, var(--card) 65%, var(--ink));
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+/* подсветка под курсором — отдельный слой, меняется только opacity */
+.niches__card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(260px circle at var(--mx) var(--my), var(--sun-glow), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.niches__card:hover::before {
+  opacity: 0.55;
+}
+
+.niches__card:hover {
+  transform: translateY(-4px);
+}
+
+.niches__idx {
+  position: absolute;
+  top: clamp(1.1rem, 2vw, 1.75rem);
+  left: clamp(1.1rem, 2vw, 1.75rem);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.niches__dot {
+  position: absolute;
+  top: clamp(1.1rem, 2vw, 1.75rem);
+  right: clamp(1.1rem, 2vw, 1.75rem);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--grad);
+}
+
+.niches__name {
+  font-size: clamp(1.4rem, 1rem + 1.4vw, 2.1rem);
+  line-height: 1;
+}
+
+.niches__examples {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
+.niches__card--other {
+  background: var(--grad);
+  color: var(--ink);
+  border-color: transparent;
+}
+
+.niches__card--other::before {
+  display: none;
+}
+
+.niches__card--other .niches__examples {
+  color: color-mix(in srgb, var(--ink) 80%, transparent);
+  font-size: var(--fs-base);
+  font-weight: 500;
+}
+
+.niches__tg {
+  position: absolute;
+  top: clamp(1.1rem, 2vw, 1.75rem);
+  right: clamp(1.1rem, 2vw, 1.75rem);
+  width: 30px;
+  height: 30px;
+}
+
+.niches__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.75rem;
+  font-weight: 600;
+}
+
+.niches__card--other:hover .btn__arrow,
+.niches__card--other:focus-visible .btn__arrow {
+  transform: translateX(4px);
+}
+
+.niches__card--other:focus-visible {
+  outline-color: var(--fg);
+}
+
+@media (min-width: 900px) {
+  .niches__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .niches__card {
+    min-height: 260px;
+  }
+
+  .niches__item:nth-child(4n + 2),
+  .niches__item:nth-child(4n + 4) {
+    margin-top: 2.5rem;
+  }
+
+  .niches__grid {
+    padding-bottom: 0;
+  }
+}

@@ -268,6 +268,50 @@
             <p class="eyebrow" data-i18n="stats.eyebrow"></p>
             <h2 id="stats-title" class="section__title" data-i18n="stats.title"></h2>
           </div>
+          <div class="stats" data-stats>
+            <div class="stats__tabs" role="tablist" data-i18n-attr="aria-label:stats.tabsLabel">
+              <span class="stats__thumb" aria-hidden="true"></span>
+              <button type="button" class="stats__tab" role="tab" id="stats-tab-ua" aria-controls="stats-panel-ua" aria-selected="true" tabindex="0" data-stats-tab="ua" data-i18n="stats.tabs.ua"></button>
+              <button type="button" class="stats__tab" role="tab" id="stats-tab-ww" aria-controls="stats-panel-ww" aria-selected="false" tabindex="-1" data-stats-tab="ww" data-i18n="stats.tabs.ww"></button>
+            </div>
+            <div class="stats__panel" role="tabpanel" id="stats-panel-ua" aria-labelledby="stats-tab-ua" data-stats-panel="ua">
+            <article class="stats__card stats__card--main">
+              <p class="stats__value text-grad" data-count data-i18n="stats.ua.main.value"></p>
+              <p class="stats__label" data-i18n="stats.ua.main.label"></p>
+            </article>
+            <article class="stats__card stats__card--a">
+              <p class="stats__value text-grad" data-i18n="stats.ua.age.value"></p>
+              <p class="stats__label" data-i18n="stats.ua.age.label"></p>
+            </article>
+            <article class="stats__card stats__card--b">
+              <p class="stats__value text-grad" data-count data-i18n="stats.ua.sample.value"></p>
+              <p class="stats__label" data-i18n="stats.ua.sample.label"></p>
+            </article>
+            <article class="stats__card stats__card--wide">
+              <span class="stats__tag" data-i18n="stats.ua.note.tag"></span>
+              <p class="stats__text" data-i18n="stats.ua.note.text"></p>
+            </article>
+            </div>
+            <div class="stats__panel" role="tabpanel" id="stats-panel-ww" aria-labelledby="stats-tab-ww" data-stats-panel="ww" hidden>
+            <article class="stats__card stats__card--main">
+              <p class="stats__value text-grad" data-count data-i18n="stats.ww.main.value"></p>
+              <p class="stats__label" data-i18n="stats.ww.main.label"></p>
+            </article>
+            <article class="stats__card stats__card--a">
+              <p class="stats__value text-grad" data-i18n="stats.ww.top.value"></p>
+              <p class="stats__label" data-i18n="stats.ww.top.label"></p>
+            </article>
+            <article class="stats__card stats__card--b">
+              <p class="stats__value text-grad" data-count data-i18n="stats.ww.geo.value"></p>
+              <p class="stats__label" data-i18n="stats.ww.geo.label"></p>
+            </article>
+            <article class="stats__card stats__card--wide">
+              <span class="stats__tag" data-i18n="stats.ww.what.title"></span>
+              <p class="stats__text" data-i18n="stats.ww.what.text"></p>
+            </article>
+            </div>
+            <p class="stats__footnote" data-reveal data-i18n="stats.footnote"></p>
+          </div>
         </div>
       </section>
 
@@ -277,6 +321,57 @@
             <p class="eyebrow" data-i18n="niches.eyebrow"></p>
             <h2 id="niches-title" class="section__title" data-i18n="niches.title"></h2>
           </div>
+          <p class="section__lead niches__lead" data-reveal data-i18n="niches.lead"></p>
+          <ul class="niches__grid" data-reveal="stagger">
+            <li class="niches__item"><article class="niches__card">
+              <span class="niches__idx">01</span>
+              <span class="niches__dot" aria-hidden="true"></span>
+              <h3 class="niches__name" data-i18n="niches.items.0.name"></h3>
+              <p class="niches__examples" data-i18n="niches.items.0.examples"></p>
+            </article></li>
+            <li class="niches__item"><article class="niches__card">
+              <span class="niches__idx">02</span>
+              <span class="niches__dot" aria-hidden="true"></span>
+              <h3 class="niches__name" data-i18n="niches.items.1.name"></h3>
+              <p class="niches__examples" data-i18n="niches.items.1.examples"></p>
+            </article></li>
+            <li class="niches__item"><article class="niches__card">
+              <span class="niches__idx">03</span>
+              <span class="niches__dot" aria-hidden="true"></span>
+              <h3 class="niches__name" data-i18n="niches.items.2.name"></h3>
+              <p class="niches__examples" data-i18n="niches.items.2.examples"></p>
+            </article></li>
+            <li class="niches__item"><article class="niches__card">
+              <span class="niches__idx">04</span>
+              <span class="niches__dot" aria-hidden="true"></span>
+              <h3 class="niches__name" data-i18n="niches.items.3.name"></h3>
+              <p class="niches__examples" data-i18n="niches.items.3.examples"></p>
+            </article></li>
+            <li class="niches__item"><article class="niches__card">
+              <span class="niches__idx">05</span>
+              <span class="niches__dot" aria-hidden="true"></span>
+              <h3 class="niches__name" data-i18n="niches.items.4.name"></h3>
+              <p class="niches__examples" data-i18n="niches.items.4.examples"></p>
+            </article></li>
+            <li class="niches__item"><article class="niches__card">
+              <span class="niches__idx">06</span>
+              <span class="niches__dot" aria-hidden="true"></span>
+              <h3 class="niches__name" data-i18n="niches.items.5.name"></h3>
+              <p class="niches__examples" data-i18n="niches.items.5.examples"></p>
+            </article></li>
+            <li class="niches__item"><article class="niches__card">
+              <span class="niches__idx">07</span>
+              <span class="niches__dot" aria-hidden="true"></span>
+              <h3 class="niches__name" data-i18n="niches.items.6.name"></h3>
+              <p class="niches__examples" data-i18n="niches.items.6.examples"></p>
+            </article></li>
+            <li class="niches__item"><a class="niches__card niches__card--other" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="niches_other">
+              <svg class="niches__tg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+              <h3 class="niches__name" data-i18n="niches.other.name"></h3>
+              <p class="niches__examples" data-i18n="niches.other.text"></p>
+              <span class="niches__cta"><span data-i18n="niches.other.cta"></span><span class="btn__arrow" aria-hidden="true" data-i18n="niches.other.arrow"></span></span>
+            </a></li>
+          </ul>
         </div>
       </section>
 
@@ -286,6 +381,46 @@
             <p class="eyebrow" data-i18n="formats.eyebrow"></p>
             <h2 id="formats-title" class="section__title" data-i18n="formats.title"></h2>
           </div>
+          <p class="section__lead formats__lead" data-reveal data-i18n="formats.lead"></p>
+          <ul class="formats__grid" data-reveal="stagger">
+            <li class="formats__item">
+              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open"><span class="mock mock--channel"><span class="mock__bar" aria-hidden="true"><i></i><i></i><i></i></span><span class="mock__msg"><span class="mock__ad" data-i18n="formats.mock.ad"></span><strong class="mock__title" data-i18n="formats.mock.title"></strong><span class="mock__body" data-i18n="formats.mock.body"></span></span><span class="mock__lines" aria-hidden="true"><i></i><i></i></span><span class="mock__tag" data-i18n="formats.placeholder"></span></span>
+                <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
+              </button>
+              <div class="formats__info">
+                <span class="formats__num text-grad" data-i18n="formats.items.0.num"></span>
+                <h3 class="formats__title" data-i18n="formats.items.0.title"></h3>
+                <p class="formats__text" data-i18n="formats.items.0.text"></p>
+              </div>
+            </li>
+            <li class="formats__item">
+              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open"><span class="mock mock--video"><span class="mock__bar" aria-hidden="true"><i></i><i></i><i></i></span><span class="mock__media" aria-hidden="true"><span class="mock__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span></span><span class="mock__msg"><span class="mock__ad" data-i18n="formats.mock.ad"></span><strong class="mock__title" data-i18n="formats.mock.title"></strong><span class="mock__btn" data-i18n="formats.mock.button"></span></span><span class="mock__tag" data-i18n="formats.placeholder"></span></span>
+                <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
+              </button>
+              <div class="formats__info">
+                <span class="formats__num text-grad" data-i18n="formats.items.1.num"></span>
+                <h3 class="formats__title" data-i18n="formats.items.1.title"></h3>
+                <p class="formats__text" data-i18n="formats.items.1.text"></p>
+              </div>
+            </li>
+            <li class="formats__item">
+              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open"><span class="mock mock--bot"><span class="mock__bar" aria-hidden="true"><i></i><i></i><i></i></span><span class="mock__bubble mock__bubble--in" aria-hidden="true"><i></i><i></i></span><span class="mock__bubble mock__bubble--out" aria-hidden="true"><i></i></span><span class="mock__msg"><span class="mock__ad" data-i18n="formats.mock.ad"></span><strong class="mock__title" data-i18n="formats.mock.title"></strong><span class="mock__body" data-i18n="formats.mock.body"></span></span><span class="mock__tag" data-i18n="formats.placeholder"></span></span>
+                <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
+              </button>
+              <div class="formats__info">
+                <span class="formats__num text-grad" data-i18n="formats.items.2.num"></span>
+                <h3 class="formats__title" data-i18n="formats.items.2.title"></h3>
+                <p class="formats__text" data-i18n="formats.items.2.text"></p>
+              </div>
+            </li>
+          </ul>
+          <p class="formats__foot" data-reveal><span data-i18n="formats.hint"></span> <span class="formats__caption" data-i18n="formats.caption"></span></p>
+          <dialog class="lightbox" aria-label="" data-lightbox data-lenis-prevent data-i18n-attr="aria-label:formats.open">
+            <button type="button" class="lightbox__close" data-lightbox-close data-i18n-attr="aria-label:formats.close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+            </button>
+            <div class="lightbox__stage" data-lightbox-stage></div>
+          </dialog>
         </div>
       </section>
 
@@ -461,6 +596,43 @@
             <p class="eyebrow" data-i18n="process.eyebrow"></p>
             <h2 id="process-title" class="section__title" data-i18n="process.title"></h2>
           </div>
+          <div class="process" data-process>
+            <div class="process__track">
+              <svg class="process__line process__line--h" viewBox="0 0 1000 2" preserveAspectRatio="none" aria-hidden="true"><line class="process__rail" x1="0" y1="1" x2="1000" y2="1" /><line class="process__draw" x1="0" y1="1" x2="1000" y2="1" pathLength="1" /></svg>
+              <svg class="process__line process__line--v" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true"><line class="process__rail" x1="1" y1="0" x2="1" y2="1000" /><line class="process__draw" x1="1" y1="0" x2="1" y2="1000" pathLength="1" /></svg>
+              <ol class="process__steps">
+                <li class="process__step" style="--i: 0">
+                  <span class="process__node">1</span>
+                  <span class="process__label" data-i18n="process.steps.0"></span>
+                </li>
+                <li class="process__step" style="--i: 1">
+                  <span class="process__node">2</span>
+                  <span class="process__label" data-i18n="process.steps.1"></span>
+                </li>
+                <li class="process__step" style="--i: 2">
+                  <span class="process__node">3</span>
+                  <span class="process__label" data-i18n="process.steps.2"></span>
+                </li>
+                <li class="process__step" style="--i: 3">
+                  <span class="process__node">4</span>
+                  <span class="process__label" data-i18n="process.steps.3"></span>
+                </li>
+                <li class="process__step" style="--i: 4">
+                  <span class="process__node">5</span>
+                  <span class="process__label" data-i18n="process.steps.4"></span>
+                </li>
+                <li class="process__step" style="--i: 5">
+                  <span class="process__node">6</span>
+                  <span class="process__label" data-i18n="process.steps.5"></span>
+                </li>
+                <li class="process__step" style="--i: 6">
+                  <span class="process__node">7</span>
+                  <span class="process__label" data-i18n="process.steps.6"></span>
+                </li>
+              </ol>
+            </div>
+            <p class="process__note" data-i18n="process.note"></p>
+          </div>
         </div>
       </section>
 
@@ -470,6 +642,58 @@
             <p class="eyebrow" data-i18n="geo.eyebrow"></p>
             <h2 id="geo-title" class="section__title" data-i18n="geo.title"></h2>
           </div>
+          <div class="geo" data-reveal>
+            <div class="geo__map" data-geo-map>
+              <canvas class="geo__canvas" data-geo-canvas role="img" data-i18n-attr="aria-label:geo.mapAlt"></canvas>
+              <span class="geo__tag" data-i18n="geo.mapLabel"></span>
+              <div class="geo__card" data-geo-card role="status" aria-live="polite">
+                <p class="geo__card-name" data-geo-name></p>
+                <p class="geo__card-figure text-grad" data-geo-figure></p>
+                <p class="geo__card-text" data-geo-text></p>
+              </div>
+            </div>
+            <aside class="geo__list">
+              <h3 class="geo__list-title" data-i18n="geo.listTitle"></h3>
+              <ul>
+                <li><button type="button" class="geo__region" data-region="ukraine" aria-pressed="false">
+                  <span class="geo__region-dot" aria-hidden="true"></span>
+                  <span class="geo__region-name" data-i18n="geo.regions.ukraine.name"></span>
+                  <span class="geo__region-text" data-i18n="geo.regions.ukraine.text"></span>
+                </button></li>
+                <li><button type="button" class="geo__region" data-region="europe" aria-pressed="false">
+                  <span class="geo__region-dot" aria-hidden="true"></span>
+                  <span class="geo__region-name" data-i18n="geo.regions.europe.name"></span>
+                  <span class="geo__region-text" data-i18n="geo.regions.europe.text"></span>
+                </button></li>
+                <li><button type="button" class="geo__region" data-region="uk" aria-pressed="false">
+                  <span class="geo__region-dot" aria-hidden="true"></span>
+                  <span class="geo__region-name" data-i18n="geo.regions.uk.name"></span>
+                  <span class="geo__region-text" data-i18n="geo.regions.uk.text"></span>
+                </button></li>
+                <li><button type="button" class="geo__region" data-region="usa" aria-pressed="false">
+                  <span class="geo__region-dot" aria-hidden="true"></span>
+                  <span class="geo__region-name" data-i18n="geo.regions.usa.name"></span>
+                  <span class="geo__region-text" data-i18n="geo.regions.usa.text"></span>
+                </button></li>
+                <li><button type="button" class="geo__region" data-region="canada" aria-pressed="false">
+                  <span class="geo__region-dot" aria-hidden="true"></span>
+                  <span class="geo__region-name" data-i18n="geo.regions.canada.name"></span>
+                  <span class="geo__region-text" data-i18n="geo.regions.canada.text"></span>
+                </button></li>
+                <li><button type="button" class="geo__region" data-region="australia" aria-pressed="false">
+                  <span class="geo__region-dot" aria-hidden="true"></span>
+                  <span class="geo__region-name" data-i18n="geo.regions.australia.name"></span>
+                  <span class="geo__region-text" data-i18n="geo.regions.australia.text"></span>
+                </button></li>
+                <li><button type="button" class="geo__region" data-region="asia" aria-pressed="false">
+                  <span class="geo__region-dot" aria-hidden="true"></span>
+                  <span class="geo__region-name" data-i18n="geo.regions.asia.name"></span>
+                  <span class="geo__region-text" data-i18n="geo.regions.asia.text"></span>
+                </button></li>
+              </ul>
+            </aside>
+          </div>
+          <p class="geo__footnote" data-reveal data-i18n="geo.footnote"></p>
         </div>
       </section>
 
@@ -479,6 +703,52 @@
             <p class="eyebrow" data-i18n="targeting.eyebrow"></p>
             <h2 id="targeting-title" class="section__title" data-i18n="targeting.title"></h2>
           </div>
+          <p class="targeting__hint" data-reveal data-i18n="targeting.hint"></p>
+          <ul class="tg__grid" data-reveal="stagger">
+            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
+              <span class="tg__num" data-i18n="targeting.items.0.num"></span>
+              <span class="tg__name" data-i18n="targeting.items.0.name"></span>
+              <span class="tg__text" data-i18n="targeting.items.0.text"></span>
+              <span class="tg__more" data-i18n="targeting.items.0.more"></span>
+              <span class="tg__plus" aria-hidden="true"></span>
+            </button></li>
+            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
+              <span class="tg__num" data-i18n="targeting.items.1.num"></span>
+              <span class="tg__name" data-i18n="targeting.items.1.name"></span>
+              <span class="tg__text" data-i18n="targeting.items.1.text"></span>
+              <span class="tg__more" data-i18n="targeting.items.1.more"></span>
+              <span class="tg__plus" aria-hidden="true"></span>
+            </button></li>
+            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
+              <span class="tg__num" data-i18n="targeting.items.2.num"></span>
+              <span class="tg__name" data-i18n="targeting.items.2.name"></span>
+              <span class="tg__text" data-i18n="targeting.items.2.text"></span>
+              <span class="tg__more" data-i18n="targeting.items.2.more"></span>
+              <span class="tg__plus" aria-hidden="true"></span>
+            </button></li>
+            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
+              <span class="tg__num" data-i18n="targeting.items.3.num"></span>
+              <span class="tg__name" data-i18n="targeting.items.3.name"></span>
+              <span class="tg__text" data-i18n="targeting.items.3.text"></span>
+              <span class="tg__more" data-i18n="targeting.items.3.more"></span>
+              <span class="tg__plus" aria-hidden="true"></span>
+            </button></li>
+            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
+              <span class="tg__num" data-i18n="targeting.items.4.num"></span>
+              <span class="tg__name" data-i18n="targeting.items.4.name"></span>
+              <span class="tg__text" data-i18n="targeting.items.4.text"></span>
+              <span class="tg__more" data-i18n="targeting.items.4.more"></span>
+              <span class="tg__plus" aria-hidden="true"></span>
+            </button></li>
+            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
+              <span class="tg__num" data-i18n="targeting.items.5.num"></span>
+              <span class="tg__name" data-i18n="targeting.items.5.name"></span>
+              <span class="tg__text" data-i18n="targeting.items.5.text"></span>
+              <span class="tg__more" data-i18n="targeting.items.5.more"></span>
+              <span class="tg__plus" aria-hidden="true"></span>
+            </button></li>
+          </ul>
+          <p class="tg__note" data-reveal data-i18n="targeting.note"></p>
         </div>
       </section>
 
@@ -487,6 +757,54 @@
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="reviews.eyebrow"></p>
             <h2 id="reviews-title" class="section__title" data-i18n="reviews.title"></h2>
+          </div>
+          <div class="reviews" data-slider>
+            <div class="reviews__viewport" data-slider-viewport tabindex="0" role="region" aria-roledescription="carousel" data-i18n-attr="aria-label:reviews.sliderLabel">
+              <ul class="reviews__track">
+                <li class="reviews__slide"><article class="reviews__card">
+                  <svg class="reviews__quote" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M0 24V12.5C0 5 4 .7 11 0l1 3.2C8.5 4 7 6 6.8 8.8H12V24H0Zm20 0V12.5C20 5 24 .7 31 0l1 3.2C28.500 4 27 6 26.800 8.800H32V24H20Z" /></svg>
+                  <div class="reviews__shot"><span class="reviews__shot-title" data-i18n="reviews.shot"></span><span class="reviews__shot-cap" data-i18n="reviews.shotCaption"></span></div>
+                  <p class="reviews__text is-tbd" data-i18n="reviews.items.0.quote"></p>
+                  <p class="reviews__name" data-i18n="reviews.items.0.name"></p>
+                  <p class="reviews__role" data-i18n="reviews.items.0.role"></p>
+                </article></li>
+                <li class="reviews__slide"><article class="reviews__card">
+                  <svg class="reviews__quote" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M0 24V12.5C0 5 4 .7 11 0l1 3.2C8.5 4 7 6 6.8 8.8H12V24H0Zm20 0V12.5C20 5 24 .7 31 0l1 3.2C28.500 4 27 6 26.800 8.800H32V24H20Z" /></svg>
+                  <div class="reviews__shot"><span class="reviews__shot-title" data-i18n="reviews.shot"></span><span class="reviews__shot-cap" data-i18n="reviews.shotCaption"></span></div>
+                  <p class="reviews__text is-tbd" data-i18n="reviews.items.1.quote"></p>
+                  <p class="reviews__name" data-i18n="reviews.items.1.name"></p>
+                  <p class="reviews__role" data-i18n="reviews.items.1.role"></p>
+                </article></li>
+                <li class="reviews__slide"><article class="reviews__card">
+                  <svg class="reviews__quote" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M0 24V12.5C0 5 4 .7 11 0l1 3.2C8.5 4 7 6 6.8 8.8H12V24H0Zm20 0V12.5C20 5 24 .7 31 0l1 3.2C28.500 4 27 6 26.800 8.800H32V24H20Z" /></svg>
+                  <div class="reviews__shot"><span class="reviews__shot-title" data-i18n="reviews.shot"></span><span class="reviews__shot-cap" data-i18n="reviews.shotCaption"></span></div>
+                  <p class="reviews__text is-tbd" data-i18n="reviews.items.2.quote"></p>
+                  <p class="reviews__name" data-i18n="reviews.items.2.name"></p>
+                  <p class="reviews__role" data-i18n="reviews.items.2.role"></p>
+                </article></li>
+              </ul>
+            </div>
+            <div class="reviews__controls">
+              <button type="button" class="reviews__btn" data-slider-prev data-i18n-attr="aria-label:reviews.prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
+              <span class="reviews__dots" data-slider-dots aria-hidden="true"></span>
+              <button type="button" class="reviews__btn" data-slider-next data-i18n-attr="aria-label:reviews.next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
+            </div>
+          </div>
+          <div class="founder" data-reveal>
+            <div class="founder__body">
+              <p class="founder__badge" data-i18n="founder.badge"></p>
+              <h3 class="founder__title" data-i18n="founder.title"></h3>
+              <p class="founder__text" data-i18n="founder.text"></p>
+              <ul class="founder__stats">
+                <li><span class="text-grad" data-i18n="hero.stats.years.value"></span><span data-i18n="hero.stats.years.label"></span></li>
+                <li><span class="text-grad" data-i18n="hero.stats.budgets.value"></span><span data-i18n="hero.stats.budgets.label"></span></li>
+                <li><span class="text-grad" data-i18n="hero.stats.projects.value"></span><span data-i18n="hero.stats.projects.label"></span></li>
+              </ul>
+            </div>
+            <figure class="founder__photo" role="img" data-i18n-attr="aria-label:founder.photoAlt">
+              <svg class="sil" viewBox="0 0 400 500" aria-hidden="true"><circle cx="200" cy="176" r="76" /><path d="M40 500c0-110 70-190 160-190s160 80 160 190Z" /></svg>
+              <figcaption class="founder__caption" data-i18n="founder.photoCaption"></figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -497,6 +815,98 @@
             <p class="eyebrow" data-i18n="ecosystem.eyebrow"></p>
             <h2 id="ecosystem-title" class="section__title" data-i18n="ecosystem.title"></h2>
           </div>
+          <div class="eco__flowwrap" data-eco-flow>
+          <span class="eco__rail" aria-hidden="true"><span class="eco__pulse"></span></span>
+          <ol class="eco__flow" data-reveal="stagger" data-i18n-attr="aria-label:ecosystem.flowLabel">
+            <li class="eco__tile eco__tile--hot" style="--i: 0">
+              <span class="eco__tile-num">01</span>
+              <span class="eco__tile-name" data-i18n="ecosystem.flow.0"></span>
+              <span class="eco__tile-lit" aria-hidden="true"></span>
+            </li>
+            <li class="eco__tile eco__tile--hot" style="--i: 1">
+              <span class="eco__tile-num">02</span>
+              <span class="eco__tile-name" data-i18n="ecosystem.flow.1"></span>
+              <span class="eco__tile-lit" aria-hidden="true"></span>
+            </li>
+            <li class="eco__tile eco__tile--cool" style="--i: 2">
+              <span class="eco__tile-num">03</span>
+              <span class="eco__tile-name" data-i18n="ecosystem.flow.2"></span>
+              <span class="eco__tile-lit" aria-hidden="true"></span>
+            </li>
+            <li class="eco__tile eco__tile--cool" style="--i: 3">
+              <span class="eco__tile-num">04</span>
+              <span class="eco__tile-name" data-i18n="ecosystem.flow.3"></span>
+              <span class="eco__tile-lit" aria-hidden="true"></span>
+            </li>
+            <li class="eco__tile eco__tile--hot" style="--i: 4">
+              <span class="eco__tile-num">05</span>
+              <span class="eco__tile-name" data-i18n="ecosystem.flow.4"></span>
+              <span class="eco__tile-lit" aria-hidden="true"></span>
+            </li>
+            <li class="eco__tile eco__tile--hot" style="--i: 5">
+              <span class="eco__tile-num">06</span>
+              <span class="eco__tile-name" data-i18n="ecosystem.flow.5"></span>
+              <span class="eco__tile-lit" aria-hidden="true"></span>
+            </li>
+          </ol>
+          </div>
+          <ol class="eco__services" data-reveal="stagger" data-i18n-attr="aria-label:ecosystem.servicesLabel">
+            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+              <span class="eco__row-num">01</span>
+              <span class="eco__row-name" data-i18n="ecosystem.services.0.name"></span>
+              <span class="eco__row-text" data-i18n="ecosystem.services.0.text"></span>
+              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </button></li>
+            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+              <span class="eco__row-num">02</span>
+              <span class="eco__row-name" data-i18n="ecosystem.services.1.name"></span>
+              <span class="eco__row-text" data-i18n="ecosystem.services.1.text"></span>
+              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </button></li>
+            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+              <span class="eco__row-num">03</span>
+              <span class="eco__row-name" data-i18n="ecosystem.services.2.name"></span>
+              <span class="eco__row-text" data-i18n="ecosystem.services.2.text"></span>
+              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </button></li>
+            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+              <span class="eco__row-num">04</span>
+              <span class="eco__row-name" data-i18n="ecosystem.services.3.name"></span>
+              <span class="eco__row-text" data-i18n="ecosystem.services.3.text"></span>
+              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </button></li>
+            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+              <span class="eco__row-num">05</span>
+              <span class="eco__row-name" data-i18n="ecosystem.services.4.name"></span>
+              <span class="eco__row-text" data-i18n="ecosystem.services.4.text"></span>
+              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </button></li>
+            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+              <span class="eco__row-num">06</span>
+              <span class="eco__row-name" data-i18n="ecosystem.services.5.name"></span>
+              <span class="eco__row-text" data-i18n="ecosystem.services.5.text"></span>
+              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </button></li>
+            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+              <span class="eco__row-num">07</span>
+              <span class="eco__row-name" data-i18n="ecosystem.services.6.name"></span>
+              <span class="eco__row-text" data-i18n="ecosystem.services.6.text"></span>
+              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </button></li>
+            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+              <span class="eco__row-num">08</span>
+              <span class="eco__row-name" data-i18n="ecosystem.services.7.name"></span>
+              <span class="eco__row-text" data-i18n="ecosystem.services.7.text"></span>
+              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </button></li>
+            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+              <span class="eco__row-num">09</span>
+              <span class="eco__row-name" data-i18n="ecosystem.services.8.name"></span>
+              <span class="eco__row-text" data-i18n="ecosystem.services.8.text"></span>
+              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </button></li>
+          </ol>
+          <p class="eco__caption" data-reveal data-i18n="ecosystem.caption"></p>
         </div>
       </section>
 
@@ -506,6 +916,32 @@
             <p class="eyebrow" data-i18n="materials.eyebrow"></p>
             <h2 id="materials-title" class="section__title" data-i18n="materials.title"></h2>
           </div>
+          <ul class="mat__grid" data-reveal="stagger">
+            <li class="mat__item"><article class="mat__card">
+              <span class="mat__glow" aria-hidden="true"></span>
+              <span class="mat__badge"><span data-i18n="materials.post"></span> 1</span>
+              <h3 class="mat__title" data-i18n="materials.items.0.title"></h3>
+              <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="btn__arrow" aria-hidden="true" data-i18n="materials.arrow"></span></a>
+            </article></li>
+            <li class="mat__item"><article class="mat__card">
+              <span class="mat__glow" aria-hidden="true"></span>
+              <span class="mat__badge"><span data-i18n="materials.post"></span> 2</span>
+              <h3 class="mat__title is-tbd" data-i18n="materials.items.1.title"></h3>
+              <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="btn__arrow" aria-hidden="true" data-i18n="materials.arrow"></span></a>
+            </article></li>
+            <li class="mat__item"><article class="mat__card">
+              <span class="mat__glow" aria-hidden="true"></span>
+              <span class="mat__badge"><span data-i18n="materials.post"></span> 3</span>
+              <h3 class="mat__title is-tbd" data-i18n="materials.items.2.title"></h3>
+              <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="btn__arrow" aria-hidden="true" data-i18n="materials.arrow"></span></a>
+            </article></li>
+            <li class="mat__item"><article class="mat__card">
+              <span class="mat__glow" aria-hidden="true"></span>
+              <span class="mat__badge"><span data-i18n="materials.post"></span> 4</span>
+              <h3 class="mat__title is-tbd" data-i18n="materials.items.3.title"></h3>
+              <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="btn__arrow" aria-hidden="true" data-i18n="materials.arrow"></span></a>
+            </article></li>
+          </ul>
         </div>
       </section>
 
@@ -515,16 +951,36 @@
             <p class="eyebrow" data-i18n="faq.eyebrow"></p>
             <h2 id="faq-title" class="section__title" data-i18n="faq.title"></h2>
           </div>
+          <div class="faq" data-faq>
+            <ul class="faq__list" data-faq-list></ul>
+          </div>
+          <p class="faq__note" data-reveal data-i18n="faq.note"></p>
         </div>
       </section>
 
-      <section id="cta" class="section section--cta section--alt" data-section="cta" aria-labelledby="cta-title">
-        <div class="container">
-          <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="cta.eyebrow"></p>
-            <h2 id="cta-title" class="section__title" data-i18n="cta.title"></h2>
+      <section id="cta" class="section section--cta" data-section="cta" aria-labelledby="cta-title">
+        <span class="cta__glow" aria-hidden="true" data-cta-glow></span>
+        <div class="cta__inner container">
+          <div class="cta__body">
+            <div class="section__head" data-reveal="stagger">
+              <p class="eyebrow" data-i18n="cta.eyebrow"></p>
+              <h2 id="cta-title" class="section__title cta__title" data-i18n="cta.title"></h2>
+            </div>
+            <div data-reveal="stagger" class="cta__rest">
+              <p class="cta__text" data-i18n="cta.text"></p>
+              <a class="btn btn--primary btn--lg cta__btn" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="final_cta">
+                <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+                <span data-i18n="cta.button"></span><span class="btn__arrow" aria-hidden="true" data-i18n="cta.arrow"></span>
+              </a>
+              <p class="cta__handle">{{config.telegramHandle}}</p>
+            </div>
           </div>
+          <figure class="cta__photo" data-cta-photo role="img" data-i18n-attr="aria-label:founder.photoAlt">
+            <svg class="sil" viewBox="0 0 400 500" aria-hidden="true"><circle cx="200" cy="176" r="76" /><path d="M40 500c0-110 70-190 160-190s160 80 160 190Z" /></svg>
+            <figcaption class="founder__caption" data-i18n="cta.photoCaption"></figcaption>
+          </figure>
         </div>
+        <p class="cta__sign container" data-i18n="cta.sign"></p>
       </section>
     </main>
 

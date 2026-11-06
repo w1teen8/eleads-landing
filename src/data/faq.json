@@ -1,3 +1,103 @@
 {
-  "items": []
+  "items": [
+    {
+      "id": "q1",
+      "q": {
+        "ua": "Скільки потрібно для старту?",
+        "en": "How much is needed to start?"
+      },
+      "a": {
+        "ua": "Мінімальний рекламний бюджет — €650.",
+        "en": "The minimum ad budget is €650."
+      }
+    },
+    {
+      "id": "q2",
+      "q": {
+        "ua": "Скільки коштують послуги?",
+        "en": "How much do the services cost?"
+      },
+      "a": {
+        "ua": "Вартість послуг — індивідуально.",
+        "en": "The cost of services is individual."
+      }
+    },
+    {
+      "id": "q3",
+      "q": {
+        "ua": "Чи підійде Telegram Ads моїй ніші?",
+        "en": "Will Telegram Ads suit my niche?"
+      },
+      "a": {
+        "ua": "Особливо сильний у нішах, де рішення приймається не за один контакт. Напишіть мені — оціню потенціал для вашого проєкту.",
+        "en": "Especially strong in niches where the decision takes more than one contact. Write to me and I will assess the potential for your project."
+      }
+    },
+    {
+      "id": "q4",
+      "q": {
+        "ua": "Чи можна рекламувати сайт?",
+        "en": "Can I advertise a website?"
+      },
+      "a": {
+        "ua": "Так: рекламуємо Telegram-канали, боти, сайти та застосунки.",
+        "en": "Yes: we advertise Telegram channels, bots, websites and apps."
+      }
+    },
+    {
+      "id": "q5",
+      "q": {
+        "ua": "Які країни доступні?",
+        "en": "Which countries are available?"
+      },
+      "a": {
+        "ua": "Україна, Європа, United Kingdom, USA, Canada, Australia; Asia — окремі GEO за задачею.",
+        "en": "Ukraine, Europe, United Kingdom, USA, Canada, Australia; Asia — separate GEOs depending on the task."
+      }
+    },
+    {
+      "id": "q6",
+      "q": {
+        "ua": "Як швидко можна запуститися?",
+        "en": "How fast can we launch?"
+      },
+      "a": {
+        "ua": "уточнити",
+        "en": "TBD"
+      }
+    },
+    {
+      "id": "q7",
+      "q": {
+        "ua": "Чи можете створити канал з нуля?",
+        "en": "Can you create a channel from scratch?"
+      },
+      "a": {
+        "ua": "уточнити",
+        "en": "TBD"
+      }
+    },
+    {
+      "id": "q8",
+      "q": {
+        "ua": "Чи працюєте з міжнародними проєктами?",
+        "en": "Do you work with international projects?"
+      },
+      "a": {
+        "ua": "Так, працюю з рекламними кампаніями в Україні та по всьому світу.",
+        "en": "Yes, I run ad campaigns in Ukraine and all over the world."
+      }
+    },
+    {
+      "id": "q9",
+      "q": {
+        "ua": "Чи є гарантія результату?",
+        "en": "Is the result guaranteed?"
+      },
+      "a": {
+        "ua": "уточнити",
+        "en": "TBD"
+      }
+    }
+  ]
 }

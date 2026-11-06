@@ -1,0 +1,336 @@
+/* 04 Формати: три колонки, скриншот-плейсхолдер (CSS-макет сообщения Telegram) над подписью; клик — лайтбокс. */
+
+.formats__lead {
+  margin-top: calc(-1 * clamp(1.25rem, 3vw, 2.5rem));
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.formats__grid {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.formats__item {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+  min-width: 0;
+}
+
+.formats__shot {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: clamp(0.75rem, 1.4vw, 1.1rem);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-card);
+  background: var(--card);
+  text-align: left;
+  cursor: zoom-in;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.formats__shot:hover,
+.formats__shot:focus-visible {
+  transform: translateY(-6px);
+}
+
+.formats__zoom {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 1px solid var(--line-strong);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+
+.formats__zoom svg {
+  width: 20px;
+  height: 20px;
+}
+
+.formats__shot:hover .formats__zoom,
+.formats__shot:focus-visible .formats__zoom {
+  opacity: 1;
+  transform: none;
+}
+
+.formats__info {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.formats__num {
+  width: fit-content;
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.formats__title {
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+}
+
+.formats__text {
+  color: var(--fg-soft);
+  max-width: 40ch;
+}
+
+.formats__foot {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+.formats__caption {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ——— макет рекламного сообщения ——— */
+.mock {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 360px;
+  padding: 1rem;
+  border-radius: var(--r-media);
+  background: var(--ink);
+  background-image: linear-gradient(transparent 70%, color-mix(in srgb, var(--navy) 100%, transparent));
+  overflow: hidden;
+}
+
+.mock__bar {
+  display: flex;
+  gap: 6px;
+}
+
+.mock__bar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+
+.mock__msg {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 16px 16px 16px 4px;
+  background: var(--card);
+  align-self: flex-start;
+  max-width: 94%;
+}
+
+.mock__ad {
+  width: fit-content;
+  padding: 1px 8px;
+  border-radius: var(--r-pill);
+  background: var(--grad);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+}
+
+.mock__title {
+  font-size: var(--fs-base);
+  line-height: 1.25;
+  color: var(--sun);
+}
+
+.mock__body {
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  color: var(--fg-soft);
+}
+
+.mock__lines {
+  display: grid;
+  gap: 8px;
+  padding: 0 0.5rem;
+}
+
+.mock__lines i {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line);
+}
+
+.mock__lines i:last-child {
+  width: 60%;
+}
+
+.mock__media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--r-media);
+  background: linear-gradient(160deg, var(--card), var(--navy));
+  border: 1px solid var(--line);
+}
+
+.mock__play {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--grad);
+  color: var(--ink);
+}
+
+.mock__play svg {
+  width: 24px;
+  height: 24px;
+}
+
+.mock__btn {
+  width: fit-content;
+  margin-top: 0.25rem;
+  padding: 0.45rem 1rem;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+}
+
+.mock__bubble {
+  display: grid;
+  gap: 6px;
+  width: 62%;
+  padding: 0.75rem;
+  border-radius: 14px;
+  background: var(--navy);
+}
+
+.mock__bubble i {
+  height: 7px;
+  border-radius: 4px;
+  background: var(--line-strong);
+}
+
+.mock__bubble--out {
+  align-self: flex-end;
+  width: 42%;
+}
+
+.mock--bot .mock__msg {
+  margin-top: auto;
+}
+
+.mock__tag {
+  margin-top: auto;
+  align-self: flex-end;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sun);
+  border-bottom: 1px dashed currentColor;
+}
+
+/* ——— лайтбокс ——— */
+.lightbox {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  overflow: hidden;
+}
+
+.lightbox::backdrop {
+  background: var(--ink-veil);
+  opacity: 0;
+}
+
+.lightbox[open] {
+  display: grid;
+  place-items: center;
+  background: var(--ink-veil);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.lightbox.is-open {
+  opacity: 1;
+}
+
+.lightbox__stage {
+  width: min(560px, 92vw);
+  max-height: 90vh;
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-card-lg);
+  background: var(--card);
+  transform: scale(0.94);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.lightbox.is-open .lightbox__stage {
+  transform: none;
+}
+
+.lightbox__stage .mock {
+  min-height: 520px;
+}
+
+.lightbox__stage .mock__title {
+  font-size: 1.35rem;
+}
+
+.lightbox__stage .mock__body {
+  font-size: var(--fs-base);
+}
+
+.lightbox__close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--ink);
+}
+
+.lightbox__close svg {
+  width: 22px;
+  height: 22px;
+}
+
+@media (min-width: 900px) {
+  .formats__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .formats__item:nth-child(2) {
+    margin-top: 3rem;
+  }
+}

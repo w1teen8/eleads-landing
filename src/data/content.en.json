@@ -45,11 +45,23 @@
     "titleAccent": "TELEGRAM ADS",
     "subtitle": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide",
     "stats": {
-      "years": { "value": "7+", "label": "years in digital" },
-      "budgets": { "value": "$2M+", "label": "in ad budgets" },
-      "projects": { "value": "dozens", "label": "of projects" }
+      "years": {
+        "value": "7+",
+        "label": "years in digital"
+      },
+      "budgets": {
+        "value": "$2M+",
+        "label": "in ad budgets"
+      },
+      "projects": {
+        "value": "dozens",
+        "label": "of projects"
+      }
     },
-    "cta": { "label": "Discuss your project on Telegram", "arrow": "→" },
+    "cta": {
+      "label": "Discuss your project on Telegram",
+      "arrow": "→"
+    },
     "photo": {
       "alt": "Volodymyr Kucher, founder of eLeads",
       "caption": "PHOTO OF VOLODYMYR",
@@ -92,9 +104,126 @@
     "langEnFull": "English",
     "home": "eLeads — back to the top"
   },
-  "stats": { "eyebrow": "02 / CHANNEL SCALE", "title": "Telegram is a mass channel in Ukraine and worldwide" },
-  "niches": { "eyebrow": "03 / NICHES", "title": "Where Telegram Ads perform best" },
-  "formats": { "eyebrow": "04 / AD FORMATS", "title": "How your ad will look in Telegram" },
+  "stats": {
+    "eyebrow": "02 / CHANNEL SCALE",
+    "title": "Telegram is a mass channel in Ukraine and worldwide",
+    "tabsLabel": "Statistics region",
+    "tabs": {
+      "ua": "Ukraine",
+      "ww": "Worldwide"
+    },
+    "ua": {
+      "main": {
+        "value": "81%",
+        "label": "of messenger users aged 18–70 used Telegram during the year"
+      },
+      "age": {
+        "value": "18–70",
+        "label": "high Telegram penetration in all main age groups"
+      },
+      "sample": {
+        "value": "4,500",
+        "label": "respondents in the Suspilne / Gradus Research study"
+      },
+      "note": {
+        "tag": "UA",
+        "text": "Telegram reaches different audience segments, from young people to adult users."
+      }
+    },
+    "ww": {
+      "main": {
+        "value": "1B+",
+        "label": "monthly active users worldwide; Telegram passed 1 billion MAU in 2025"
+      },
+      "top": {
+        "value": "TOP-5",
+        "label": "one of the most downloaded apps in the world"
+      },
+      "geo": {
+        "value": "200+ GEO",
+        "label": "international advertising campaigns*"
+      },
+      "what": {
+        "title": "What we advertise",
+        "text": "Telegram channels · bots · websites · apps"
+      }
+    },
+    "footnote": "*81% — Suspilne, Mediatrack 2025, n=4,500. 1B+ — Telegram Press Info. 200+ GEO — eLeads working positioning; check against current cabinet capabilities before publishing."
+  },
+  "niches": {
+    "eyebrow": "03 / NICHES",
+    "title": "Where Telegram Ads perform best",
+    "lead": "Especially strong in niches where the decision takes more than one contact: trust, warm-up and high customer value are needed.",
+    "items": [
+      {
+        "name": "Business",
+        "examples": "Finmap"
+      },
+      {
+        "name": "Experts",
+        "examples": "eLeads · Mukhin · Dombovetskyi"
+      },
+      {
+        "name": "Crypto",
+        "examples": "Cryptonite"
+      },
+      {
+        "name": "Education",
+        "examples": "Anna Haustova"
+      },
+      {
+        "name": "Auto",
+        "examples": "Global Auto Logistic"
+      },
+      {
+        "name": "Finance / Investments",
+        "examples": "Monolit"
+      },
+      {
+        "name": "SaaS / B2B",
+        "examples": "Trackdesk"
+      }
+    ],
+    "other": {
+      "name": "Another niche?",
+      "text": "Write to me and I will assess the Telegram Ads potential for your project.",
+      "cta": "Write on Telegram",
+      "arrow": "→"
+    }
+  },
+  "formats": {
+    "eyebrow": "04 / AD FORMATS",
+    "title": "How your ad will look in Telegram",
+    "lead": "Telegram Ads blends into the messenger interface and can appear in different formats and placements.",
+    "items": [
+      {
+        "num": "01",
+        "title": "In Telegram channels",
+        "text": "The ad message is shown to the audience right while they browse Telegram channels."
+      },
+      {
+        "num": "02",
+        "title": "In video / media content",
+        "text": "A visual format with a creative, headline, text and CTA inside media content."
+      },
+      {
+        "num": "03",
+        "title": "In bots",
+        "text": "Ads can be shown to users while they interact with Telegram bots."
+      }
+    ],
+    "mock": {
+      "ad": "Ad",
+      "title": "Currency exchange MONOLIT Sofia-Kyiv",
+      "body": "Planning an exchange? Then MONOLIT is for you. Sofia and Sofia Residence complexes. Addresses: Zhytnia 12 and Molodizhna 8. Anonymous and fast. Current rate in the channel",
+      "button": "VIEW"
+    },
+    "placeholder": "screenshot — placeholder",
+    "hint": "Click a screenshot to enlarge the example.",
+    "open": "Enlarge screenshot",
+    "close": "Close",
+    "caption": "Real placement examples from client MONOLIT"
+  },
   "calculator": {
     "eyebrow": "05 / INTERACTIVE",
     "title": "Estimate your Telegram Ads potential",
@@ -152,12 +281,223 @@
     },
     "close": "Close"
   },
-  "process": { "eyebrow": "07 / PROCESS", "title": "From analysis to scaling" },
-  "geo": { "eyebrow": "08 / GEO", "title": "Audiences in Ukraine and all over the world" },
-  "targeting": { "eyebrow": "09 / TARGETING", "title": "How we find the right audience" },
-  "reviews": { "eyebrow": "10 / TRUST", "title": "What clients say" },
-  "ecosystem": { "eyebrow": "11 / ECOSYSTEM", "title": "We can cover the whole path to a lead" },
-  "materials": { "eyebrow": "12 / EXPERTISE", "title": "Useful materials on Telegram" },
-  "faq": { "eyebrow": "13 / FAQ", "title": "Frequently asked questions" },
-  "cta": { "eyebrow": "14 / FINAL CTA", "title": "Shall we discuss your project?" }
+  "process": {
+    "eyebrow": "07 / PROCESS",
+    "title": "From analysis to scaling",
+    "steps": [
+      "I analyse the project",
+      "I build the strategy",
+      "I prepare ads and agree them",
+      "I prepare / refine the landing page",
+      "I launch campaigns",
+      "I analyse and optimise",
+      "I scale what works"
+    ],
+    "note": "The client does not have to figure out Telegram Ads alone: I join the task from strategy and ad materials through to optimisation and scaling."
+  },
+  "geo": {
+    "eyebrow": "08 / GEO",
+    "title": "Audiences in Ukraine and all over the world",
+    "mapLabel": "Interactive map",
+    "mapAlt": "Dot map of the world with ad delivery regions",
+    "listTitle": "Main directions",
+    "footnote": "*Eurostat, 31.08.2026: 4.43 million non-EU citizens who fled Ukraine under temporary protection in the EU; 98.5% are citizens of Ukraine.",
+    "regions": {
+      "ukraine": {
+        "name": "Ukraine",
+        "text": "local audience"
+      },
+      "europe": {
+        "name": "Europe",
+        "text": "Ukrainians + international segments",
+        "figure": "4.43M",
+        "figureText": "people who left Ukraine under temporary protection in the EU*"
+      },
+      "uk": {
+        "name": "United Kingdom",
+        "text": "Tier-1"
+      },
+      "usa": {
+        "name": "USA",
+        "text": "Tier-1"
+      },
+      "canada": {
+        "name": "Canada",
+        "text": "Tier-1"
+      },
+      "australia": {
+        "name": "Australia",
+        "text": "Tier-1"
+      },
+      "asia": {
+        "name": "Asia",
+        "text": "separate GEOs depending on the task"
+      }
+    }
+  },
+  "targeting": {
+    "eyebrow": "09 / TARGETING",
+    "title": "How we find the right audience",
+    "hint": "Hover or tap a card to see the explanation.",
+    "items": [
+      {
+        "num": "01",
+        "name": "GEO",
+        "text": "Country, region or available local geography.",
+        "more": "We show ads only where your audience lives and do not spend budget on extra countries."
+      },
+      {
+        "num": "02",
+        "name": "Language",
+        "text": "Language parameters of the audience and the Telegram interface.",
+        "more": "We narrow delivery by language so the creative is read by the audience it was written for."
+      },
+      {
+        "num": "03",
+        "name": "Interests",
+        "text": "Segments by relevant interests.",
+        "more": "We pick interests close to your product and check which of them bring leads."
+      },
+      {
+        "num": "04",
+        "name": "Topics",
+        "text": "Placement in the context of the right topics.",
+        "more": "The ad appears next to channels on topics where your offer is expected."
+      },
+      {
+        "num": "05",
+        "name": "Specific channels",
+        "text": "Targeting the audience / context of selected channels.",
+        "more": "We choose channels by hand: an audience that already reads the right authors is the warmest."
+      },
+      {
+        "num": "06",
+        "name": "Audiences",
+        "text": "Available audience segments depending on the cabinet type.",
+        "more": "We use ready-made audience segments that your type of ad cabinet opens up."
+      }
+    ],
+    "note": "Availability of parameters depends on the current capabilities of Telegram Ads / Euro Cabinet."
+  },
+  "reviews": {
+    "eyebrow": "10 / TRUST",
+    "title": "What clients say",
+    "sliderLabel": "Client reviews",
+    "prev": "Previous review",
+    "next": "Next review",
+    "shot": "Review",
+    "shotCaption": "original screenshot / quote",
+    "items": [
+      {
+        "name": "Oleksandr Mukhin",
+        "role": "Expert",
+        "quote": "TBD"
+      },
+      {
+        "name": "Viktor Dombovetskyi",
+        "role": "Expert",
+        "quote": "TBD"
+      },
+      {
+        "name": "Review 3",
+        "role": "TBD",
+        "quote": "TBD"
+      }
+    ]
+  },
+  "ecosystem": {
+    "eyebrow": "11 / ECOSYSTEM",
+    "title": "We can cover the whole path to a lead",
+    "flowLabel": "Customer path",
+    "flow": [
+      "Traffic",
+      "Telegram",
+      "Content",
+      "Funnel",
+      "Lead",
+      "Sale"
+    ],
+    "servicesLabel": "Services",
+    "services": [
+      {
+        "name": "Telegram Ads",
+        "text": "Advertising in the official Telegram ad cabinet."
+      },
+      {
+        "name": "Meta Ads",
+        "text": "Advertising on Facebook and Instagram."
+      },
+      {
+        "name": "Placements / ad buying",
+        "text": "Buying ads in Telegram channels directly."
+      },
+      {
+        "name": "Channel packaging",
+        "text": "Channel design that convinces a newcomer to subscribe."
+      },
+      {
+        "name": "Content",
+        "text": "Posts and materials that warm up the subscriber."
+      },
+      {
+        "name": "Bots",
+        "text": "Telegram bots that collect and handle leads."
+      },
+      {
+        "name": "Funnels",
+        "text": "The path from subscription to lead and sale."
+      },
+      {
+        "name": "Organic / UBT traffic",
+        "text": "Free traffic from content and other platforms."
+      },
+      {
+        "name": "Consultations",
+        "text": "A review of your project and suggested next steps."
+      }
+    ],
+    "caption": "A client can come only for Telegram Ads or hand eLeads the full Telegram system."
+  },
+  "materials": {
+    "eyebrow": "12 / EXPERTISE",
+    "title": "Useful materials on Telegram",
+    "post": "POST",
+    "read": "Read on Telegram",
+    "arrow": "→",
+    "items": [
+      {
+        "title": "8 ways to promote a business via Telegram"
+      },
+      {
+        "title": "TBD"
+      },
+      {
+        "title": "TBD"
+      },
+      {
+        "title": "TBD"
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "13 / FAQ",
+    "title": "Frequently asked questions",
+    "note": "Minimum ad budget is €650. The cost of services is individual."
+  },
+  "cta": {
+    "eyebrow": "14 / FINAL CTA",
+    "title": "Shall we discuss your project?",
+    "text": "Write to me on Telegram. I will review your project, task and GEO and suggest which promotion format on Telegram will be the best.",
+    "button": "Write to Volodymyr on Telegram",
+    "arrow": "→",
+    "photoCaption": "PHOTO OF VOLODYMYR",
+    "sign": "eLeads • Telegram Ads • UA / EN"
+  },
+  "founder": {
+    "badge": "eLeads FOUNDER",
+    "title": "Personal expertise stands behind eLeads.",
+    "text": "Hi, I am Volodymyr, founder of eLeads. 7+ years in digital marketing, $2M+ in ad budgets and dozens of projects in different niches and GEOs. I personally take part in strategy and in running clients’ ad campaigns.",
+    "photoCaption": "PHOTO OF VOLODYMYR",
+    "photoAlt": "Photo of Volodymyr Kucher (placeholder)"
+  }
 }

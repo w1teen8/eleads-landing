@@ -1,0 +1,102 @@
+/* 14 Фінальний CTA: тёмный блок, огромный капс слева, высокое портретное фото-плейсхолдер справа. */
+
+.section--cta {
+  overflow: hidden;
+  background: var(--ink);
+  border-top: 1px solid var(--line);
+}
+
+.cta__glow {
+  position: absolute;
+  right: -10%;
+  top: 5%;
+  width: min(70vw, 900px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--ember-glow), transparent);
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+.cta__inner {
+  position: relative;
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: end;
+}
+
+.cta__body {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.section__title.cta__title {
+  max-width: none;
+  font-size: clamp(3.25rem, 1rem + 11vw, 12rem);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+}
+
+.cta__rest {
+  display: grid;
+  gap: 1.5rem;
+  justify-items: start;
+  max-width: 46ch;
+}
+
+.cta__text {
+  font-size: var(--fs-lg);
+  color: var(--fg-soft);
+}
+
+.cta__handle {
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  color: var(--sun);
+}
+
+.cta__btn {
+  white-space: normal;
+  text-align: center;
+  padding-block: 0.9rem;
+}
+
+.cta__photo {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  width: min(100%, 420px);
+  justify-self: center;
+  border-radius: var(--r-card-lg);
+  border: 1px solid var(--line-strong);
+  background: radial-gradient(70% 55% at 50% 35%, var(--ember-glow), transparent 72%), var(--navy);
+  overflow: hidden;
+}
+
+.cta__photo .sil {
+  fill: color-mix(in srgb, var(--card) 88%, var(--ink));
+}
+
+.cta__sign {
+  position: relative;
+  margin-top: clamp(2.5rem, 6vw, 5rem);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+@media (min-width: 1000px) {
+  .cta__inner {
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.7fr);
+    align-items: center;
+  }
+
+  .cta__photo {
+    aspect-ratio: 3 / 4.4;
+    width: 100%;
+    justify-self: end;
+  }
+}

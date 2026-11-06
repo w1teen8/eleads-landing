@@ -1,0 +1,106 @@
+/* 12 Матеріали: карточки-обложки поста — жёлтый узкий капс на тёмно-синем, тёплое свечение следует за курсором. */
+
+.mat__grid {
+  display: grid;
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.mat__item {
+  display: flex;
+  min-width: 0;
+}
+
+.mat__card {
+  --gx: 80%;
+  --gy: 90%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+  min-height: 380px;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-card-sm) var(--r-card-lg) var(--r-card-sm) var(--r-card-lg);
+  background: var(--navy);
+  overflow: hidden;
+  isolation: isolate;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.mat__card:hover {
+  transform: translateY(-5px);
+}
+
+.mat__glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(60% 50% at var(--gx) var(--gy), var(--ember-glow), transparent 70%);
+  opacity: 0.35;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.mat__card:hover .mat__glow {
+  opacity: 0.7;
+}
+
+.mat__badge {
+  width: fit-content;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-strong);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  color: var(--fg-soft);
+}
+
+.mat__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.2rem + 2vw, 3rem);
+  font-weight: 700;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--sun);
+  text-wrap: balance;
+}
+
+.mat__title.is-tbd {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-transform: none;
+  border-bottom: 1px dashed currentColor;
+  width: fit-content;
+}
+
+.mat__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  width: fit-content;
+  font-weight: 600;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--tg);
+  color: var(--tg);
+}
+
+.mat__link:hover .btn__arrow,
+.mat__link:focus-visible .btn__arrow {
+  transform: translateX(4px);
+}
+
+@media (min-width: 640px) {
+  .mat__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .mat__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

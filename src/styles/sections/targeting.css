@@ -1,0 +1,140 @@
+/* 09 Таргетинг: 6 карточек, крупный контурный номер; пояснение выезжает снизу (transform + opacity). */
+
+.targeting__hint {
+  margin-top: calc(-1 * clamp(1.25rem, 3vw, 2.5rem));
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tg__grid {
+  display: grid;
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.tg__item {
+  display: flex;
+  min-width: 0;
+}
+
+.tg__card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 280px;
+  padding: clamp(1.25rem, 2.2vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card-lg) var(--r-card-sm) var(--r-card-lg) var(--r-card-sm);
+  background: var(--navy);
+  text-align: left;
+  overflow: hidden;
+}
+
+.tg__num {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 3rem + 3vw, 6.5rem);
+  font-weight: 700;
+  line-height: 0.85;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--line-strong);
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.tg__name {
+  margin-top: 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.tg__text {
+  max-width: 32ch;
+  color: var(--fg-soft);
+  font-size: var(--fs-sm);
+}
+
+.tg__more {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.5rem clamp(1.25rem, 2.2vw, 2rem);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card) 96%, transparent), var(--card));
+  border-top: 1px solid var(--sun);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  transform: translate3d(0, 100%, 0);
+  opacity: 0;
+  transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+
+.tg__plus {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.tg__plus::before,
+.tg__plus::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 1.5px;
+  margin: -0.75px 0 0 -5px;
+  background: var(--fg);
+}
+
+.tg__plus::after {
+  transform: rotate(90deg);
+}
+
+.tg__card:hover .tg__more,
+.tg__card:focus-visible .tg__more,
+.tg__card.is-open .tg__more {
+  transform: none;
+  opacity: 1;
+}
+
+.tg__card:hover .tg__plus,
+.tg__card:focus-visible .tg__plus,
+.tg__card.is-open .tg__plus {
+  transform: rotate(45deg);
+}
+
+.tg__card:hover .tg__num,
+.tg__card:focus-visible .tg__num,
+.tg__card.is-open .tg__num {
+  opacity: 0.4;
+}
+
+.tg__note {
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 70ch;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+@media (min-width: 700px) {
+  .tg__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .tg__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
