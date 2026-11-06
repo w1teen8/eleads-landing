@@ -4,7 +4,7 @@ import { $, $$, el } from '../core/dom.js';
 import { t } from '../core/i18n.js';
 import { reduced, motionReady, marquee, parallax } from '../core/motion.js';
 import { countTo } from '../core/format.js';
-import { whenIntroDone, introTimeLeft } from '../core/intro.js';
+import { whenIntroDone } from '../core/intro.js';
 
 const FINE_POINTER = '(hover: hover) and (pointer: fine)';
 const MOBILE_VIDEO = '(max-width: 767px)';
@@ -121,9 +121,10 @@ function initPointerDepth(root) {
 }
 
 /* ——— появление после заставки ——— */
-// Если к крайнему сроку (core/intro.js) нет ни сигнала прелоадера, ни GSAP — первый экран проявляется
-// сразу коротким переходом opacity/transform: он не может остаться невидимым.
+// Прелоадер упал ('failed'), сработал крайний срок ('timeout') или GSAP не успел за MOTION_GRACE_MS после
+// заставки — первый экран проявляется сразу коротким переходом opacity/transform: он не может остаться невидимым.
 const LATE_REVEAL_MS = 250;
+const MOTION_GRACE_MS = 600;
 
 async function intro(root) {
   if (reduced) return; // всё уже видно, цифры стоят итоговые
@@ -134,16 +135,16 @@ async function intro(root) {
   const media = $('.hero__media', root);
   const counters = $$('[data-count]', root);
 
-  const late = new Promise((resolve) => setTimeout(() => resolve(null), introTimeLeft()));
-  const ready = Promise.all([motionReady(), whenIntroDone()]).then(([motion, how]) => ({ motion, how }));
-  const result = await Promise.race([ready, late]);
-  if (!result || result.how === 'timeout' || !result.motion) {
-    // прелоадер упал, GSAP опоздал или не загрузился — показать всё сейчас
-    showNow([eyebrow, ...lines, media, ...fades, trust]);
-    return;
-  }
+  const all = [eyebrow, ...lines, media, ...fades, trust];
+  const motionP = motionReady();
+  const how = await whenIntroDone();
+  // прелоадер упал или сработал крайний срок — показать всё сейчас, без таймлайна
+  if (how !== 'done') return showNow(all);
+  // заставка ушла сама; GSAP, если ещё грузится, ждём недолго — первый экран не висит невидимым
+  const motion = await Promise.race([motionP, new Promise((r) => setTimeout(() => r(null), MOTION_GRACE_MS))]);
+  if (!motion) return showNow(all);
 
-  const { gsap } = result.motion;
+  const { gsap } = motion;
   const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.8 } });
   tl.to(eyebrow, { opacity: 1, y: 0 }, 0.05)
     .to(lines, { y: 0, duration: 1.05, ease: 'power4.out', stagger: 0.09 }, 0.1)
