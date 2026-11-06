@@ -4,6 +4,7 @@
 import { $, $$, on } from '../core/dom.js';
 import { t, getLang, onLangChange } from '../core/i18n.js';
 import { reduced } from '../core/motion.js';
+import { pulsePhase } from './geo-model.js';
 import geo from '../data/geo-dots.json';
 
 const HIT = 28; // радиус попадания по точке, px
@@ -69,7 +70,7 @@ export function init(root) {
     for (const region of regions) {
       const { x, y } = pos(region);
       const on_ = region.id === active || region.id === hovered;
-      const phase = reduced ? 0.35 : ((now + region.lon * 11) % PULSE_MS) / PULSE_MS;
+      const phase = reduced ? 0.35 : pulsePhase(now, region.lon, PULSE_MS);
       // пульс-кольца: два, со сдвигом
       for (const shift of [0, 0.5]) {
         const p = (phase + shift) % 1;

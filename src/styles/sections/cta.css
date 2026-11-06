@@ -94,6 +94,11 @@
     align-items: center;
   }
 
+  /* в две колонки слово «ОБГОВОРИМО» при 11vw шире колонки и заезжало на фото */
+  .section__title.cta__title {
+    font-size: clamp(3.25rem, 1rem + 6.4vw, 9rem);
+  }
+
   .cta__photo {
     aspect-ratio: 3 / 4.4;
     width: 100%;

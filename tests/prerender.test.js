@@ -48,3 +48,12 @@ test('в мягком режиме оставляет ключ видимым т
   const out = prerender('<p data-i18n="hero.nope"></p>', dict, config, { strict: false, warn: () => {} });
   assert.equal(out, '<p data-i18n="hero.nope">hero.nope</p>');
 });
+
+test('сборка кладёт robots.txt в dist (иначе хостинг отдаёт index.html вместо него)', async () => {
+  const { build } = await import('vite');
+  const out = await build({ logLevel: 'silent', build: { write: false } });
+  const bundle = (Array.isArray(out) ? out[0] : out).output;
+  const robots = bundle.find((f) => f.fileName === 'robots.txt');
+  assert.ok(robots, 'robots.txt не попал в сборку');
+  assert.match(String(robots.source), /^User-agent: \*\s+Allow: \//);
+});

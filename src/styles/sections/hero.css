@@ -144,6 +144,11 @@
   transform: translate3d(0, 28px, 0);
 }
 
+/* подзаголовок — LCP-элемент: он виден (под шторкой прелоадера) сразу, а не после заставки; выезжает только transform-ом */
+.js-anim .hero__subtitle[data-hero-fade] {
+  opacity: 1;
+}
+
 .js-anim .hero__media {
   opacity: 0;
   transform: translate3d(0, 40px, 0) scale(0.97);

@@ -3,7 +3,7 @@
 // (класс html.js-preload не ставится инлайн-скриптом).
 import { signalIntroDone } from '../core/intro.js';
 
-const MIN_MS = 1200;
+const MIN_MS = 1000;
 const MAX_MS = 2500;
 const SESSION_KEY = 'eleads-intro';
 

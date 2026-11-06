@@ -60,6 +60,19 @@
   transform: translate3d(0, 22px, 0);
 }
 
+/* узкий экран: карта слишком мала, чтобы держать карточку над точкой — карточка встаёт под картой (left/top от JS игнорируются) */
+@media (max-width: 899px) {
+  .geo__card,
+  .geo__card.is-below {
+    position: relative;
+    left: 0 !important;
+    top: 0 !important;
+    width: auto;
+    margin-top: 0.75rem;
+    transform: none;
+  }
+}
+
 .geo__card-name {
   font-family: var(--font-display);
   font-size: 1.35rem;

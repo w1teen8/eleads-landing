@@ -6,7 +6,7 @@
 //   <h2 data-i18n="stats.title"></h2>                      → текст узла
 //   <button data-i18n-attr="aria-label:nav.menuOpen">       → атрибуты, пары через «;»
 //   href="{{config.telegramUrl}}"                            → значение из config.json
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve as resolvePath } from 'node:path';
 
 const TEXT_NODE = /<([a-zA-Z][\w-]*)((?:\s[^>]*?)?)(\sdata-i18n=")([^"]+)("[^>]*)>([^<]*)<\/\1>/g;
@@ -98,6 +98,12 @@ export default function i18nPrerender({
       const norm = (p) => p.split('\\').join('/');
       const watched = [dict, config].map((f) => norm(resolvePath(root, f)));
       if (watched.includes(norm(file))) server.ws.send({ type: 'full-reload' });
+    },
+    // Без robots.txt хостинг отдаёт index.html, и Lighthouse/поисковики читают разметку как «ошибки robots». Файл — разрешить всё, без выдуманного домена.
+    generateBundle() {
+      if (!existsSync(resolvePath(root, 'public/robots.txt'))) {
+        this.emitFile({ type: 'asset', fileName: 'robots.txt', source: 'User-agent: *\nAllow: /\n' });
+      }
     },
     transformIndexHtml: {
       order: 'pre',

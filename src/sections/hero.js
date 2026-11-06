@@ -137,9 +137,9 @@ async function intro(root) {
   tl.to(eyebrow, { opacity: 1, y: 0 }, 0.05)
     .to(lines, { y: 0, duration: 1.05, ease: 'power4.out', stagger: 0.09 }, 0.1)
     .to(media, { opacity: 1, y: 0, scale: 1, duration: 1.2 }, 0.3)
-    .to(fades, { opacity: 1, y: 0, stagger: 0.08 }, 0.5)
-    .call(() => startCounters(counters), null, 0.65)
-    .to(trust, { opacity: 1, y: 0 }, 0.85);
+    .to(fades, { opacity: 1, y: 0, stagger: 0.08 }, 0.15)
+    .call(() => startCounters(counters), null, 0.4)
+    .to(trust, { opacity: 1, y: 0 }, 0.6);
 }
 
 function startCounters(nodes) {

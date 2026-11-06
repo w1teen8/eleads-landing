@@ -100,8 +100,8 @@
     "langLabel": "Site language",
     "langUa": "UA",
     "langEn": "EN",
-    "langUaFull": "Українська",
-    "langEnFull": "English",
+    "langUaFull": "UA · Українська",
+    "langEnFull": "EN · English",
     "home": "eLeads — back to the top"
   },
   "stats": {

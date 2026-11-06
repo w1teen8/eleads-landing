@@ -12,7 +12,11 @@ import.meta.glob(['./styles/tokens.css', './styles/base.css', './styles/layout.c
 import.meta.glob('./styles/sections/*.css', { eager: true });
 const sections = import.meta.glob('./sections/*.js', { eager: true });
 
-function initSections() {
+// Отдать поток браузеру между секциями: инициализация одним куском — это длинная задача (TBT в Lighthouse).
+const yieldToBrowser = () =>
+  typeof scheduler !== 'undefined' && scheduler.yield ? scheduler.yield() : new Promise((resolve) => setTimeout(resolve, 0));
+
+async function initSections() {
   for (const node of document.querySelectorAll('[data-section]')) {
     const name = node.dataset.section;
     const mod = sections[`./sections/${name}.js`];
@@ -23,6 +27,7 @@ function initSections() {
       // одна сломанная секция не роняет страницу
       console.error(`[boot] секция «${name}» не запустилась`, err);
     }
+    await yieldToBrowser();
   }
 }
 
@@ -32,7 +37,7 @@ async function boot() {
   } catch (err) {
     console.error('[boot] i18n', err);
   }
-  initSections();
+  await initSections();
   initMotion();
   initAnalytics(config);
   onLangChange(() => refreshMotion());

@@ -117,9 +117,10 @@ test('лайтбокс форматов закрывается по Esc, кли�
   assert.match(src, /opener\?\.focus/);
 });
 
-test('процесс: линия прорисовывается через stroke-dashoffset, секция закрепляется pinSection', () => {
+test('процесс: линия прорисовывается через stroke-dashoffset, секция закрепляется через gsap.matchMedia (пин пересоздаётся при resize)', () => {
   const src = read('src/sections/process.js');
   assert.match(src, /strokeDashoffset/);
-  assert.match(src, /pinSection\(/);
+  assert.match(src, /pin: true/);
+  assert.match(src, /gsap\.matchMedia\(\)/);
   assert.match(read('index.html'), /class="process__draw"[^>]*pathLength="1"/);
 });

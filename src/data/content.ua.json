@@ -99,8 +99,8 @@
     "langLabel": "Мова сайту",
     "langUa": "UA",
     "langEn": "EN",
-    "langUaFull": "Українська",
-    "langEnFull": "English",
+    "langUaFull": "UA · Українська",
+    "langEnFull": "EN · English",
     "home": "eLeads — на початок сторінки"
   },
   "stats": {

@@ -91,7 +91,7 @@
 }
 
 .process.is-armed .process__label {
-  opacity: 0.4;
+  opacity: 0.62;
 }
 
 .process.is-armed .process__step.is-lit .process__node {
@@ -127,10 +127,20 @@
 }
 
 @media (min-width: 900px) {
+  /* секция закрепляется на экране целиком: отступы считаются от высоты окна, иначе низ обрезается на ноутбуках */
   .section--process {
     min-height: 100vh;
     display: flex;
     align-items: center;
+    padding-block: clamp(4.5rem, 11vh, 7rem) clamp(1.5rem, 5vh, 4rem);
+  }
+
+  .section--process .section__head {
+    margin-bottom: clamp(1.5rem, 4vh, 3rem);
+  }
+
+  .process__note {
+    margin-top: clamp(1.5rem, 4vh, 3rem);
   }
 
   .section--process > .container {
