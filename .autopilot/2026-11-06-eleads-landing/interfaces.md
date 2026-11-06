@@ -225,3 +225,11 @@ export function forecast(input, rates): Forecast
 - `core/intro`: дедлайн пересчитывается из новой длительности заставки — длина сценария (~5000 мс) плюс ожидание `load` (≤2000 мс); правило «hero никогда не обрывается раньше ухода полосы» сохраняется.
 - Новый `data-place`: `founder` (кнопка Telegram в bento-плитке основателя).
 - Ключи заставки — раздел `preloader` в `content.*.json`: запрос, заголовок и адрес результата, подписи SKIP / SEARCHING / LOADING.
+
+
+## Сборка 2 — оформление и темы
+
+- Темы: атрибут `data-theme` на `<html>` — `brand-light` (по умолчанию), `brand-dark`, `overtake`. Ставит инлайн-скрипт в `<head>` до отрисовки: `?theme=` → `sessionStorage['eleads-theme']` → `brand-light`.
+- Семантические переменные (единственное, что используют секции): `--bg, --surface, --surface-2, --block, --block-2, --text, --text-muted, --text-on-block, --text-on-block-muted, --accent, --accent-2, --accent-ink, --tag-1, --tag-2, --line, --line-strong` + `--grad` (акцентный градиент темы). Старые имена (`--ink`, `--card`, `--fg` …) остаются только как палитра канала внутри `tokens.css`.
+- Компоненты (`src/styles/components.css`, новый): `.pill-label` (метка с точкой), `.btn` / `.btn--primary` / `.btn--ghost` с кружком-стрелкой `.btn__arrow`, `.chip`, `.panel` (скруглённый контейнер секции с отступом от краёв), `.panel--block` (тёмный блок), `.stat-card` (карточка-цифра, модификаторы цвета), `.inline-pill` (пилюля-иконка внутри заголовка).
+- `src/dev/theme-switcher.js` — только `import.meta.env.DEV`; ставит `data-theme` и пишет `sessionStorage`.

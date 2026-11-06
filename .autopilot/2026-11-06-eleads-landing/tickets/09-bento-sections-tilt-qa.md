@@ -1,9 +1,9 @@
-# 07 — Bento-секции, наклон portfolea на картинках и перепроверка скорости
+# 09 — Bento-секции, наклон portfolea на картинках и перепроверка скорости
 
 **Требования:** G05, G06, R30
-**Зависит от:** 06
+**Зависит от:** 08
 **Зона:** `src/sections/{targeting,reviews,materials,formats}.js` · `src/styles/sections/{targeting,reviews,materials,formats}.css` · разметка `#targeting`, `#reviews`, `#materials`, `#formats` в `index.html` · разделы `targeting`, `reviews`, `founder`, `materials` в `content.*.json` (только новые подписи плиток, если нужны) · `docs/qa-report.md` · `tests/`
-**Волна:** 8
+**Волна:** 10
 **Ревью:** нет
 **Модель:** обычная
 

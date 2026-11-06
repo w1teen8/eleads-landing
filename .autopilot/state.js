@@ -11,9 +11,9 @@ window.STATE =
   "memoryFile": "AGENTS.md",
   "memoryOwner": "autopilot",
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
-  "baseCommit": "1899f41",
+  "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-06T18:36:21+02:00",
+  "updatedAt": "2026-11-06T18:54:13+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -42,12 +42,14 @@ window.STATE =
     },
     {
       "id": "plan",
-      "status": "active",
-      "startedAt": "2026-11-06T18:35:53+02:00"
+      "status": "done",
+      "startedAt": "2026-11-06T18:35:53+02:00",
+      "finishedAt": "2026-11-06T18:36:34+02:00"
     },
     {
       "id": "build",
-      "status": "pending"
+      "status": "active",
+      "startedAt": "2026-11-06T18:36:34+02:00"
     },
     {
       "id": "review",
@@ -59,8 +61,8 @@ window.STATE =
     }
   ],
   "requirements": {
-    "total": 109,
-    "done": 99,
+    "total": 112,
+    "done": 102,
     "inTicket": 6,
     "inSpec": 0,
     "placeholder": 3,
@@ -356,21 +358,102 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
+      "status": "done",
+      "startedAt": "2026-11-06T18:36:36+02:00",
+      "finishedAt": "2026-11-06T18:51:04+02:00",
+      "retries": 0,
+      "repairs": 0,
+      "tests": {
+        "passed": 63,
+        "failed": 0
+      },
+      "commit": "e3c2c58"
+    },
+    {
+      "id": "06",
+      "title": "Оформление overtake: темы, типографика, компоненты, шапка, hero, загрузка, подвал, переключатель версий",
+      "requirements": [
+        "G09",
+        "G10",
+        "G11",
+        "R15",
+        "R16",
+        "R17",
+        "R18",
+        "R19"
+      ],
+      "blockedBy": [
+        "05"
+      ],
+      "wave": 7,
+      "zone": [
+        "src/styles/tokens.css",
+        "src/styles/base.css",
+        "src/styles/layout.css",
+        "src/styles/components.css",
+        "src/styles/sections/{header,hero,preloader,footer,photos}.css",
+        "src/sections/{header,hero,preloader,footer}.js",
+        "src/core/transition.js",
+        "src/dev/",
+        "src/main.js",
+        "components.css",
+        "import.meta.env.DEV",
+        "index.html",
+        "<head>",
+        ".preloader",
+        "hero",
+        "nav",
+        "footer",
+        "preloader",
+        "common",
+        "content.*.json",
+        "tests/"
+      ],
+      "review": "да — фундамент",
+      "model": "сильная",
       "status": "pending",
       "retries": 0,
       "repairs": 0
     },
     {
-      "id": "06",
+      "id": "07",
+      "title": "Оформление overtake для секций 02–14, модалки и лайтбокса",
+      "requirements": [
+        "G09",
+        "G10",
+        "G11",
+        "R22",
+        "R23"
+      ],
+      "blockedBy": [
+        "06"
+      ],
+      "wave": 8,
+      "zone": [
+        "src/styles/sections/{stats,niches,formats,calculator,cases,process,geo,targeting,reviews,ecosystem,materials,faq,cta}.css",
+        "src/sections/*.js",
+        "#stats",
+        "#cta",
+        "index.html",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "08",
       "title": "Маркер в заголовках, линза в hero, номер процесса, вордмарк, наклон portfolea",
       "requirements": [
         "G04",
         "G06"
       ],
       "blockedBy": [
-        "05"
+        "07"
       ],
-      "wave": 7,
+      "wave": 9,
       "zone": [
         "build/i18n-prerender.js",
         "src/core/i18n.js",
@@ -397,7 +480,7 @@ window.STATE =
       "repairs": 0
     },
     {
-      "id": "07",
+      "id": "09",
       "title": "Bento-секции, наклон portfolea на картинках и перепроверка скорости",
       "requirements": [
         "G05",
@@ -405,9 +488,9 @@ window.STATE =
         "R30"
       ],
       "blockedBy": [
-        "06"
+        "08"
       ],
-      "wave": 8,
+      "wave": 10,
       "zone": [
         "src/sections/{targeting,reviews,materials,formats}.js",
         "src/styles/sections/{targeting,reviews,materials,formats}.css",
@@ -475,7 +558,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 61,
+    "passed": 63,
     "failed": 0
   },
   "debt": {
@@ -522,7 +605,10 @@ window.STATE =
     "T03 — тесты написаны после кода, red-proof только мутацией",
     "Lighthouse Perf плавает 86–96 на этой машине, запас над 85 небольшой; на реальном Android не проверялось",
     "src/sections/preloader.js — подзаголовок hero виден под шторкой ради LCP, прелоадер 1.0 с",
-    "Тап по GEO-карте на тач-устройстве вживую не проверялся, только Chrome"
+    "Тап по GEO-карте на тач-устройстве вживую не проверялся, только Chrome",
+    "index.html <head> — инлайн-скрипт снимает js-preload в 4 с только если сцена не стартовала, последний фолбэк 8,8 с",
+    "src/sections/preloader.js — грузит gsap своим import(), при медленной загрузке срабатывает CSS-фолбэк без набора текста",
+    "Lighthouse после 5-секундной заставки не перемерен"
   ],
   "blind": null,
   "beats": [
@@ -574,15 +660,28 @@ window.STATE =
     "2026-11-06T18:35:53+02:00",
     "2026-11-06T18:35:55+02:00",
     "2026-11-06T18:35:56+02:00",
-    "2026-11-06T18:36:21+02:00"
+    "2026-11-06T18:36:21+02:00",
+    "2026-11-06T18:36:32+02:00",
+    "2026-11-06T18:36:34+02:00",
+    "2026-11-06T18:36:36+02:00",
+    "2026-11-06T18:39:25+02:00",
+    "2026-11-06T18:51:04+02:00",
+    "2026-11-06T18:51:05+02:00",
+    "2026-11-06T18:54:12+02:00",
+    "2026-11-06T18:54:13+02:00"
   ],
-  "rev": 62,
+  "rev": 70,
   "waiting": null,
   "waits": [
     {
       "kind": "briefing",
       "from": "2026-11-06T11:56:30+02:00",
       "to": "2026-11-06T13:31:12+02:00"
+    },
+    {
+      "kind": "briefing",
+      "from": "2026-11-06T18:39:25+02:00",
+      "to": "2026-11-06T18:51:04+02:00"
     }
   ],
   "log": [
@@ -1026,6 +1125,61 @@ window.STATE =
       "found": 3,
       "fixed": 3,
       "deferred": 0
+    },
+    {
+      "t": "2026-11-06T18:36:34+02:00",
+      "k": "stage",
+      "id": "build",
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T18:36:36+02:00",
+      "k": "ticket",
+      "ids": [
+        "05"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-06T18:39:25+02:00",
+      "k": "ask",
+      "kind": "briefing",
+      "note": "новое направление оформления — какое, на что опираться"
+    },
+    {
+      "t": "2026-11-06T18:51:04+02:00",
+      "k": "answered",
+      "kind": "briefing"
+    },
+    {
+      "t": "2026-11-06T18:51:04+02:00",
+      "k": "ticket",
+      "ids": [
+        "05"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 63,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-06T18:51:05+02:00",
+      "k": "add",
+      "key": "concerns",
+      "n": 3
+    },
+    {
+      "t": "2026-11-06T18:54:12+02:00",
+      "k": "tickets",
+      "n": 10
+    },
+    {
+      "t": "2026-11-06T18:54:13+02:00",
+      "k": "gate",
+      "g": "G3",
+      "ok": true,
+      "problems": 0
     }
   ],
   "reqList": [
@@ -1551,7 +1705,7 @@ window.STATE =
     {
       "id": "G03",
       "text": "«https://shining-three-588967.framer.app/ отсюда надо взять загрузку сайта, типо пишется запрос находится наш сайт и потом переход на сам сайт»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "G04",
@@ -1571,11 +1725,26 @@ window.STATE =
     {
       "id": "G07",
       "text": "«5 секунд давай» — длительность загрузки",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "G08",
       "text": "«давай твой вариант» — в поиске набирается «просування telegram ads» / EN «telegram ads promotion», результат «eLeads — Telegram Ads · Володимир Кучер»",
+      "status": "done"
+    },
+    {
+      "id": "G09",
+      "text": "«оформление надо вообще другое» + «https://overtake-wbs.framer.website/ берем оформление этого сайта»",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G10",
+      "text": "«берем палитру которая была» — по умолчанию цвета канала (R15)",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G11",
+      "text": "«дай переключатель и сделай несколько версий, переключатель для меня, не встроенный в сайт»",
       "status": "in-ticket"
     }
   ],
@@ -1588,7 +1757,7 @@ window.STATE =
     },
     "G3": {
       "ok": true,
-      "at": "2026-11-06T18:35:56+02:00",
+      "at": "2026-11-06T18:54:13+02:00",
       "problems": 0
     },
     "G2": {
