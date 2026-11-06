@@ -1,0 +1,108 @@
+{
+  "draft": true,
+  "meta": {
+    "title": "eLeads — Volodymyr Kucher · Growth with Telegram Ads",
+    "description": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide. Message me on Telegram — @Kucherflow.",
+    "ogTitle": "Growth with Telegram Ads — eLeads",
+    "ogDescription": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide.",
+    "ogImageAlt": "eLeads — growth with Telegram Ads",
+    "locale": "en_US"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "menuLabel": "Sections menu",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "menuTitle": "Sections",
+    "write": "Message",
+    "writeTelegram": "Message on Telegram",
+    "sections": {
+      "hero": "Home",
+      "stats": "Telegram in numbers",
+      "niches": "Niches",
+      "formats": "Ad formats",
+      "calculator": "Calculator",
+      "cases": "Cases",
+      "process": "Process",
+      "geo": "GEO",
+      "targeting": "Targeting",
+      "reviews": "Reviews",
+      "ecosystem": "Ecosystem",
+      "materials": "Materials",
+      "faq": "FAQ",
+      "cta": "Contact"
+    }
+  },
+  "preloader": {
+    "label": "Loading the page",
+    "unit": "%",
+    "caption": "Telegram Ads · eLeads"
+  },
+  "hero": {
+    "eyebrow": "TELEGRAM PERFORMANCE MARKETING",
+    "titleLine1": "GROWTH",
+    "titleLine2": "THROUGH",
+    "titleAccent": "TELEGRAM ADS",
+    "subtitle": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide",
+    "stats": {
+      "years": { "value": "7+", "label": "years in digital" },
+      "budgets": { "value": "$2M+", "label": "in ad budgets" },
+      "projects": { "value": "dozens", "label": "of projects" }
+    },
+    "cta": { "label": "Discuss your project on Telegram", "arrow": "→" },
+    "photo": {
+      "alt": "Volodymyr Kucher, founder of eLeads",
+      "caption": "PHOTO OF VOLODYMYR",
+      "name": "Volodymyr Kucher",
+      "role": "founder of eLeads"
+    },
+    "scroll": "Scroll",
+    "trusted": {
+      "title": "Trusted by",
+      "items": [
+        "Finmap",
+        "Cryptonite",
+        "Global Auto Logistic",
+        "Oleksandr Mukhin",
+        "Viktor Dombovetskyi",
+        "Monolit",
+        "Trackdesk"
+      ]
+    }
+  },
+  "footer": {
+    "tagline": "Growth through official Telegram advertising in Ukraine and worldwide.",
+    "navTitle": "Sections",
+    "contactTitle": "Contact",
+    "telegram": "Telegram",
+    "copyright": "© 2026 eLeads",
+    "creditLabel": "Design & development —",
+    "creditName": "[NAME]",
+    "toTop": "Back to top"
+  },
+  "common": {
+    "brand": "eLeads",
+    "tbd": "TBD",
+    "placeholder": "placeholder",
+    "skip": "Skip to content",
+    "langLabel": "Site language",
+    "langUa": "UA",
+    "langEn": "EN",
+    "langUaFull": "Українська",
+    "langEnFull": "English",
+    "home": "eLeads — back to the top"
+  },
+  "stats": { "eyebrow": "02 / CHANNEL SCALE", "title": "Telegram is a mass channel in Ukraine and worldwide" },
+  "niches": { "eyebrow": "03 / NICHES", "title": "Where Telegram Ads perform best" },
+  "formats": { "eyebrow": "04 / AD FORMATS", "title": "How your ad will look in Telegram" },
+  "calculator": { "eyebrow": "05 / INTERACTIVE", "title": "Estimate your Telegram Ads potential" },
+  "cases": { "eyebrow": "06 / SOCIAL PROOF", "title": "Results across niches and GEOs" },
+  "process": { "eyebrow": "07 / PROCESS", "title": "From analysis to scaling" },
+  "geo": { "eyebrow": "08 / GEO", "title": "Audiences in Ukraine and all over the world" },
+  "targeting": { "eyebrow": "09 / TARGETING", "title": "How we find the right audience" },
+  "reviews": { "eyebrow": "10 / TRUST", "title": "What clients say" },
+  "ecosystem": { "eyebrow": "11 / ECOSYSTEM", "title": "We can cover the whole path to a lead" },
+  "materials": { "eyebrow": "12 / EXPERTISE", "title": "Useful materials on Telegram" },
+  "faq": { "eyebrow": "13 / FAQ", "title": "Frequently asked questions" },
+  "cta": { "eyebrow": "14 / FINAL CTA", "title": "Shall we discuss your project?" }
+}

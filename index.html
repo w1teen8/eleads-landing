@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title data-i18n="meta.title"></title>
+    <meta name="description" content="" data-i18n-attr="content:meta.description" />
+    <meta name="theme-color" content="#070C18" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="" data-i18n-attr="content:common.brand" />
+    <meta property="og:locale" content="" data-i18n-attr="content:meta.locale" />
+    <meta property="og:title" content="" data-i18n-attr="content:meta.ogTitle" />
+    <meta property="og:description" content="" data-i18n-attr="content:meta.ogDescription" />
+    <meta property="og:image" content="/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="" data-i18n-attr="content:meta.ogImageAlt" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <!-- Начальные состояния анимаций ставит только этот скрипт: без JS и при reduced-motion классов нет, всё видно. -->
+    <script>
+      (function (d) {
+        var h = d.documentElement;
+        var reduced =
+          (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+          /[?&]nomotion=1/.test(location.search);
+        if (reduced) return;
+        h.classList.add('js-anim');
+        try {
+          if (!sessionStorage.getItem('eleads-intro')) h.classList.add('js-preload');
+        } catch (e) {}
+        setTimeout(function () {
+          if (!h.classList.contains('motion-ok')) h.classList.remove('js-anim');
+          h.classList.remove('js-preload');
+        }, 4000);
+      })(document);
+    </script>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main" data-i18n="common.skip"></a>
+
+    <!-- Прелоадер -->
+    <div class="preloader" data-section="preloader" aria-hidden="true">
+      <div class="preloader__top">
+        <span class="preloader__brand">
+          <span class="logo__mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg>
+          </span>
+          <span data-i18n="common.brand"></span>
+        </span>
+        <span data-i18n="preloader.caption"></span>
+      </div>
+      <div>
+        <div class="preloader__body">
+          <div class="preloader__count text-grad">
+            <span class="preloader__value">0</span><span class="preloader__unit" data-i18n="preloader.unit"></span>
+          </div>
+        </div>
+        <div class="preloader__bar"><span class="preloader__bar-fill"></span></div>
+      </div>
+    </div>
+
+    <!-- Шапка -->
+    <header class="header" data-section="header">
+      <div class="header__bar">
+        <div class="header__inner container">
+          <a class="logo" href="#hero" data-i18n-attr="aria-label:common.home">
+            <span class="logo__mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg>
+            </span>
+            <span class="logo__word" data-i18n="common.brand"></span>
+          </a>
+
+          <nav class="header__nav" data-i18n-attr="aria-label:nav.label">
+            <ul class="header__links">
+              <li><a class="header__link" href="#stats" data-i18n="nav.sections.stats"></a></li>
+              <li><a class="header__link" href="#niches" data-i18n="nav.sections.niches"></a></li>
+              <li><a class="header__link" href="#calculator" data-i18n="nav.sections.calculator"></a></li>
+              <li><a class="header__link" href="#cases" data-i18n="nav.sections.cases"></a></li>
+              <li><a class="header__link" href="#process" data-i18n="nav.sections.process"></a></li>
+              <li><a class="header__link" href="#geo" data-i18n="nav.sections.geo"></a></li>
+              <li><a class="header__link" href="#faq" data-i18n="nav.sections.faq"></a></li>
+            </ul>
+          </nav>
+
+          <div class="header__actions">
+            <div class="lang-switch" role="group" data-lang-switch data-active="ua" data-i18n-attr="aria-label:common.langLabel">
+              <span class="lang-switch__thumb" aria-hidden="true"></span>
+              <button type="button" class="lang-switch__btn" data-lang="ua" aria-pressed="true" data-i18n-attr="aria-label:common.langUaFull"><span data-i18n="common.langUa"></span></button>
+              <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false" data-i18n-attr="aria-label:common.langEnFull"><span data-i18n="common.langEn"></span></button>
+            </div>
+            <a class="btn btn--primary btn--sm header__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="header">
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+              <span data-i18n="nav.write"></span>
+            </a>
+            <button class="burger" type="button" aria-expanded="false" aria-controls="menu" data-i18n-attr="aria-label:nav.menuOpen">
+              <span class="burger__line"></span>
+              <span class="burger__line"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu" id="menu" role="dialog" aria-modal="true" hidden data-i18n-attr="aria-label:nav.menuLabel">
+        <div class="menu__inner container">
+          <p class="menu__title eyebrow" data-i18n="nav.menuTitle"></p>
+          <nav data-i18n-attr="aria-label:nav.menuLabel">
+            <ol class="menu__list">
+            <li class="menu__item" style="--i: 0"><a class="menu__link" href="#hero"><span class="menu__num">01</span><span data-i18n="nav.sections.hero"></span></a></li>
+            <li class="menu__item" style="--i: 1"><a class="menu__link" href="#stats"><span class="menu__num">02</span><span data-i18n="nav.sections.stats"></span></a></li>
+            <li class="menu__item" style="--i: 2"><a class="menu__link" href="#niches"><span class="menu__num">03</span><span data-i18n="nav.sections.niches"></span></a></li>
+            <li class="menu__item" style="--i: 3"><a class="menu__link" href="#formats"><span class="menu__num">04</span><span data-i18n="nav.sections.formats"></span></a></li>
+            <li class="menu__item" style="--i: 4"><a class="menu__link" href="#calculator"><span class="menu__num">05</span><span data-i18n="nav.sections.calculator"></span></a></li>
+            <li class="menu__item" style="--i: 5"><a class="menu__link" href="#cases"><span class="menu__num">06</span><span data-i18n="nav.sections.cases"></span></a></li>
+            <li class="menu__item" style="--i: 6"><a class="menu__link" href="#process"><span class="menu__num">07</span><span data-i18n="nav.sections.process"></span></a></li>
+            <li class="menu__item" style="--i: 7"><a class="menu__link" href="#geo"><span class="menu__num">08</span><span data-i18n="nav.sections.geo"></span></a></li>
+            <li class="menu__item" style="--i: 8"><a class="menu__link" href="#targeting"><span class="menu__num">09</span><span data-i18n="nav.sections.targeting"></span></a></li>
+            <li class="menu__item" style="--i: 9"><a class="menu__link" href="#reviews"><span class="menu__num">10</span><span data-i18n="nav.sections.reviews"></span></a></li>
+            <li class="menu__item" style="--i: 10"><a class="menu__link" href="#ecosystem"><span class="menu__num">11</span><span data-i18n="nav.sections.ecosystem"></span></a></li>
+            <li class="menu__item" style="--i: 11"><a class="menu__link" href="#materials"><span class="menu__num">12</span><span data-i18n="nav.sections.materials"></span></a></li>
+            <li class="menu__item" style="--i: 12"><a class="menu__link" href="#faq"><span class="menu__num">13</span><span data-i18n="nav.sections.faq"></span></a></li>
+            <li class="menu__item" style="--i: 13"><a class="menu__link" href="#cta"><span class="menu__num">14</span><span data-i18n="nav.sections.cta"></span></a></li>
+            </ol>
+          </nav>
+          <div class="menu__foot">
+            <div class="lang-switch" role="group" data-lang-switch data-active="ua" data-i18n-attr="aria-label:common.langLabel">
+              <span class="lang-switch__thumb" aria-hidden="true"></span>
+              <button type="button" class="lang-switch__btn" data-lang="ua" aria-pressed="true" data-i18n-attr="aria-label:common.langUaFull"><span data-i18n="common.langUa"></span></button>
+              <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false" data-i18n-attr="aria-label:common.langEnFull"><span data-i18n="common.langEn"></span></button>
+            </div>
+            <a class="btn btn--primary menu__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="mobile_menu">
+              <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+              <span data-i18n="nav.writeTelegram"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <!-- 01 Hero -->
+      <section id="hero" class="hero" data-section="hero" aria-labelledby="hero-title">
+        <div class="hero__backdrop" aria-hidden="true">
+          <div class="hero__gradient" data-hero-bg></div>
+          <video
+            class="hero__video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="none"
+            disablepictureinpicture
+            data-src-desktop="/video/hero-1080.mp4"
+            data-src-mobile="/video/hero-720.mp4"
+            data-poster="/video/poster.jpg"
+          ></video>
+          <div class="hero__overlay"></div>
+          <div class="hero__grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        </div>
+
+        <div class="hero__inner container">
+          <div class="hero__content">
+            <p class="hero__eyebrow eyebrow" data-hero-fade data-i18n="hero.eyebrow"></p>
+
+            <h1 id="hero-title" class="hero__title">
+              <span class="hero__line"><span class="hero__line-inner" data-i18n="hero.titleLine1"></span></span>
+              <span class="hero__line"><span class="hero__line-inner" data-i18n="hero.titleLine2"></span></span>
+              <span class="hero__line"><span class="hero__line-inner text-grad" data-i18n="hero.titleAccent"></span></span>
+            </h1>
+
+            <p class="hero__subtitle" data-hero-fade data-i18n="hero.subtitle"></p>
+
+            <ul class="hero__stats" data-hero-fade>
+              <li class="hero__stat">
+                <span class="hero__stat-value text-grad" data-count data-i18n="hero.stats.years.value"></span>
+                <span class="hero__stat-label" data-i18n="hero.stats.years.label"></span>
+              </li>
+              <li class="hero__stat">
+                <span class="hero__stat-value text-grad" data-count data-i18n="hero.stats.budgets.value"></span>
+                <span class="hero__stat-label" data-i18n="hero.stats.budgets.label"></span>
+              </li>
+              <li class="hero__stat">
+                <span class="hero__stat-value text-grad" data-count data-i18n="hero.stats.projects.value"></span>
+                <span class="hero__stat-label" data-i18n="hero.stats.projects.label"></span>
+              </li>
+            </ul>
+
+            <div class="hero__actions" data-hero-fade>
+              <a class="btn btn--primary btn--lg hero__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero">
+                <span data-i18n="hero.cta.label"></span>
+                <span class="btn__arrow" aria-hidden="true" data-i18n="hero.cta.arrow"></span>
+              </a>
+              <span class="hero__scroll" aria-hidden="true">
+                <span class="hero__scroll-line"></span>
+                <span data-i18n="hero.scroll"></span>
+              </span>
+            </div>
+          </div>
+
+          <figure class="hero__media" data-hero-media>
+            <div class="hero__layer hero__layer--bg" data-depth="0.25" aria-hidden="true">
+              <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="1">
+                <circle cx="200" cy="200" r="198" />
+                <circle cx="200" cy="200" r="150" stroke-dasharray="2 6" />
+                <circle cx="200" cy="200" r="102" />
+                <path d="M200 0v400M0 200h400" stroke-dasharray="1 9" />
+              </svg>
+            </div>
+            <div class="hero__layer hero__layer--glow" data-glow aria-hidden="true"><div class="hero__glow"></div></div>
+            <div class="hero__layer hero__layer--photo" data-depth="0.6">
+              <div class="hero__photo" role="img" data-i18n-attr="aria-label:hero.photo.alt">
+                <svg class="hero__silhouette" viewBox="0 0 400 500" aria-hidden="true">
+                  <path class="hero__silhouette-fill" d="M200 92c-46 0-80 35-80 84 0 33 13 60 33 76v20c-62 12-111 52-125 108-5 19-8 44-8 70v50h360v-50c0-26-3-51-8-70-14-56-63-96-125-108v-20c20-16 33-43 33-76 0-49-34-84-80-84Z" />
+                  <path class="hero__silhouette-rim" d="M120 176c0-49 34-84 80-84s80 35 80 84M247 272c62 12 111 52 125 108 5 19 8 44 8 70" />
+                </svg>
+                <span class="hero__photo-caption" data-i18n="hero.photo.caption"></span>
+              </div>
+              <span class="hero__crop hero__crop--tl" aria-hidden="true"></span>
+              <span class="hero__crop hero__crop--tr" aria-hidden="true"></span>
+              <span class="hero__crop hero__crop--bl" aria-hidden="true"></span>
+              <span class="hero__crop hero__crop--br" aria-hidden="true"></span>
+            </div>
+            <figcaption class="hero__name">
+              <span class="hero__name-title" data-i18n="hero.photo.name"></span>
+              <span class="hero__name-role" data-i18n="hero.photo.role"></span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="hero__trust" data-hero-fade>
+          <div class="hero__trust-inner container">
+            <p class="hero__trust-title" id="hero-trusted" data-i18n="hero.trusted.title"></p>
+            <div class="marquee" data-marquee>
+              <div class="marquee__track">
+                <ul class="marquee__group" aria-labelledby="hero-trusted">
+                  <li class="marquee__item" data-i18n="hero.trusted.items.0"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.1"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.2"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.3"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.4"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.5"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.6"></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stats" class="section section--stats section--alt" data-section="stats" aria-labelledby="stats-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="stats.eyebrow"></p>
+            <h2 id="stats-title" class="section__title" data-i18n="stats.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="niches" class="section section--niches" data-section="niches" aria-labelledby="niches-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="niches.eyebrow"></p>
+            <h2 id="niches-title" class="section__title" data-i18n="niches.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="formats" class="section section--formats section--alt" data-section="formats" aria-labelledby="formats-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="formats.eyebrow"></p>
+            <h2 id="formats-title" class="section__title" data-i18n="formats.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="calculator" class="section section--calculator" data-section="calculator" aria-labelledby="calculator-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="calculator.eyebrow"></p>
+            <h2 id="calculator-title" class="section__title" data-i18n="calculator.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="cases" class="section section--cases section--alt" data-section="cases" aria-labelledby="cases-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="cases.eyebrow"></p>
+            <h2 id="cases-title" class="section__title" data-i18n="cases.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="process" class="section section--process" data-section="process" aria-labelledby="process-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="process.eyebrow"></p>
+            <h2 id="process-title" class="section__title" data-i18n="process.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="geo" class="section section--geo section--alt" data-section="geo" aria-labelledby="geo-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="geo.eyebrow"></p>
+            <h2 id="geo-title" class="section__title" data-i18n="geo.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="targeting" class="section section--targeting" data-section="targeting" aria-labelledby="targeting-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="targeting.eyebrow"></p>
+            <h2 id="targeting-title" class="section__title" data-i18n="targeting.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="reviews" class="section section--reviews section--alt" data-section="reviews" aria-labelledby="reviews-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="reviews.eyebrow"></p>
+            <h2 id="reviews-title" class="section__title" data-i18n="reviews.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="ecosystem" class="section section--ecosystem" data-section="ecosystem" aria-labelledby="ecosystem-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="ecosystem.eyebrow"></p>
+            <h2 id="ecosystem-title" class="section__title" data-i18n="ecosystem.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="materials" class="section section--materials section--alt" data-section="materials" aria-labelledby="materials-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="materials.eyebrow"></p>
+            <h2 id="materials-title" class="section__title" data-i18n="materials.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="section section--faq" data-section="faq" aria-labelledby="faq-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="faq.eyebrow"></p>
+            <h2 id="faq-title" class="section__title" data-i18n="faq.title"></h2>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="section section--cta section--alt" data-section="cta" aria-labelledby="cta-title">
+        <div class="container">
+          <div class="section__head" data-reveal="stagger">
+            <p class="eyebrow" data-i18n="cta.eyebrow"></p>
+            <h2 id="cta-title" class="section__title" data-i18n="cta.title"></h2>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="footer" data-section="footer">
+      <div class="footer__inner container">
+        <div class="footer__brand">
+          <a class="logo" href="#hero" data-i18n-attr="aria-label:common.home">
+            <span class="logo__mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg>
+            </span>
+            <span class="logo__word" data-i18n="common.brand"></span>
+          </a>
+          <p class="footer__tagline" data-i18n="footer.tagline"></p>
+        </div>
+
+        <nav class="footer__nav" data-i18n-attr="aria-label:nav.label">
+          <p class="footer__heading" data-i18n="footer.navTitle"></p>
+          <ul class="footer__links">
+            <li><a class="footer__link" href="#stats" data-i18n="nav.sections.stats"></a></li>
+            <li><a class="footer__link" href="#niches" data-i18n="nav.sections.niches"></a></li>
+            <li><a class="footer__link" href="#calculator" data-i18n="nav.sections.calculator"></a></li>
+            <li><a class="footer__link" href="#cases" data-i18n="nav.sections.cases"></a></li>
+            <li><a class="footer__link" href="#process" data-i18n="nav.sections.process"></a></li>
+            <li><a class="footer__link" href="#geo" data-i18n="nav.sections.geo"></a></li>
+            <li><a class="footer__link" href="#faq" data-i18n="nav.sections.faq"></a></li>
+          </ul>
+        </nav>
+
+        <div class="footer__contact">
+          <p class="footer__heading" data-i18n="footer.contactTitle"></p>
+          <a class="footer__tg" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="footer">
+            <span class="footer__tg-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+            </span>
+            <span>
+              <span data-i18n="footer.telegram"></span>
+              <span class="footer__tg-handle">{{config.telegramHandle}}</span>
+            </span>
+          </a>
+          <div class="lang-switch" role="group" data-lang-switch data-active="ua" data-i18n-attr="aria-label:common.langLabel">
+            <span class="lang-switch__thumb" aria-hidden="true"></span>
+            <button type="button" class="lang-switch__btn" data-lang="ua" aria-pressed="true" data-i18n-attr="aria-label:common.langUaFull"><span data-i18n="common.langUa"></span></button>
+            <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false" data-i18n-attr="aria-label:common.langEnFull"><span data-i18n="common.langEn"></span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__wordmark text-grad" aria-hidden="true" data-i18n="common.brand"></div>
+
+      <div class="footer__bottom container">
+        <p data-i18n="footer.copyright"></p>
+        <p class="footer__credit">
+          <span data-i18n="footer.creditLabel"></span>
+          <a class="is-placeholder" href="#" data-placeholder data-i18n="footer.creditName"></a>
+        </p>
+        <button type="button" class="footer__top" data-scroll-top>
+          <span data-i18n="footer.toTop"></span>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" /></svg>
+        </button>
+      </div>
+    </footer>
+
+    <noscript><style>.preloader{display:none!important}</style></noscript>
+  </body>
+</html>

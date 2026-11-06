@@ -1,0 +1,127 @@
+/* Прелоадер: огромные проценты condensed-шрифтом в градиенте, затем шторка уходит вверх.
+   Показывается только при классе html.js-preload (его ставит инлайн-скрипт в <head>):
+   без JS, при reduced-motion и при повторном заходе в сессию его нет вовсе. */
+.preloader {
+  display: none;
+}
+
+.js-preload .preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(var(--gutter) * 0.9) var(--gutter);
+  background: var(--ink);
+  color: var(--fg);
+  transform: translate3d(0, 0, 0);
+  transition: transform var(--dur-slow) var(--ease-in-out);
+  will-change: transform;
+}
+
+/* пока шторка закрыта, страница под ней не скроллится */
+.js-preload body {
+  overflow: hidden;
+}
+
+.preloader.is-leaving {
+  transform: translate3d(0, -100%, 0);
+}
+
+/* свечение за цифрами — тот же тёплый отсвет, что на обложках */
+.preloader::before {
+  content: '';
+  position: absolute;
+  left: -10vw;
+  bottom: -35vh;
+  width: 80vw;
+  height: 80vw;
+  max-width: 1100px;
+  max-height: 1100px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--ember-glow), transparent 70%);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.preloader__top {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.preloader__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: var(--fg);
+}
+
+.preloader__body {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  transition: transform var(--dur-slow) var(--ease-in-out), opacity var(--dur) var(--ease-out);
+}
+
+.preloader.is-leaving .preloader__body {
+  transform: translate3d(0, -12vh, 0);
+  opacity: 0;
+}
+
+.preloader__count {
+  display: flex;
+  align-items: flex-start;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.preloader__value {
+  padding-bottom: 0.08em;
+  font-size: clamp(9rem, 34vw, 30rem);
+}
+
+.preloader__unit {
+  margin-top: 0.12em;
+  padding-right: 0.05em;
+  font-size: clamp(3rem, 10vw, 9rem);
+}
+
+.preloader__bar {
+  position: relative;
+  height: 2px;
+  margin-top: 1.5rem;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.preloader__bar-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--grad);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+@media (max-width: 599px) {
+  .preloader__body {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

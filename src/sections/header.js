@@ -1,0 +1,146 @@
+// Шапка: липнет и проявляет подложку при скролле, прячется при скролле вниз и возвращается вверх,
+// подсвечивает текущую секцию, переключает язык, на < 900px — бургер с полноэкранным меню.
+import { $, $$, focusables } from '../core/dom.js';
+import { t, onLangChange } from '../core/i18n.js';
+import { lockScroll } from '../core/motion.js';
+import { bindLangSwitch } from '../core/lang-switch.js';
+
+const DESKTOP = '(min-width: 900px)';
+
+export function init(root) {
+  const burger = $('.burger', root);
+  const menu = document.getElementById(burger?.getAttribute('aria-controls') || 'menu');
+
+  for (const sw of $$('[data-lang-switch]', root)) bindLangSwitch(sw);
+
+  initScrollState(root);
+  initActiveLink(root);
+  if (burger && menu) initMenu(root, burger, menu);
+}
+
+function initScrollState(root) {
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+    const y = window.scrollY;
+    root.classList.toggle('is-scrolled', y > 24);
+    const goingDown = y > lastY + 4;
+    const goingUp = y < lastY - 4;
+    if (goingDown && y > window.innerHeight * 0.6) root.classList.add('is-hidden');
+    else if (goingUp || y < 120) root.classList.remove('is-hidden');
+    if (goingDown || goingUp) lastY = y;
+  };
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true },
+  );
+  // фокус с клавиатуры внутри шапки всегда возвращает её на экран
+  root.addEventListener('focusin', () => root.classList.remove('is-hidden'));
+  update();
+}
+
+function initActiveLink(root) {
+  const links = $$('.header__link', root);
+  const byId = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));
+  const targets = [...byId.keys()].map((id) => document.getElementById(id)).filter(Boolean);
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const link = byId.get(entry.target.id);
+        if (entry.isIntersecting) {
+          for (const a of links) a.removeAttribute('aria-current');
+          link.setAttribute('aria-current', 'true');
+        } else if (link.hasAttribute('aria-current')) {
+          link.removeAttribute('aria-current');
+        }
+      }
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  for (const node of targets) io.observe(node);
+}
+
+function initMenu(root, burger, menu) {
+  let open = false;
+  let closeTimer = 0;
+
+  const setLabel = () => {
+    burger.setAttribute('aria-label', t(open ? 'nav.menuClose' : 'nav.menuOpen'));
+  };
+
+  const trapTargets = () => [burger, ...focusables(menu)];
+
+  const onKeydown = (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const items = trapTargets();
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
+  function openMenu() {
+    if (open) return;
+    open = true;
+    clearTimeout(closeTimer);
+    menu.hidden = false;
+    // следующий кадр — чтобы переход opacity/transform сработал после снятия hidden
+    requestAnimationFrame(() => requestAnimationFrame(() => menu.classList.add('is-open')));
+    root.classList.add('is-menu-open');
+    burger.setAttribute('aria-expanded', 'true');
+    setLabel();
+    lockScroll(true);
+    document.addEventListener('keydown', onKeydown);
+    const firstLink = $('.menu__link', menu);
+    firstLink?.focus({ preventScroll: true });
+  }
+
+  function close({ returnFocus = true } = {}) {
+    if (!open) return;
+    open = false;
+    menu.classList.remove('is-open');
+    root.classList.remove('is-menu-open');
+    burger.setAttribute('aria-expanded', 'false');
+    setLabel();
+    lockScroll(false);
+    document.removeEventListener('keydown', onKeydown);
+    closeTimer = setTimeout(() => {
+      menu.hidden = true;
+    }, 460);
+    if (returnFocus) burger.focus({ preventScroll: true });
+  }
+
+  burger.addEventListener('click', () => (open ? close() : openMenu()));
+
+  // выбор пункта: меню закрывается, разблокирует скролл, а переход по якорю делает общий обработчик
+  menu.addEventListener('click', (event) => {
+    if (event.target.closest('a')) close({ returnFocus: false });
+  });
+
+  // на десктопе меню не нужно — если окно расширили с открытым меню, закрываем
+  const mq = window.matchMedia(DESKTOP);
+  mq.addEventListener?.('change', (e) => e.matches && close({ returnFocus: false }));
+
+  onLangChange(setLabel);
+}

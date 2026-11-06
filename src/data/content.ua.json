@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "eLeads — Володимир Кучер · просування через Telegram Ads",
+    "description": "Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу. Напишіть у Telegram — @Kucherflow.",
+    "ogTitle": "Просування через Telegram Ads — eLeads",
+    "ogDescription": "Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу.",
+    "ogImageAlt": "eLeads — просування через Telegram Ads",
+    "locale": "uk_UA"
+  },
+  "nav": {
+    "label": "Основна навігація",
+    "menuLabel": "Меню розділів",
+    "menuOpen": "Відкрити меню",
+    "menuClose": "Закрити меню",
+    "menuTitle": "Розділи",
+    "write": "Написати",
+    "writeTelegram": "Написати в Telegram",
+    "sections": {
+      "hero": "Головна",
+      "stats": "Telegram у цифрах",
+      "niches": "Ніші",
+      "formats": "Формати реклами",
+      "calculator": "Калькулятор",
+      "cases": "Кейси",
+      "process": "Процес",
+      "geo": "GEO",
+      "targeting": "Таргетинг",
+      "reviews": "Відгуки",
+      "ecosystem": "Екосистема",
+      "materials": "Матеріали",
+      "faq": "FAQ",
+      "cta": "Контакт"
+    }
+  },
+  "preloader": {
+    "label": "Завантаження сторінки",
+    "unit": "%",
+    "caption": "Telegram Ads · eLeads"
+  },
+  "hero": {
+    "eyebrow": "TELEGRAM PERFORMANCE MARKETING",
+    "titleLine1": "ПРОСУВАННЯ",
+    "titleLine2": "ЧЕРЕЗ",
+    "titleAccent": "TELEGRAM ADS",
+    "subtitle": "Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу",
+    "stats": {
+      "years": { "value": "7+", "label": "років у digital" },
+      "budgets": { "value": "$2M+", "label": "рекламних бюджетів" },
+      "projects": { "value": "десятки", "label": "проєктів" }
+    },
+    "cta": { "label": "Обговорити проєкт у Telegram", "arrow": "→" },
+    "photo": {
+      "alt": "Володимир Кучер, засновник eLeads",
+      "caption": "ФОТО ВОЛОДИМИРА",
+      "name": "Володимир Кучер",
+      "role": "засновник eLeads"
+    },
+    "scroll": "Гортайте",
+    "trusted": {
+      "title": "Мені довіряють",
+      "items": [
+        "Finmap",
+        "Cryptonite",
+        "Global Auto Logistic",
+        "Олександр Мухін",
+        "Віктор Домбовецький",
+        "Monolit",
+        "Trackdesk"
+      ]
+    }
+  },
+  "footer": {
+    "tagline": "Просування через офіційну рекламу Telegram в Україні та по всьому світу.",
+    "navTitle": "Розділи",
+    "contactTitle": "Контакт",
+    "telegram": "Telegram",
+    "copyright": "© 2026 eLeads",
+    "creditLabel": "Design & development —",
+    "creditName": "[ІМ'Я]",
+    "toTop": "Нагору"
+  },
+  "common": {
+    "brand": "eLeads",
+    "tbd": "уточнити",
+    "placeholder": "заглушка",
+    "skip": "Перейти до змісту",
+    "langLabel": "Мова сайту",
+    "langUa": "UA",
+    "langEn": "EN",
+    "langUaFull": "Українська",
+    "langEnFull": "English",
+    "home": "eLeads — на початок сторінки"
+  },
+  "stats": { "eyebrow": "02 / МАСШТАБ КАНАЛУ", "title": "Telegram — масовий канал в Україні та глобально" },
+  "niches": { "eyebrow": "03 / НІШІ", "title": "Де Telegram Ads розкривається найкраще" },
+  "formats": { "eyebrow": "04 / AD FORMATS", "title": "Як ваша реклама виглядатиме в Telegram" },
+  "calculator": { "eyebrow": "05 / ІНТЕРАКТИВ", "title": "Розрахуйте потенціал Telegram Ads" },
+  "cases": { "eyebrow": "06 / SOCIAL PROOF", "title": "Результати в різних нішах і GEO" },
+  "process": { "eyebrow": "07 / ПРОЦЕС", "title": "Від аналізу до масштабування" },
+  "geo": { "eyebrow": "08 / GEO", "title": "Аудиторія в Україні та по всьому світу" },
+  "targeting": { "eyebrow": "09 / TARGETING", "title": "Як знаходимо потрібну аудиторію" },
+  "reviews": { "eyebrow": "10 / TRUST", "title": "Що говорять клієнти" },
+  "ecosystem": { "eyebrow": "11 / ECOSYSTEM", "title": "Можемо закрити весь шлях до заявки" },
+  "materials": { "eyebrow": "12 / EXPERTISE", "title": "Корисні матеріали в Telegram" },
+  "faq": { "eyebrow": "13 / FAQ", "title": "Часті питання" },
+  "cta": { "eyebrow": "14 / ФІНАЛЬНИЙ CTA", "title": "Обговоримо ваш проєкт?" }
+}

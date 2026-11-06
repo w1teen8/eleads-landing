@@ -1,0 +1,167 @@
+/* Подвал: логотип, якоря, Telegram, © 2026 eLeads, переключатель UA/EN, строка автора-заглушка. */
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--navy);
+  border-top: 1px solid var(--line);
+  padding-top: clamp(3.5rem, 7vw, 6rem);
+}
+
+.footer__inner {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.footer__brand {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+  max-width: 26rem;
+}
+
+.footer__tagline {
+  color: var(--fg-soft);
+  font-size: var(--fs-lg);
+  line-height: 1.45;
+}
+
+.footer__heading {
+  margin-bottom: 1rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.footer__links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 0.6rem 2.5rem;
+}
+
+.footer__link {
+  display: inline-block;
+  color: var(--fg-soft);
+  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+}
+
+.footer__link:hover {
+  transform: translateX(4px);
+}
+
+.footer__contact {
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+  justify-items: start;
+}
+
+.footer__tg {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.footer__tg-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  color: var(--tg);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.footer__tg-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.footer__tg:hover .footer__tg-icon {
+  transform: rotate(-12deg) scale(1.06);
+}
+
+.footer__tg-handle {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--muted);
+}
+
+/* гигантский словесный знак внизу — градиент, приглушён */
+.footer__wordmark {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  padding-inline: var(--gutter);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(6rem, 27vw, 26rem);
+  line-height: 0.78;
+  letter-spacing: -0.03em;
+  text-align: left;
+  white-space: nowrap;
+  opacity: 0.2;
+  user-select: none;
+  pointer-events: none;
+  translate: 0 0.08em;
+}
+
+.footer__bottom {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.footer__credit {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.footer__top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+}
+
+.footer__top svg {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.footer__top:hover svg {
+  transform: translateY(-3px);
+}
+
+@media (min-width: 768px) {
+  .footer__inner {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 3rem;
+  }
+}
