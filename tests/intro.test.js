@@ -17,7 +17,7 @@ function fakeDom() {
   doc.readyState = 'loading';
   doc.querySelector = (sel) => (sel === '.preloader' ? curtain : null);
   globalThis.document = doc;
-  globalThis.window = { addEventListener() {} };
+  globalThis.window = { addEventListener() {}, removeEventListener() {}, location: { search: '' } };
   globalThis.sessionStorage = { setItem() {} };
   globalThis.requestAnimationFrame = (fn) => setTimeout(() => fn(performance.now()), 16);
   return { doc, curtain };
@@ -26,6 +26,26 @@ function fakeDom() {
 const load = (path) => import(`${path}?case=${++seq}`);
 const flush = () => new Promise((r) => setImmediate(r));
 const silence = (t) => t.mock.method(console, 'error', () => {});
+// hero.js: показ «сразу» при таймауте — переход 250 мс; первый экран виден не позже 9 с (история 65)
+const HERO_LATE_REVEAL_MS = 250;
+
+test('сборка 2: крайний срок вмещает 5-секундную заставку и ожидание load до 2 с, но hero виден не позже 9 с', async () => {
+  fakeDom();
+  const intro = await load('../src/core/intro.js');
+  assert.ok(intro.INTRO_DEADLINE_MS >= 5000 + 2000, `крайний срок ${intro.INTRO_DEADLINE_MS} мс оборвёт заставку`);
+  assert.ok(intro.INTRO_DEADLINE_MS + HERO_LATE_REVEAL_MS <= 9000, `hero появится позже 9 с: ${intro.INTRO_DEADLINE_MS}`);
+});
+
+test('полоса перехода при reduced-motion: только midFn, без анимации и без DOM', async () => {
+  delete globalThis.document;
+  delete globalThis.window;
+  const transition = await load('../src/core/transition.js');
+  let calls = 0;
+  await transition.sweep({ label: 'x', badge: '#02' }, () => {
+    calls++;
+  });
+  assert.equal(calls, 1);
+});
 
 test('медленная, но живая заставка: крайний срок не наступает раньше потолка прелоадера + выхода шторки', async (t) => {
   t.mock.timers.enable({ apis: ['setTimeout'] });

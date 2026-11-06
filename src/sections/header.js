@@ -4,6 +4,7 @@ import { $, $$, focusables, trapFocus } from '../core/dom.js';
 import { t, onLangChange } from '../core/i18n.js';
 import { lockScroll } from '../core/motion.js';
 import { bindLangSwitch } from '../core/lang-switch.js';
+import { bindSweepLinks } from '../core/transition.js';
 
 const DESKTOP = '(min-width: 900px)';
 
@@ -16,6 +17,8 @@ export function init(root) {
   initScrollState(root);
   initActiveLink(root);
   if (burger && menu) initMenu(root, burger, menu);
+  // якоря шапки и мобильного меню — фирменной полосой (меню успевает закрыться своим обработчиком раньше)
+  bindSweepLinks(root);
 }
 
 // Шапка всегда на экране (бриф: «Sticky»; история 7 — «на любой прокрутке вижу шапку»):

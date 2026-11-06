@@ -34,8 +34,17 @@
   },
   "preloader": {
     "label": "Завантаження сторінки",
-    "unit": "%",
-    "caption": "Telegram Ads · eLeads"
+    "skip": "Пропустити",
+    "skipLabel": "Пропустити заставку",
+    "searchLabel": "Пошук",
+    "query": "просування telegram ads",
+    "searching": "Шукаємо",
+    "found": "Знайдено",
+    "loading": "Завантаження",
+    "resultTitle": "eLeads — Telegram Ads · Володимир Кучер",
+    "resultUrl": "t.me/Kucherflow",
+    "resultText": "Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу.",
+    "next": "Наступний розділ"
   },
   "hero": {
     "eyebrow": "TELEGRAM PERFORMANCE MARKETING",

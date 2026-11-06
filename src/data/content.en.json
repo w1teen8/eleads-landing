@@ -35,8 +35,17 @@
   },
   "preloader": {
     "label": "Loading the page",
-    "unit": "%",
-    "caption": "Telegram Ads · eLeads"
+    "skip": "Skip",
+    "skipLabel": "Skip the intro",
+    "searchLabel": "Search",
+    "query": "telegram ads promotion",
+    "searching": "Searching",
+    "found": "Found",
+    "loading": "Loading",
+    "resultTitle": "eLeads — Telegram Ads · Volodymyr Kucher",
+    "resultUrl": "t.me/Kucherflow",
+    "resultText": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide.",
+    "next": "Next section"
   },
   "hero": {
     "eyebrow": "TELEGRAM PERFORMANCE MARKETING",
