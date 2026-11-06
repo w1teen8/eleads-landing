@@ -29,8 +29,10 @@
 - `vite.config.js` фиксирует `root`: из cwd с маленькой буквой диска (`/c/…`) сборка иначе падала.
 - Новая секция: `[data-section]` в `index.html` + файл в `src/sections/` + CSS в `src/styles/sections/`; `main.js` не править.
 - Меню под остановленным Lenis скроллится только благодаря `data-lenis-prevent` (также у лайтбокса и модалки кейса).
-- `vite preview` на отсутствующий `/video/hero-1080.mp4` отдаёт 200 text/html (SPA-fallback), не 404: видео уходит в error, остаётся градиент.
-- Фото, логотипы и скриншоты рекламы пока CSS-заглушки в `index.html`; видео подхватывается из `public/video` по именам из `README.md`.
+- `vite preview` на отсутствующий файл в `public/` отдаёт 200 text/html (SPA-fallback), не 404: битая ссылка на медиа не видна в логах.
+- При `?nomotion=1` и `prefers-reduced-motion` видео hero не грузится вовсе — проверять видео без этих режимов.
+- Логотипы и скриншоты рекламы пока CSS-заглушки в `index.html`; фото (`public/img/photo/`, `<picture>` AVIF/WebP/JPG) и видео (`public/video/`) подключены по именам из `README.md`.
+- `Photos/` — исходники фотосессии (~170 МБ), в `.gitignore`; веб-версии делаются ffmpeg-ом в `public/img/photo/`.
 - Анимировать только `transform` и `opacity`.
 
 ## Окружение

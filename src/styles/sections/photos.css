@@ -1,0 +1,37 @@
+/* фото Володимира: hero, блок засновника, финальный CTA */
+.hero__photo picture,
+.founder__photo picture,
+.cta__photo picture {
+  position: absolute;
+  inset: 0;
+}
+
+.photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero__photo .photo-img {
+  object-position: 30% 20%;
+}
+
+.founder__photo .photo-img {
+  object-position: 50% 15%;
+}
+
+.cta__photo .photo-img {
+  object-position: 55% 30%;
+}
+
+/* низ фото растворяется в фоне — фото «садится» в тёмную палитру, а не висит прямоугольником */
+.hero__photo::after,
+.founder__photo::after,
+.cta__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, color-mix(in srgb, var(--ink) 78%, transparent) 0%, transparent 38%);
+}
