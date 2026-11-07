@@ -1,259 +1,36 @@
-/* 01 Hero в идиоме overtake: светлый скруглённый контейнер (.panel) под шапкой; по центру метка-пилюля,
-   заголовок обычным регистром по строкам из маски (во второй строке пилюля-иконка Telegram и «Telegram Ads»
-   на акцентной плашке), подзаголовок, кнопки-пилюли. Ниже — карточки: фото Володимира со слоями
-   (параллакс за курсором на десктопе) и тёмная карточка с видео и тремя цифрами. Внизу — «Мені довіряють». */
+/* 01 Hero в облике Aether (G17). Сцена 1: огромное «ELEADS» во всю ширину поверх планеты с кольцом,
+   слева сверху надзаголовок моно, слева снизу подзаголовок, справа снизу «ГОРТАЙТЕ» с колёсиком.
+   Сцена 2 — в круглом окне: Володимир на золотой лестнице, H1 по строкам из маски, три цифры, CTA, «Мені довіряють».
+   Базовые стили — обычный поток (телефон, планшет, reduced-motion, без JS). Закреплённая сцена со слоями
+   друг над другом — только ≥900px, без reduced-motion и пока движение живо (.js-anim); её ведёт hero.js.
+   Двигаются только transform и opacity; окно — круг с overflow: hidden, масштаб обёртки + обратный масштаб
+   содержимого (без clip-path). */
 .hero {
-  margin-top: var(--header-h);
-  padding-top: clamp(2.75rem, 7vh, 5.5rem);
-  isolation: isolate;
-}
-
-/* тонкие вертикали по колонкам, как сетка на панели образца */
-.hero__grid {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  pointer-events: none;
-}
-
-.hero__grid span + span {
-  border-left: 1px solid var(--line);
-}
-
-.hero__inner {
-  display: grid;
-  gap: clamp(2.5rem, 6vh, 4.5rem);
-}
-
-/* ——— текст по центру ——— */
-.hero__content {
-  min-width: 0;
-  display: grid;
-  justify-items: center;
-  gap: clamp(1.1rem, 2.6vh, 1.75rem);
-  text-align: center;
-}
-
-.hero__title {
-  font-size: clamp(2.125rem, 0.5rem + 5.6vw, 5.5rem);
-  font-weight: 600;
-  line-height: 1.04;
-  letter-spacing: -0.04em;
-  text-wrap: balance;
-}
-
-/* маска строки: строка выезжает снизу из-под overflow */
-.hero__line {
-  display: block;
-  overflow: hidden;
-  padding: 0.04em 0.06em 0.1em;
-  margin: -0.04em -0.06em -0.1em;
-}
-
-.hero__line-inner {
-  display: inline-block;
-  will-change: transform;
-}
-
-/* «Telegram Ads» на акцентной плашке: тёмный текст на градиенте — контраст в любой версии */
-.hero__accent {
-  display: inline-block;
-  padding: 0 0.16em 0.04em;
-  border-radius: 0.22em;
-  background: var(--grad);
-  color: var(--accent-ink);
-}
-
-.hero__line:nth-child(2) .hero__line-inner {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.16em;
-}
-
-.hero__title .inline-pill {
-  margin: 0;
-  vertical-align: 0;
-}
-
-.js-anim .hero__line-inner {
-  transform: translate3d(0, 110%, 0);
-}
-
-.js-anim [data-hero-fade] {
-  opacity: 0;
-  transform: translate3d(0, 28px, 0);
-}
-
-/* подзаголовок — LCP-элемент: он виден (под шторкой прелоадера) сразу, а не после заставки; выезжает только transform-ом */
-.js-anim .hero__subtitle[data-hero-fade] {
-  opacity: 1;
-}
-
-.js-anim .hero__media {
-  opacity: 0;
-  transform: translate3d(0, 40px, 0) scale(0.97);
-}
-
-.hero__subtitle {
-  max-width: 40ch;
-  font-size: var(--fs-lg);
-  line-height: 1.5;
-  color: var(--text-muted);
-  text-wrap: pretty;
-}
-
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem 1rem;
-  margin-top: 0.5rem;
-}
-
-.hero__cta {
-  max-width: 100%;
-  white-space: normal;
-  text-align: left;
-}
-
-/* ——— карточки под текстом ——— */
-.hero__showcase {
-  display: grid;
-  gap: clamp(0.75rem, 1.6vw, 1.25rem);
-}
-
-/* фото Володимира — карточка со скруглением; три слоя с разной глубиной */
-.hero__media {
   position: relative;
-  margin: 0;
-  aspect-ratio: 4 / 4.4;
-  border-radius: var(--r-card-lg);
-  overflow: hidden;
-  background: var(--block);
   isolation: isolate;
-}
-
-.hero__layer {
-  position: absolute;
-  inset: 0;
-  will-change: transform;
-  pointer-events: none;
-}
-
-/* фото чуть больше карточки — слою есть куда сдвигаться без пустых краёв */
-.hero__layer--photo {
-  inset: -4%;
-}
-
-.hero__photo {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-/* тёплое свечение поверх фото, тянется за курсором */
-.hero__layer--glow {
-  inset: 10% -30% -30% 20%;
-  mix-blend-mode: soft-light;
-}
-
-.hero__glow {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, var(--accent), transparent 70%);
-  opacity: 0.55;
-}
-
-/* кольца «прицела» — самый дальний слой, тонко поверх фото */
-.hero__layer--bg {
-  inset: -18% -38% auto auto;
-  width: 82%;
-  aspect-ratio: 1;
-  color: var(--text-on-block);
-  opacity: 0.28;
-}
-
-.hero__layer--bg svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* именная плашка — светлая пилюля-карточка внизу фото */
-.hero__name {
-  position: absolute;
-  left: clamp(0.75rem, 1.6vw, 1.25rem);
-  bottom: clamp(0.75rem, 1.6vw, 1.25rem);
-  z-index: 1;
-  display: grid;
-  gap: 3px;
-  padding: 0.75rem 1.1rem;
-  border-radius: var(--r-card-sm);
-  background: var(--surface);
+  overflow: clip;
   color: var(--text);
-  box-shadow: 0 18px 40px -20px color-mix(in srgb, var(--block) 60%, transparent);
 }
 
-.hero__name-title {
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-.hero__name-role {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
-}
-
-/* тёмная карточка: видео (или градиент канала) под тремя цифрами */
-.hero__board {
+.hero__stage {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-height: 22rem;
-  padding: clamp(1.25rem, 2.6vw, 2.5rem);
-  border-radius: var(--r-card-lg);
-  overflow: hidden;
-  background: var(--block);
-  isolation: isolate;
 }
 
-.hero__backdrop {
+/* ——— космос: свечение темы, видео (если файл есть) ——— */
+.hero__space {
   position: absolute;
-  inset: -12% 0;
+  inset: 0;
   z-index: -1;
+  overflow: hidden;
   pointer-events: none;
 }
 
 .hero__gradient {
   position: absolute;
-  inset: -12%;
+  inset: 0;
   background:
-    radial-gradient(42% 46% at 72% 40%, color-mix(in srgb, var(--accent-2) 50%, transparent), transparent 70%),
-    radial-gradient(30% 34% at 92% 78%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 72%),
-    linear-gradient(180deg, var(--block-2), var(--block) 75%);
-  will-change: transform;
-}
-
-.js-anim .hero__gradient {
-  animation: hero-drift 22s var(--ease-in-out) infinite alternate;
-}
-
-@keyframes hero-drift {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(-4%, 3%, 0) scale(1.08);
-  }
+    radial-gradient(60% 50% at 50% 42%, color-mix(in srgb, var(--glow) 55%, transparent), transparent 70%),
+    radial-gradient(90% 70% at 50% 110%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%);
 }
 
 .hero__video {
@@ -267,50 +44,340 @@
 }
 
 .hero__video.is-ready {
+  opacity: 0.28;
+}
+
+/* ——— сцена 1: слово поверх планеты ——— */
+.hero__intro {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: clamp(1rem, 3vh, 1.75rem);
+  min-height: 100svh;
+  padding: calc(var(--header-h) + clamp(1rem, 3vh, 2rem)) var(--gutter) clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.hero__eyebrow {
+  justify-self: start;
+}
+
+.hero__orbit {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: min(110vw, 62svh);
+  container-type: inline-size;
+}
+
+.hero__orbit > * {
+  grid-area: 1 / 1;
+}
+
+.hero__planet {
+  --planet-size: min(74vw, 44svh);
+  /* без will-change: при «влёте» Chrome перерисовывает полосы в новом масштабе, а не растягивает растр */
+}
+
+.hero__word {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: min(calc(100cqi / 5.1), 34svh);
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+/* после разбивки на буквы текст из JSON остаётся только для чтения с экрана */
+.hero__word.is-split .hero__word-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.hero__letters {
+  display: inline-flex;
+}
+
+.hero__letter {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* маска для подъёма буквы после заставки; запас по краям — глифы не обрезаются */
+.hero--entering .hero__letter {
+  overflow: hidden;
+  padding: 0.04em 0.02em;
+  margin: -0.04em -0.02em;
+}
+
+.hero__letter-inner {
+  display: inline-block;
+}
+
+.hero__subtitle {
+  max-width: 34ch;
+  font-size: var(--fs-lg);
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-wrap: pretty;
+}
+
+.hero__scroll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  justify-self: start;
+  color: var(--text-muted);
+}
+
+/* колёсико мыши: рамка и бегущая точка */
+.hero__wheel {
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 28px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 10px;
+  flex: none;
+}
+
+.hero__wheel span {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 3px;
+  height: 6px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.js-anim .hero__wheel span {
+  animation: hero-wheel 1.8s var(--ease-in-out) infinite;
+}
+
+@keyframes hero-wheel {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate3d(0, 9px, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0, 9px, 0);
+    opacity: 0;
+  }
+}
+
+/* появление после заставки: начальное состояние держится, пока шторка закрывает экран */
+.js-preload .hero--entering .hero__letter-inner {
+  transform: translate3d(0, 70%, 0);
+}
+
+.js-preload .hero--entering .hero__orbit {
+  transform: scale(0.9);
+}
+
+.js-preload .hero--entering .planet__glow {
+  opacity: 0;
+}
+
+.js-preload .hero--entering [data-hero-fade] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+}
+
+/* подзаголовок может оказаться LCP-элементом: он виден под шторкой, выезжает только transform-ом */
+.js-preload .hero--entering .hero__subtitle[data-hero-fade] {
   opacity: 1;
 }
 
-/* затемнение к низу, где цифры */
-.hero__overlay {
+/* ——— круглое окно (в потоке — карточка с фото) ——— */
+.hero__window {
+  position: relative;
+  margin-inline: var(--gutter);
+  aspect-ratio: 4 / 5;
+  max-height: 86svh;
+  border-radius: var(--r-card-lg);
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.hero__window-inner {
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, color-mix(in srgb, var(--block) 82%, transparent), transparent 70%);
+  will-change: transform;
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  isolation: isolate;
+}
+
+.hero__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__layer--photo {
+  will-change: transform;
+}
+
+/* тёплое свечение поверх фото, тянется за курсором */
+.hero__layer--glow {
+  inset: 10% -20% -10% 30%;
+  mix-blend-mode: soft-light;
+  will-change: transform;
+}
+
+.hero__glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--accent), transparent 70%);
+  opacity: 0.5;
+}
+
+.hero__name {
+  position: absolute;
+  right: clamp(1rem, 2vw, 1.5rem);
+  bottom: clamp(1rem, 2vw, 1.5rem);
+  z-index: 1;
+  display: grid;
+  justify-items: end;
+  gap: 0.2rem;
+  text-align: right;
+}
+
+/* ——— сцена 2: заголовок, цифры, кнопка ——— */
+.hero__scene {
+  position: relative;
+  padding-top: clamp(2rem, 6vh, 3rem);
+}
+
+.hero__copy {
+  display: grid;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.hero__title {
+  font-size: clamp(2rem, 1rem + 4.6vw, 5.25rem);
+  line-height: 0.95;
+  text-wrap: balance;
+  overflow-wrap: normal;
+}
+
+/* маска строки: строка выезжает снизу из-под overflow */
+.hero__line {
+  display: block;
+  overflow: hidden;
+  padding: 0.06em 0.04em 0.08em;
+  margin: -0.06em -0.04em -0.08em;
+}
+
+.hero__line-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+.hero__bottom {
+  display: grid;
+  gap: clamp(1.25rem, 3vh, 2rem);
 }
 
 .hero__stats {
   display: grid;
-  width: 100%;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: clamp(1rem, 3vw, 2.5rem);
 }
 
 .hero__stat {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-block: clamp(0.9rem, 1.6vw, 1.35rem);
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  padding-top: 0.9rem;
   border-top: 1px solid var(--line-strong);
 }
 
 .hero__stat-value {
   font-family: var(--font-mono);
-  font-size: clamp(2.25rem, 1.4rem + 3vw, 4.25rem);
+  font-size: clamp(1.375rem, 0.9rem + 2.2vw, 2.75rem);
   font-weight: 500;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  color: var(--accent);
 }
 
 .hero__stat-label {
-  font-size: var(--fs-sm);
+  font-size: 0.6875rem;
   line-height: 1.35;
-  text-align: right;
-  color: var(--text-muted);
+}
+
+.hero__cta {
+  justify-self: start;
+  max-width: 100%;
+  white-space: normal;
+  text-align: left;
+}
+
+/* начальное состояние сцены 2 в потоке: проявляется при входе в экран (hero.js → .is-in) */
+.js-anim .hero__scene:not(.is-in) .hero__line-inner {
+  transform: translate3d(0, 112%, 0);
+}
+
+.js-anim .hero__scene:not(.is-in) [data-scene-item] {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+}
+
+.hero__scene.is-in .hero__line-inner,
+.hero__scene.is-in [data-scene-item] {
+  transition:
+    transform 1s var(--ease-out),
+    opacity 0.8s var(--ease-out);
+}
+
+.hero__scene.is-in .hero__line:nth-child(2) .hero__line-inner {
+  transition-delay: 0.1s;
+}
+
+.hero__scene.is-in .hero__stats {
+  transition-delay: 0.2s;
+}
+
+.hero__scene.is-in .hero__cta {
+  transition-delay: 0.3s;
+}
+
+.hero__scene.is-in .hero__trust {
+  transition-delay: 0.4s;
 }
 
 /* ——— «Мені довіряють» ——— */
 .hero__trust {
-  margin-top: clamp(1.5rem, 4vh, 2.5rem);
+  margin-top: clamp(2rem, 5vh, 3rem);
+  border-top: 1px solid var(--line);
 }
 
 .hero__trust-inner {
@@ -321,11 +388,6 @@
 }
 
 .hero__trust-title {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
   white-space: nowrap;
 }
 
@@ -369,9 +431,10 @@
   gap: clamp(1.25rem, 2.5vw, 2.5rem);
   padding-right: clamp(1.25rem, 2.5vw, 2.5rem);
   font-family: var(--font-display);
-  font-size: clamp(1.15rem, 0.95rem + 0.8vw, 1.625rem);
-  font-weight: 600;
-  letter-spacing: var(--tracking-tight);
+  font-size: clamp(1rem, 0.85rem + 0.7vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
   white-space: nowrap;
   color: var(--text);
   opacity: 0.72;
@@ -383,7 +446,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--grad);
+  background: var(--accent);
   flex: none;
 }
 
@@ -397,24 +460,37 @@
 
 /* ——— планшет ——— */
 @media (min-width: 640px) {
-  .hero__showcase {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  .hero__intro {
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .hero__media {
-    aspect-ratio: auto;
-    min-height: 26rem;
+  .hero__orbit {
+    grid-column: 1 / -1;
+  }
+
+  .hero__scroll {
+    justify-self: end;
+    align-self: end;
+  }
+
+  .hero__window {
+    aspect-ratio: 16 / 11;
+  }
+
+  .hero__photo .photo-img {
+    object-position: 50% 26%;
+  }
+
+  .hero__bottom {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
   }
 }
 
-/* ——— десктоп: фото 5 колонок, тёмная карточка 7 ——— */
 @media (min-width: 900px) {
-  .hero__showcase {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  }
-
-  .hero__media {
-    min-height: min(36rem, 62vh);
+  .hero__window {
+    aspect-ratio: 16 / 8;
+    max-height: none;
   }
 
   .hero__trust-inner {
@@ -424,12 +500,144 @@
   }
 }
 
+/* ——— десктоп: закреплённая сцена, слои друг над другом (ведёт hero.js) ——— */
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .js-anim .hero:not(.hero--static) .hero__stage {
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    container-type: size;
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__intro {
+    position: absolute;
+    inset: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    min-height: 0;
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__orbit {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+    padding-inline: var(--gutter);
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__planet {
+    --planet-size: min(40vw, 62vh);
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__eyebrow {
+    position: relative;
+    z-index: 2;
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__subtitle,
+  .js-anim .hero:not(.hero--static) .hero__scroll {
+    position: relative;
+    z-index: 2;
+    grid-row: 3;
+    align-self: end;
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__subtitle {
+    grid-column: 1;
+    font-size: var(--fs-base);
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__scroll {
+    grid-column: 2;
+  }
+
+  /* круг больше диагонали экрана; растёт из центра */
+  .js-anim .hero:not(.hero--static) .hero__window {
+    position: absolute;
+    top: calc(50% - 75vmax);
+    left: calc(50% - 75vmax);
+    width: 150vmax;
+    height: 150vmax;
+    max-height: none;
+    margin: 0;
+    aspect-ratio: auto;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.04);
+    will-change: transform, opacity;
+  }
+
+  /* содержимое окна — ровно экран сцены, по центру круга */
+  .js-anim .hero:not(.hero--static) .hero__window-inner {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    width: 100cqw;
+    height: 100cqh;
+    margin: -50cqh 0 0 -50cqw;
+  }
+
+  /* фото — правая часть экрана, растворяется в фоне слева и снизу */
+  .js-anim .hero:not(.hero--static) .hero__layer--photo {
+    inset: 5% -3% -3% 40%;
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__photo {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, var(--text) 34%);
+    mask-image: linear-gradient(90deg, transparent 0, var(--text) 34%);
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__photo .photo-img {
+    object-position: 50% 6%;
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__name {
+    top: calc(var(--header-h) + 1.5rem);
+    right: var(--gutter);
+    bottom: auto;
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__scene {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: 0;
+    pointer-events: none;
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__scene > * {
+    pointer-events: auto;
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__title {
+    max-width: 62%;
+    font-size: clamp(2.5rem, 0.6rem + 4.2vw, 5.5rem);
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__bottom {
+    grid-template-columns: auto auto;
+    justify-content: start;
+    column-gap: clamp(2rem, 4vw, 4.5rem);
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__trust {
+    margin-top: clamp(1.25rem, 3.5vh, 2.25rem);
+    background: color-mix(in srgb, var(--bg) 55%, transparent);
+  }
+
+  .js-anim .hero:not(.hero--static) .hero__trust-inner {
+    padding-block: 0.9rem;
+  }
+}
+
 @media (max-width: 420px) {
-  .hero__actions .btn {
+  .hero__cta {
     width: 100%;
   }
 
   .hero__stat-label {
-    font-size: 0.8125rem;
+    font-size: 0.625rem;
   }
 }

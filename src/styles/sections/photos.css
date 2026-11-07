@@ -1,4 +1,10 @@
-/* фото Володимира: hero, блок засновника, финальный CTA */
+/* фото Володимира: hero (DSC_3087 в круглом окне сцены), блок засновника, финальный CTA */
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
 .hero__photo picture,
 .founder__photo picture,
 .cta__photo picture {
@@ -14,7 +20,7 @@
 }
 
 .hero__photo .photo-img {
-  object-position: 30% 20%;
+  object-position: 50% 18%;
 }
 
 .founder__photo .photo-img {
