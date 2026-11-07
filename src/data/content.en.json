@@ -48,6 +48,7 @@
     "next": "Next section"
   },
   "hero": {
+    "word": "ELEADS",
     "eyebrow": "TELEGRAM PERFORMANCE MARKETING",
     "titleLine1": "Growth",
     "titleLine2": "through",
@@ -273,6 +274,8 @@
   "cases": {
     "eyebrow": "06 / SOCIAL PROOF",
     "title": "Results across niches and GEOs",
+    "word": "CASES",
+    "listLabel": "Cases — swipe sideways",
     "labels": {
       "budget": "Budget",
       "result": "Result",

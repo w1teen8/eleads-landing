@@ -1,61 +1,160 @@
-/* 06 Кейси (overtake «Selected work»): светлый контейнер, кейсы — тёмные карточки.
-   Мобильный и reduced-motion — обычный список, Cryptonite первым и крупнее.
-   Широкий экран — стопка: каждая карточка sticky, уходящую cases.js уменьшает через transform: scale.
-   Модалка кейса — нативный <dialog> во весь экран с вуалью, тёмная панель въезжает transform + opacity. */
+/* 06 Кейси — галерея «SHOT AFTER DARK» облика Aether. Кадры-карточки типографские (фото кейсов нет):
+   ниша-тег моно, номер акцентом, название, CPA/CPS крупно, бюджет и результат; Cryptonite крупнее.
+   База (мобильный, reduced-motion, без JS): горизонтальный свайп со scroll-snap, без закрепления.
+   ≥900px + JS-класс .is-pinned на секции: сцена на весь экран, cases.js закрепляет её и двигает ленту
+   transform-ом; слово-фон и полоса прогресса — тоже transform. Модалка кейса — нативный <dialog>. */
 
-.cases__grid {
+.cases__stage {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+
+/* огромное серое слово за лентой («КЕЙСИ» / «CASES»); top + margin вместо translate — transform у GSAP */
+.cases__word {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: var(--gutter);
+  margin-top: -0.46em;
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 34vw, 12rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--text) 7%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+.cases__head {
+  position: relative;
   display: grid;
-  gap: clamp(0.75rem, 1.4vw, 1.25rem);
-  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* глобальный Unbounded капсом рвал бы длинные слова посреди — здесь переносим только по пробелам */
+.cases__title {
+  max-width: 9em;
+  font-size: clamp(1.75rem, 1rem + 2.6vw, 3.6rem);
+  overflow-wrap: normal;
+  hyphens: manual;
+  text-wrap: wrap;
+  color: var(--accent);
+}
+
+/* «вторая строка акцентом»: заголовок — один ключ cases.title; первое слово шире половины max-width,
+   поэтому одно занимает первую строку — её красим в основной цвет, остальное остаётся акцентом */
+.cases__title::first-line {
+  color: var(--text);
+}
+
+/* ——— лента: нативный горизонтальный скролл ——— */
+.cases__viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+
+.cases__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.cases__track {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.75rem, 2.4vw, 1.25rem);
+  width: max-content;
+  padding: 0.5rem var(--gutter) 1.5rem;
 }
 
 .cases__item {
+  --card-w: min(78vw, 360px);
+  --card-h: 26rem;
+  position: relative;
+  flex: none;
   display: flex;
-  min-width: 0;
+  width: var(--card-w);
+  height: var(--card-h);
+  scroll-snap-align: start;
 }
 
+/* разная высота и сдвиг — лента не выглядит строем клонов и на телефоне */
+.cases__item:nth-child(3n + 2) {
+  --card-h: 24rem;
+  top: 1.5rem;
+}
+
+.cases__item:nth-child(3n) {
+  --card-h: 25rem;
+  top: 0.75rem;
+}
+
+.cases__item--featured {
+  --card-w: min(86vw, 440px);
+  --card-h: 28rem;
+}
+
+/* ——— карточка-кадр ——— */
 .cases__card {
-  --pad: clamp(1.25rem, 2.2vw, 2rem);
+  --pad: clamp(1rem, 1.6vw, 1.6rem);
   --on: var(--text-on-block);
   --on-muted: var(--text-on-block-muted);
   --hair: color-mix(in srgb, var(--text-on-block) 12%, transparent);
+  --gx: 85%;
+  --gy: 100%;
+  --glow: color-mix(in srgb, var(--accent-2) 30%, transparent);
+  container-type: inline-size;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.9rem;
   width: 100%;
-  min-height: 300px;
+  height: 100%;
   padding: var(--pad);
   border: 1px solid var(--hair);
-  border-radius: var(--r-card);
-  background: var(--block);
+  border-radius: var(--r-media);
+  background:
+    radial-gradient(75% 60% at var(--gx) var(--gy), var(--glow), transparent 70%),
+    repeating-linear-gradient(115deg, color-mix(in srgb, var(--text-on-block) 3.5%, transparent) 0 1px, transparent 1px 11px),
+    var(--block);
   color: var(--on);
   text-align: left;
   isolation: isolate;
   overflow: hidden;
-  transform-origin: 50% 0;
   transition: transform var(--dur) var(--ease-out);
 }
 
-/* обводка-градиент на hover: отдельный слой, меняется только opacity */
+.cases__item:nth-child(2) .cases__card { --gx: 10%; --gy: 0%; }
+.cases__item:nth-child(3) .cases__card { --gx: 100%; --gy: 20%; }
+.cases__item:nth-child(4) .cases__card { --gx: 0%; --gy: 100%; }
+.cases__item:nth-child(5) .cases__card { --gx: 60%; --gy: 0%; }
+.cases__item:nth-child(6) .cases__card { --gx: 100%; --gy: 70%; }
+.cases__item:nth-child(7) .cases__card { --gx: 20%; --gy: 90%; }
+
+/* обводка акцентом на hover/фокус: отдельный слой, меняется только opacity */
 .cases__card::before {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 1;
   border-radius: inherit;
-  padding: 1px;
-  background: var(--grad);
-  -webkit-mask: linear-gradient(var(--block) 0 0) content-box, linear-gradient(var(--block) 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(var(--block) 0 0) content-box exclude, linear-gradient(var(--block) 0 0);
+  border: 1px solid var(--accent);
   opacity: 0;
+  pointer-events: none;
   transition: opacity var(--dur) var(--ease-out);
 }
 
 .cases__card:hover,
 .cases__card:focus-visible {
-  transform: translateY(-4px);
+  transform: translate3d(0, -6px, 0);
 }
 
 .cases__card:hover::before,
@@ -71,73 +170,57 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .cases__tag {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 0 0.75rem;
+  min-height: 26px;
+  padding: 0 0.7rem;
+  border: 1px solid var(--hair);
   border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--text-on-block) 10%, transparent);
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
+  font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--on);
-  white-space: nowrap;
 }
 
-/* «Детальніше» — светлая пилюля с кружком-стрелкой, как «View full case study» образца */
-.cases__more {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-height: 34px;
-  padding: 0 0.35rem 0 0.9rem;
-  border-radius: var(--r-pill);
-  background: var(--surface);
-  color: var(--text);
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  white-space: nowrap;
+.cases__num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  color: var(--accent);
 }
 
-.cases__more svg {
-  width: 26px;
-  height: 26px;
-  padding: 5px;
-  border-radius: 50%;
-  background: var(--block);
-  color: var(--text-on-block);
-  transition: transform var(--dur-fast) var(--ease-out);
-}
-
-.cases__card:hover .cases__more svg,
-.cases__card:focus-visible .cases__more svg {
-  transform: rotate(45deg);
-}
-
+/* название: кегль от ширины карточки (cqi) — «ДОМБОВЕЦЬКИЙ» влезает целиком, перенос только по пробелам */
 .cases__name {
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 1rem + 0.9vw, 1.8rem);
-  font-weight: 600;
-  line-height: 1.05;
-  text-transform: none;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.05rem, 7.6cqi, 2.4rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
 }
 
 .cases__figure {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.3rem;
   margin-top: auto;
 }
 
-.cases__figure-label {
+.cases__figure-label,
+.cases__fact-label {
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
+  font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
   color: var(--on-muted);
 }
@@ -146,35 +229,42 @@
 .cases__figure-value {
   justify-self: start;
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 1.8rem + 2.6vw, 4rem);
-  font-weight: 600;
-  line-height: 0.9;
-  text-transform: none;
-  letter-spacing: -0.04em;
+  font-size: clamp(1.8rem, 15cqi, 4.4rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
   background: var(--grad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  overflow-wrap: anywhere;
+}
+
+/* «уточнити» длиннее цифры — кегль ниже, пунктир: видно, что цифры ещё нет */
+.cases__figure-value.is-tbd {
+  font-size: clamp(1.4rem, 10.5cqi, 3.4rem);
+}
+
+.cases__figure-value.is-tbd::after {
+  content: '';
+  display: block;
+  margin-top: 0.14em;
+  border-bottom: 2px dashed color-mix(in srgb, var(--accent) 70%, transparent);
 }
 
 .cases__facts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
-  padding-top: 1rem;
+  padding-top: 0.8rem;
   border-top: 1px solid var(--hair);
 }
 
 .cases__fact {
   display: grid;
-  gap: 0.15rem;
+  gap: 0.2rem;
   min-width: 0;
-}
-
-.cases__fact-label {
-  font-size: var(--fs-xs);
-  color: var(--on-muted);
 }
 
 .cases__fact-value {
@@ -184,185 +274,167 @@
   overflow-wrap: anywhere;
 }
 
-/* «уточнити» — честная заглушка: видно, что цифры ещё нет */
-.cases__card .is-tbd {
-  position: relative;
-}
-
 .cases__fact-value.is-tbd {
   color: var(--accent);
 }
 
-/* слово длиннее цифры — кегль ниже, но всё ещё самый крупный на карточке */
-.cases__figure-value.is-tbd {
-  font-size: clamp(2rem, 1.5rem + 1.4vw, 2.75rem);
-  white-space: nowrap;
+/* «Детальніше ↗» — моно-подпись кадра, стрелка поворачивается на hover */
+.cases__more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--on-muted);
 }
 
-.cases__item--featured .cases__figure-value.is-tbd {
-  font-size: clamp(2.75rem, 1.6rem + 4vw, 5.25rem);
-}
-
-.cases__figure-value.is-tbd::after {
-  content: '';
-  display: block;
-  margin-top: 0.12em;
-  height: 0;
-  border-bottom: 2px dashed color-mix(in srgb, var(--accent) 70%, transparent);
-}
-
-/* ——— главный кейс: акцентная карточка, крупнее остальных ——— */
-.cases__item--featured .cases__card {
-  --on: var(--accent-ink);
-  --on-muted: color-mix(in srgb, var(--accent-ink) 72%, transparent);
-  --hair: color-mix(in srgb, var(--accent-ink) 18%, transparent);
-  min-height: 420px;
-  border-color: transparent;
-  border-radius: var(--r-card-lg);
+.cases__more svg {
+  width: 28px;
+  height: 28px;
+  padding: 6px;
+  border-radius: 50%;
   background: var(--accent);
+  color: var(--accent-ink);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.cases__card:hover .cases__more svg,
+.cases__card:focus-visible .cases__more svg {
+  transform: rotate(45deg);
+}
+
+/* ——— главный кейс: крупнее, сильнее свечение, дуга кольца ——— */
+.cases__item--featured .cases__card {
+  --gx: 100%;
+  --gy: 100%;
+  --glow: color-mix(in srgb, var(--accent) 42%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .cases__item--featured .cases__card::after {
   content: '';
   position: absolute;
-  right: -12%;
-  top: -18%;
   z-index: -1;
-  width: 60%;
-  aspect-ratio: 1;
-  border: 1px solid var(--hair);
+  right: -38%;
+  bottom: -30%;
+  width: 110%;
+  aspect-ratio: 2.4;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
   border-radius: 50%;
-  box-shadow:
-    0 0 0 48px color-mix(in srgb, var(--accent-ink) 4%, transparent),
-    0 0 0 96px color-mix(in srgb, var(--accent-ink) 3%, transparent);
+  transform: rotate(-14deg);
   pointer-events: none;
 }
 
-.cases__item--featured .cases__tag {
-  color: var(--text-on-block);
-  background: var(--block);
-}
-
 .cases__item--featured .cases__name {
-  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.4rem);
+  font-size: clamp(1.6rem, 11cqi, 4.2rem);
 }
 
-/* градиентный текст на акцентной заливке не читается — главная цифра сплошным тёмным */
 .cases__item--featured .cases__figure-value {
-  font-size: clamp(3.6rem, 2rem + 6vw, 7.5rem);
-  background: none;
-  color: var(--accent-ink);
+  font-size: clamp(2.4rem, 20cqi, 7rem);
 }
 
-.cases__item--featured .cases__fact-value {
-  font-size: var(--fs-base);
+.cases__item--featured .cases__figure-value.is-tbd {
+  font-size: clamp(1.8rem, 13.5cqi, 5rem);
 }
 
-.cases__item--featured .cases__fact-value.is-tbd {
-  color: var(--accent-ink);
+/* ——— полоса прогресса: тонкая линия, акцентная заливка растёт scaleX ——— */
+.cases__foot {
+  margin-top: 1.25rem;
 }
 
-.cases__item--featured .cases__figure-value.is-tbd::after {
-  border-bottom-color: var(--accent-ink);
+.cases__progress {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--text) 12%, transparent);
 }
 
-/* вторая тёмная — тон чуть другой, чтобы список не выглядел набором клонов */
-.cases__item:nth-child(even) .cases__card {
-  background: var(--block-2);
+.cases__progress-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--grad);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
 }
 
-/* ——— планшет: две колонки, главный во всю ширину ——— */
-@media (min-width: 700px) and (max-width: 899px) {
-  .cases__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .cases__item--featured {
-    grid-column: 1 / -1;
-  }
-}
-
-/* ——— широкий экран: горизонтальные карточки (слева «витрина» с цифрой, справа плашка-описание) ——— */
+/* ——— широкий экран: закреплённая сцена (класс ставит cases.js, не при reduced-motion) ——— */
 @media (min-width: 900px) {
-  .cases__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .section--cases.is-pinned {
+    padding-block: 0;
   }
 
-  .cases__item--featured {
-    grid-column: 1 / -1;
-  }
-
-  .cases__card {
+  .is-pinned .cases__stage {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas:
-      'figure top'
-      'figure name'
-      'figure facts';
-    gap: 1.25rem clamp(1.25rem, 2.4vw, 2.5rem);
-    min-height: 340px;
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
+    height: 100vh;
+    height: 100svh;
+    padding-top: var(--header-h);
   }
 
-  .cases__top {
-    grid-area: top;
+  .is-pinned .cases__word {
+    top: 52%;
+    font-size: clamp(10rem, 44vh, 32rem);
   }
 
-  .cases__name {
-    grid-area: name;
-    align-self: start;
-  }
-
-  .cases__facts {
-    grid-area: facts;
-  }
-
-  /* «витрина» — вложенная скруглённая плашка с огромной цифрой, место будущего скриншота кейса */
-  .cases__figure {
-    grid-area: figure;
-    align-content: end;
+  .is-pinned .cases__head {
+    position: absolute;
+    z-index: 0;
+    top: calc(var(--header-h) + clamp(1rem, 4vh, 3rem));
+    left: 0;
+    right: 0;
     margin: 0;
-    padding: clamp(1.25rem, 2vw, 2rem);
-    border-radius: var(--r-card-sm);
-    background:
-      radial-gradient(80% 70% at 100% 100%, color-mix(in srgb, var(--accent-2) 26%, transparent), transparent 70%),
-      color-mix(in srgb, var(--on) 6%, transparent);
+    max-width: none;
+    pointer-events: none;
   }
 
-  .cases__item--featured .cases__figure {
-    background: color-mix(in srgb, var(--accent-ink) 8%, transparent);
+  .is-pinned .cases__title {
+    font-size: clamp(1.9rem, 0.6rem + 2.6vw, 3.4rem);
   }
 
-  /* стопка: включает cases.js (не при reduced). Флекс-колонка — у грид-элемента sticky
-     ограничен своей ячейкой и не «прилипал» бы. */
-  .cases__grid.is-stacked {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1rem, 2vw, 1.5rem);
-    padding-bottom: clamp(1rem, 4vh, 3rem);
+  /* лента шире экрана, но горизонтального скролла нет: вьюпорт режет, ленту двигает transform */
+  .is-pinned .cases__viewport {
+    position: relative;
+    z-index: 1;
+    overflow: clip;
+    min-width: 0;
+    scroll-snap-type: none;
   }
 
-  .cases__grid.is-stacked .cases__item {
-    position: sticky;
-    top: calc(var(--header-h) + 1.25rem + var(--i, 0) * 0.85rem);
+  .is-pinned .cases__track {
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 3.5rem);
+    height: 100%;
+    padding: 0 12vw 0 calc(var(--gutter) + clamp(380px, 36vw, 620px));
   }
 
-  /* масштаб уходящей карточки: cases.js пишет --stack-s (1 → 0.94) по прокрутке */
-  .cases__grid.is-stacked .cases__card {
-    min-height: clamp(340px, 54vh, 460px);
-    transform: scale(var(--stack-s, 1));
-    transition: none;
-    will-change: transform;
+  .is-pinned .cases__item {
+    --card-w: clamp(290px, 22vw, 380px);
+    --card-h: max(340px, 52vh);
+    --card-dy: 0vh;
+    top: var(--card-dy);
+    scroll-snap-align: none;
   }
 
-  .cases__grid.is-stacked .cases__item--featured .cases__card {
-    min-height: clamp(400px, 64vh, 560px);
+  .is-pinned .cases__item--featured {
+    --card-w: clamp(400px, 34vw, 600px);
+    --card-h: max(440px, 68vh);
+    --card-dy: 5vh;
   }
 
-  /* у карточки в стопке transform занят масштабом — подъём на hover отключаем */
-  .cases__grid.is-stacked .cases__card:hover,
-  .cases__grid.is-stacked .cases__card:focus-visible {
-    transform: scale(var(--stack-s, 1));
+  .is-pinned .cases__item:nth-child(2) { --card-w: clamp(290px, 22vw, 380px); --card-h: max(340px, 50vh); --card-dy: -9vh; }
+  .is-pinned .cases__item:nth-child(3) { --card-w: clamp(320px, 27vw, 460px); --card-h: max(340px, 44vh); --card-dy: 11vh; }
+  .is-pinned .cases__item:nth-child(4) { --card-w: clamp(290px, 21vw, 360px); --card-h: max(360px, 58vh); --card-dy: -4vh; }
+  .is-pinned .cases__item:nth-child(5) { --card-w: clamp(320px, 25vw, 430px); --card-h: max(340px, 46vh); --card-dy: 9vh; }
+  .is-pinned .cases__item:nth-child(6) { --card-w: clamp(300px, 23vw, 390px); --card-h: max(350px, 56vh); --card-dy: -7vh; }
+  .is-pinned .cases__item:nth-child(7) { --card-w: clamp(330px, 28vw, 470px); --card-h: max(340px, 50vh); --card-dy: 6vh; }
+
+  .is-pinned .cases__foot {
+    margin: 0;
+    padding-block: clamp(1rem, 3vh, 2rem) clamp(1.25rem, 4vh, 2.5rem);
   }
 }
 

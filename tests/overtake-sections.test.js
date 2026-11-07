@@ -26,12 +26,4 @@ test('JS секций 02–14 не читает старые имена пали
   }
 });
 
-test('кейсы складываются стопкой: sticky + scale только на широком экране', () => {
-  const css = strip(read('src/styles/sections/cases.css'));
-  const wide = css.split(/@media\s*\(min-width:\s*\d+px\)/).slice(1).join('');
-  assert.match(wide, /position:\s*sticky/, 'sticky только внутри min-width');
-  const base = css.split(/@media/)[0];
-  assert.doesNotMatch(base, /position:\s*sticky/, 'на мобильном стопки нет');
-  const js = strip(read('src/sections/cases.js'));
-  assert.match(js, /scale/, 'уходящая карточка уменьшается через transform: scale');
-});
+// Стопка кейсов (overtake) снята таском 12: кейсы — галерея Aether, её держит tests/cases-gallery.test.js.

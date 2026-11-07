@@ -1,17 +1,21 @@
-// 06 Кейси: карточки из src/data/cases.json по <template>, модалка кейса без перехода со страницы.
-// Широкий экран (не reduced): карточки складываются стопкой — sticky в CSS, уходящая карточка
-// уменьшается (transform: scale через --stack-s) по мере того, как следующая наезжает на неё.
+// 06 Кейси — галерея в духе «SHOT AFTER DARK» (Aether): карточки из src/data/cases.json по <template>.
+// ≥900px без reduced-motion: сцена закреплена (ScrollTrigger pin + scrub), вертикальная прокрутка двигает
+// ленту вбок (translateX), огромное слово «КЕЙСИ» за ней едет медленнее, полоса прогресса растёт scaleX.
+// Длина закрепления = на сколько лента шире экрана. Меньше / reduced / без JS — нативный горизонтальный
+// свайп со scroll-snap; стрелки ←/→ переводят фокус между карточками.
 // Модалка — нативный <dialog>: Esc, клик вне, кнопка; фокус заперт и возвращается на карточку;
 // фон не скроллится (lockScroll ставит Lenis на паузу).
-import { $, el, on, trapFocus } from '../core/dom.js';
+import { $, $$, el, on, trapFocus } from '../core/dom.js';
 import { t, getLang, onLangChange, applyTranslations } from '../core/i18n.js';
-import { lockScroll, reduced } from '../core/motion.js';
+import { lockScroll, reduced, motionReady, refreshMotion, scrollToTarget } from '../core/motion.js';
 import { track } from '../core/analytics.js';
 import data from '../data/cases.json';
 
 const CARD_FIELDS = ['niche', 'name', 'cpa', 'budget', 'result'];
 const MODAL_FIELDS = ['name', 'niche', 'task', 'geo', 'budget', 'result', 'cpa', 'review'];
 const CLOSE_MS = 260;
+const GALLERY_MEDIA = '(min-width: 900px)';
+const WORD_SPEED = 0.38; // слово-фон проходит 38% пути ленты — «едет медленнее»
 
 const text = (value, lang) => (value && typeof value === 'object' ? value[lang] ?? value.ua ?? '' : String(value ?? ''));
 const isTbd = (value) => value === t('common.tbd') || value === 'уточнити' || value === 'TBD';
@@ -35,6 +39,8 @@ export function init(root) {
     applyTranslations(li);
     li.style.setProperty('--i', String(i));
     if (item.featured) li.classList.add('cases__item--featured');
+    const num = $('[data-case-num]', li);
+    if (num) num.textContent = String(i + 1).padStart(2, '0');
     const button = $('.cases__card', li);
     button.dataset.case = item.id;
     on(button, 'click', () => open(item, button));
@@ -42,7 +48,7 @@ export function init(root) {
   });
   grid.replaceChildren(...cards.map((c) => c.li));
   grid.dataset.reveal = 'stagger';
-  if (!reduced) stack(grid, cards.map((c) => c.li));
+  const galleryApi = gallery(root, grid);
 
   const paintCards = (lang) => {
     for (const { item, li } of cards) {
@@ -140,56 +146,105 @@ export function init(root) {
   onLangChange((lang) => {
     paintCards(lang);
     if (current) paintModal(current, lang);
+    galleryApi.refresh();
   });
 }
 
-/* ——— стопка ——— */
-const STACK_MEDIA = '(min-width: 900px)';
-const STACK_SHRINK = 0.06; // уходящая карточка: scale 1 → 0.94
+/* ——— галерея ——— */
+function gallery(root, trackEl) {
+  const stage = $('[data-cases-stage]', root);
+  const viewport = $('[data-cases-viewport]', root);
+  const word = $('[data-cases-word]', root);
+  const head = $('[data-cases-head]', root);
+  const bar = $('[data-cases-progress]', root);
+  const faces = () => $$('.cases__card', trackEl);
+  let pin = null; // ScrollTrigger закреплённой сцены, пока она есть
 
-// Прогресс считается от живого getBoundingClientRect следующей карточки: пока она едет снизу,
-// он растёт от 0 (её верх у низа окна) до 1 (она прилипла на своём sticky-top). Позиции sticky
-// не кэшируются — ScrollTrigger для sticky-элементов мерил бы неверно.
-function stack(grid, items) {
-  const media = window.matchMedia(STACK_MEDIA);
-  const faces = items.map((li) => $('.cases__card', li));
+  // ←/→ — к соседней карточке; Home/End — к крайним
+  on(trackEl, 'keydown', (e) => {
+    const list = faces();
+    const i = list.indexOf(document.activeElement);
+    if (i < 0) return;
+    const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: list.length - 1 }[e.key];
+    if (to === undefined || to < 0 || to >= list.length) return;
+    e.preventDefault();
+    list[to].focus({ preventScroll: Boolean(pin) });
+    if (!pin) list[to].parentElement.scrollIntoView({ block: 'nearest', inline: 'start', behavior: reduced ? 'auto' : 'smooth' });
+  });
+
+  // свайп: полоса прогресса идёт за нативной прокруткой ленты
   let frame = 0;
-  let unbind = null;
-
-  const paint = () => {
+  const paintSwipe = () => {
     frame = 0;
-    const vh = window.innerHeight;
-    for (let i = 0; i < items.length - 1; i += 1) {
-      const next = items[i + 1];
-      const stickTop = parseFloat(getComputedStyle(next).top) || 0;
-      const top = next.getBoundingClientRect().top;
-      const p = Math.min(1, Math.max(0, (vh - top) / Math.max(1, vh - stickTop)));
-      faces[i].style.setProperty('--stack-s', (1 - STACK_SHRINK * p).toFixed(4));
-    }
+    if (pin || !bar || !viewport) return;
+    const max = viewport.scrollWidth - viewport.clientWidth;
+    bar.style.transform = `scaleX(${max > 0 ? (viewport.scrollLeft / max).toFixed(4) : 0})`;
   };
-  const schedule = () => {
-    if (!frame) frame = requestAnimationFrame(paint);
-  };
+  if (viewport) {
+    on(viewport, 'scroll', () => {
+      if (!frame) frame = requestAnimationFrame(paintSwipe);
+    }, { passive: true });
+    on(window, 'resize', paintSwipe);
+    paintSwipe();
+  }
 
-  const apply = () => {
-    if (media.matches && !unbind) {
-      grid.classList.add('is-stacked');
-      const offScroll = on(window, 'scroll', schedule, { passive: true });
-      const offResize = on(window, 'resize', schedule);
-      unbind = () => {
-        offScroll();
-        offResize();
-      };
-      schedule();
-    } else if (!media.matches && unbind) {
-      unbind();
-      unbind = null;
-      cancelAnimationFrame(frame);
-      frame = 0;
-      grid.classList.remove('is-stacked');
-      for (const face of faces) face.style.removeProperty('--stack-s');
-    }
+  // закреплённая сцена: фокус Tab на карточке за краем экрана — докручиваем страницу до неё
+  on(trackEl, 'focusin', (e) => {
+    if (!pin || !viewport) return;
+    const item = e.target.closest?.('.cases__item');
+    if (!item) return;
+    // сцена закреплена: браузер мог сдвинуть клип-вьюпорт к фокусу — возвращаем, ленту двигает только transform
+    viewport.scrollLeft = 0;
+    const distance = pin.end - pin.start;
+    const room = trackEl.scrollWidth - viewport.clientWidth;
+    if (distance <= 0 || room <= 0) return;
+    // где карточка сейчас на экране (offsetLeft — от .cases__track, у него position: relative)
+    const left = item.offsetLeft - pin.progress * room;
+    if (left >= 0 && left + item.offsetWidth <= viewport.clientWidth) return;
+    const center = item.offsetLeft + item.offsetWidth / 2 - viewport.clientWidth / 2;
+    const p = Math.min(1, Math.max(0, center / room));
+    scrollToTarget(pin.start + p * distance, { immediate: true });
+  });
+
+  if (stage && viewport) {
+    motionReady().then((api) => {
+      if (!api) return;
+      const { gsap } = api;
+      gsap.matchMedia().add(GALLERY_MEDIA, () => {
+        root.classList.add('is-pinned');
+        viewport.scrollLeft = 0;
+        const distance = () => Math.max(0, trackEl.scrollWidth - viewport.clientWidth);
+        const tl = gsap.timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: stage,
+            start: 'top top',
+            end: () => `+=${distance()}`,
+            pin: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+        tl.to(trackEl, { x: () => -distance(), duration: 1 }, 0);
+        if (word) tl.to(word, { x: () => -distance() * WORD_SPEED, duration: 1 }, 0);
+        if (bar) tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 1 }, 0);
+        // заголовок уходит в тень, когда на него наезжают карточки
+        if (head) tl.to(head, { opacity: 0.22, duration: 0.3 }, 0.04);
+        pin = tl.scrollTrigger;
+        return () => {
+          pin = null;
+          root.classList.remove('is-pinned');
+          requestAnimationFrame(paintSwipe);
+        };
+      });
+    });
+  }
+
+  return {
+    refresh() {
+      if (pin) refreshMotion();
+      else paintSwipe();
+    },
   };
-  media.addEventListener('change', apply);
-  apply();
 }

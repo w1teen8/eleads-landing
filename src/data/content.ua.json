@@ -47,6 +47,7 @@
     "next": "Наступний розділ"
   },
   "hero": {
+    "word": "ELEADS",
     "eyebrow": "TELEGRAM PERFORMANCE MARKETING",
     "titleLine1": "Просування",
     "titleLine2": "через",
@@ -271,7 +272,9 @@
   },
   "cases": {
     "eyebrow": "06 / SOCIAL PROOF",
-    "title": "Результати в різних нішах і GEO",
+    "title": "Результати в різних нішах і GEO",
+    "word": "КЕЙСИ",
+    "listLabel": "Кейси — гортайте вбік",
     "labels": {
       "budget": "Бюджет",
       "result": "Результат",
