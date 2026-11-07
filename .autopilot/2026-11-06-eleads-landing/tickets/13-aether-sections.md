@@ -1,7 +1,7 @@
 # 13 — Остальные секции в облике Aether: орбита ниш, цифры-таймер, всё прочее
 
 **Требования:** G13, R22, R23, R47, R51, R52, R53
-**Зависит от:** 11, 12
+**Зависит от:** 12
 **Зона:** `src/sections/{stats,niches,formats,calculator,process,geo,targeting,reviews,ecosystem,materials,faq,cta}.js` · `src/styles/sections/` для тех же секций · разметка этих секций в `index.html` · разделы этих секций в `content.*.json` (только новые подписи, если нужны) · `tests/`
 **Волна:** 13
 **Ревью:** нет

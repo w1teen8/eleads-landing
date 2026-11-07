@@ -241,3 +241,13 @@ export function forecast(input, rates): Forecast
 - Семантические переменные остаются (`--bg … --grad`), значения — под тёмный облик Aether в обеих темах.
 - Новые общие компоненты (`components.css`): `.mono-label` (моно-капс с разрядкой), `.display` (широкий капс Unbounded), `.display__accent` (вторая строка акцентом), `.btn--pill` (акцентная пилюля), `.ribbons` (две ленты крест-накрест, разметка + `motion.marquee`), `.planet` (SVG/CSS-планета с кольцом, параметры через CSS-переменные — общая для hero и орбиты).
 - Footer reveal: буквы вордмарка — отдельные `span` внутри маски; подъём по входу подвала в экран.
+
+### T10 — основа Aether (что реально есть)
+
+- `data-theme` = `brand` (`:root`) | `aether`; доп. переменные `--glow`, `--planet-light/-mid/-dark`, `--ribbon-2`, `--star`; токены `--fs-display`, `--fs-mono`, `--fs-h3`, `--tracking-display`, `--tracking-mono` (`--tracking-tight` = `--tracking-display`).
+- `.mono-label` (`--accent` | `--muted`), `.display > .display__accent`, `.btn--pill` (`.btn--primary`/`--accent` — та же акцентная пилюля).
+- `.planet > .planet__glow + .planet__ring--back + .planet__body + .planet__ring--front`; параметры `--planet-size`, `--planet-tilt`, `--planet-ring`, `--planet-glow`.
+- Ленты: `<section class="ribbons" data-section="ribbons">` без id сразу после `#hero`; `[data-ribbon="top|bottom"] > .ribbons__viewport > .ribbons__track > ul.ribbons__group`.
+- Подвал: `footer.js` → `wordmarkLetters(word) → [{char, accent}]`; `.footer__wordmark.is-in` запускает подъём букв. Размер вордмарка рассчитан на «ELEADS» в Unbounded 800.
+- Внимание секциям: глобальный Unbounded капсом + `overflow-wrap` рвёт длинные заголовки карточек посреди слова — секции поправляют у себя (таски 11–13).
+
