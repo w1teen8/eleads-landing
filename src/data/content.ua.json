@@ -48,9 +48,9 @@
   },
   "hero": {
     "eyebrow": "TELEGRAM PERFORMANCE MARKETING",
-    "titleLine1": "ПРОСУВАННЯ",
-    "titleLine2": "ЧЕРЕЗ",
-    "titleAccent": "TELEGRAM ADS",
+    "titleLine1": "Просування",
+    "titleLine2": "через",
+    "titleAccent": "Telegram Ads",
     "subtitle": "Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу",
     "stats": {
       "years": {
@@ -68,7 +68,8 @@
     },
     "cta": {
       "label": "Обговорити проєкт у Telegram",
-      "arrow": "→"
+      "arrow": "→",
+      "secondary": "Дивитися кейси"
     },
     "photo": {
       "alt": "Володимир Кучер, засновник eLeads",

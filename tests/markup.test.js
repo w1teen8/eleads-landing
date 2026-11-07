@@ -64,7 +64,7 @@ test('после пре-рендера не остаётся пустых [data-
   const out = prerender(html, ua, config, { strict: true });
   const empty = [...out.matchAll(/<([a-z0-9]+)\b[^>]*\sdata-i18n="([^"]+)"[^>]*>\s*<\/\1>/g)].map((m) => m[2]);
   assert.deepEqual(empty, []);
-  assert.match(out, /ПРОСУВАННЯ/);
+  assert.match(out, /Просування/); // сборка 2: заголовок в обычном регистре
   assert.match(out, /© 2026 eLeads/);
 });
 

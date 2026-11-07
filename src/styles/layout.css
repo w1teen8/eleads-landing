@@ -16,19 +16,46 @@ main {
   display: block;
 }
 
+/* Секции 02–14 — тёмные скруглённые контейнеры с отступом от краёв (идиома overtake).
+   Мост до таска 07: секции ещё написаны на именах палитры канала (--ink, --fg, --sun …) —
+   здесь эти имена указывают на семантические переменные тёмного блока текущей версии,
+   поэтому секции читаемы во всех трёх версиях. Секция без класса .panel — тёмный блок (и тёмный контекст
+   для компонентов); с .panel / .panel--block (components.css) — контейнер нужного цвета. Когда секции
+   перестают использовать имена палитры (таск 07), мост ничего не делает. */
 .section {
+  --ink: var(--block);
+  --navy: var(--block-2);
+  --card: color-mix(in srgb, var(--block-2), var(--text-on-block) 7%);
+  --fg: var(--text-on-block);
+  --muted: var(--text-on-block-muted);
+  --sun: var(--accent);
+  --ember: var(--accent-2);
+  --fg-soft: color-mix(in srgb, var(--fg) 80%, var(--muted));
+  --line: color-mix(in srgb, var(--fg) 9%, transparent);
+  --line-strong: color-mix(in srgb, var(--fg) 18%, transparent);
+  --ember-glow: color-mix(in srgb, var(--ember) 55%, transparent);
+  --sun-glow: color-mix(in srgb, var(--sun) 35%, transparent);
+  --ink-veil: color-mix(in srgb, var(--ink) 70%, transparent);
   position: relative;
+  margin: var(--panel-gap) var(--panel-gap) 0;
   padding-block: var(--section-y);
-  scroll-margin-top: 0;
-}
-
-/* чередование тонов, чтобы соседние секции не сливались: .section--alt ставится в разметке */
-.section {
+  border-radius: var(--r-panel);
   background: var(--ink);
+  color: var(--fg);
+  scroll-margin-top: 0;
 }
 
 .section--alt {
   background: var(--navy);
+}
+
+/* тёмный контекст для компонентов внутри тёмной секции — как у .panel--block */
+.section:not(.panel) {
+  --bg: var(--block);
+  --surface: var(--card);
+  --surface-2: var(--block-2);
+  --text: var(--text-on-block);
+  --text-muted: var(--text-on-block-muted);
 }
 
 .section__head {
@@ -40,21 +67,12 @@ main {
 
 .section__title {
   font-size: var(--fs-h2);
-  line-height: 0.95;
-  max-width: 18ch;
+  line-height: 1.02;
+  max-width: 20ch;
 }
 
 .section__lead {
   max-width: 44ch;
   font-size: var(--fs-lg);
-  color: var(--fg-soft);
-}
-
-/* тонкая разделительная линия между секциями одного тона */
-.section:not(.section--alt) + .section:not(.section--alt)::before {
-  content: '';
-  position: absolute;
-  inset: 0 var(--gutter) auto;
-  height: 1px;
-  background: var(--line);
+  color: var(--text-muted);
 }

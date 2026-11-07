@@ -1,4 +1,18 @@
-/* 03 Ніші: 4 колонки, ряды смещены по вертикали (шахматный ритм); восьмая карточка — акцентная, ведёт в Telegram. */
+/* 03 Ніші: тёмный блок overtake. 4 колонки, ряды смещены по вертикали (шахматный ритм);
+   восьмая карточка — акцентная, ведёт в Telegram. */
+
+.section--niches {
+  color: var(--text-on-block);
+}
+
+.section--niches .section__title {
+  color: var(--text-on-block);
+}
+
+.section--niches .section__lead,
+.section--niches .eyebrow {
+  color: var(--text-on-block-muted);
+}
 
 .niches__lead {
   margin-top: calc(-1 * clamp(1.25rem, 3vw, 2.5rem));
@@ -7,7 +21,7 @@
 
 .niches__grid {
   display: grid;
-  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+  gap: clamp(0.5rem, 1vw, 0.875rem);
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
@@ -28,9 +42,10 @@
   width: 100%;
   min-height: 220px;
   padding: clamp(1.1rem, 2vw, 1.75rem);
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, var(--text-on-block) 10%, transparent);
   border-radius: var(--r-card-sm);
-  background: color-mix(in srgb, var(--card) 65%, var(--ink));
+  background: var(--block-2);
+  color: var(--text-on-block);
   overflow: hidden;
   isolation: isolate;
   transition: transform var(--dur) var(--ease-out);
@@ -46,7 +61,7 @@
   z-index: -1;
   width: 520px;
   height: 520px;
-  background: radial-gradient(260px circle at center, var(--sun-glow), transparent 70%);
+  background: radial-gradient(260px circle at center, color-mix(in srgb, var(--accent) 30%, transparent), transparent 70%);
   opacity: 0;
   transform: translate3d(var(--mx), var(--my), 0);
   pointer-events: none;
@@ -63,39 +78,50 @@
   transform: translateY(-4px);
 }
 
+/* номер — маленькая пилюля, как метки overtake */
 .niches__idx {
   position: absolute;
   top: clamp(1.1rem, 2vw, 1.75rem);
   left: clamp(1.1rem, 2vw, 1.75rem);
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 0.6rem;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--text-on-block) 8%, transparent);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
-  color: var(--muted);
+  letter-spacing: 0.08em;
+  color: var(--text-on-block-muted);
 }
 
 .niches__dot {
   position: absolute;
-  top: clamp(1.1rem, 2vw, 1.75rem);
+  top: calc(clamp(1.1rem, 2vw, 1.75rem) + 7px);
   right: clamp(1.1rem, 2vw, 1.75rem);
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--grad);
+  background: var(--accent);
 }
 
 .niches__name {
-  font-size: clamp(1.4rem, 1rem + 1.4vw, 2.1rem);
-  line-height: 1;
+  font-size: clamp(1.3rem, 1rem + 1.2vw, 1.9rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  color: var(--text-on-block);
 }
 
 .niches__examples {
-  color: var(--muted);
+  color: var(--text-on-block-muted);
   font-size: var(--fs-sm);
 }
 
+/* восьмая карточка — светлая на тёмном блоке, как белая карточка-цифра у overtake */
 .niches__card--other {
-  background: var(--grad);
-  color: var(--ink);
+  background: var(--accent);
+  color: var(--accent-ink);
   border-color: transparent;
 }
 
@@ -103,8 +129,12 @@
   display: none;
 }
 
+.niches__card--other .niches__name {
+  color: var(--accent-ink);
+}
+
 .niches__card--other .niches__examples {
-  color: color-mix(in srgb, var(--ink) 80%, transparent);
+  color: var(--accent-ink);
   font-size: var(--fs-base);
   font-weight: 500;
 }
@@ -120,9 +150,13 @@
 .niches__cta {
   display: inline-flex;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.6em;
   margin-top: 0.75rem;
   font-weight: 600;
+}
+
+.niches__card--other .btn__arrow {
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .niches__card--other:hover .btn__arrow,
@@ -131,7 +165,7 @@
 }
 
 .niches__card--other:focus-visible {
-  outline-color: var(--fg);
+  outline-color: var(--text-on-block);
 }
 
 @media (min-width: 900px) {
@@ -146,9 +180,5 @@
   .niches__item:nth-child(4n + 2),
   .niches__item:nth-child(4n + 4) {
     margin-top: 2.5rem;
-  }
-
-  .niches__grid {
-    padding-bottom: 0;
   }
 }

@@ -1,4 +1,6 @@
-/* Шапка: липкая, размытая под собой (единственное место с backdrop-filter), бургер-меню < 900px. */
+/* Шапка в идиоме overtake: логотип слева, пункты меню пилюлями по центру, UA/EN и кнопка-пилюля со стрелкой
+   справа. Липкая; при прокрутке проявляется подложка с размытием (единственное место с backdrop-filter).
+   Бургер и полноэкранное меню < 900px. */
 .header {
   position: fixed;
   inset: 0 0 auto;
@@ -18,7 +20,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--ink-veil);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   backdrop-filter: blur(16px) saturate(140%);
   border-bottom: 1px solid var(--line);
@@ -34,7 +36,7 @@
 .header__inner {
   display: flex;
   align-items: center;
-  gap: clamp(1rem, 2vw, 2rem);
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
   height: var(--header-h);
 }
 
@@ -42,13 +44,14 @@
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   flex: none;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.375rem;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--tracking-tight);
   line-height: 1;
+  color: var(--text);
 }
 
 .logo__mark {
@@ -56,76 +59,82 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  border-radius: 9px;
+  border-radius: 50%;
   background: var(--grad);
-  color: var(--ink);
+  color: var(--accent-ink);
   transition: transform var(--dur) var(--ease-out);
 }
 
 .logo__mark svg {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
 }
 
 .logo:hover .logo__mark {
-  transform: rotate(-8deg) scale(1.04);
+  transform: rotate(-45deg);
 }
 
-/* — навигация — */
+/* — навигация: пункты-пилюли, активный — на подложке — */
 .header__nav {
-  margin-left: auto;
+  margin-inline: auto;
 }
 
 .header__links {
   display: flex;
   align-items: center;
-  gap: clamp(0.9rem, 1.6vw, 1.75rem);
+  gap: 2px;
 }
 
 .header__link {
   position: relative;
-  display: inline-block;
-  padding-block: 6px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 0.85em;
+  border-radius: var(--r-pill);
   font-size: var(--fs-sm);
   font-weight: 500;
-  color: var(--fg-soft);
+  letter-spacing: -0.01em;
+  color: var(--text-muted);
   white-space: nowrap;
+  isolation: isolate;
   transition: opacity var(--dur-fast) var(--ease-out);
 }
 
-.header__link::after {
+/* подложка пункта — слой, проявляется opacity и чуть растёт */
+.header__link::before {
   content: '';
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--grad);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform var(--dur) var(--ease-out);
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--surface-2);
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
 }
 
-.header__link:hover::after,
-.header__link[aria-current='true']::after {
-  transform: scaleX(1);
-  transform-origin: left;
+.header__link:hover::before,
+.header__link[aria-current='true']::before {
+  opacity: 1;
+  transform: none;
 }
 
-.header__links:hover .header__link:not(:hover) {
-  opacity: 0.55;
+.header__link[aria-current='true'] {
+  color: var(--text);
+}
+
+.header__link:hover {
+  color: var(--text);
 }
 
 .header__actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex: none;
-}
-
-.header__cta .btn__icon {
-  width: 16px;
-  height: 16px;
 }
 
 /* — бургер — */
@@ -135,21 +144,21 @@
   width: 44px;
   height: 44px;
   border-radius: var(--r-pill);
-  border: 1px solid var(--line-strong);
+  background: var(--surface-2);
 }
 
 .burger__line {
   position: absolute;
-  left: 13px;
-  right: 13px;
+  left: 14px;
+  right: 14px;
   height: 1.5px;
   border-radius: 2px;
-  background: var(--fg);
+  background: var(--text);
   transition: transform var(--dur) var(--ease-out);
 }
 
 .burger__line:nth-child(1) {
-  top: 17px;
+  top: 18px;
 }
 
 .burger__line:nth-child(2) {
@@ -157,20 +166,21 @@
 }
 
 .burger[aria-expanded='true'] .burger__line:nth-child(1) {
-  transform: translate3d(0, 4px, 0) rotate(45deg);
+  transform: translate3d(0, 3.5px, 0) rotate(45deg);
 }
 
 .burger[aria-expanded='true'] .burger__line:nth-child(2) {
-  transform: translate3d(0, -4px, 0) rotate(-45deg);
+  transform: translate3d(0, -3.5px, 0) rotate(-45deg);
 }
 
-/* — полноэкранное меню — */
+/* — полноэкранное меню: светлая основа, крупные пункты обычным регистром — */
 .menu {
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: auto;
-  background: var(--ink);
+  background: var(--bg);
+  color: var(--text);
   overflow-y: auto;
   overscroll-behavior: contain;
   opacity: 0;
@@ -181,36 +191,21 @@
   opacity: 1;
 }
 
-/* тёплое свечение в углу меню — как на обложках канала */
-.menu::before {
-  content: '';
-  position: absolute;
-  right: -30vw;
-  bottom: -20vh;
-  width: 90vw;
-  height: 90vw;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, var(--ember-glow), transparent);
-  opacity: 0.35;
-  pointer-events: none;
-}
-
 .menu__inner {
   position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  padding-top: calc(var(--header-h) + 1.5rem);
-  padding-bottom: 2rem;
+  padding-top: calc(var(--header-h) + 1rem);
+  padding-bottom: 1.5rem;
 }
 
 .menu__title {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .menu__list {
   display: grid;
-  counter-reset: none;
 }
 
 .menu__item {
@@ -232,12 +227,12 @@
   display: flex;
   align-items: baseline;
   gap: 14px;
-  padding: 0.55rem 0;
+  padding: 0.6rem 0;
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 6.4vw, 2.25rem);
   font-weight: 600;
   line-height: 1.1;
-  text-transform: uppercase;
+  letter-spacing: var(--tracking-tight);
 }
 
 .menu__num {
@@ -245,13 +240,13 @@
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 500;
-  color: var(--muted);
-  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
 }
 
 .menu__link:hover .menu__num,
 .menu__link:focus-visible .menu__num {
-  color: var(--sun);
+  color: var(--text);
 }
 
 .menu__foot {
@@ -266,22 +261,25 @@
 
 .menu__cta {
   flex: 1 1 auto;
+  justify-content: space-between;
 }
 
 /* — адаптив — */
-@media (max-width: 1099px) {
-  .header__links {
-    gap: 0.9rem;
-  }
-
+@media (max-width: 1239px) {
   .header__link {
+    padding: 0 0.6em;
     font-size: 0.8125rem;
   }
 }
 
-@media (max-width: 899px) {
-  .header__nav,
+@media (max-width: 1059px) {
   .header__actions > .lang-switch {
+    display: none;
+  }
+}
+
+@media (max-width: 899px) {
+  .header__nav {
     display: none;
   }
 

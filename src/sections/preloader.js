@@ -4,8 +4,9 @@
 // Шаги сцены — атрибут data-step на корне (0 пусто · 1 набор · 2 поиск · 3 найдено), вид шагов — CSS
 // на transform/opacity; часы шагов и набора — таймлайн GSAP. GSAP не успел — CSS-фолбэк: сразу результат.
 // Счётчик идёт по своим часам и не доходит до 100 до `load` (держится на 99 не дольше LOAD_HOLD_MAX_MS).
-// SKIP, Esc и клик по фону сразу запускают уход полосой. Один раз за сессию; при reduced-motion заставки нет
-// (класс html.js-preload ставит инлайн-скрипт). Любая ошибка → failIntro(): первый экран виден сразу.
+// SKIP, Esc и клик по фону сразу запускают уход полосой. Не чаще раза в сутки на браузер: метку времени показа
+// пишет rememberIntro() в localStorage, инлайн-скрипт <head> по ней решает, ставить ли html.js-preload
+// (?intro=1 — принудительно); при reduced-motion заставки нет. Любая ошибка → failIntro(): первый экран виден сразу.
 import {
   signalIntroDone,
   markIntroStart,
@@ -18,7 +19,8 @@ import {
 import { t } from '../core/i18n.js';
 import { cover, uncover } from '../core/transition.js';
 
-const SESSION_KEY = 'eleads-intro';
+/** Ключ localStorage: время последнего показа заставки, мс (читает инлайн-скрипт в <head>). */
+export const INTRO_KEY = 'eleads-intro';
 const TYPE_START_MS = 900; // курсор мигает в пустой строке
 const CHAR_MIN_MS = 55;
 const CHAR_MAX_MS = 90;
@@ -65,6 +67,15 @@ function counterAt(keys, ms) {
   return 100;
 }
 
+/** Запомнить показ: сутки после него новая вкладка заставку не показывает. Без хранилища — покажется снова. */
+export function rememberIntro(storage = globalThis.localStorage, now = Date.now()) {
+  try {
+    storage.setItem(INTRO_KEY, String(now));
+  } catch {
+    /* хранилище недоступно — заставка просто покажется снова */
+  }
+}
+
 export function init(root) {
   const html = document.documentElement;
   if (!html.classList.contains('js-preload')) {
@@ -90,11 +101,7 @@ function run(root, html) {
   const queryNode = need('.preloader__query');
   const skipNode = need('[data-preloader-skip]');
 
-  try {
-    sessionStorage.setItem(SESSION_KEY, '1');
-  } catch {
-    /* без sessionStorage заставка просто покажется снова */
-  }
+  rememberIntro();
 
   const query = String(t('preloader.query') || queryNode.textContent || '');
   const p = plan(query.length);

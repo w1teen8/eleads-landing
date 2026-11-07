@@ -1,4 +1,6 @@
 // 06 Кейси: карточки из src/data/cases.json по <template>, модалка кейса без перехода со страницы.
+// Широкий экран (не reduced): карточки складываются стопкой — sticky в CSS, уходящая карточка
+// уменьшается (transform: scale через --stack-s) по мере того, как следующая наезжает на неё.
 // Модалка — нативный <dialog>: Esc, клик вне, кнопка; фокус заперт и возвращается на карточку;
 // фон не скроллится (lockScroll ставит Lenis на паузу).
 import { $, el, on, trapFocus } from '../core/dom.js';
@@ -40,6 +42,7 @@ export function init(root) {
   });
   grid.replaceChildren(...cards.map((c) => c.li));
   grid.dataset.reveal = 'stagger';
+  if (!reduced) stack(grid, cards.map((c) => c.li));
 
   const paintCards = (lang) => {
     for (const { item, li } of cards) {
@@ -138,4 +141,55 @@ export function init(root) {
     paintCards(lang);
     if (current) paintModal(current, lang);
   });
+}
+
+/* ——— стопка ——— */
+const STACK_MEDIA = '(min-width: 900px)';
+const STACK_SHRINK = 0.06; // уходящая карточка: scale 1 → 0.94
+
+// Прогресс считается от живого getBoundingClientRect следующей карточки: пока она едет снизу,
+// он растёт от 0 (её верх у низа окна) до 1 (она прилипла на своём sticky-top). Позиции sticky
+// не кэшируются — ScrollTrigger для sticky-элементов мерил бы неверно.
+function stack(grid, items) {
+  const media = window.matchMedia(STACK_MEDIA);
+  const faces = items.map((li) => $('.cases__card', li));
+  let frame = 0;
+  let unbind = null;
+
+  const paint = () => {
+    frame = 0;
+    const vh = window.innerHeight;
+    for (let i = 0; i < items.length - 1; i += 1) {
+      const next = items[i + 1];
+      const stickTop = parseFloat(getComputedStyle(next).top) || 0;
+      const top = next.getBoundingClientRect().top;
+      const p = Math.min(1, Math.max(0, (vh - top) / Math.max(1, vh - stickTop)));
+      faces[i].style.setProperty('--stack-s', (1 - STACK_SHRINK * p).toFixed(4));
+    }
+  };
+  const schedule = () => {
+    if (!frame) frame = requestAnimationFrame(paint);
+  };
+
+  const apply = () => {
+    if (media.matches && !unbind) {
+      grid.classList.add('is-stacked');
+      const offScroll = on(window, 'scroll', schedule, { passive: true });
+      const offResize = on(window, 'resize', schedule);
+      unbind = () => {
+        offScroll();
+        offResize();
+      };
+      schedule();
+    } else if (!media.matches && unbind) {
+      unbind();
+      unbind = null;
+      cancelAnimationFrame(frame);
+      frame = 0;
+      grid.classList.remove('is-stacked');
+      for (const face of faces) face.style.removeProperty('--stack-s');
+    }
+  };
+  media.addEventListener('change', apply);
+  apply();
 }

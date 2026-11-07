@@ -9,6 +9,7 @@ import config from './data/config.json';
 // Порядок каскада: сначала токены, база и каркас, потом стили секций.
 // Оба glob-вызова Vite поднимает в начало модуля в порядке их записи — поэтому и база идёт через glob.
 import.meta.glob(['./styles/tokens.css', './styles/base.css', './styles/layout.css'], { eager: true });
+import.meta.glob('./styles/components.css', { eager: true });
 import.meta.glob('./styles/sections/*.css', { eager: true });
 const sections = import.meta.glob('./sections/*.js', { eager: true });
 
@@ -41,6 +42,8 @@ async function boot() {
   initMotion();
   initAnalytics(config);
   onLangChange(() => refreshMotion());
+  // панель версий оформления — инструмент заказчика только в `npm run dev`; в сборку ветка не попадает
+  if (import.meta.env.DEV) import('./dev/theme-switcher.js').then((m) => m.mountThemeSwitcher());
 }
 
 boot();

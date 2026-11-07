@@ -1,48 +1,67 @@
-/* Токены бренда eLeads. Цвета — ровно палитра из брифа (обложки Telegram-канала).
-   Любой другой цвет на сайте выводится из них через color-mix(), литералов вне этого файла нет. */
+/* Токены eLeads. Литералы цветов — только в этом файле.
+   Слой 1 — палитры: канал клиента (9 цветов брифа), один нейтральный белый и палитра overtake (--ot-*, только для
+   версии «Overtake · оригинал»). Слой 2 — семантические переменные: секции используют только их.
+   Версию ставит инлайн-скрипт в <head>: <html data-theme="brand-light | brand-dark | overtake">. */
 :root {
-  /* — палитра брифа — */
-  --ink: #070C18;   /* основной фон */
-  --navy: #0D1528;  /* второй тон секций */
-  --card: #131D36;  /* карточки */
-  --line: rgba(255,255,255,.08); /* обводки */
-  --fg: #F4F2EC;    /* текст */
-  --muted: #93A0BB; /* вторичный текст */
+  /* — палитра канала (бриф) — */
+  --ink: #070C18;   /* основной тёмный */
+  --navy: #0D1528;  /* второй тёмный */
+  --card: #131D36;  /* карточки на тёмном */
+  --line: rgba(255,255,255,.08); /* обводки на тёмном */
+  --fg: #F4F2EC;    /* тёплый светлый */
+  --muted: #93A0BB; /* вторичный текст на тёмном */
   --sun: #FFD23F;   /* фирменный градиент, начало */
   --ember: #FF8A1F; /* фирменный градиент, конец */
-  --tg: #3B8CFF;    /* редкий второй акцент: иконка Telegram, ссылки */
+  --tg: #3B8CFF;    /* редкий второй акцент: иконка Telegram */
 
-  /* — единственный градиент сайта — */
+  /* — фирменный градиент канала — */
   --grad: linear-gradient(100deg, var(--sun), var(--ember));
 
-  /* — производные (только color-mix от палитры) — */
+  /* — нейтральный белый: поверхности карточек светлой версии — */
+  --paper: #FFFFFF;
+
+  /* — палитра overtake (reference.md), только для версии «Overtake · оригинал» — */
+  --ot-bg: #F0F0F0;
+  --ot-paper: #FFFFFF;
+  --ot-ink: #0B0B0C;
+  --ot-emerald: #122020;
+  --ot-lime: #9EFC65;
+  --ot-pink: #FFBCFC;
+  --ot-yellow: #FDE589;
+  --ot-orange: #FF742E;
+  --ot-muted: #6A6E6E;
+
+  /* — производные палитры канала (тёмные блоки и секции, ещё не перекрашенные таском 07) — */
   --line-strong: color-mix(in srgb, var(--fg) 16%, transparent);
   --fg-soft: color-mix(in srgb, var(--fg) 78%, var(--muted));
   --ember-glow: color-mix(in srgb, var(--ember) 55%, transparent);
   --sun-glow: color-mix(in srgb, var(--sun) 35%, transparent);
   --ink-veil: color-mix(in srgb, var(--ink) 70%, transparent);
 
-  /* — шрифты — */
-  --font-display: 'Oswald', 'Arial Narrow', 'Roboto Condensed', sans-serif;
-  --font-body: 'Onest', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* — шрифты: у заголовочного шрифта overtake нет кириллицы → Onest с плотным трекингом — */
+  --font-display: 'Onest', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  --tracking-tight: -0.03em;
 
   /* — шкала шрифтов — */
   --fs-xs: 0.75rem;
   --fs-sm: 0.875rem;
   --fs-base: 1rem;
   --fs-lg: clamp(1.0625rem, 0.98rem + 0.4vw, 1.3125rem);
-  --fs-h2: clamp(2.25rem, 1.4rem + 3.6vw, 5rem);
-  --fs-h1: clamp(2.75rem, min(12.6vw, 14.5vh), 8.5rem);
+  --fs-h2: clamp(2rem, 1.35rem + 2.6vw, 3.75rem);
+  --fs-h1: clamp(2.5rem, 1.2rem + 5.6vw, 6rem);
 
   /* — отступы — */
-  --gutter: clamp(1.25rem, 4vw, 3.5rem);
-  --section-y: clamp(5.5rem, 4rem + 7vw, 10rem);
-  --header-h: 72px;
+  --gutter: clamp(1rem, 2.6vw, 2rem);
+  --panel-gap: clamp(0.5rem, 1.4vw, 1.25rem); /* отступ контейнера-панели от краёв экрана */
+  --section-y: clamp(4.5rem, 3.5rem + 5vw, 8rem);
+  --header-h: 76px;
   --container: 1440px;
 
   /* — радиусы по ролям (бриф: не один радиус на всё) — */
   --r-pill: 999px;
+  --r-panel: clamp(20px, 2.4vw, 32px); /* контейнер секции */
   --r-card: 24px;
   --r-card-lg: 28px;
   --r-card-sm: 20px;
@@ -58,4 +77,71 @@
   /* — слои — */
   --z-header: 50;
   --z-preloader: 100;
+}
+
+/* ——— «Бренд · светлая» (по умолчанию): тёплая светлая основа, тёмные блоки канала, акцент — жёлтый→оранжевый ——— */
+:root,
+[data-theme='brand-light'] {
+  color-scheme: light;
+  --bg: color-mix(in srgb, var(--fg) 40%, var(--paper));
+  --surface: var(--paper);
+  --surface-2: color-mix(in srgb, var(--fg) 94%, var(--ink));
+  --block: var(--ink);
+  --block-2: var(--navy);
+  --text: var(--ink);
+  --text-muted: color-mix(in srgb, var(--ink) 68%, var(--fg));
+  --text-on-block: var(--fg);
+  --text-on-block-muted: var(--muted);
+  --accent: var(--sun);
+  --accent-2: var(--ember);
+  --accent-ink: var(--ink);
+  --tag-1: color-mix(in srgb, var(--sun) 42%, var(--paper));
+  --tag-2: color-mix(in srgb, var(--tg) 16%, var(--paper));
+  --line: color-mix(in srgb, var(--ink) 10%, transparent);
+  --line-strong: color-mix(in srgb, var(--ink) 22%, transparent);
+  --grad: linear-gradient(100deg, var(--sun), var(--ember));
+}
+
+/* ——— «Бренд · тёмная»: то же оформление на тёмной основе канала ——— */
+[data-theme='brand-dark'] {
+  color-scheme: dark;
+  --bg: var(--ink);
+  --surface: var(--card);
+  --surface-2: var(--navy);
+  --block: color-mix(in srgb, var(--card) 70%, var(--navy));
+  --block-2: var(--card);
+  --text: var(--fg);
+  --text-muted: var(--muted);
+  --text-on-block: var(--fg);
+  --text-on-block-muted: var(--muted);
+  --accent: var(--sun);
+  --accent-2: var(--ember);
+  --accent-ink: var(--ink);
+  --tag-1: color-mix(in srgb, var(--sun) 24%, var(--navy));
+  --tag-2: color-mix(in srgb, var(--tg) 30%, var(--navy));
+  --line: color-mix(in srgb, var(--fg) 9%, transparent);
+  --line-strong: color-mix(in srgb, var(--fg) 18%, transparent);
+  --grad: linear-gradient(100deg, var(--sun), var(--ember));
+}
+
+/* ——— «Overtake · оригинал»: палитра образца целиком, для сравнения ——— */
+[data-theme='overtake'] {
+  color-scheme: light;
+  --bg: var(--ot-paper);
+  --surface: var(--ot-paper);
+  --surface-2: var(--ot-bg);
+  --block: var(--ot-ink);
+  --block-2: var(--ot-emerald);
+  --text: var(--ot-ink);
+  --text-muted: var(--ot-muted);
+  --text-on-block: var(--ot-bg);
+  --text-on-block-muted: color-mix(in srgb, var(--ot-bg) 64%, var(--ot-ink));
+  --accent: var(--ot-lime);
+  --accent-2: var(--ot-yellow);
+  --accent-ink: var(--ot-ink);
+  --tag-1: var(--ot-pink);
+  --tag-2: var(--ot-yellow);
+  --line: color-mix(in srgb, var(--ot-ink) 10%, transparent);
+  --line-strong: color-mix(in srgb, var(--ot-ink) 22%, transparent);
+  --grad: linear-gradient(100deg, var(--ot-lime), color-mix(in srgb, var(--ot-lime) 55%, var(--ot-yellow)));
 }

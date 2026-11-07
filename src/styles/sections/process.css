@@ -1,5 +1,22 @@
 /* 07 Процес: 7 шагов на линии; линия прорисовывается scaleX / scaleY слоя .process__fill (JS), шаги загораются.
-   Без JS и при reduced-motion линия нарисована, шаги горят (класс .is-armed ставит JS). */
+   Без JS и при reduced-motion линия нарисована, шаги горят (класс .is-armed ставит JS).
+   Оформление overtake: тёмный блок, текст — --text-on-block. */
+
+.section--process {
+  --on: var(--text-on-block);
+  --on-muted: var(--text-on-block-muted);
+  --hair: color-mix(in srgb, var(--text-on-block) 22%, transparent);
+  color: var(--on);
+}
+
+.section--process .section__title {
+  color: var(--on);
+}
+
+.section--process .section__lead,
+.section--process .eyebrow {
+  color: var(--on-muted);
+}
 
 .process__track {
   position: relative;
@@ -33,13 +50,13 @@
 }
 
 .process__rail {
-  stroke: var(--line-strong);
+  stroke: var(--hair);
   stroke-width: 2;
   fill: none;
 }
 
 .process__draw {
-  stroke: var(--sun);
+  stroke: var(--accent);
   stroke-width: 2;
   fill: none;
 }
@@ -66,14 +83,12 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 2px solid var(--line-strong);
-  background: var(--ink);
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--ink);
-  background: var(--grad);
-  border-color: transparent;
+  border: 2px solid transparent;
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-ink);
+  background: var(--accent);
   transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
 }
 
@@ -82,16 +97,16 @@
   font-size: clamp(1.15rem, 1rem + 0.5vw, 1.45rem);
   font-weight: 600;
   line-height: 1.1;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
+  text-transform: none;
+  letter-spacing: -0.02em;
   transition: opacity var(--dur) var(--ease-out);
 }
 
 /* до прокрутки: контурные кружки, приглушённые подписи */
 .process.is-armed .process__node {
-  background: var(--ink);
-  border-color: var(--line-strong);
-  color: var(--muted);
+  background: var(--block);
+  border-color: var(--hair);
+  color: var(--on-muted);
 }
 
 .process.is-armed .process__label {
@@ -99,9 +114,9 @@
 }
 
 .process.is-armed .process__step.is-lit .process__node {
-  background: var(--grad);
+  background: var(--accent);
   border-color: transparent;
-  color: var(--ink);
+  color: var(--accent-ink);
   transform: scale(1.12);
 }
 
@@ -114,8 +129,9 @@
   margin-top: clamp(2.5rem, 5vw, 4rem);
   padding: clamp(1.5rem, 3vw, 2.75rem);
   border-radius: var(--r-card-lg);
-  border: 1px solid var(--line-strong);
-  background: var(--navy);
+  border: 0;
+  background: var(--surface);
+  color: var(--text);
   font-size: var(--fs-lg);
   max-width: 62ch;
 }

@@ -1,4 +1,6 @@
-/* 05 Калькулятор: слева «Параметри кампанії», справа тёмное табло «Орієнтовний прогноз».
+/* 05 Калькулятор (overtake): секция без внешнего контейнера, на основе страницы; слева светлая панель
+   «Параметри кампанії», справа тёмный блок «Орієнтовний прогноз».
+   Цвета параметров — светлая поверхность темы, прогноза — тёмный блок (--block, --text-on-block).
    Воронка — три ступени, ширина через transform: scaleX (её ставит calculator.js), числа — моно. */
 
 .section--calculator {
@@ -21,7 +23,9 @@
   font-family: var(--font-display);
   font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.9rem);
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  line-height: 1.05;
 }
 
 /* ——— левая панель: параметры ——— */
@@ -30,11 +34,11 @@
   flex-direction: column;
   gap: clamp(1.5rem, 2.4vw, 2.1rem);
   padding: clamp(1.25rem, 3vw, 2.75rem);
+  margin: 0;
   border: 1px solid var(--line);
   border-radius: var(--r-card-lg);
-  background:
-    radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--fg) 4%, transparent), transparent 60%),
-    color-mix(in srgb, var(--navy) 70%, var(--ink));
+  background: var(--surface);
+  color: var(--text);
 }
 
 .calc__group {
@@ -53,7 +57,7 @@
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .calc__pills {
@@ -88,7 +92,8 @@
   padding: 0 1.15rem;
   border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
-  color: var(--fg-soft);
+  background: var(--surface-2);
+  color: var(--text);
   font-weight: 500;
   font-size: var(--fs-sm);
   isolation: isolate;
@@ -103,7 +108,7 @@
   inset: -1px;
   z-index: -1;
   border-radius: inherit;
-  background: var(--grad);
+  background: var(--block);
   opacity: 0;
   transform: scale(0.92);
   transition:
@@ -122,7 +127,7 @@
 
 .calc__pill-input:checked + .calc__pill-face {
   border-color: transparent;
-  color: var(--ink);
+  color: var(--text-on-block);
   font-weight: 600;
 }
 
@@ -132,7 +137,7 @@
 }
 
 .calc__pill-input:focus-visible + .calc__pill-face {
-  outline: 2px solid var(--sun);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -162,10 +167,7 @@
   line-height: 1;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--text);
 }
 
 .calc__range {
@@ -232,10 +234,10 @@
   width: var(--thumb);
   height: var(--thumb);
   margin-top: calc((44px - var(--thumb)) / 2);
-  border: 6px solid var(--sun);
+  border: 6px solid var(--accent);
   border-radius: 50%;
-  background: var(--ink);
-  box-shadow: 0 0 0 6px var(--sun-glow);
+  background: var(--surface);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 28%, transparent);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
@@ -243,10 +245,10 @@
   width: var(--thumb);
   height: var(--thumb);
   box-sizing: border-box;
-  border: 6px solid var(--sun);
+  border: 6px solid var(--accent);
   border-radius: 50%;
-  background: var(--ink);
-  box-shadow: 0 0 0 6px var(--sun-glow);
+  background: var(--surface);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 28%, transparent);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
@@ -261,12 +263,12 @@
 }
 
 .calc__range-input:focus-visible::-webkit-slider-thumb {
-  outline: 2px solid var(--fg);
+  outline: 2px solid var(--text);
   outline-offset: 6px;
 }
 
 .calc__range-input:focus-visible::-moz-range-thumb {
-  outline: 2px solid var(--fg);
+  outline: 2px solid var(--text);
   outline-offset: 6px;
 }
 
@@ -276,19 +278,21 @@
   margin-top: 0.35rem;
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
-/* ——— правая панель: прогноз ——— */
+/* ——— правая панель: прогноз (тёмный блок) ——— */
 .calc__forecast {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: clamp(1.25rem, 2.2vw, 1.75rem);
   padding: clamp(1.25rem, 3vw, 2.75rem);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-card);
-  background: var(--ink);
+  margin: 0;
+  border: 0;
+  border-radius: var(--r-card-lg);
+  background: var(--block);
+  color: var(--text-on-block);
   isolation: isolate;
   overflow: hidden;
 }
@@ -302,7 +306,7 @@
   width: 80%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, var(--ember-glow), color-mix(in srgb, var(--sun) 10%, transparent) 55%, transparent);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent-2) 55%, transparent), color-mix(in srgb, var(--accent) 10%, transparent) 55%, transparent);
   opacity: 0.45;
   pointer-events: none;
   transition: opacity var(--dur-slow) var(--ease-out);
@@ -314,11 +318,11 @@
   inset: 0;
   z-index: -1;
   background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--text-on-block) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--text-on-block) 7%, transparent) 1px, transparent 1px);
   background-size: 48px 48px;
-  mask-image: radial-gradient(90% 70% at 70% 0%, var(--ink), transparent 75%);
-  -webkit-mask-image: radial-gradient(90% 70% at 70% 0%, var(--ink), transparent 75%);
+  mask-image: radial-gradient(90% 70% at 70% 0%, var(--block), transparent 75%);
+  -webkit-mask-image: radial-gradient(90% 70% at 70% 0%, var(--block), transparent 75%);
   opacity: 0.55;
   pointer-events: none;
 }
@@ -336,14 +340,14 @@
   align-items: center;
   gap: 0.5em;
   padding: 0.35rem 0.75rem;
-  border: 1px dashed color-mix(in srgb, var(--sun) 60%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--accent) 60%, transparent);
   border-radius: var(--r-pill);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--sun);
-  background: color-mix(in srgb, var(--sun) 8%, transparent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .calc__demo::before {
@@ -383,8 +387,8 @@
   font-family: var(--font-display);
   font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  text-transform: none;
+  letter-spacing: -0.02em;
 }
 
 .calc__step-label::before {
@@ -393,7 +397,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 400;
-  color: var(--muted);
+  color: var(--text-on-block-muted);
   letter-spacing: 0.08em;
 }
 
@@ -403,7 +407,7 @@
   font-weight: 400;
   text-transform: none;
   letter-spacing: 0.04em;
-  color: var(--muted);
+  color: var(--text-on-block-muted);
 }
 
 .calc__step-value {
@@ -450,16 +454,16 @@
   gap: 0.6rem;
   margin-block: 0.1rem 0.25rem;
   padding: 0.3rem 0.8rem;
-  border: 1px solid var(--line-strong);
+  border: 1px solid color-mix(in srgb, var(--text-on-block) 18%, transparent);
   border-radius: var(--r-pill);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  color: var(--fg-soft);
-  background: var(--ink);
+  color: var(--text-on-block);
+  background: var(--block-2);
 }
 
 .calc__rate-label {
-  color: var(--muted);
+  color: var(--text-on-block-muted);
   letter-spacing: 0.1em;
 }
 
@@ -478,8 +482,8 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid color-mix(in srgb, var(--text-on-block) 12%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--text-on-block) 12%, transparent);
 }
 
 .calc__money-item {
@@ -490,7 +494,7 @@
 
 .calc__money-item + .calc__money-item {
   padding-left: clamp(1rem, 2vw, 1.75rem);
-  border-left: 1px solid var(--line);
+  border-left: 1px solid color-mix(in srgb, var(--text-on-block) 12%, transparent);
 }
 
 .calc__money-label {
@@ -498,7 +502,7 @@
   font-size: var(--fs-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-on-block-muted);
 }
 
 .calc__money-value {
@@ -526,7 +530,7 @@
   max-width: 62ch;
   font-size: var(--fs-xs);
   line-height: 1.6;
-  color: var(--muted);
+  color: var(--text-on-block-muted);
 }
 
 /* строка «Не знайшли свою нішу?» */
@@ -538,22 +542,24 @@
   margin-top: clamp(1.5rem, 3vw, 2.5rem);
   max-width: 62rem;
   font-size: var(--fs-lg);
-  color: var(--fg-soft);
+  color: var(--text-muted);
 }
 
+/* ссылка на светлой основе: градиентный текст здесь не читался бы — сплошной текст с акцентным подчёркиванием */
 .calc__note-link {
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--text);
   font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
 }
 
 .calc__note-icon {
   align-self: center;
   width: 1.1em;
   height: 1.1em;
-  color: var(--sun);
+  color: var(--text);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
@@ -570,7 +576,7 @@
   .calc__money-item + .calc__money-item {
     padding-left: 0;
     border-left: 0;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid color-mix(in srgb, var(--text-on-block) 12%, transparent);
   }
 
   .calc__step {

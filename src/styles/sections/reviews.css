@@ -1,4 +1,5 @@
-/* 10 Відгуки + засновник: слайдер на scroll-snap (3 карточки на десктопе, свайп на мобильном) и тёмный блок основателя. */
+/* 10 Відгуки + засновник: светлый контейнер overtake; слайдер на scroll-snap (3 карточки на десктопе, свайп
+   на мобильном) и тёмный блок основателя внутри. */
 
 .reviews__viewport {
   overflow-x: auto;
@@ -34,13 +35,14 @@
   padding: clamp(1.25rem, 2vw, 1.75rem);
   border: 1px solid var(--line);
   border-radius: var(--r-card);
-  background: var(--card);
+  background: var(--surface-2);
+  color: var(--text);
 }
 
 .reviews__quote {
   width: 30px;
   height: 22px;
-  color: var(--sun);
+  color: var(--accent-2);
 }
 
 .reviews__shot {
@@ -49,44 +51,45 @@
   gap: 0.35rem;
   min-height: 190px;
   border: 1px dashed var(--line-strong);
-  border-radius: var(--r-media);
+  border-radius: var(--r-card-sm);
   text-align: center;
-  background: var(--navy);
+  background: var(--bg);
 }
 
 .reviews__shot-title {
   font-family: var(--font-display);
   font-size: 1.6rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--muted);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--text-muted);
 }
 
 .reviews__shot-cap {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .reviews__text.is-tbd,
 .reviews__role.is-tbd {
   font-family: var(--font-mono);
-  color: var(--sun);
+  color: var(--text-muted);
 }
 
 .reviews__name {
   font-family: var(--font-display);
   font-size: 1.4rem;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: none;
+  letter-spacing: -0.02em;
   line-height: 1.1;
 }
 
 .reviews__role {
   margin-top: -0.6rem;
   font-size: var(--fs-sm);
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .reviews__controls {
@@ -101,8 +104,10 @@
   place-items: center;
   width: 48px;
   height: 48px;
-  border: 1px solid var(--line-strong);
+  border: 0;
   border-radius: 50%;
+  background: var(--block);
+  color: var(--text-on-block);
   transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
 }
 
@@ -134,7 +139,7 @@
 }
 
 .reviews__dot.is-active {
-  background: var(--sun);
+  background: var(--text);
   transform: scale(1.4);
 }
 
@@ -150,8 +155,8 @@
   margin-top: clamp(2rem, 4vw, 3.5rem);
   padding: clamp(1.5rem, 4vw, 3.5rem);
   border-radius: var(--r-card-lg);
-  background: var(--ink);
-  border: 1px solid var(--line-strong);
+  background: var(--block);
+  color: var(--text-on-block);
   overflow: hidden;
 }
 
@@ -159,24 +164,29 @@
   width: fit-content;
   margin-bottom: 1.25rem;
   padding: 0.35rem 1rem;
-  border: 1px solid var(--sun);
+  border: 0;
   border-radius: var(--r-pill);
+  background: var(--accent);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.14em;
-  color: var(--sun);
+  color: var(--accent-ink);
 }
 
 .founder__title {
   max-width: 16ch;
   font-size: clamp(2rem, 1.2rem + 3vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-transform: none;
+  color: var(--text-on-block);
 }
 
 .founder__text {
   max-width: 52ch;
   margin-top: 1.25rem;
   font-size: var(--fs-lg);
-  color: var(--fg-soft);
+  color: var(--text-on-block-muted);
 }
 
 .founder__stats {
@@ -190,14 +200,15 @@
   display: grid;
   gap: 0.15rem;
   font-size: var(--fs-sm);
-  color: var(--muted);
+  color: var(--text-on-block-muted);
 }
 
 .founder__stats li > span:first-child {
   width: fit-content;
   font-family: var(--font-display);
   font-size: 2.25rem;
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.04em;
   line-height: 1;
 }
 
@@ -207,9 +218,8 @@
   max-width: 360px;
   width: 100%;
   justify-self: center;
-  border-radius: var(--r-media);
-  background: radial-gradient(70% 60% at 50% 35%, var(--ember-glow), transparent 70%), var(--navy);
-  border: 1px solid var(--line);
+  border-radius: var(--r-card-sm);
+  background: radial-gradient(70% 60% at 50% 35%, color-mix(in srgb, var(--accent-2) 45%, transparent), transparent 70%), var(--block-2);
   overflow: hidden;
 }
 
@@ -218,8 +228,8 @@
   inset: 12% 8% 0;
   width: 84%;
   height: 88%;
-  fill: color-mix(in srgb, var(--card) 88%, var(--ink));
-  stroke: var(--line-strong);
+  fill: var(--block-2);
+  stroke: color-mix(in srgb, var(--text-on-block) 16%, transparent);
   stroke-width: 1.5;
 }
 
@@ -232,7 +242,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.14em;
-  color: var(--muted);
+  color: var(--text-on-block-muted);
 }
 
 @media (min-width: 1000px) {

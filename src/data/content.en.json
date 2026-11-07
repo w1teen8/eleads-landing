@@ -49,9 +49,9 @@
   },
   "hero": {
     "eyebrow": "TELEGRAM PERFORMANCE MARKETING",
-    "titleLine1": "GROWTH",
-    "titleLine2": "THROUGH",
-    "titleAccent": "TELEGRAM ADS",
+    "titleLine1": "Growth",
+    "titleLine2": "through",
+    "titleAccent": "Telegram Ads",
     "subtitle": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide",
     "stats": {
       "years": {
@@ -69,7 +69,8 @@
     },
     "cta": {
       "label": "Discuss your project on Telegram",
-      "arrow": "→"
+      "arrow": "→",
+      "secondary": "See case studies"
     },
     "photo": {
       "alt": "Volodymyr Kucher, founder of eLeads",

@@ -1,60 +1,84 @@
-/* 14 Фінальний CTA: тёмный блок, огромный капс слева, высокое портретное фото-плейсхолдер справа. */
+/* 14 Фінальний CTA (overtake): тёмный блок, по центру крупный заголовок в обычном регистре, текст и акцентная
+   кнопка-пилюля; портрет — скруглённая карточка: на широком экране сбоку от центральной колонки, на узком — под ней. */
 
 .section--cta {
   overflow: hidden;
-  background: var(--ink);
-  border-top: 1px solid var(--line);
+  color: var(--text-on-block);
+}
+
+.section--cta .eyebrow,
+.section--cta .pill-label {
+  color: var(--text-on-block-muted);
 }
 
 .cta__glow {
   position: absolute;
-  right: -10%;
-  top: 5%;
-  width: min(70vw, 900px);
+  left: 50%;
+  top: -20%;
+  width: min(80vw, 980px);
+  margin-left: calc(min(80vw, 980px) / -2);
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, var(--ember-glow), transparent);
-  opacity: 0.28;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent-2) 55%, transparent), transparent);
+  opacity: 0.22;
   pointer-events: none;
 }
 
 .cta__inner {
   position: relative;
   display: grid;
-  gap: clamp(2rem, 5vw, 4rem);
+  gap: clamp(2rem, 5vw, 3.5rem);
   grid-template-columns: minmax(0, 1fr);
-  align-items: end;
+  justify-items: center;
 }
 
 .cta__body {
   position: relative;
   z-index: 1;
   min-width: 0;
+  max-width: 52rem;
+  text-align: center;
+}
+
+.section--cta .section__head {
+  justify-items: center;
+  margin-inline: auto;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .section__title.cta__title {
-  max-width: none;
-  font-size: clamp(3.25rem, 1rem + 11vw, 12rem);
-  line-height: 0.88;
-  letter-spacing: -0.01em;
+  max-width: 13ch;
+  margin-inline: auto;
+  font-size: clamp(2.75rem, 1rem + 6vw, 6.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-transform: none;
+  color: var(--text-on-block);
 }
 
 .cta__rest {
   display: grid;
   gap: 1.5rem;
-  justify-items: start;
+  justify-items: center;
   max-width: 46ch;
+  margin-inline: auto;
 }
 
 .cta__text {
   font-size: var(--fs-lg);
-  color: var(--fg-soft);
+  color: var(--text-on-block-muted);
 }
 
 .cta__handle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 0.9rem;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--text-on-block) 10%, transparent);
   font-family: var(--font-mono);
-  font-size: var(--fs-lg);
-  color: var(--sun);
+  font-size: var(--fs-sm);
+  color: var(--text-on-block);
 }
 
 .cta__btn {
@@ -66,42 +90,41 @@
 .cta__photo {
   position: relative;
   aspect-ratio: 3 / 4;
-  width: min(100%, 420px);
-  justify-self: center;
+  width: min(100%, 260px);
+  margin: 0;
   border-radius: var(--r-card-lg);
-  border: 1px solid var(--line-strong);
-  background: radial-gradient(70% 55% at 50% 35%, var(--ember-glow), transparent 72%), var(--navy);
+  background: radial-gradient(70% 55% at 50% 35%, color-mix(in srgb, var(--accent-2) 45%, transparent), transparent 72%), var(--block-2);
   overflow: hidden;
 }
 
 .cta__photo .sil {
-  fill: color-mix(in srgb, var(--card) 88%, var(--ink));
+  fill: var(--block-2);
 }
 
 .cta__sign {
   position: relative;
-  margin-top: clamp(2.5rem, 6vw, 5rem);
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  text-align: center;
+  color: var(--text-on-block-muted);
 }
 
-@media (min-width: 1000px) {
+/* широкий экран: портрет выносится к правому краю, центральная колонка остаётся по центру */
+@media (min-width: 1280px) {
   .cta__inner {
-    grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.7fr);
-    align-items: center;
-  }
-
-  /* в две колонки слово «ОБГОВОРИМО» при 11vw шире колонки и заезжало на фото */
-  .section__title.cta__title {
-    font-size: clamp(3.25rem, 1rem + 6.4vw, 9rem);
+    min-height: clamp(440px, 52vh, 560px);
+    align-content: center;
   }
 
   .cta__photo {
-    aspect-ratio: 3 / 4.4;
-    width: 100%;
-    justify-self: end;
+    position: absolute;
+    right: var(--gutter);
+    bottom: 0;
+    width: clamp(170px, 14vw, 230px);
+    aspect-ratio: 3 / 4.2;
+    transform: rotate(4deg);
   }
 }

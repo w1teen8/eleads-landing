@@ -1,4 +1,5 @@
-/* 08 GEO: широкая точечная карта (canvas) слева, список регионов справа; карточка региона плавает у точки. */
+/* 08 GEO: светлый контейнер overtake; широкая точечная карта (canvas) на тёмной плашке слева, светлый список
+   регионов справа; карточка региона — светлая, плавает у точки. Цвета точек geo.js берёт из переменных .geo__map. */
 
 .geo {
   display: grid;
@@ -10,9 +11,9 @@
   position: relative;
   min-width: 0;
   padding: clamp(0.75rem, 2vw, 1.75rem);
-  border: 1px solid var(--line);
   border-radius: var(--r-card-lg);
-  background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--card) 80%, var(--navy)), var(--ink));
+  background: radial-gradient(120% 90% at 50% 0%, var(--block-2), var(--block));
+  color: var(--text-on-block);
 }
 
 .geo__canvas {
@@ -29,7 +30,7 @@
   font-size: var(--fs-xs);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-on-block-muted);
   pointer-events: none;
 }
 
@@ -41,10 +42,11 @@
   width: min(240px, 70%);
   margin: 0;
   padding: 0.9rem 1.1rem;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--line);
   border-radius: var(--r-card-sm);
-  background: var(--card);
-  box-shadow: 0 18px 40px -18px var(--ink);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--block) 60%, transparent);
   transform: translate3d(0, calc(-100% - 22px), 0);
   opacity: 0;
   pointer-events: none;
@@ -77,11 +79,16 @@
   font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: none;
+  letter-spacing: -0.02em;
   line-height: 1.1;
 }
 
-.geo__card-figure {
+/* цифра на светлой карточке: градиентный текст (.text-grad) здесь бледный — сплошным цветом текста */
+.geo__card .geo__card-figure {
+  background: none;
+  color: var(--text);
+  letter-spacing: -0.04em;
   width: fit-content;
   font-family: var(--font-display);
   font-size: 2.6rem;
@@ -93,20 +100,23 @@
 .geo__card-text {
   margin-top: 0.3rem;
   font-size: var(--fs-sm);
-  color: var(--fg-soft);
+  color: var(--text-muted);
 }
 
 .geo__list {
   min-width: 0;
   padding: clamp(1.25rem, 2.2vw, 2rem);
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--line);
   border-radius: var(--r-card);
-  background: var(--card);
+  background: var(--surface-2);
+  color: var(--text);
 }
 
 .geo__list-title {
   margin-bottom: 1rem;
   font-size: 1.5rem;
+  letter-spacing: -0.03em;
+  text-transform: none;
 }
 
 .geo__region {
@@ -117,6 +127,7 @@
   width: 100%;
   padding: 0.85rem 0;
   border-top: 1px solid var(--line);
+  border-radius: 0;
   text-align: left;
 }
 
@@ -126,7 +137,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--ember);
+  background: var(--text-muted);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
@@ -137,18 +148,25 @@
 .geo__region-text {
   grid-column: 2;
   font-size: var(--fs-sm);
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .geo__region:hover .geo__region-dot,
 .geo__region:focus-visible .geo__region-dot,
 .geo__region.is-active .geo__region-dot {
   transform: scale(1.5);
-  background: var(--sun);
+  background: var(--accent-2);
 }
 
+/* активный регион — пилюля-подложка вместо цветного текста (жёлтый текст на светлом не читался бы) */
 .geo__region.is-active .geo__region-name {
-  color: var(--sun);
+  display: inline-block;
+  width: fit-content;
+  padding: 0 0.55rem;
+  margin-left: -0.55rem;
+  border-radius: var(--r-pill);
+  background: var(--block);
+  color: var(--text-on-block);
 }
 
 .geo__footnote {
@@ -156,7 +174,7 @@
   max-width: 90ch;
   font-size: var(--fs-xs);
   line-height: 1.6;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 @media (min-width: 1000px) {

@@ -1,4 +1,5 @@
-/* 11 Екосистема: шесть плиток-этапов с бегущим по цепочке импульсом (transform) и нумерованный список услуг крупным капсом. */
+/* 11 Екосистема: секция без внешнего контейнера, на основе страницы. Шесть плиток-этапов разного цвета темы
+   (тёмные «горячие», светлые «холодные») с бегущим по цепочке импульсом (transform) и нумерованный список услуг. */
 
 .eco__flowwrap {
   position: relative;
@@ -39,8 +40,8 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--sun);
-  box-shadow: 0 0 0 6px var(--sun-glow);
+  background: var(--accent);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 @keyframes eco-run {
@@ -61,28 +62,37 @@
   padding: 1.25rem;
   border: 1px solid var(--line);
   border-radius: var(--r-card-sm);
-  background: color-mix(in srgb, var(--card) 70%, var(--navy));
+  background: var(--surface);
+  color: var(--text);
   overflow: hidden;
   isolation: isolate;
 }
 
 .eco__tile--hot {
-  border-color: var(--line-strong);
-  background: var(--card);
+  border-color: transparent;
+  background: var(--block);
+  color: var(--text-on-block);
+}
+
+/* первая плитка — акцентная: точка входа в цепочку */
+.eco__tile:first-child {
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .eco__tile-num {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.14em;
-  color: var(--muted);
+  opacity: 0.7;
 }
 
 .eco__tile-name {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.1rem);
-  font-weight: 700;
-  text-transform: uppercase;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -0.03em;
   line-height: 1;
 }
 
@@ -159,15 +169,16 @@
 .eco__row-num {
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .eco__row-name {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 1rem + 2.6vw, 3.25rem);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
-  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  text-transform: none;
   transition: transform var(--dur) var(--ease-out);
 }
 
@@ -178,7 +189,7 @@
   overflow: hidden;
   opacity: 0;
   font-size: var(--fs-base);
-  color: var(--fg-soft);
+  color: var(--text-muted);
   transform: translate3d(0, 8px, 0);
   transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
 }
@@ -188,7 +199,10 @@
   grid-row: 1;
   width: 28px;
   height: 28px;
-  color: var(--sun);
+  padding: 5px;
+  border-radius: 50%;
+  background: var(--block);
+  color: var(--text-on-block);
   opacity: 0.4;
   transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
 }
@@ -222,7 +236,8 @@
   font-size: clamp(1.5rem, 1rem + 2vw, 2.75rem);
   font-weight: 600;
   line-height: 1.08;
-  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  text-transform: none;
 }
 
 @media (min-width: 1000px) {

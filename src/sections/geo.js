@@ -19,9 +19,15 @@ export function init(root) {
   if (!ctx) return;
 
   const { cols, rows, step, lon0, lat0, regions } = geo;
-  const style = getComputedStyle(root);
-  const color = (name) => style.getPropertyValue(name).trim() || '#fff';
-  const palette = { land: color('--muted'), sun: color('--sun'), ember: color('--ember') };
+  // цвета — семантические переменные темы, читаются с тёмной подложки карты (land — приглушённый текст
+  // на блоке, активная точка — акцент, остальные — второй акцент)
+  let palette = {};
+  const readPalette = () => {
+    const style = getComputedStyle(map);
+    const color = (name) => style.getPropertyValue(name).trim();
+    palette = { land: color('--text-on-block-muted'), sun: color('--accent'), ember: color('--accent-2') };
+  };
+  readPalette();
 
   const land = [];
   geo.rowsData.forEach((line, r) => {
@@ -253,6 +259,14 @@ export function init(root) {
     { rootMargin: '600px 0px' },
   ).observe(canvas);
   document.addEventListener('visibilitychange', sync);
+
+  // смена версии оформления (панель версий в dev меняет data-theme на <html>) — перекрасить карту
+  new MutationObserver(() => {
+    readPalette();
+    landKey = '';
+    paintLand();
+    draw(performance.now());
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   getLang();
   watchDpr();

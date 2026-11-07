@@ -1,4 +1,4 @@
-/* База: сброс, типографика, утилиты (.eyebrow, .btn, .reveal), правила движения. */
+/* База: сброс, типографика, утилиты (.eyebrow, .reveal), правила движения. Кнопки и пилюли — components.css. */
 *,
 *::before,
 *::after {
@@ -8,15 +8,14 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  background: var(--ink);
-  color-scheme: dark;
+  background: var(--bg);
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--ink);
-  color: var(--fg);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-body);
   font-size: var(--fs-base);
   line-height: 1.55;
@@ -34,7 +33,7 @@ body::after {
   inset: 0;
   z-index: 200;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -84,20 +83,19 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 700;
-  text-transform: uppercase;
-  line-height: 0.95;
-  letter-spacing: -0.005em;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: var(--tracking-tight);
   text-wrap: balance;
 }
 
 ::selection {
-  background: var(--sun);
-  color: var(--ink);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--sun);
+  outline: 2px solid var(--accent-2);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -125,8 +123,8 @@ h3 {
   z-index: 300;
   padding: 10px 16px;
   border-radius: var(--r-pill);
-  background: var(--sun);
-  color: var(--ink);
+  background: var(--accent);
+  color: var(--accent-ink);
   font-weight: 600;
   transform: translateY(-160%);
   transition: transform var(--dur-fast) var(--ease-out);
@@ -146,115 +144,32 @@ h3 {
   box-decoration-break: clone;
 }
 
-/* — надзаголовок секции — */
+/* — надзаголовок секции: метка с точкой, как у overtake («• Performance marketing studio •») — */
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.75em;
+  gap: 0.6em;
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .eyebrow::before {
   content: '';
-  width: 28px;
-  height: 1px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   background: var(--grad);
   flex: none;
-}
-
-/* — кнопки — */
-.btn {
-  --btn-h: 52px;
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6em;
-  min-height: var(--btn-h);
-  padding: 0 1.6em;
-  border-radius: var(--r-pill);
-  font-family: var(--font-body);
-  font-size: var(--fs-base);
-  font-weight: 600;
-  line-height: 1.1;
-  white-space: nowrap;
-  isolation: isolate;
-  transition: transform var(--dur-fast) var(--ease-out);
-  will-change: transform;
-}
-
-.btn:hover {
-  transform: scale(1.02);
-}
-
-.btn:active {
-  transform: scale(0.985);
-}
-
-.btn__icon {
-  width: 1.15em;
-  height: 1.15em;
-  flex: none;
-}
-
-.btn__arrow {
-  display: inline-block;
-  transition: transform var(--dur-fast) var(--ease-out);
-}
-
-.btn:hover .btn__arrow,
-.btn:focus-visible .btn__arrow {
-  transform: translateX(4px);
-}
-
-.btn--primary {
-  color: var(--ink);
-  background: var(--grad);
-}
-
-/* мягкий отсвет под кнопкой — отдельный слой, меняется только opacity */
-.btn--primary::after {
-  content: '';
-  position: absolute;
-  inset: 8px 12px -10px;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--grad);
-  filter: blur(18px);
-  opacity: 0.35;
-  transition: opacity var(--dur) var(--ease-out);
-}
-
-.btn--primary:hover::after {
-  opacity: 0.6;
-}
-
-.btn--ghost {
-  color: var(--fg);
-  border: 1px solid var(--line-strong);
-}
-
-.btn--sm {
-  --btn-h: 42px;
-  padding: 0 1.15em;
-  font-size: var(--fs-sm);
-}
-
-.btn--lg {
-  --btn-h: 60px;
-  padding: 0 1.9em;
-  font-size: var(--fs-lg);
 }
 
 /* — заглушка: то, чего у клиента ещё нет. Видно сразу, не путается с готовым — */
 .is-placeholder {
   font-family: var(--font-mono);
-  color: var(--sun);
+  color: var(--accent);
   border-bottom: 1px dashed currentColor;
 }
 
@@ -266,6 +181,7 @@ h3 {
   padding: 3px;
   border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
+  background: var(--surface);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 500;
@@ -279,7 +195,7 @@ h3 {
   left: 3px;
   width: calc(50% - 3px);
   border-radius: var(--r-pill);
-  background: var(--fg);
+  background: var(--text);
   transition: transform var(--dur) var(--ease-out);
 }
 
@@ -294,11 +210,11 @@ h3 {
   min-height: 30px;
   padding: 0 10px;
   border-radius: var(--r-pill);
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .lang-switch__btn[aria-pressed='true'] {
-  color: var(--ink);
+  color: var(--surface);
 }
 
 /* — Lenis — */

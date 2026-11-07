@@ -1,4 +1,5 @@
-/* 02 Telegram у цифрах: bento из карточек разного размера, одна главная цифра огромная. */
+/* 02 Telegram у цифрах: светлый контейнер overtake, bento из карточек-цифр разного цвета темы:
+   главная — тёмная с огромной цифрой, вторая — акцентная, третья — светлая. */
 
 .stats__tabs {
   --tab: 0;
@@ -7,8 +8,9 @@
   grid-template-columns: 1fr 1fr;
   padding: 4px;
   margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--line);
   border-radius: var(--r-pill);
+  background: var(--surface-2);
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
   letter-spacing: 0.06em;
@@ -21,7 +23,7 @@
   left: 4px;
   width: calc(50% - 4px);
   border-radius: var(--r-pill);
-  background: var(--grad);
+  background: var(--block);
   transform: translateX(calc(var(--tab) * 100%));
   transition: transform var(--dur) var(--ease-out);
 }
@@ -33,12 +35,12 @@
   min-height: 44px;
   padding: 0 1.4rem;
   border-radius: var(--r-pill);
-  color: var(--muted);
+  color: var(--text-muted);
   transition: opacity var(--dur-fast) var(--ease-out);
 }
 
 .stats__tab[aria-selected='true'] {
-  color: var(--ink);
+  color: var(--text-on-block);
   font-weight: 600;
 }
 
@@ -74,9 +76,10 @@
   gap: 1rem;
   min-width: 0;
   padding: clamp(1.25rem, 2.4vw, 2.25rem);
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: var(--r-card);
-  background: color-mix(in srgb, var(--card) 70%, var(--navy));
+  background: var(--surface-2);
+  color: var(--text);
 }
 
 .stats__card--main {
@@ -85,6 +88,8 @@
   border-radius: var(--r-card-lg);
   position: relative;
   overflow: hidden;
+  background: var(--block);
+  color: var(--text-on-block);
 }
 
 .stats__card--main::after {
@@ -95,7 +100,7 @@
   width: 70%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, var(--ember-glow), transparent);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent-2) 55%, transparent), transparent);
   opacity: 0.35;
   pointer-events: none;
 }
@@ -105,16 +110,43 @@
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  background: var(--ink);
+  background: transparent;
   border-color: var(--line-strong);
+}
+
+/* акцентная карточка: заливка акцентом темы, цифра — сплошным тёмным цветом поверх (градиентный текст
+   на акцентном фоне не читался бы) */
+.stats__card--a {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.stats__card--a .stats__value {
+  background: none;
+  color: var(--accent-ink);
+}
+
+.stats__card--a .stats__label {
+  color: var(--accent-ink);
+}
+
+/* светлая карточка: цифра цветом текста, как белые карточки-цифры образца */
+.stats__card--b {
+  background: var(--surface-2);
+  border-color: var(--line);
+}
+
+.stats__card--b .stats__value {
+  background: none;
+  color: var(--text);
 }
 
 .stats__value {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 0.88;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  text-transform: none;
   font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
   font-variant-numeric: tabular-nums;
   width: fit-content;
@@ -126,12 +158,13 @@
 
 .stats__label {
   max-width: 34ch;
-  color: var(--fg-soft);
+  color: var(--text-muted);
   font-size: var(--fs-base);
 }
 
 .stats__card--main .stats__label {
   font-size: var(--fs-lg);
+  color: var(--text-on-block-muted);
 }
 
 .stats__tag {
@@ -139,19 +172,21 @@
   align-items: center;
   min-height: 30px;
   padding: 0 0.9rem;
-  border: 1px solid var(--sun);
+  border: 0;
   border-radius: var(--r-pill);
+  background: var(--tag-1);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--sun);
+  color: var(--accent-ink);
 }
 
 .stats__text {
   flex: 1 1 22rem;
   font-size: var(--fs-lg);
   max-width: 52ch;
+  color: var(--text);
 }
 
 .stats__footnote {
@@ -159,7 +194,7 @@
   max-width: 90ch;
   font-size: var(--fs-xs);
   line-height: 1.6;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 @media (min-width: 900px) {
