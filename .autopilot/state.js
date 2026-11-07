@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-08T00:06:29+02:00",
+  "updatedAt": "2026-11-08T01:10:31+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -61,10 +61,10 @@ window.STATE =
     }
   ],
   "requirements": {
-    "total": 119,
-    "done": 106,
+    "total": 125,
+    "done": 108,
     "inTicket": 8,
-    "inSpec": 0,
+    "inSpec": 4,
     "placeholder": 3,
     "deferred": 1,
     "dropped": 1
@@ -603,10 +603,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "startedAt": "2026-11-07T23:39:33+02:00",
+      "finishedAt": "2026-11-08T01:06:44+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 127,
+        "failed": 0
+      },
+      "commit": "2b928ab"
     },
     {
       "id": "12",
@@ -679,6 +685,38 @@ window.STATE =
       "repairs": 0
     },
     {
+      "id": "14",
+      "title": "Вариант 3 первого экрана: интро с самолётиком (видео + кольцо вокруг ELEADS в коде)",
+      "requirements": [
+        "G24",
+        "G19"
+      ],
+      "blockedBy": [
+        "11"
+      ],
+      "wave": 13,
+      "zone": [
+        "src/sections/hero-plane.js",
+        "src/styles/sections/hero-plane.css",
+        "src/sections/hero.js",
+        "src/sections/preloader.js",
+        "<head>",
+        "src/dev/theme-switcher.js",
+        "public/video/hero-v3*",
+        "public/img/hero/",
+        "<section id=\"hero\">",
+        "hero.v3",
+        "content.*.json",
+        "tests/hero-plane*.test.js",
+        "tests/head-scripts.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
       "id": "F1",
       "title": "Исправления по ревью ветки",
       "requirements": [
@@ -723,7 +761,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 109,
+    "passed": 127,
     "failed": 0
   },
   "debt": {
@@ -781,7 +819,9 @@ window.STATE =
     "index.html:8 — theme-color #070C18 не меняется под тему aether",
     "src/sections/ribbons.js:21 — после смены языка обратная лента может оставлять пустоту слева, проверить на EN",
     "src/styles/sections/stats.css — на 360px EN горизонтальный скролл 2px от .stats__value",
-    "tests/overtake-sections.test.js — тест стопки кейсов удалён исполнителем T12 (противоречит галерее)"
+    "tests/overtake-sections.test.js — тест стопки кейсов удалён исполнителем T12 (противоречит галерее)",
+    "Под CPU×4 первый экран всё ещё даёт длинные кадры: пересчёт стилей каждый кадр, тикер gsap+Lenis+marquee, полноэкранное зерно body::after с анимацией — следующий шаг: выключить зерно и Lenis на странице из одного экрана",
+    "Вариант 2: в EN подписи на карточках остаются украинскими (PNG пользователя); кольцо и планета оранжевые и в теме aether"
   ],
   "blind": null,
   "beats": [
@@ -866,9 +906,14 @@ window.STATE =
     "2026-11-08T00:06:06+02:00",
     "2026-11-08T00:06:08+02:00",
     "2026-11-08T00:06:26+02:00",
-    "2026-11-08T00:06:29+02:00"
+    "2026-11-08T00:06:29+02:00",
+    "2026-11-08T00:51:02+02:00",
+    "2026-11-08T01:06:44+02:00",
+    "2026-11-08T01:06:45+02:00",
+    "2026-11-08T01:10:30+02:00",
+    "2026-11-08T01:10:31+02:00"
   ],
-  "rev": 96,
+  "rev": 101,
   "waiting": null,
   "waits": [
     {
@@ -885,6 +930,11 @@ window.STATE =
       "kind": "briefing",
       "from": "2026-11-07T23:54:01+02:00",
       "to": "2026-11-07T23:54:59+02:00"
+    },
+    {
+      "kind": "briefing",
+      "from": "2026-11-08T00:51:02+02:00",
+      "to": "2026-11-08T01:06:44+02:00"
     }
   ],
   "log": [
@@ -1576,6 +1626,40 @@ window.STATE =
       "g": "G3",
       "ok": false,
       "problems": 5
+    },
+    {
+      "t": "2026-11-08T00:51:02+02:00",
+      "k": "ask",
+      "kind": "briefing",
+      "note": "вариант 3: видео для кадров 1–4, картинки для 5–9, заменяет ли интро заставку-поиск"
+    },
+    {
+      "t": "2026-11-08T01:06:44+02:00",
+      "k": "answered",
+      "kind": "briefing"
+    },
+    {
+      "t": "2026-11-08T01:06:44+02:00",
+      "k": "ticket",
+      "ids": [
+        "11"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 127,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-08T01:06:45+02:00",
+      "k": "add",
+      "key": "concerns",
+      "n": 2
+    },
+    {
+      "t": "2026-11-08T01:10:31+02:00",
+      "k": "tickets",
+      "n": 15
     }
   ],
   "reqList": [
@@ -2172,11 +2256,41 @@ window.STATE =
     {
       "id": "G17",
       "text": "«Хиро тоже такое можно сделать» — огромное слово поверх планеты с кольцом, «scroll to enter orbit»",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "G18",
       "text": "«там фото есть, делаем как тут, надо сделать чтобы кольцо» + «закинул файлы» — первый экран по макету пользователя",
+      "status": "done"
+    },
+    {
+      "id": "G19",
+      "text": "«будет 2 варианта, тот который я сейчас предложил и старый» + переключатель",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G20",
+      "text": "«вместо значка планеты огромный значок телеграмма и вокруг окошки с телеграмм адс»",
+      "status": "in-spec"
+    },
+    {
+      "id": "G21",
+      "text": "«И сделай чтобы эти картинки плавали верх вниз»",
+      "status": "in-spec"
+    },
+    {
+      "id": "G22",
+      "text": "«Сделай 3 штуки которые бегут по кругу планеты»",
+      "status": "in-spec"
+    },
+    {
+      "id": "G23",
+      "text": "«Остальное все на странице убери, надо сделать так чтобы не лагало»",
+      "status": "in-spec"
+    },
+    {
+      "id": "G24",
+      "text": "«Это вариант 3. Наш герой Владимир сидит в офисе, берет в руки самолетик, запускает его, тот летит в космос делает круг вокруг надписи елидс и залетает на место планеты в круг»",
       "status": "in-ticket"
     }
   ],
