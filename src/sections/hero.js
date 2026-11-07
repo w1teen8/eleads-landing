@@ -45,6 +45,7 @@ export function init(root) {
     initOrbit(stage);
     return;
   }
+  initRingStretch(stage);
   initParallax(root);
   if (reduced) return; // всё видно, цифры стоят итоговые
   root.classList.add('hero--entering');
@@ -55,6 +56,27 @@ export function init(root) {
     requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('hero--entering')));
     whenVisible(root, () => startCounters($$('[data-count]', stage)));
   }
+}
+
+/* ——— десктоп: сцена шире макета (16:9) — кольцо растягивается вбок вместе со сценой (--sx); планета и фигура — нет ——— */
+const MOCKUP_RATIO = 1672 / 941;
+const MAX_STRETCH = 1.3;
+
+/** Растяжение кольца по ширине для сцены w×h: 1 — пропорции макета или уже, не больше MAX_STRETCH. */
+function ringStretch(w, h) {
+  if (!(w > 0 && h > 0)) return 1;
+  return Math.min(MAX_STRETCH, Math.max(1, w / h / MOCKUP_RATIO));
+}
+
+function initRingStretch(stage) {
+  const canvas = $('.hero__canvas', stage);
+  if (!canvas || typeof ResizeObserver === 'undefined') return;
+  const desktop = window.matchMedia(DESKTOP);
+  new ResizeObserver(([entry]) => {
+    const { width, height } = entry.contentRect;
+    const sx = desktop.matches ? ringStretch(width, height) : 1;
+    canvas.style.setProperty('--sx', sx.toFixed(3));
+  }).observe(canvas);
 }
 
 /* ——— вне экрана плавание и кометы на паузе (.hero--offscreen → animation-play-state) ——— */

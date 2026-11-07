@@ -110,3 +110,12 @@ test('движение: параллакс только с мышью от 900px
   assert.doesNotMatch(css, /transition[^;]*\b(width|height|top|left|filter)\b/);
   assert.doesNotMatch(css, /filter\s*:|mix-blend-mode/, 'фильтры и смешивание на первом экране тормозят');
 });
+
+test('десктоп: холст варианта 2 — на весь экран (100vw × 100svh), без пропорциональной коробки и контейнера 1800px', () => {
+  const desk = css.split(/@media \(min-width: 900px\) \{/)[1] || '';
+  const canvas = desk.match(/\.hero__canvas\s*\{([^}]*)\}/)?.[1] || '';
+  assert.match(canvas, /height:[^;]*100svh/, 'высота холста — от высоты экрана');
+  assert.match(canvas, /container-type:\s*size/, 'элементы считаются от ширины и высоты сцены');
+  assert.doesNotMatch(canvas, /aspect-ratio|max-width/, 'холст не ограничен пропорцией или контейнером');
+  assert.doesNotMatch(section.split('data-hero-variant="orbit"')[0], /class="[^"]*\bcontainer\b/, 'вариант 2 не в .container');
+});
