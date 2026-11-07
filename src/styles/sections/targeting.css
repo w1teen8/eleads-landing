@@ -9,8 +9,7 @@
   color: var(--text-on-block);
 }
 
-.section--targeting .section__lead,
-.section--targeting .eyebrow {
+.section--targeting .section__lead {
   color: var(--text-on-block-muted);
 }
 
@@ -156,4 +155,9 @@
   .tg__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+/* T13, «Aether · оригинал»: светлая --block-2 этой версии гасит акцент и приглушённый текст на плитках — в секции плитки темнее (AA) */
+[data-theme='aether'] .section--targeting {
+  --block-2: color-mix(in srgb, var(--text) 7%, var(--bg));
 }

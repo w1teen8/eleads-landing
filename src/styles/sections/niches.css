@@ -1,28 +1,126 @@
-/* 03 Ніші: тёмный блок overtake. 4 колонки, ряды смещены по вертикали (шахматный ритм);
-   восьмая карточка — акцентная, ведёт в Telegram. */
+/* 03 Ніші — орбита Aether: планета по центру, восемь круглых карточек на эллиптической орбите
+   (вращает niches.js transform-ом), по бокам по четыре пункта: номер акцентным моно, название, примеры.
+   Восьмой пункт «Інша ніша?» — акцентная карточка-ссылка в Telegram. На узком экране — орбита сверху,
+   ниже список карточек. */
 
 .section--niches {
-  color: var(--text-on-block);
+  overflow: clip;
 }
 
-.section--niches .section__title {
-  color: var(--text-on-block);
+.niches__head {
+  justify-items: center;
+  margin-inline: auto;
+  text-align: center;
 }
 
-.section--niches .section__lead,
-.section--niches .eyebrow {
-  color: var(--text-on-block-muted);
+.niches__head .display__accent {
+  margin-inline: auto;
 }
 
 .niches__lead {
-  margin-top: calc(-1 * clamp(1.25rem, 3vw, 2.5rem));
-  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  margin: calc(-1 * clamp(1rem, 2.5vw, 2.25rem)) auto clamp(1.5rem, 3vw, 2.5rem);
+  text-align: center;
 }
 
+.niches__stage {
+  position: relative;
+}
+
+/* ——— орбита ——— */
+.niches__orbit {
+  --orbit-w: min(calc(100vw - 2 * var(--gutter)), 34rem);
+  --sat: calc(var(--orbit-w) * 0.16);
+  position: relative;
+  width: var(--orbit-w);
+  aspect-ratio: 1 / 0.62;
+  margin-inline: auto;
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.niches__orbit .planet {
+  --planet-size: calc(var(--orbit-w) * 0.36);
+  --planet-ring: 1.55;
+  --planet-tilt: -10deg;
+  --planet-glow: 2.4;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  margin: calc(var(--planet-size) / -2) 0 0 calc(var(--planet-size) / -2);
+}
+
+/* след орбиты — тонкий эллипс */
+.niches__path {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--orbit-w) - var(--sat));
+  height: calc((var(--orbit-w) - var(--sat)) * 0.38);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* кружок-кадр. Без JS стоит на своём месте орбиты (cos/sin в CSS), с JS позицию пишет niches.js */
+.niches__sat {
+  --a: calc(var(--i) * 45deg + 22.5deg);
+  --rx: calc((var(--orbit-w) - var(--sat)) / 2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: var(--sat);
+  height: var(--sat);
+  margin: calc(var(--sat) / -2) 0 0 calc(var(--sat) / -2);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, color-mix(in srgb, var(--text) 16%, transparent), transparent 55%),
+    radial-gradient(circle at 70% 80%, color-mix(in srgb, var(--accent-2) 30%, transparent), transparent 60%),
+    var(--surface-2);
+  transform: translate3d(calc(cos(var(--a)) * var(--rx)), calc(sin(var(--a)) * var(--rx) * 0.38), 0);
+}
+
+.niches__sat::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.niches__sat.is-lit::after {
+  opacity: 1;
+}
+
+.niches__sat-num {
+  font-family: var(--font-mono);
+  font-size: clamp(0.6875rem, 0.5rem + 0.6vw, 0.9375rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+
+.niches__sat--other {
+  border-color: transparent;
+  background: var(--grad);
+  color: var(--accent-ink);
+}
+
+.niches__sat-tg {
+  width: 42%;
+  height: 42%;
+}
+
+/* ——— пункты ——— */
 .niches__grid {
   display: grid;
-  gap: clamp(0.5rem, 1vw, 0.875rem);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 clamp(1rem, 2.5vw, 2rem);
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .niches__item {
@@ -31,128 +129,82 @@
 }
 
 .niches__card {
-  /* px от левого верхнего угла; до первого движения мыши подсветка у верхнего края */
-  --mx: 160px;
-  --my: 0px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 0.5rem;
+  display: grid;
+  align-content: start;
+  gap: 0.4rem;
   width: 100%;
-  min-height: 220px;
-  padding: clamp(1.1rem, 2vw, 1.75rem);
-  border: 1px solid color-mix(in srgb, var(--text-on-block) 10%, transparent);
-  border-radius: var(--r-card-sm);
-  background: var(--block-2);
-  color: var(--text-on-block);
-  overflow: hidden;
-  isolation: isolate;
-  transition: transform var(--dur) var(--ease-out);
+  padding: 1.1rem 0 1.25rem;
+  border-top: 1px solid var(--line);
+  color: var(--text);
 }
 
-/* подсветка под курсором — отдельный слой-круг 520px с центром в (0,0) карточки; за курсором он
-   сдвигается transform-ом (niches.js пишет --mx / --my в px), сам градиент не перерисовывается */
-.niches__card::before {
-  content: '';
-  position: absolute;
-  top: -260px;
-  left: -260px;
-  z-index: -1;
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(260px circle at center, color-mix(in srgb, var(--accent) 30%, transparent), transparent 70%);
-  opacity: 0;
-  transform: translate3d(var(--mx), var(--my), 0);
-  pointer-events: none;
-  transition: opacity var(--dur) var(--ease-out);
-}
-
-/* слой выносится в композитор только на время hover — не держим 6 лишних слоёв на мобильном */
-.niches__card:hover::before {
-  opacity: 0.55;
-  will-change: transform;
-}
-
-.niches__card:hover {
-  transform: translateY(-4px);
-}
-
-/* номер — маленькая пилюля, как метки overtake */
 .niches__idx {
-  position: absolute;
-  top: clamp(1.1rem, 2vw, 1.75rem);
-  left: clamp(1.1rem, 2vw, 1.75rem);
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  padding: 0 0.6rem;
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--text-on-block) 8%, transparent);
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
-  color: var(--text-on-block-muted);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  color: var(--accent);
 }
 
-.niches__dot {
-  position: absolute;
-  top: calc(clamp(1.1rem, 2vw, 1.75rem) + 7px);
-  right: clamp(1.1rem, 2vw, 1.75rem);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
+/* название ниши капсом Unbounded: размер с запасом под «INVESTMENTS», перенос только по пробелам */
 .niches__name {
-  font-size: clamp(1.3rem, 1rem + 1.2vw, 1.9rem);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  text-transform: none;
-  color: var(--text-on-block);
+  font-size: clamp(1rem, 0.85rem + 0.55vw, 1.375rem);
+  line-height: 1.1;
+  overflow-wrap: normal;
+  hyphens: manual;
+  color: var(--text);
 }
 
 .niches__examples {
-  color: var(--text-on-block-muted);
   font-size: var(--fs-sm);
+  color: var(--text-muted);
 }
 
-/* восьмая карточка — светлая на тёмном блоке, как белая карточка-цифра у overtake */
+/* «Інша ніша?» — акцентная карточка-ссылка */
 .niches__card--other {
-  background: var(--accent);
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  padding: 1.35rem 1.4rem 1.4rem;
+  border: 0;
+  border-radius: var(--r-card);
+  background: var(--grad);
   color: var(--accent-ink);
-  border-color: transparent;
+  transition: transform var(--dur) var(--ease-out);
 }
 
-.niches__card--other::before {
-  display: none;
+.niches__card--other:hover {
+  transform: translateY(-3px);
 }
 
-.niches__card--other .niches__name {
+.niches__card--other .niches__name,
+.niches__card--other .niches__examples {
+  padding-right: 2.5rem;
   color: var(--accent-ink);
 }
 
 .niches__card--other .niches__examples {
-  color: var(--accent-ink);
-  font-size: var(--fs-base);
   font-weight: 500;
 }
 
 .niches__tg {
   position: absolute;
-  top: clamp(1.1rem, 2vw, 1.75rem);
-  right: clamp(1.1rem, 2vw, 1.75rem);
-  width: 30px;
-  height: 30px;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 26px;
+  height: 26px;
 }
 
 .niches__cta {
   display: inline-flex;
   align-items: center;
   gap: 0.6em;
-  margin-top: 0.75rem;
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
   font-weight: 600;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
 }
 
 .niches__card--other .btn__arrow {
@@ -165,20 +217,95 @@
 }
 
 .niches__card--other:focus-visible {
-  outline-color: var(--text-on-block);
+  outline-color: var(--text);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 600px) {
   .niches__grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .niches__item:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* широкий экран: пункты по бокам, орбита между ними */
+@media (min-width: 1100px) {
+  .niches__stage {
+    min-height: 34rem;
+  }
+
+  .niches__orbit {
+    --orbit-w: min(40vw, 48rem);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  .niches__grid {
+    position: relative;
+    z-index: 4;
+    grid-template-columns: minmax(0, 1fr) min(40vw, 48rem) minmax(0, 1fr);
+    grid-template-rows: repeat(4, auto);
+    align-content: center;
+    min-height: 34rem;
+    pointer-events: none;
+  }
+
+  .niches__item {
+    pointer-events: auto;
+  }
+
+  .niches__item:nth-child(-n + 4) {
+    grid-column: 1;
+  }
+
+  .niches__item:nth-child(n + 5),
+  .niches__item:last-child {
+    grid-column: 3;
+  }
+
+  .niches__item:nth-child(1),
+  .niches__item:nth-child(5) { grid-row: 1; }
+  .niches__item:nth-child(2),
+  .niches__item:nth-child(6) { grid-row: 2; }
+  .niches__item:nth-child(3),
+  .niches__item:nth-child(7) { grid-row: 3; }
+  .niches__item:nth-child(4),
+  .niches__item:nth-child(8) { grid-row: 4; }
+}
+
+/* узкий экран: под орбитой — список карточек */
+@media (max-width: 1099px) {
+  .niches__grid {
+    gap: 0.6rem;
   }
 
   .niches__card {
-    min-height: 260px;
+    padding: 1rem 1.15rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-card-sm);
+    background: color-mix(in srgb, var(--text) 3%, transparent);
   }
 
-  .niches__item:nth-child(4n + 2),
-  .niches__item:nth-child(4n + 4) {
-    margin-top: 2.5rem;
+  .niches__card--other {
+    margin-top: 0;
+    padding: 1.35rem 1.4rem 1.4rem;
+    border: 0;
+    background: var(--grad);
+  }
+}
+
+@media (min-width: 1680px) {
+  .niches__stage,
+  .niches__grid {
+    min-height: 40rem;
+  }
+
+  .niches__card {
+    padding-block: 1.4rem 1.6rem;
   }
 }

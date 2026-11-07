@@ -1,6 +1,9 @@
 {
   "telegramUrl": "https://t.me/Kucherflow",
   "telegramHandle": "@Kucherflow",
+  "sections": {
+    "enabled": ["hero"]
+  },
   "analytics": {
     "ga4Id": "",
     "metaPixelId": ""

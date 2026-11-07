@@ -1,9 +1,11 @@
 // 11 Екосистема: поток по цепочке (CSS-анимация transform) идёт, только пока блок на экране и вкладка видна;
 // услуги — превью по hover/фокусу (CSS), на тач — по тапу.
 import { $, $$, on } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 import { reduced } from '../core/motion.js';
 
 export function init(root) {
+  accentTitles(root);
   const flow = $('[data-eco-flow]', root);
   if (flow) {
     if (reduced) flow.classList.add('is-static');

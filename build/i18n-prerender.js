@@ -8,6 +8,7 @@
 //   href="{{config.telegramUrl}}"                            → значение из config.json
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve as resolvePath } from 'node:path';
+import { disableSections } from '../src/core/sections.js';
 
 const TEXT_NODE = /<([a-zA-Z][\w-]*)((?:\s[^>]*?)?)(\sdata-i18n=")([^"]+)("[^>]*)>([^<]*)<\/\1>/g;
 const ATTR_TAG = /<[a-zA-Z][^>]*\sdata-i18n-attr="([^"]+)"[^>]*>/g;
@@ -111,7 +112,7 @@ export default function i18nPrerender({
         try {
           const strings = readJson(resolvePath(root, dict));
           const settings = readJson(resolvePath(root, config));
-          return prerender(html, strings, settings, {
+          return prerender(disableSections(html, settings), strings, settings, {
             strict: isBuild,
             warn: (msg) => logger.warn(msg),
           });

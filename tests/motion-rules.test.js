@@ -21,9 +21,9 @@ test('процесс: прогресс линии — transform слоя, а н�
   assert.match(js, /scaleY\(/);
 });
 
-test('свечения ниш и материалов: курсор двигает слой transform-ом, позиция градиента от переменных не зависит', () => {
+// T13: у ниш курсорной подсветки больше нет — там орбита (tests/aether-sections.test.js)
+test('свечение материалов: курсор двигает слой transform-ом, позиция градиента от переменных не зависит', () => {
   for (const [file, vars] of [
-    ['src/styles/sections/niches.css', ['--mx', '--my']],
     ['src/styles/sections/materials.css', ['--gx', '--gy']],
   ]) {
     const css = strip(read(file));

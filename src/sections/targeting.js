@@ -1,7 +1,9 @@
 // 09 Таргетинг: пояснение раскрывается по hover и фокусу (CSS), на тач — по тапу (aria-expanded).
 import { $$, on } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 
 export function init(root) {
+  accentTitles(root);
   const cards = $$('.tg__card', root);
   const expanded = (card, value) => card.setAttribute('aria-expanded', String(value));
   for (const card of cards) {

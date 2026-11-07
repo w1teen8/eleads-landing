@@ -6,7 +6,6 @@
   color: var(--text-on-block);
 }
 
-.section--cta .eyebrow,
 .section--cta .pill-label {
   color: var(--text-on-block-muted);
 }
@@ -47,13 +46,15 @@
 }
 
 .section__title.cta__title {
-  max-width: 13ch;
+  max-width: 14ch;
   margin-inline: auto;
-  font-size: clamp(2.75rem, 1rem + 6vw, 6.75rem);
-  line-height: 0.98;
-  letter-spacing: -0.04em;
-  text-transform: none;
+  font-size: clamp(2rem, 0.9rem + 5vw, 6.5rem);
+  line-height: 0.95;
   color: var(--text-on-block);
+}
+
+.cta__title .display__accent {
+  margin-inline: auto;
 }
 
 .cta__rest {
@@ -126,5 +127,11 @@
     width: clamp(170px, 14vw, 230px);
     aspect-ratio: 3 / 4.2;
     transform: rotate(4deg);
+  }
+}
+
+@media (min-width: 1100px) {
+  .section__title.cta__title {
+    max-width: none;
   }
 }

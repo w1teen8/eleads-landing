@@ -1,11 +1,13 @@
 // 04 Формати: клик по скриншоту-плейсхолдеру открывает лайтбокс (нативный <dialog>).
 // Esc, клик вне, кнопка; фокус возвращается на открывавший элемент; фон не скроллится (lockScroll).
 import { $, $$, on, trapFocus } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 import { lockScroll, reduced } from '../core/motion.js';
 
 const CLOSE_MS = 240;
 
 export function init(root) {
+  accentTitles(root);
   const dialog = $('[data-lightbox]', root);
   const stage = $('[data-lightbox-stage]', root);
   if (!dialog || !stage) return;

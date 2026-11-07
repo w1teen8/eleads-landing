@@ -9,8 +9,7 @@
   color: var(--text-on-block);
 }
 
-.section--materials .section__lead,
-.section--materials .eyebrow {
+.section--materials .section__lead {
   color: var(--text-on-block-muted);
 }
 
@@ -83,11 +82,13 @@
 
 .mat__title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 1.2rem + 2vw, 3rem);
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.035em;
-  text-transform: none;
+  font-size: clamp(1.4rem, 1rem + 0.9vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  overflow-wrap: normal;
+  hyphens: manual;
   color: var(--accent);
   text-wrap: balance;
 }
@@ -133,4 +134,9 @@
   .mat__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+}
+
+/* T13, «Aether · оригинал»: светлая --block-2 этой версии гасит акцент и приглушённый текст на плитках — в секции плитки темнее (AA) */
+[data-theme='aether'] .section--materials {
+  --block-2: color-mix(in srgb, var(--text) 7%, var(--bg));
 }

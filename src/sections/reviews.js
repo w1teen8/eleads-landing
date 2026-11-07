@@ -1,7 +1,9 @@
 // 10 Відгуки: слайдер на scroll-snap — свайп на мобильном, кнопки и стрелки с клавиатуры, точки.
 import { $, $$, el, on } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 
 export function init(root) {
+  accentTitles(root);
   const host = $('[data-slider]', root);
   const view = host && $('[data-slider-viewport]', host);
   if (!host || !view) return;

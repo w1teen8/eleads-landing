@@ -5,6 +5,7 @@ import { initI18n, onLangChange } from './core/i18n.js';
 import { initMotion, refreshMotion } from './core/motion.js';
 import { initAnalytics } from './core/analytics.js';
 import config from './data/config.json';
+import { isSectionEnabled } from './core/sections.js';
 
 // Порядок каскада: сначала токены, база и каркас, потом стили секций.
 // Оба glob-вызова Vite поднимает в начало модуля в порядке их записи — поэтому и база идёт через glob.
@@ -20,6 +21,11 @@ const yieldToBrowser = () =>
 async function initSections() {
   for (const node of document.querySelectorAll('[data-section]')) {
     const name = node.dataset.section;
+    // отключённая в config.json → sections.enabled: не инициализируется и уходит из DOM до старта движения
+    if (!isSectionEnabled(name, config) || node.hidden) {
+      node.remove();
+      continue;
+    }
     const mod = sections[`./sections/${name}.js`];
     if (typeof mod?.init !== 'function') continue;
     try {

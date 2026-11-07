@@ -1,7 +1,14 @@
 // Панель версий оформления — инструмент заказчика, только в `npm run dev` (main.js грузит её под import.meta.env.DEV).
 // Ставит <html data-theme> и пишет sessionStorage['eleads-theme'] — тот же ключ читает инлайн-скрипт в <head>,
 // поэтому выбор держится до конца вкладки. В собранном сайте панели нет; там версия выбирается через ?theme=.
+// Второй ряд — вариант первого экрана «Хиро: 1 / 2» (1 = orbit, 2 = mockup): пишет sessionStorage['eleads-hero']
+// и перезагружает страницу — инициализируется только активный вариант.
 const KEY = 'eleads-theme';
+const HERO_KEY = 'eleads-hero';
+const HEROES = [
+  { id: 'orbit', label: '1' },
+  { id: 'mockup', label: '2' },
+];
 const THEMES = [
   ['brand', 'Бренд · Aether'],
   ['aether', 'Aether · оригинал'],
@@ -14,6 +21,8 @@ const CSS = `
 .dev-theme__btn{padding:8px 12px;border-radius:999px;color:var(--text-muted)}
 .dev-theme__btn[aria-pressed='true']{background:var(--grad);color:var(--accent-ink)}
 .dev-theme__btn:focus-visible{outline:2px solid var(--accent)}
+.dev-theme--hero{bottom:56px;align-items:center}
+.dev-theme__label{padding:0 6px 0 10px;color:var(--text-muted)}
 `;
 
 export function mountThemeSwitcher() {
@@ -55,4 +64,40 @@ export function mountThemeSwitcher() {
     for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.theme === current));
   }
   sync();
+  mountHeroSwitcher();
+}
+
+function mountHeroSwitcher() {
+  const html = document.documentElement;
+  const panel = document.createElement('div');
+  panel.className = 'dev-theme dev-theme--hero';
+  panel.setAttribute('data-dev-hero', '');
+  panel.setAttribute('role', 'group');
+  panel.setAttribute('aria-label', 'Вариант первого экрана (dev)');
+  const label = document.createElement('span');
+  label.className = 'dev-theme__label';
+  label.textContent = 'Хиро:';
+  const current = html.getAttribute('data-hero') || 'mockup';
+  const buttons = HEROES.map(({ id, label: text }) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'dev-theme__btn';
+    btn.textContent = text;
+    btn.dataset.hero = id;
+    btn.setAttribute('aria-pressed', String(id === current));
+    btn.addEventListener('click', () => {
+      if (id === current) return;
+      try {
+        sessionStorage.setItem(HERO_KEY, id);
+      } catch {
+        /* без хранилища — через параметр */
+      }
+      const url = new URL(location.href);
+      url.searchParams.set('hero', id === 'orbit' ? '1' : '2');
+      location.replace(url);
+    });
+    return btn;
+  });
+  panel.append(label, ...buttons);
+  document.body.append(panel);
 }

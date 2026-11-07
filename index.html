@@ -46,6 +46,19 @@
         h.setAttribute('data-theme', themes.indexOf(theme) > -1 ? theme : 'brand');
       })(document.documentElement);
     </script>
+    <!-- Вариант первого экрана до первой отрисовки: ?hero=1 (orbit) | 2 (mockup) → sessionStorage → mockup. -->
+    <script>
+      (function (h) {
+        var names = { 1: 'orbit', 2: 'mockup', orbit: 'orbit', mockup: 'mockup' };
+        var m = /[?&]hero=(\w+)/.exec(location.search);
+        var hero = m && names[m[1]] ? names[m[1]] : null;
+        try {
+          if (hero) sessionStorage.setItem('eleads-hero', hero);
+          else hero = sessionStorage.getItem('eleads-hero');
+        } catch (e) {}
+        h.setAttribute('data-hero', hero === 'orbit' ? 'orbit' : 'mockup');
+      })(document.documentElement);
+    </script>
     <!-- Начальные состояния анимаций ставит только этот скрипт: без JS и при reduced-motion классов нет, всё видно. -->
     <script>
       (function (d) {
@@ -202,8 +215,9 @@
     <main id="main" tabindex="-1">
       <!-- 01 Hero -->
       <section id="hero" class="hero" data-section="hero" aria-labelledby="hero-title">
-        <div class="hero__stage">
-          <!-- космос: видео (если файл есть) под градиентом темы -->
+        <!-- вариант 2 «mockup» (по умолчанию): макет пользователя -->
+        <div class="hero__stage" data-hero-variant="mockup">
+          <!-- космос: видео (если файл есть) под свечением темы -->
           <div class="hero__space" aria-hidden="true">
             <div class="hero__gradient"></div>
             <video
@@ -220,92 +234,257 @@
             ></video>
           </div>
 
-          <!-- сцена 1: «ELEADS» поверх планеты -->
-          <div class="hero__intro">
-            <p class="hero__eyebrow mono-label" data-hero-fade data-i18n="hero.eyebrow"></p>
-            <div class="hero__orbit">
-              <div class="planet hero__planet" aria-hidden="true">
-                <span class="planet__glow"></span>
-                <span class="planet__ring planet__ring--back"></span>
-                <span class="planet__body"></span>
-                <span class="planet__ring planet__ring--front"></span>
-              </div>
-              <p class="hero__word"><span class="hero__word-text" data-i18n="hero.word"></span></p>
-            </div>
-            <p class="hero__subtitle" data-hero-fade data-i18n="hero.subtitle"></p>
-            <p class="hero__scroll mono-label" data-hero-fade>
-              <span class="hero__wheel" aria-hidden="true"><span></span></span>
-              <span data-i18n="hero.scroll"></span>
-            </p>
-          </div>
-
-          <!-- круглое окно: обёртка растёт scale-ом, содержимое — обратным scale (без clip-path) -->
-          <div class="hero__window">
-            <div class="hero__window-inner">
-              <figure class="hero__media" data-hero-media>
-                <div class="hero__layer hero__layer--photo" data-depth="0.5">
-                  <div class="hero__photo">
-                    <picture>
-                      <source type="image/avif" srcset="/img/photo/volodymyr-cta-480.avif 480w, /img/photo/volodymyr-cta-900.avif 900w" sizes="(min-width: 900px) 52vw, 100vw" />
-                      <source type="image/webp" srcset="/img/photo/volodymyr-cta-480.webp 480w, /img/photo/volodymyr-cta-900.webp 900w" sizes="(min-width: 900px) 52vw, 100vw" />
-                      <img class="photo-img" src="/img/photo/volodymyr-cta-480.jpg" srcset="/img/photo/volodymyr-cta-480.jpg 480w, /img/photo/volodymyr-cta-900.jpg 900w" sizes="(min-width: 900px) 52vw, 100vw" width="480" height="703" alt="" data-i18n-attr="alt:hero.photo.alt" loading="eager" decoding="async" />
-                    </picture>
-                  </div>
-                </div>
-                <div class="hero__layer hero__layer--glow" data-glow aria-hidden="true"><div class="hero__glow"></div></div>
-                <figcaption class="hero__name mono-label">
-                  <span class="hero__name-title" data-i18n="hero.photo.name"></span>
-                  <span class="hero__name-role mono-label--accent" data-i18n="hero.photo.role"></span>
-                </figcaption>
-              </figure>
-            </div>
-          </div>
-
-          <!-- сцена 2: заголовок, цифры, кнопка, «Мені довіряють» -->
-          <div class="hero__scene">
-            <div class="hero__copy container">
+          <!-- холст в пропорциях макета: на десктопе всё расставлено в его долях -->
+          <div class="hero__canvas">
+            <div class="hero__copy">
+              <p class="hero__eyebrow mono-label mono-label--accent" data-hero-item data-i18n="hero.eyebrow"></p>
               <h1 id="hero-title" class="hero__title display">
-                <span class="hero__line"><span class="hero__line-inner"><span data-i18n="hero.titleLine1"></span> <span data-i18n="hero.titleLine2"></span></span></span>
+                <span class="hero__line"><span class="hero__line-inner" data-i18n="hero.titleLine1"></span></span>
+                <span class="hero__line"><span class="hero__line-inner" data-i18n="hero.titleLine2"></span></span>
                 <span class="hero__line"><span class="hero__line-inner display__accent" data-i18n="hero.titleAccent"></span></span>
               </h1>
-              <div class="hero__bottom">
-                <ul class="hero__stats" data-scene-item>
-                  <li class="hero__stat">
-                    <span class="hero__stat-value" data-count data-i18n="hero.stats.years.value"></span>
-                    <span class="hero__stat-label mono-label mono-label--muted" data-i18n="hero.stats.years.label"></span>
-                  </li>
-                  <li class="hero__stat">
-                    <span class="hero__stat-value" data-count data-i18n="hero.stats.budgets.value"></span>
-                    <span class="hero__stat-label mono-label mono-label--muted" data-i18n="hero.stats.budgets.label"></span>
-                  </li>
-                  <li class="hero__stat">
-                    <span class="hero__stat-value" data-count data-i18n="hero.stats.projects.value"></span>
-                    <span class="hero__stat-label mono-label mono-label--muted" data-i18n="hero.stats.projects.label"></span>
-                  </li>
-                </ul>
-                <a class="btn btn--pill btn--lg hero__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero" data-scene-item>
-                  <span data-i18n="hero.cta.label"></span>
-                  <span class="btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
-                </a>
+              <p class="hero__subtitle" data-hero-item data-i18n="hero.subtitle"></p>
+              <a class="btn btn--pill btn--lg hero__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero" data-hero-item>
+                <span data-i18n="hero.cta.label"></span>
+                <svg class="hero__cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+              </a>
+              <ul class="hero__stats" data-hero-item>
+                <li class="hero__stat">
+                  <span class="hero__stat-value" data-count data-i18n="hero.stats.years.value"></span>
+                  <span class="hero__stat-label mono-label mono-label--muted" data-i18n="hero.stats.years.label"></span>
+                </li>
+                <li class="hero__stat">
+                  <span class="hero__stat-value" data-count data-i18n="hero.stats.budgets.value"></span>
+                  <span class="hero__stat-label mono-label mono-label--muted" data-i18n="hero.stats.budgets.label"></span>
+                </li>
+                <li class="hero__stat">
+                  <span class="hero__stat-value" data-count data-i18n="hero.stats.projects.value"></span>
+                  <span class="hero__stat-label mono-label mono-label--muted" data-i18n="hero.stats.projects.label"></span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- справа: задняя половина кольца → планета → Володимир → передняя половина кольца → карточки -->
+            <div class="hero__visual" data-hero-visual>
+              <div class="hero__depth" data-depth="0.3" aria-hidden="true">
+                <picture class="hero__art hero__art--ring"><source type="image/avif" srcset="/img/hero/ring-back-1x.avif 1326w, /img/hero/ring-back-2x.avif 2652w" sizes="(min-width: 900px) 69vw, 114vw" /><source type="image/webp" srcset="/img/hero/ring-back-1x.webp 1326w, /img/hero/ring-back-2x.webp 2652w" sizes="(min-width: 900px) 69vw, 114vw" /><img src="/img/hero/ring-back-1x.png" alt="" loading="lazy" decoding="async" /></picture>
+                <div class="hero__ring hero__ring--back"><div class="hero__ring-clip"><div class="hero__ring-loop"><span class="hero__glints"><span class="hero__glint" style="--i: 0"></span><span class="hero__glint" style="--i: 1"></span><span class="hero__glint" style="--i: 2"></span><span class="hero__glint" style="--i: 3"></span><span class="hero__glint" style="--i: 4"></span><span class="hero__glint" style="--i: 5"></span><span class="hero__glint" style="--i: 6"></span></span></div></div></div>
+              </div>
+              <div class="hero__depth" data-depth="0.18" aria-hidden="true">
+                <div class="hero__planet"><picture class="hero__art hero__art--planet"><source type="image/avif" srcset="/img/hero/planet-1x.avif 1238w, /img/hero/planet-2x.avif 2475w" sizes="(min-width: 900px) 65vw, 106vw" /><source type="image/webp" srcset="/img/hero/planet-1x.webp 1238w, /img/hero/planet-2x.webp 2475w" sizes="(min-width: 900px) 65vw, 106vw" /><img src="/img/hero/planet-1x.png" alt="" loading="lazy" decoding="async" /></picture></div>
+              </div>
+              <div class="hero__depth" data-depth="0.3">
+                <picture class="hero__person">
+                  <source type="image/avif" srcset="/img/hero/volodymyr-cutout-720.avif 720w, /img/hero/volodymyr-cutout-1200.avif 1200w" sizes="(min-width: 900px) 39vw, 84vw" />
+                  <source type="image/webp" srcset="/img/hero/volodymyr-cutout-720.webp 720w, /img/hero/volodymyr-cutout-1200.webp 1200w" sizes="(min-width: 900px) 39vw, 84vw" />
+                  <img class="hero__person-img" src="/img/hero/volodymyr-cutout-720.png" srcset="/img/hero/volodymyr-cutout-720.png 720w, /img/hero/volodymyr-cutout-1200.png 1200w" sizes="(min-width: 900px) 39vw, 84vw" width="720" height="1234" alt="" data-i18n-attr="alt:hero.photo.alt" loading="eager" fetchpriority="high" decoding="async" />
+                </picture>
+              </div>
+              <div class="hero__depth" data-depth="0.3" aria-hidden="true">
+                <picture class="hero__art hero__art--ring"><source type="image/avif" srcset="/img/hero/ring-front-1x.avif 1326w, /img/hero/ring-front-2x.avif 2652w" sizes="(min-width: 900px) 69vw, 114vw" /><source type="image/webp" srcset="/img/hero/ring-front-1x.webp 1326w, /img/hero/ring-front-2x.webp 2652w" sizes="(min-width: 900px) 69vw, 114vw" /><img src="/img/hero/ring-front-1x.png" alt="" loading="lazy" decoding="async" /></picture>
+                <div class="hero__ring hero__ring--front"><div class="hero__ring-clip"><div class="hero__ring-loop"><span class="hero__glints"><span class="hero__glint" style="--i: 0"></span><span class="hero__glint" style="--i: 1"></span><span class="hero__glint" style="--i: 2"></span><span class="hero__glint" style="--i: 3"></span><span class="hero__glint" style="--i: 4"></span><span class="hero__glint" style="--i: 5"></span><span class="hero__glint" style="--i: 6"></span></span></div></div></div>
+              </div>
+
+              <div class="hero__card hero__card--telegram" data-depth="0.9"><div class="hero__card-float">
+                <picture data-card="telegram">
+                  <source type="image/webp" srcset="/img/hero/card-telegram-240.webp 240w, /img/hero/card-telegram-480.webp 480w" sizes="(min-width: 900px) 9vw, 20vw" />
+                  <img src="/img/hero/card-telegram-240.png" srcset="/img/hero/card-telegram-240.png 240w, /img/hero/card-telegram-480.png 480w" sizes="(min-width: 900px) 9vw, 20vw" width="240" height="247" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.telegram.alt" decoding="async" />
+                </picture>
+              </div></div>
+              <div class="hero__card hero__card--growth" data-depth="0.7"><div class="hero__card-float">
+                <picture data-card="growth">
+                  <source type="image/webp" srcset="/img/hero/card-growth-400.webp 400w, /img/hero/card-growth-800.webp 800w" sizes="(min-width: 900px) 17vw, 38vw" />
+                  <img src="/img/hero/card-growth-400.png" srcset="/img/hero/card-growth-400.png 400w, /img/hero/card-growth-800.png 800w" sizes="(min-width: 900px) 17vw, 38vw" width="400" height="325" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.growth.alt" decoding="async" />
+                </picture>
+              </div></div>
+              <div class="hero__card hero__card--campaigns" data-depth="0.8"><div class="hero__card-float">
+                <picture data-card="campaigns">
+                  <source type="image/webp" srcset="/img/hero/card-campaigns-400.webp 400w, /img/hero/card-campaigns-800.webp 800w" sizes="(min-width: 900px) 21vw, 46vw" />
+                  <img src="/img/hero/card-campaigns-400.png" srcset="/img/hero/card-campaigns-400.png 400w, /img/hero/card-campaigns-800.png 800w" sizes="(min-width: 900px) 21vw, 46vw" width="400" height="234" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.campaigns.alt" decoding="async" />
+                </picture>
+              </div></div>
+              <div class="hero__card hero__card--views" data-depth="1"><div class="hero__card-float">
+                <picture data-card="views">
+                  <source type="image/webp" srcset="/img/hero/card-views-400.webp 400w, /img/hero/card-views-800.webp 800w" sizes="(min-width: 900px) 23vw, 52vw" />
+                  <img src="/img/hero/card-views-400.png" srcset="/img/hero/card-views-400.png 400w, /img/hero/card-views-800.png 800w" sizes="(min-width: 900px) 23vw, 52vw" width="400" height="166" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.views.alt" decoding="async" />
+                </picture>
+              </div></div>
+              <div class="hero__card hero__card--subscribers" data-depth="0.85"><div class="hero__card-float">
+                <picture data-card="subscribers">
+                  <source type="image/webp" srcset="/img/hero/card-subscribers-400.webp 400w, /img/hero/card-subscribers-800.webp 800w" sizes="(min-width: 900px) 25vw, 52vw" />
+                  <img src="/img/hero/card-subscribers-400.png" srcset="/img/hero/card-subscribers-400.png 400w, /img/hero/card-subscribers-800.png 800w" sizes="(min-width: 900px) 25vw, 52vw" width="400" height="175" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.subscribers.alt" decoding="async" />
+                </picture>
+              </div></div>
+              <div class="hero__card hero__card--audience" data-depth="0.75"><div class="hero__card-float">
+                <div class="hero__glass">
+                  <svg class="hero__glass-people" viewBox="0 0 48 32" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="hero-glass-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" style="stop-color: var(--accent)" />
+                        <stop offset="1" style="stop-color: var(--accent-2)" />
+                      </linearGradient>
+                    </defs>
+                    <g style="fill: url(#hero-glass-grad)">
+                      <circle cx="10" cy="9" r="5" />
+                      <circle cx="38" cy="9" r="5" />
+                      <circle cx="24" cy="8" r="6.4" />
+                      <path d="M1 27c0-6 4-10 9-10 2.6 0 4.8 1 6.3 2.8C14.6 21.6 13.6 24.2 13.4 27Z" />
+                      <path d="M47 27c0-6-4-10-9-10-2.6 0-4.8 1-6.3 2.8 1.7 1.8 2.7 4.4 2.9 7.2Z" />
+                      <path d="M12.5 30c0-7.6 5-12.6 11.5-12.6S35.5 22.4 35.5 30Z" />
+                    </g>
+                  </svg>
+                  <span class="hero__glass-label" data-i18n="hero.cards.audience.label"></span>
+                  <svg class="hero__glass-target" viewBox="0 0 48 48" aria-hidden="true">
+                    <g fill="none" style="stroke: url(#hero-glass-grad)" stroke-linecap="round">
+                      <circle cx="22" cy="26" r="18" stroke-width="5" />
+                      <circle cx="22" cy="26" r="9.5" stroke-width="5" />
+                      <path d="M22 26 40 8" stroke-width="3.4" />
+                      <path d="M36 4v8h8" stroke-width="3.4" stroke-linejoin="round" />
+                    </g>
+                    <circle cx="22" cy="26" r="3.2" style="fill: var(--accent-2)" />
+                  </svg>
+                </div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- вариант 1 «orbit»: «ELEADS» поверх огромного значка Telegram с окошками рекламы, влёт в него и круглое окно -->
+        <div class="hero-orbit" data-hero-variant="orbit">
+          <div class="hero-orbit__stage">
+            <div class="hero__space" aria-hidden="true">
+              <div class="hero__gradient"></div>
+              <video
+                class="hero__video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="none"
+                disablepictureinpicture
+                data-src-desktop="/video/hero-1080.mp4"
+                data-src-mobile="/video/hero-720.mp4"
+                data-poster="/video/poster.jpg"
+              ></video>
+            </div>
+
+            <!-- сцена 1: «ELEADS» поверх значка Telegram, вокруг — окошки рекламы Telegram Ads -->
+            <div class="hero-orbit__intro">
+              <p class="hero-orbit__eyebrow mono-label" data-hero-fade data-i18n="hero.eyebrow"></p>
+              <div class="hero-orbit__orbit">
+                <div class="hero-orbit__planet hero-orbit__mark" aria-hidden="true">
+                  <span class="planet__glow hero-orbit__mark-glow"></span>
+                  <svg class="hero-orbit__mark-icon" viewBox="0 0 100 100">
+                    <defs>
+                      <linearGradient id="hero-tg-grad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" style="stop-color: var(--accent)" />
+                        <stop offset="1" style="stop-color: var(--accent-2)" />
+                      </linearGradient>
+                    </defs>
+                    <circle cx="50" cy="50" r="50" fill="url(#hero-tg-grad)" />
+                    <path d="M21 49.5 76.5 28c2.6-1 4.9.6 4.1 4.5l-9.4 44.3c-.7 3.1-2.6 3.9-5.2 2.4L51.6 68.8l-6.9 6.7c-.8.8-1.4 1.4-2.9 1.4l1-14.6 26.6-24c1.2-1-.3-1.6-1.8-.6L34.8 58.4 20.6 54c-3.1-1-3.1-3.1.4-4.5Z" style="fill: var(--accent-ink)" />
+                  </svg>
+                </div>
+                <p class="hero-orbit__word"><span class="hero-orbit__word-text" data-i18n="hero.word"></span></p>
+                <div class="hero-orbit__ads" aria-hidden="true">
+                  <div class="hero-orbit__ad hero-orbit__ad--0" data-hero-fade><div class="hero-orbit__ad-float">
+                    <p class="hero-orbit__ad-head"><span class="hero-orbit__ad-avatar"></span><span class="hero-orbit__ad-name" data-i18n="hero.ads.0.name"></span><span class="hero-orbit__ad-tag" data-i18n="hero.ads.0.tag"></span></p>
+                    <p class="hero-orbit__ad-text" data-i18n="hero.ads.0.text"></p>
+                    <span class="hero-orbit__ad-btn" data-i18n="hero.ads.0.button"></span>
+                  </div></div>
+                  <div class="hero-orbit__ad hero-orbit__ad--1" data-hero-fade><div class="hero-orbit__ad-float">
+                    <p class="hero-orbit__ad-head"><span class="hero-orbit__ad-avatar"></span><span class="hero-orbit__ad-name" data-i18n="hero.ads.1.name"></span><span class="hero-orbit__ad-tag" data-i18n="hero.ads.1.tag"></span></p>
+                    <p class="hero-orbit__ad-text" data-i18n="hero.ads.1.text"></p>
+                    <span class="hero-orbit__ad-btn" data-i18n="hero.ads.1.button"></span>
+                  </div></div>
+                  <div class="hero-orbit__ad hero-orbit__ad--2" data-hero-fade><div class="hero-orbit__ad-float">
+                    <p class="hero-orbit__ad-head"><span class="hero-orbit__ad-avatar"></span><span class="hero-orbit__ad-name" data-i18n="hero.ads.2.name"></span><span class="hero-orbit__ad-tag" data-i18n="hero.ads.2.tag"></span></p>
+                    <span class="hero-orbit__ad-media"></span>
+                    <p class="hero-orbit__ad-text" data-i18n="hero.ads.2.text"></p>
+                    <span class="hero-orbit__ad-btn" data-i18n="hero.ads.2.button"></span>
+                  </div></div>
+                  <div class="hero-orbit__ad hero-orbit__ad--3" data-hero-fade><div class="hero-orbit__ad-float">
+                    <p class="hero-orbit__ad-head"><span class="hero-orbit__ad-avatar"></span><span class="hero-orbit__ad-name" data-i18n="hero.ads.3.name"></span><span class="hero-orbit__ad-tag" data-i18n="hero.ads.3.tag"></span></p>
+                    <p class="hero-orbit__ad-text" data-i18n="hero.ads.3.text"></p>
+                    <span class="hero-orbit__ad-btn" data-i18n="hero.ads.3.button"></span>
+                  </div></div>
+                </div>
+              </div>
+              <p class="hero-orbit__subtitle" data-hero-fade data-i18n="hero.subtitle"></p>
+              <p class="hero-orbit__scroll mono-label" data-hero-fade>
+                <span class="hero-orbit__wheel" aria-hidden="true"><span></span></span>
+                <span data-i18n="hero.scroll"></span>
+              </p>
+            </div>
+
+            <!-- круглое окно: обёртка растёт scale-ом, содержимое — обратным scale (без clip-path) -->
+            <div class="hero-orbit__window">
+              <div class="hero-orbit__window-inner">
+                <figure class="hero-orbit__media" data-hero-media>
+                  <div class="hero-orbit__layer hero-orbit__layer--photo" data-depth="0.5">
+                    <div class="hero-orbit__photo">
+                      <picture>
+                        <source type="image/avif" srcset="/img/photo/volodymyr-cta-480.avif 480w, /img/photo/volodymyr-cta-900.avif 900w" sizes="(min-width: 900px) 52vw, 100vw" />
+                        <source type="image/webp" srcset="/img/photo/volodymyr-cta-480.webp 480w, /img/photo/volodymyr-cta-900.webp 900w" sizes="(min-width: 900px) 52vw, 100vw" />
+                        <img class="photo-img" src="/img/photo/volodymyr-cta-480.jpg" srcset="/img/photo/volodymyr-cta-480.jpg 480w, /img/photo/volodymyr-cta-900.jpg 900w" sizes="(min-width: 900px) 52vw, 100vw" width="480" height="703" alt="" data-i18n-attr="alt:hero.photo.alt" loading="lazy" decoding="async" />
+                      </picture>
+                    </div>
+                  </div>
+                  <div class="hero-orbit__layer hero-orbit__layer--glow" data-glow aria-hidden="true"><div class="hero-orbit__glow"></div></div>
+                  <figcaption class="hero-orbit__name mono-label">
+                    <span class="hero-orbit__name-title" data-i18n="hero.photo.name"></span>
+                    <span class="hero-orbit__name-role mono-label--accent" data-i18n="hero.photo.role"></span>
+                  </figcaption>
+                </figure>
               </div>
             </div>
 
-            <div class="hero__trust" data-scene-item>
-              <div class="hero__trust-inner container">
-                <p class="hero__trust-title mono-label mono-label--muted" id="hero-trusted" data-i18n="hero.trusted.title"></p>
-                <div class="marquee" data-marquee>
-                  <div class="marquee__track">
-                    <ul class="marquee__group" aria-labelledby="hero-trusted">
-                      <li class="marquee__item" data-i18n="hero.trusted.items.0"></li>
-                      <li class="marquee__item" data-i18n="hero.trusted.items.1"></li>
-                      <li class="marquee__item" data-i18n="hero.trusted.items.2"></li>
-                      <li class="marquee__item" data-i18n="hero.trusted.items.3"></li>
-                      <li class="marquee__item" data-i18n="hero.trusted.items.4"></li>
-                      <li class="marquee__item" data-i18n="hero.trusted.items.5"></li>
-                      <li class="marquee__item" data-i18n="hero.trusted.items.6"></li>
-                    </ul>
-                  </div>
+            <!-- сцена 2: заголовок, цифры, кнопка (H1 страницы — в варианте 2; здесь заголовок ролью) -->
+            <div class="hero-orbit__scene">
+              <div class="hero-orbit__copy container">
+                <p id="hero-title-orbit" class="hero-orbit__title display" role="heading" aria-level="1">
+                  <span class="hero-orbit__line"><span class="hero-orbit__line-inner"><span data-i18n="hero.titleLine1"></span> <span data-i18n="hero.titleLine2"></span></span></span>
+                  <span class="hero-orbit__line"><span class="hero-orbit__line-inner display__accent" data-i18n="hero.titleAccent"></span></span>
+                </p>
+                <div class="hero-orbit__bottom">
+                  <ul class="hero-orbit__stats" data-scene-item>
+                    <li class="hero-orbit__stat">
+                      <span class="hero-orbit__stat-value" data-count data-i18n="hero.stats.years.value"></span>
+                      <span class="hero-orbit__stat-label mono-label mono-label--muted" data-i18n="hero.stats.years.label"></span>
+                    </li>
+                    <li class="hero-orbit__stat">
+                      <span class="hero-orbit__stat-value" data-count data-i18n="hero.stats.budgets.value"></span>
+                      <span class="hero-orbit__stat-label mono-label mono-label--muted" data-i18n="hero.stats.budgets.label"></span>
+                    </li>
+                    <li class="hero-orbit__stat">
+                      <span class="hero-orbit__stat-value" data-count data-i18n="hero.stats.projects.value"></span>
+                      <span class="hero-orbit__stat-label mono-label mono-label--muted" data-i18n="hero.stats.projects.label"></span>
+                    </li>
+                  </ul>
+                  <a class="btn btn--pill btn--lg hero-orbit__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero" data-scene-item>
+                    <span data-i18n="hero.cta.label"></span>
+                    <span class="btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
+                  </a>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__trust" data-hero-item>
+          <div class="hero__trust-inner container">
+            <p class="hero__trust-title mono-label mono-label--muted" id="hero-trusted" data-i18n="hero.trusted.title"></p>
+            <div class="marquee" data-marquee>
+              <div class="marquee__track">
+                <ul class="marquee__group" aria-labelledby="hero-trusted">
+                  <li class="marquee__item" data-i18n="hero.trusted.items.0"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.1"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.2"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.3"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.4"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.5"></li>
+                  <li class="marquee__item" data-i18n="hero.trusted.items.6"></li>
+                </ul>
               </div>
             </div>
           </div>
@@ -350,9 +529,9 @@
 
       <section id="stats" class="section section--stats section--alt" data-section="stats" aria-labelledby="stats-title">
         <div class="container">
-          <div class="section__head" data-reveal="stagger">
+          <div class="section__head stats__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="stats.eyebrow"></p>
-            <h2 id="stats-title" class="section__title" data-i18n="stats.title"></h2>
+            <h2 id="stats-title" class="display section__title" data-i18n="stats.title" data-title-accent="stats.titleAccent"></h2>
           </div>
           <div class="stats" data-stats>
             <div class="stats__tabs" role="tablist" data-i18n-attr="aria-label:stats.tabsLabel">
@@ -362,15 +541,15 @@
             </div>
             <div class="stats__panel" role="tabpanel" id="stats-panel-ua" aria-labelledby="stats-tab-ua" data-stats-panel="ua">
             <article class="stats__card stats__card--main">
-              <p class="stats__value text-grad" data-count data-i18n="stats.ua.main.value"></p>
+              <p class="stats__value" data-count data-i18n="stats.ua.main.value"></p>
               <p class="stats__label" data-i18n="stats.ua.main.label"></p>
             </article>
             <article class="stats__card stats__card--a">
-              <p class="stats__value text-grad" data-i18n="stats.ua.age.value"></p>
+              <p class="stats__value" data-i18n="stats.ua.age.value"></p>
               <p class="stats__label" data-i18n="stats.ua.age.label"></p>
             </article>
             <article class="stats__card stats__card--b">
-              <p class="stats__value text-grad" data-count data-i18n="stats.ua.sample.value"></p>
+              <p class="stats__value" data-count data-i18n="stats.ua.sample.value"></p>
               <p class="stats__label" data-i18n="stats.ua.sample.label"></p>
             </article>
             <article class="stats__card stats__card--wide">
@@ -380,15 +559,15 @@
             </div>
             <div class="stats__panel" role="tabpanel" id="stats-panel-ww" aria-labelledby="stats-tab-ww" data-stats-panel="ww" hidden>
             <article class="stats__card stats__card--main">
-              <p class="stats__value text-grad" data-count data-i18n="stats.ww.main.value"></p>
+              <p class="stats__value" data-count data-i18n="stats.ww.main.value"></p>
               <p class="stats__label" data-i18n="stats.ww.main.label"></p>
             </article>
             <article class="stats__card stats__card--a">
-              <p class="stats__value text-grad" data-i18n="stats.ww.top.value"></p>
+              <p class="stats__value" data-i18n="stats.ww.top.value"></p>
               <p class="stats__label" data-i18n="stats.ww.top.label"></p>
             </article>
             <article class="stats__card stats__card--b">
-              <p class="stats__value text-grad" data-count data-i18n="stats.ww.geo.value"></p>
+              <p class="stats__value" data-count data-i18n="stats.ww.geo.value"></p>
               <p class="stats__label" data-i18n="stats.ww.geo.label"></p>
             </article>
             <article class="stats__card stats__card--wide">
@@ -403,61 +582,73 @@
 
       <section id="niches" class="section section--niches" data-section="niches" aria-labelledby="niches-title">
         <div class="container">
-          <div class="section__head" data-reveal="stagger">
+          <div class="section__head niches__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="niches.eyebrow"></p>
-            <h2 id="niches-title" class="section__title" data-i18n="niches.title"></h2>
+            <h2 id="niches-title" class="display section__title" data-i18n="niches.title" data-title-accent="niches.titleAccent"></h2>
           </div>
           <p class="section__lead niches__lead" data-reveal data-i18n="niches.lead"></p>
+          <div class="niches__stage">
+          <div class="niches__orbit" aria-hidden="true" data-niches-orbit>
+            <span class="niches__path"></span>
+            <div class="planet">
+              <span class="planet__glow"></span>
+              <span class="planet__ring planet__ring--back"></span>
+              <span class="planet__body"></span>
+              <span class="planet__ring planet__ring--front"></span>
+            </div>
+            <span class="niches__sat" style="--i: 0" data-niches-sat><span class="niches__sat-num">01</span></span>
+            <span class="niches__sat" style="--i: 1" data-niches-sat><span class="niches__sat-num">02</span></span>
+            <span class="niches__sat" style="--i: 2" data-niches-sat><span class="niches__sat-num">03</span></span>
+            <span class="niches__sat" style="--i: 3" data-niches-sat><span class="niches__sat-num">04</span></span>
+            <span class="niches__sat" style="--i: 4" data-niches-sat><span class="niches__sat-num">05</span></span>
+            <span class="niches__sat" style="--i: 5" data-niches-sat><span class="niches__sat-num">06</span></span>
+            <span class="niches__sat" style="--i: 6" data-niches-sat><span class="niches__sat-num">07</span></span>
+            <span class="niches__sat niches__sat--other" style="--i: 7" data-niches-sat><svg class="niches__sat-tg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg></span>
+          </div>
           <ul class="niches__grid" data-reveal="stagger">
-            <li class="niches__item"><article class="niches__card">
+            <li class="niches__item"><article class="niches__card" data-niches-item="0">
               <span class="niches__idx">01</span>
-              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.0.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.0.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card">
+            <li class="niches__item"><article class="niches__card" data-niches-item="1">
               <span class="niches__idx">02</span>
-              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.1.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.1.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card">
+            <li class="niches__item"><article class="niches__card" data-niches-item="2">
               <span class="niches__idx">03</span>
-              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.2.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.2.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card">
+            <li class="niches__item"><article class="niches__card" data-niches-item="3">
               <span class="niches__idx">04</span>
-              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.3.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.3.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card">
+            <li class="niches__item"><article class="niches__card" data-niches-item="4">
               <span class="niches__idx">05</span>
-              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.4.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.4.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card">
+            <li class="niches__item"><article class="niches__card" data-niches-item="5">
               <span class="niches__idx">06</span>
-              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.5.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.5.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card">
+            <li class="niches__item"><article class="niches__card" data-niches-item="6">
               <span class="niches__idx">07</span>
-              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.6.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.6.examples"></p>
             </article></li>
-            <li class="niches__item"><a class="niches__card niches__card--other" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="niches_other">
+            <li class="niches__item"><a class="niches__card niches__card--other" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="niches_other" data-niches-item="7">
               <svg class="niches__tg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
               <h3 class="niches__name" data-i18n="niches.other.name"></h3>
               <p class="niches__examples" data-i18n="niches.other.text"></p>
               <span class="niches__cta"><span data-i18n="niches.other.cta"></span><span class="btn__arrow" aria-hidden="true" data-i18n="niches.other.arrow"></span></span>
             </a></li>
           </ul>
+          </div>
         </div>
       </section>
 
@@ -465,7 +656,7 @@
         <div class="container">
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="formats.eyebrow"></p>
-            <h2 id="formats-title" class="section__title" data-i18n="formats.title"></h2>
+            <h2 id="formats-title" class="display section__title" data-i18n="formats.title" data-title-accent="formats.titleAccent"></h2>
           </div>
           <p class="section__lead formats__lead" data-reveal data-i18n="formats.lead"></p>
           <ul class="formats__grid" data-reveal="stagger">
@@ -514,7 +705,7 @@
         <div class="container">
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="calculator.eyebrow"></p>
-            <h2 id="calculator-title" class="section__title" data-i18n="calculator.title"></h2>
+            <h2 id="calculator-title" class="display section__title" data-i18n="calculator.title" data-title-accent="calculator.titleAccent"></h2>
           </div>
           <div class="calc" data-calc>
             <form class="calc__params" data-calc-form aria-labelledby="calc-params-title" data-reveal>
@@ -689,7 +880,7 @@
         <div class="container">
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="process.eyebrow"></p>
-            <h2 id="process-title" class="section__title" data-i18n="process.title"></h2>
+            <h2 id="process-title" class="display section__title" data-i18n="process.title" data-title-accent="process.titleAccent"></h2>
           </div>
           <div class="process" data-process>
             <div class="process__track">
@@ -735,7 +926,7 @@
         <div class="container">
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="geo.eyebrow"></p>
-            <h2 id="geo-title" class="section__title" data-i18n="geo.title"></h2>
+            <h2 id="geo-title" class="display section__title" data-i18n="geo.title" data-title-accent="geo.titleAccent"></h2>
           </div>
           <div class="geo" data-reveal>
             <div class="geo__map" data-geo-map>
@@ -796,7 +987,7 @@
         <div class="container">
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="targeting.eyebrow"></p>
-            <h2 id="targeting-title" class="section__title" data-i18n="targeting.title"></h2>
+            <h2 id="targeting-title" class="display section__title" data-i18n="targeting.title" data-title-accent="targeting.titleAccent"></h2>
           </div>
           <p class="targeting__hint" data-reveal data-i18n="targeting.hint"></p>
           <ul class="tg__grid" data-reveal="stagger">
@@ -851,7 +1042,7 @@
         <div class="container">
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="reviews.eyebrow"></p>
-            <h2 id="reviews-title" class="section__title" data-i18n="reviews.title"></h2>
+            <h2 id="reviews-title" class="display section__title" data-i18n="reviews.title" data-title-accent="reviews.titleAccent"></h2>
           </div>
           <div class="reviews" data-slider>
             <div class="reviews__viewport" data-slider-viewport tabindex="0" role="region" aria-roledescription="carousel" data-i18n-attr="aria-label:reviews.sliderLabel">
@@ -911,7 +1102,7 @@
         <div class="container">
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="ecosystem.eyebrow"></p>
-            <h2 id="ecosystem-title" class="section__title" data-i18n="ecosystem.title"></h2>
+            <h2 id="ecosystem-title" class="display section__title" data-i18n="ecosystem.title" data-title-accent="ecosystem.titleAccent"></h2>
           </div>
           <div class="eco__flowwrap" data-eco-flow>
           <span class="eco__rail" aria-hidden="true"><span class="eco__pulse"></span></span>
@@ -1012,7 +1203,7 @@
         <div class="container">
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="materials.eyebrow"></p>
-            <h2 id="materials-title" class="section__title" data-i18n="materials.title"></h2>
+            <h2 id="materials-title" class="display section__title" data-i18n="materials.title" data-title-accent="materials.titleAccent"></h2>
           </div>
           <ul class="mat__grid" data-reveal="stagger">
             <li class="mat__item"><article class="mat__card">
@@ -1047,7 +1238,7 @@
         <div class="container">
           <div class="section__head" data-reveal="stagger">
             <p class="eyebrow" data-i18n="faq.eyebrow"></p>
-            <h2 id="faq-title" class="section__title" data-i18n="faq.title"></h2>
+            <h2 id="faq-title" class="display section__title" data-i18n="faq.title" data-title-accent="faq.titleAccent"></h2>
           </div>
           <div class="faq" data-faq>
             <ul class="faq__list" data-faq-list></ul>
@@ -1062,7 +1253,7 @@
           <div class="cta__body">
             <div class="section__head" data-reveal="stagger">
               <p class="eyebrow" data-i18n="cta.eyebrow"></p>
-              <h2 id="cta-title" class="section__title cta__title" data-i18n="cta.title"></h2>
+              <h2 id="cta-title" class="display section__title cta__title" data-i18n="cta.title" data-title-accent="cta.titleAccent"></h2>
             </div>
             <div data-reveal="stagger" class="cta__rest">
               <p class="cta__text" data-i18n="cta.text"></p>

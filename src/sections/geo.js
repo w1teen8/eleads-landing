@@ -2,6 +2,7 @@
 // Регионы пульсируют; hover (мышь) и tap (тач) по точке или клик по списку справа открывают карточку региона.
 // Цикл отрисовки стоит на паузе вне экрана и при скрытой вкладке; при reduced-motion карта статична.
 import { $, $$, on } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 import { t, getLang, onLangChange } from '../core/i18n.js';
 import { reduced } from '../core/motion.js';
 import { pulsePhase } from './geo-model.js';
@@ -11,6 +12,7 @@ const HIT = 28; // радиус попадания по точке, px
 const PULSE_MS = 2600;
 
 export function init(root) {
+  accentTitles(root);
   const map = $('[data-geo-map]', root);
   const canvas = $('[data-geo-canvas]', root);
   const card = $('[data-geo-card]', root);

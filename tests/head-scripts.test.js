@@ -56,7 +56,7 @@ function runHead({ search = '', session = storage(), local = storage(), reduced 
   sandbox.window = sandbox;
   vm.createContext(sandbox);
   for (const code of inline) vm.runInContext(code, sandbox);
-  return { theme: documentElement.getAttribute('data-theme'), preload: classes.has('js-preload'), session, local };
+  return { theme: documentElement.getAttribute('data-theme'), hero: documentElement.getAttribute('data-hero'), preload: classes.has('js-preload'), session, local };
 }
 
 test('тема: без параметра и хранилища — brand', () => {
@@ -134,4 +134,16 @@ test('заставка: метка, которую пишет preloader.js, пр
   assert.equal(runHead({ local }).preload, false);
   // сломанное хранилище не роняет заставку
   assert.doesNotThrow(() => rememberIntro(storage({}, { broken: true }), NOW));
+});
+
+test('вариант первого экрана: по умолчанию mockup; ?hero=1 → orbit, ?hero=2 → mockup, выбор держится в sessionStorage', () => {
+  assert.equal(runHead().hero, 'mockup');
+  const r1 = runHead({ search: '?hero=1' });
+  assert.equal(r1.hero, 'orbit');
+  assert.equal(r1.session.map.get('eleads-hero'), 'orbit');
+  assert.equal(runHead({ search: '?hero=2', session: storage({ 'eleads-hero': 'orbit' }) }).hero, 'mockup');
+  assert.equal(runHead({ session: storage({ 'eleads-hero': 'orbit' }) }).hero, 'orbit');
+  assert.equal(runHead({ search: '?hero=9', session: storage({ 'eleads-hero': '<x>' }) }).hero, 'mockup');
+  assert.equal(runHead({ search: '?hero=1', session: storage({}, { broken: true }) }).hero, 'orbit');
+  assert.equal(runHead({ search: '?nomotion=1&hero=1' }).hero, 'orbit', 'и при reduced-motion');
 });

@@ -13,8 +13,7 @@
   color: var(--on);
 }
 
-.section--process .section__lead,
-.section--process .eyebrow {
+.section--process .section__lead {
   color: var(--on-muted);
 }
 

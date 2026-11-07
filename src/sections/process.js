@@ -1,12 +1,14 @@
 // 07 Процес: линия прорисовывается по скроллу — scaleX / scaleY отдельного слоя (только transform), шаги загораются по очереди.
 // На десктопе секция закрепляется (pinSection) на время прорисовки. reduced / без JS — линия нарисована целиком.
 import { $, $$ } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 import { reduced, motionReady } from '../core/motion.js';
 
 const DESKTOP_MIN = 900;
 const DESKTOP = `(min-width: ${DESKTOP_MIN}px)`;
 
 export function init(root) {
+  accentTitles(root);
   const host = $('[data-process]', root);
   if (!host || reduced) return;
   const steps = $$('.process__step', host);

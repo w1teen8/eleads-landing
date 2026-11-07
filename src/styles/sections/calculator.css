@@ -601,3 +601,8 @@
     padding: 0 0.95rem;
   }
 }
+
+/* T13, «Aether · оригинал»: светлая --block-2 этой версии гасит акцент и приглушённый текст на плитках — в секции плитки темнее (AA) */
+[data-theme='aether'] .section--calculator {
+  --block-2: color-mix(in srgb, var(--text) 7%, var(--bg));
+}

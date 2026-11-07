@@ -2,6 +2,7 @@
 // Расчёт — чистая функция в calculator-model.js; здесь только DOM, докрутка и события.
 // Ниши, GEO, цели, коэффициенты и шкала бюджета — только в src/data/calculator.json.
 import { $, $$, el, on } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 import { t, getLang, onLangChange } from '../core/i18n.js';
 import { countTo, formatInt, formatMoney, formatRange } from '../core/format.js';
 import { track } from '../core/analytics.js';
@@ -27,6 +28,7 @@ function nearestIndex(scale, value) {
 }
 
 export function init(root) {
+  accentTitles(root);
   const form = $('[data-calc-form]', root);
   const range = $('[data-calc-budget]', root);
   if (!form || !range) return;

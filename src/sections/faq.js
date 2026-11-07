@@ -1,5 +1,6 @@
 // 13 FAQ: аккордеон из src/data/faq.json на <button aria-expanded>; смена языка перерисовывает тексты на месте.
 import { $, el, on } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 import { t, getLang, onLangChange } from '../core/i18n.js';
 import data from '../data/faq.json';
 
@@ -7,6 +8,7 @@ const pick = (v, lang) => (v && typeof v === 'object' ? (v[lang] ?? v.ua ?? '') 
 const isTbd = (s) => s === 'уточнити' || s === 'TBD' || s === t('common.tbd');
 
 export function init(root) {
+  accentTitles(root);
   const list = $('[data-faq-list]', root);
   const items = Array.isArray(data?.items) ? data.items : [];
   if (!list || !items.length) return;

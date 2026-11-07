@@ -1,5 +1,7 @@
-// 02 Telegram у цифрах: вкладки Україна / Worldwide (role=tablist, стрелки), цифры перекручиваются.
+// 02 Telegram у цифрах — «таймер» Aether: вкладки Україна / Worldwide (role=tablist, стрелки);
+// при первом показе цифры докручиваются, при смене вкладки отличающиеся знаки въезжают сверху.
 import { $, $$, on } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 import { t, getLang } from '../core/i18n.js';
 import { countTo, formatInt } from '../core/format.js';
 import { reduced } from '../core/motion.js';
@@ -36,7 +38,40 @@ function roll(node) {
   });
 }
 
+/** Какие знаки нового значения отличаются от прежнего на той же позиции — они и въезжают. */
+export function changedChars(prev, next) {
+  return [...next].map((ch, i) => [...prev][i] !== ch);
+}
+
+const SLOTS = ['.stats__card--main .stats__value', '.stats__card--a .stats__value', '.stats__card--b .stats__value'];
+const DROP_MS = 1300;
+
+// знаки по одному под маской; через DROP_MS — снова обычный текст (читалки, смена языка)
+function drop(node, prevText) {
+  const text = finalText(node);
+  const changed = changedChars(prevText, text);
+  let n = 0;
+  node.replaceChildren(
+    ...[...text].map((ch, i) => {
+      const outer = document.createElement('span');
+      outer.className = changed[i] ? 'stats__char is-new' : 'stats__char';
+      if (changed[i]) outer.style.setProperty('--i', String(n++));
+      const inner = document.createElement('span');
+      inner.textContent = ch;
+      outer.append(inner);
+      return outer;
+    }),
+  );
+  node.setAttribute('aria-label', text);
+  clearTimeout(node._dropTimer);
+  node._dropTimer = setTimeout(() => {
+    node.textContent = finalText(node);
+    node.removeAttribute('aria-label');
+  }, DROP_MS);
+}
+
 export function init(root) {
+  accentTitles(root);
   const host = $('[data-stats]', root);
   if (!host) return;
   const tabs = $$('[data-stats-tab]', host);
@@ -46,6 +81,8 @@ export function init(root) {
   const rollPanel = (panel) => $$('[data-count]', panel).forEach(roll);
 
   function select(id, { focus = false, animate = true } = {}) {
+    const prev = panels.find((p) => !p.hidden);
+    const prevTexts = prev ? SLOTS.map((sel) => $(sel, prev)?.textContent ?? '') : [];
     tabs.forEach((tab, i) => {
       const active = tab.dataset.statsTab === id;
       tab.setAttribute('aria-selected', String(active));
@@ -60,10 +97,15 @@ export function init(root) {
       const show = panel.dataset.statsPanel === id;
       panel.hidden = !show;
       panel.classList.remove('is-entering');
-      if (show && animate) {
+      if (show && animate && panel !== prev) {
         void panel.offsetWidth;
         panel.classList.add('is-entering');
-        rollPanel(panel);
+        SLOTS.forEach((sel, i) => {
+          const node = $(sel, panel);
+          if (!node) return;
+          if (reduced) node.textContent = finalText(node);
+          else drop(node, prevTexts[i] || '');
+        });
       }
     }
   }
