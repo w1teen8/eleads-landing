@@ -56,7 +56,7 @@ function runHead({ search = '', session = storage(), local = storage(), reduced 
   sandbox.window = sandbox;
   vm.createContext(sandbox);
   for (const code of inline) vm.runInContext(code, sandbox);
-  return { theme: documentElement.getAttribute('data-theme'), hero: documentElement.getAttribute('data-hero'), preload: classes.has('js-preload'), session, local };
+  return { theme: documentElement.getAttribute('data-theme'), hero: documentElement.getAttribute('data-hero'), preload: classes.has('js-preload'), planeIntro: classes.has('js-plane-intro'), session, local };
 }
 
 test('тема: без параметра и хранилища — brand', () => {
@@ -146,4 +146,19 @@ test('вариант первого экрана: по умолчанию mockup
   assert.equal(runHead({ search: '?hero=9', session: storage({ 'eleads-hero': '<x>' }) }).hero, 'mockup');
   assert.equal(runHead({ search: '?hero=1', session: storage({}, { broken: true }) }).hero, 'orbit');
   assert.equal(runHead({ search: '?nomotion=1&hero=1' }).hero, 'orbit', 'и при reduced-motion');
+});
+
+test('вариант 3: ?hero=3 → plane и держится в sessionStorage; вместо заставки-поиска — интро самолётика по тем же правилам', () => {
+  const r = runHead({ search: '?hero=3' });
+  assert.equal(r.hero, 'plane');
+  assert.equal(r.session.map.get('eleads-hero'), 'plane');
+  assert.equal(runHead({ session: storage({ 'eleads-hero': 'plane' }) }).hero, 'plane');
+  assert.equal(r.planeIntro, true, 'первый заход — интро');
+  assert.equal(r.preload, false, 'поиска нет');
+  const seen = storage({ 'eleads-intro': String(NOW - 60_000) });
+  assert.deepEqual([runHead({ search: '?hero=3', local: seen }).planeIntro, runHead({ search: '?hero=3', local: seen }).preload], [false, false], 'за сутки второй раз нет');
+  assert.equal(runHead({ search: '?hero=3&intro=1', local: seen }).planeIntro, true, '?intro=1 — принудительно');
+  assert.equal(runHead({ search: '?hero=3&nomotion=1&intro=1' }).planeIntro, false, 'reduced-motion — сразу главный экран');
+  assert.equal(runHead({ search: '?hero=2' }).planeIntro, false, 'в других вариантах — заставка-поиск');
+  assert.equal(runHead({ search: '?hero=2' }).preload, true);
 });

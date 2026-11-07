@@ -87,6 +87,7 @@
       "audience": { "label": "Target audience" }
     },
     "word": "ELEADS",
+    "v3": { "skip": "Skip", "skipLabel": "Skip intro", "heading": "ELEADS — promotion via Telegram Ads" },
     "scroll": "Scroll",
     "ads": [
       { "name": "A channel in your niche", "tag": "Ad", "text": "A sponsored message of up to 160 characters below the channel posts", "button": "Open" },

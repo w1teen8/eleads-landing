@@ -1,13 +1,14 @@
 // Панель версий оформления — инструмент заказчика, только в `npm run dev` (main.js грузит её под import.meta.env.DEV).
 // Ставит <html data-theme> и пишет sessionStorage['eleads-theme'] — тот же ключ читает инлайн-скрипт в <head>,
 // поэтому выбор держится до конца вкладки. В собранном сайте панели нет; там версия выбирается через ?theme=.
-// Второй ряд — вариант первого экрана «Хиро: 1 / 2» (1 = orbit, 2 = mockup): пишет sessionStorage['eleads-hero']
+// Второй ряд — вариант первого экрана «Хиро: 1 / 2 / 3» (1 = orbit, 2 = mockup, 3 = plane — интро с самолётиком): пишет sessionStorage['eleads-hero']
 // и перезагружает страницу — инициализируется только активный вариант.
 const KEY = 'eleads-theme';
 const HERO_KEY = 'eleads-hero';
 const HEROES = [
   { id: 'orbit', label: '1' },
   { id: 'mockup', label: '2' },
+  { id: 'plane', label: '3' },
 ];
 const THEMES = [
   ['brand', 'Бренд · Aether'],
@@ -93,7 +94,7 @@ function mountHeroSwitcher() {
         /* без хранилища — через параметр */
       }
       const url = new URL(location.href);
-      url.searchParams.set('hero', id === 'orbit' ? '1' : '2');
+      url.searchParams.set('hero', text);
       location.replace(url);
     });
     return btn;

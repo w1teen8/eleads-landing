@@ -1,6 +1,6 @@
 // 01 Hero — два варианта в одной секции: data-hero="mockup|orbit" на <html> (ставит инлайн-скрипт <head> по
-// ?hero=1|2 → sessionStorage['eleads-hero'] → mockup) или на секции. Инициализируется только активный вариант;
-// «orbit» (1) — модуль hero-orbit.js. Вариант 2 «mockup» (по умолчанию) — по макету пользователя (G18): слева наклонный H1 по строкам из маски, абзац с чертой,
+// ?hero=1|2|3 → sessionStorage['eleads-hero'] → mockup) или на секции. Инициализируется только активный вариант;
+// «orbit» (1) — модуль hero-orbit.js, «plane» (3, интро с самолётиком) — hero-plane.js. Вариант 2 «mockup» (по умолчанию) — по макету пользователя (G18): слева наклонный H1 по строкам из маски, абзац с чертой,
 // пилюля в Telegram и три цифры брифа; справа Володимир без фона на тёмной планете, горящее кольцо перед ним и
 // за ним, вокруг — присланные PNG-карточки. Кольцо и плавание карточек — CSS (@keyframes, только transform);
 // здесь — появление после заставки, параллакс слоёв за курсором (десктоп с мышью), видео, «Мені довіряють»,
@@ -11,6 +11,7 @@ import { reduced, marquee } from '../core/motion.js';
 import { countTo } from '../core/format.js';
 import { whenIntroDone } from '../core/intro.js';
 import { initOrbit } from './hero-orbit.js';
+import { initPlane } from './hero-plane.js';
 
 const DESKTOP = '(min-width: 900px)';
 const FINE_POINTER = '(hover: hover) and (pointer: fine)';
@@ -21,7 +22,7 @@ const COUNTABLE = /^(\D*?)(\d+)(\D*)$/;
 const PARALLAX_X = 26;
 const PARALLAX_Y = 18;
 
-export const HERO_VARIANTS = ['mockup', 'orbit'];
+export const HERO_VARIANTS = ['mockup', 'orbit', 'plane'];
 
 /** Активный вариант: data-hero на секции или <html>; иначе — mockup. */
 export function heroVariant(root, html = document.documentElement) {
@@ -32,7 +33,11 @@ export function heroVariant(root, html = document.documentElement) {
 export function init(root) {
   const variant = heroVariant(root);
   const stage = $(`[data-hero-variant="${variant}"]`, root) || root;
-  root.setAttribute('aria-labelledby', variant === 'orbit' ? 'hero-title-orbit' : 'hero-title');
+  root.setAttribute('aria-labelledby', variant === 'mockup' ? 'hero-title' : `hero-title-${variant}`);
+  if (variant === 'plane') {
+    initPlane(stage);
+    return;
+  }
   initVideo($('.hero__video', stage), root);
   initTrusted(root);
   pauseOffscreen(root);

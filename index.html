@@ -46,17 +46,17 @@
         h.setAttribute('data-theme', themes.indexOf(theme) > -1 ? theme : 'brand');
       })(document.documentElement);
     </script>
-    <!-- Вариант первого экрана до первой отрисовки: ?hero=1 (orbit) | 2 (mockup) → sessionStorage → mockup. -->
+    <!-- Вариант первого экрана до первой отрисовки: ?hero=1 (orbit) | 2 (mockup) | 3 (plane) → sessionStorage → mockup. -->
     <script>
       (function (h) {
-        var names = { 1: 'orbit', 2: 'mockup', orbit: 'orbit', mockup: 'mockup' };
+        var names = { 1: 'orbit', 2: 'mockup', 3: 'plane', orbit: 'orbit', mockup: 'mockup', plane: 'plane' };
         var m = /[?&]hero=(\w+)/.exec(location.search);
         var hero = m && names[m[1]] ? names[m[1]] : null;
         try {
           if (hero) sessionStorage.setItem('eleads-hero', hero);
           else hero = sessionStorage.getItem('eleads-hero');
         } catch (e) {}
-        h.setAttribute('data-hero', hero === 'orbit' ? 'orbit' : 'mockup');
+        h.setAttribute('data-hero', hero === 'orbit' || hero === 'plane' ? hero : 'mockup');
       })(document.documentElement);
     </script>
     <!-- Начальные состояния анимаций ставит только этот скрипт: без JS и при reduced-motion классов нет, всё видно. -->
@@ -75,11 +75,15 @@
           var age = Date.now() - seen;
           due = /[?&]intro=1/.test(location.search) || !(seen > 1e12 && age >= 0 && age < 864e5);
         } catch (e) {}
-        if (due) h.classList.add('js-preload');
+        // вариант 3: вместо заставки-поиска — интро с самолётиком (hero-plane.js), тот же «раз в сутки»
+        var plane = h.getAttribute('data-hero') === 'plane';
+        if (due) h.classList.add(plane ? 'js-plane-intro' : 'js-preload');
         setTimeout(function () {
           if (!h.classList.contains('motion-ok')) h.classList.remove('js-anim');
           // заставка не стартовала (скрипты не загрузились) — убрать её; живая 5-секундная уходит сама
           if (!h.dataset.introStart) h.classList.remove('js-preload');
+          // интро варианта 3 не стартовало — сразу главный экран; стартовавшее держит свой потолок (ролик + код + 2 с)
+          if (!h.dataset.planeStart) h.classList.remove('js-plane-intro');
         }, 4000);
         // последний рубеж: позже крайнего срока intro.js (≈7,9 с) заставки не бывает ни при каком сбое
         setTimeout(function () {
@@ -469,6 +473,69 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- вариант 3 «plane»: интро — ролик (самолётик из офиса к Земле), затем кодом самолётик рисует кольцо вокруг
+             «ELEADS» и садится в его центр; финал — этот же экран с текстами. Медиа ставит hero-plane.js из config.json -->
+        <div class="hero-plane" data-hero-variant="plane">
+          <div class="hero-plane__sky" aria-hidden="true">
+            <div class="hero-plane__stars"></div>
+            <img class="hero-plane__earth" alt="" decoding="async" hidden />
+            <div class="hero-plane__halo"></div>
+          </div>
+
+          <div class="hero-plane__mark">
+            <div class="hero-plane__ring" aria-hidden="true">
+              <div class="hero-plane__half hero-plane__half--r"><div class="hero-plane__spin"><div class="hero-plane__cut"><div class="hero-plane__line"></div></div></div></div>
+              <div class="hero-plane__half hero-plane__half--l"><div class="hero-plane__spin"><div class="hero-plane__cut"><div class="hero-plane__line"></div></div></div></div>
+            </div>
+            <div class="hero-plane__flyer" aria-hidden="true">
+              <svg class="hero-plane__glyph" viewBox="0 0 120 60">
+                <path d="M118 30 4 4l36 26Z" fill="#FFFFFF" />
+                <path d="M118 30H40l-10 13Z" fill="#C6CFDC" />
+                <path d="M118 30 30 43 14 57Z" fill="#E3E8F0" />
+                <path d="M40 30 30 43l-4-11Z" fill="#9AA7BA" />
+              </svg>
+            </div>
+            <p id="hero-title-plane" class="hero-plane__word display" role="heading" aria-level="1" data-i18n-attr="aria-label:hero.v3.heading"><span data-i18n="hero.word" aria-hidden="true"></span></p>
+          </div>
+
+          <div class="hero-plane__copy">
+            <p class="hero-plane__eyebrow mono-label mono-label--accent" data-plane-item data-i18n="hero.eyebrow"></p>
+            <div class="hero-plane__bottom">
+              <div class="hero-plane__lead" data-plane-item>
+                <p class="hero-plane__subtitle" data-i18n="hero.subtitle"></p>
+                <a class="btn btn--pill btn--lg hero-plane__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero">
+                  <span data-i18n="hero.cta.label"></span>
+                  <span class="hero-plane__cta-arrow" aria-hidden="true" data-i18n="hero.cta.arrow"></span>
+                </a>
+              </div>
+              <ul class="hero-plane__stats" data-plane-item>
+                <li class="hero-plane__stat">
+                  <span class="hero-plane__stat-value" data-count data-i18n="hero.stats.years.value"></span>
+                  <span class="hero-plane__stat-label mono-label mono-label--muted" data-i18n="hero.stats.years.label"></span>
+                </li>
+                <li class="hero-plane__stat">
+                  <span class="hero-plane__stat-value" data-count data-i18n="hero.stats.budgets.value"></span>
+                  <span class="hero-plane__stat-label mono-label mono-label--muted" data-i18n="hero.stats.budgets.label"></span>
+                </li>
+                <li class="hero-plane__stat">
+                  <span class="hero-plane__stat-value" data-count data-i18n="hero.stats.projects.value"></span>
+                  <span class="hero-plane__stat-label mono-label mono-label--muted" data-i18n="hero.stats.projects.label"></span>
+                </li>
+              </ul>
+              <p class="hero-plane__scroll mono-label mono-label--muted" data-plane-item>
+                <span class="hero-plane__wheel" aria-hidden="true"><span></span></span>
+                <span data-i18n="hero.scroll"></span>
+              </p>
+            </div>
+          </div>
+
+          <video class="hero-plane__video" muted playsinline preload="none" disablepictureinpicture aria-hidden="true" tabindex="-1"></video>
+          <button type="button" class="hero-plane__skip mono-label" data-plane-skip data-i18n-attr="aria-label:hero.v3.skipLabel">
+            <span data-i18n="hero.v3.skip"></span>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
+          </button>
         </div>
 
         <div class="hero__trust" data-hero-item>
