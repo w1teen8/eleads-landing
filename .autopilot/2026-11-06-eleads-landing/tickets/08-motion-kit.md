@@ -1,9 +1,9 @@
 # 08 — Маркер в заголовках, линза в hero, номер процесса, вордмарк, наклон portfolea
 
 **Требования:** G04, G06
-**Зависит от:** 07
+**Зависит от:** 13
 **Зона:** `build/i18n-prerender.js` · `src/core/i18n.js` · `src/core/motion.js` · `src/sections/hero.js` · `src/styles/sections/hero.css` · `src/styles/sections/photos.css` · `src/sections/process.js` · `src/styles/sections/process.css` · `src/sections/footer.js` · `src/styles/sections/footer.css` · `src/styles/base.css` (только стиль `.hl`) · `index.html` (атрибуты H2, фото hero, вордмарк в подвале) · `src/data/content.ua.json` / `content.en.json` (только скобки `[[…]]` в заголовках и ключ вордмарка, если нужен) · `tests/`
-**Волна:** 9
+**Волна:** 14
 **Ревью:** нет
 **Модель:** сильная
 

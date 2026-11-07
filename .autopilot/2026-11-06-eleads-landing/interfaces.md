@@ -233,3 +233,11 @@ export function forecast(input, rates): Forecast
 - Семантические переменные (единственное, что используют секции): `--bg, --surface, --surface-2, --block, --block-2, --text, --text-muted, --text-on-block, --text-on-block-muted, --accent, --accent-2, --accent-ink, --tag-1, --tag-2, --line, --line-strong` + `--grad` (акцентный градиент темы). Старые имена (`--ink`, `--card`, `--fg` …) остаются только как палитра канала внутри `tokens.css`.
 - Компоненты (`src/styles/components.css`, новый): `.pill-label` (метка с точкой), `.btn` / `.btn--primary` / `.btn--ghost` с кружком-стрелкой `.btn__arrow`, `.chip`, `.panel` (скруглённый контейнер секции с отступом от краёв), `.panel--block` (тёмный блок), `.stat-card` (карточка-цифра, модификаторы цвета), `.inline-pill` (пилюля-иконка внутри заголовка).
 - `src/dev/theme-switcher.js` — только `import.meta.env.DEV`; ставит `data-theme` и пишет `sessionStorage`.
+
+
+## Сборка 2 — Aether (заменяет оформление overtake)
+
+- Темы: `data-theme` = `brand` (по умолчанию, `:root`) | `aether`. Инлайн-скрипт `<head>`: `?theme=` → `sessionStorage['eleads-theme']` → `brand`; старые значения `brand-light`/`brand-dark`/`overtake` → `brand`.
+- Семантические переменные остаются (`--bg … --grad`), значения — под тёмный облик Aether в обеих темах.
+- Новые общие компоненты (`components.css`): `.mono-label` (моно-капс с разрядкой), `.display` (широкий капс Unbounded), `.display__accent` (вторая строка акцентом), `.btn--pill` (акцентная пилюля), `.ribbons` (две ленты крест-накрест, разметка + `motion.marquee`), `.planet` (SVG/CSS-планета с кольцом, параметры через CSS-переменные — общая для hero и орбиты).
+- Footer reveal: буквы вордмарка — отдельные `span` внутри маски; подъём по входу подвала в экран.

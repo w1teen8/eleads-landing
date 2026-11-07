@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-06T18:56:47+02:00",
+  "updatedAt": "2026-11-07T23:23:56+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -61,13 +61,13 @@ window.STATE =
     }
   ],
   "requirements": {
-    "total": 113,
-    "done": 102,
-    "inTicket": 7,
+    "total": 118,
+    "done": 103,
+    "inTicket": 10,
     "inSpec": 0,
     "placeholder": 3,
     "deferred": 1,
-    "dropped": 0
+    "dropped": 1
   },
   "tickets": [
     {
@@ -412,10 +412,16 @@ window.STATE =
       ],
       "review": "да — фундамент",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "startedAt": "2026-11-06T18:54:14+02:00",
+      "finishedAt": "2026-11-07T23:18:15+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 89,
+        "failed": 0
+      },
+      "commit": "5b9d887"
     },
     {
       "id": "07",
@@ -427,23 +433,24 @@ window.STATE =
         "R22",
         "R23"
       ],
-      "blockedBy": [
-        "06"
-      ],
-      "wave": 8,
+      "blockedBy": [],
+      "wave": 7,
       "zone": [
         "src/styles/sections/{stats,niches,formats,calculator,cases,process,geo,targeting,reviews,ecosystem,materials,faq,cta}.css",
         "src/sections/*.js",
-        "#stats",
-        "#cta",
-        "index.html",
-        "tests/"
+        "tests/",
+        "index.html"
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "pending",
+      "status": "failed",
+      "startedAt": "2026-11-06T18:57:57+02:00",
+      "finishedAt": "2026-11-07T23:22:59+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "concerns": [
+        "заменён: пользователь «Делаем с 0» — оформление Aether вместо overtake; шаг 1 вошёл в коммит 5b9d887"
+      ]
     },
     {
       "id": "08",
@@ -453,9 +460,9 @@ window.STATE =
         "G06"
       ],
       "blockedBy": [
-        "07"
+        "13"
       ],
-      "wave": 9,
+      "wave": 14,
       "zone": [
         "build/i18n-prerender.js",
         "src/core/i18n.js",
@@ -492,7 +499,7 @@ window.STATE =
       "blockedBy": [
         "08"
       ],
-      "wave": 10,
+      "wave": 15,
       "zone": [
         "src/sections/{targeting,reviews,materials,formats}.js",
         "src/styles/sections/{targeting,reviews,materials,formats}.css",
@@ -511,6 +518,146 @@ window.STATE =
       ],
       "review": "нет",
       "model": "обычная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "10",
+      "title": "Облик Aether: темы, шрифты, шапка, ленты крест-накрест, подвал, загрузка",
+      "requirements": [
+        "G13",
+        "G10",
+        "G11",
+        "G15",
+        "G16"
+      ],
+      "blockedBy": [],
+      "wave": 11,
+      "zone": [
+        "src/styles/tokens.css",
+        "src/styles/base.css",
+        "src/styles/layout.css",
+        "src/styles/components.css",
+        "src/styles/sections/{header,preloader,footer}.css",
+        "src/sections/{header,preloader,footer}.js",
+        "src/sections/ribbons.js",
+        "src/styles/sections/ribbons.css",
+        "src/core/transition.js",
+        "src/dev/",
+        "index.html",
+        "<head>",
+        ".preloader",
+        "#hero",
+        "nav",
+        "footer",
+        "preloader",
+        "ribbons",
+        "common",
+        "content.*.json",
+        "tests/"
+      ],
+      "review": "да — фундамент",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "11",
+      "title": "Первый экран: «ELEADS» поверх планеты, влёт в орбиту, сцена с Володимиром",
+      "requirements": [
+        "G17",
+        "G13",
+        "R40",
+        "R41",
+        "R42",
+        "R43",
+        "R44",
+        "R45",
+        "R46"
+      ],
+      "blockedBy": [
+        "10"
+      ],
+      "wave": 12,
+      "zone": [
+        "src/sections/hero.js",
+        "src/styles/sections/hero.css",
+        "src/styles/sections/photos.css",
+        "#hero",
+        "index.html",
+        "<section id=\"hero\">",
+        "hero",
+        "content.*.json",
+        "tests/",
+        "hero-*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "12",
+      "title": "Кейсы: галерея, которая «перекручивается» вбок при прокрутке",
+      "requirements": [
+        "G14",
+        "G13",
+        "R69",
+        "R70",
+        "R71",
+        "R72",
+        "R73"
+      ],
+      "blockedBy": [
+        "10"
+      ],
+      "wave": 12,
+      "zone": [
+        "src/sections/cases.js",
+        "src/styles/sections/cases.css",
+        "#cases",
+        "index.html",
+        "<section id=\"cases\">",
+        "cases",
+        "content.*.json",
+        "tests/",
+        "cases-gallery*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "13",
+      "title": "Остальные секции в облике Aether: орбита ниш, цифры-таймер, всё прочее",
+      "requirements": [
+        "G13",
+        "R22",
+        "R23",
+        "R47",
+        "R51",
+        "R52",
+        "R53"
+      ],
+      "blockedBy": [
+        "11",
+        "12"
+      ],
+      "wave": 13,
+      "zone": [
+        "src/sections/{stats,niches,formats,calculator,process,geo,targeting,reviews,ecosystem,materials,faq,cta}.js",
+        "src/styles/sections/",
+        "index.html",
+        "content.*.json",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
       "status": "pending",
       "retries": 0,
       "repairs": 0
@@ -560,7 +707,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 63,
+    "passed": 89,
     "failed": 0
   },
   "debt": {
@@ -674,9 +821,16 @@ window.STATE =
     "2026-11-06T18:54:14+02:00",
     "2026-11-06T18:56:36+02:00",
     "2026-11-06T18:56:46+02:00",
-    "2026-11-06T18:56:47+02:00"
+    "2026-11-06T18:56:47+02:00",
+    "2026-11-06T18:57:54+02:00",
+    "2026-11-06T18:57:56+02:00",
+    "2026-11-06T18:57:57+02:00",
+    "2026-11-07T23:18:15+02:00",
+    "2026-11-07T23:22:59+02:00",
+    "2026-11-07T23:23:55+02:00",
+    "2026-11-07T23:23:56+02:00"
   ],
-  "rev": 74,
+  "rev": 81,
   "waiting": null,
   "waits": [
     {
@@ -1211,6 +1365,59 @@ window.STATE =
       "g": "G3",
       "ok": true,
       "problems": 0
+    },
+    {
+      "t": "2026-11-06T18:57:54+02:00",
+      "k": "tickets",
+      "n": 10
+    },
+    {
+      "t": "2026-11-06T18:57:56+02:00",
+      "k": "gate",
+      "g": "G3",
+      "ok": false,
+      "problems": 2
+    },
+    {
+      "t": "2026-11-06T18:57:57+02:00",
+      "k": "ticket",
+      "ids": [
+        "07"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-07T23:18:15+02:00",
+      "k": "ticket",
+      "ids": [
+        "06"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 89,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-07T23:22:59+02:00",
+      "k": "ticket",
+      "ids": [
+        "07"
+      ],
+      "act": "fail",
+      "note": "заменён: пользователь «Делаем с 0» — оформление Aether вместо overtake; шаг 1 вошёл в коммит 5b9d887"
+    },
+    {
+      "t": "2026-11-07T23:23:55+02:00",
+      "k": "tickets",
+      "n": 14
+    },
+    {
+      "t": "2026-11-07T23:23:56+02:00",
+      "k": "gate",
+      "g": "G3",
+      "ok": false,
+      "problems": 5
     }
   ],
   "reqList": [
@@ -1766,7 +1973,8 @@ window.STATE =
     {
       "id": "G09",
       "text": "«оформление надо вообще другое» + «https://overtake-wbs.framer.website/ берем оформление этого сайта»",
-      "status": "in-ticket"
+      "status": "dropped",
+      "why": "пользователь: «Делаем с 0» + новый образец Aether (2026-11-07); вариант overtake сохранён меткой git design/overtake"
     },
     {
       "id": "G10",
@@ -1781,6 +1989,31 @@ window.STATE =
     {
       "id": "G12",
       "text": "«загрузка появляется каждый раз даже после перезагрузки сайта»",
+      "status": "done"
+    },
+    {
+      "id": "G13",
+      "text": "«Делаем с 0» + «https://fair-presentations-365847.framer.app/» — оформление по Aether",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G14",
+      "text": "«06 / SOCIAL PROOF шестой экран можно сделать также что-бы перекручивалось как на сайте»",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G15",
+      "text": "«Появление подвала сделай такое же как на этом сайте»",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G16",
+      "text": "«Такое перелистывание добавить можно» — две наклонённые бегущие ленты крест-накрест",
+      "status": "in-ticket"
+    },
+    {
+      "id": "G17",
+      "text": "«Хиро тоже такое можно сделать» — огромное слово поверх планеты с кольцом, «scroll to enter orbit»",
       "status": "in-ticket"
     }
   ],
@@ -1792,9 +2025,9 @@ window.STATE =
       "total": 109
     },
     "G3": {
-      "ok": true,
-      "at": "2026-11-06T18:56:47+02:00",
-      "problems": 0
+      "ok": false,
+      "at": "2026-11-07T23:23:56+02:00",
+      "problems": 5
     },
     "G2": {
       "ok": true,

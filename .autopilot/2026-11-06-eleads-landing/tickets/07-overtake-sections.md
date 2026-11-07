@@ -1,9 +1,9 @@
 # 07 — Оформление overtake для секций 02–14, модалки и лайтбокса
 
 **Требования:** G09, G10, G11, R22, R23
-**Зависит от:** 06
-**Зона:** `src/styles/sections/{stats,niches,formats,calculator,cases,process,geo,targeting,reviews,ecosystem,materials,faq,cta}.css` · соответствующие `src/sections/*.js` (только то, что требует новое оформление, включая стопку кейсов) · разметка секций `#stats` … `#cta` в `index.html` · `tests/`
-**Волна:** 8
+**Зависит от:** —
+**Зона:** `src/styles/sections/{stats,niches,formats,calculator,cases,process,geo,targeting,reviews,ecosystem,materials,faq,cta}.css` · соответствующие `src/sections/*.js` (только то, что требует новое оформление, включая стопку кейсов) · `tests/` (свои новые файлы) · **разметка секций в `index.html` — вторым шагом, только после того как таск 06 сдан** (пользователь попросил ускорить: шаг 1 идёт параллельно с 06)
+**Волна:** 7
 **Ревью:** нет
 **Модель:** сильная
 

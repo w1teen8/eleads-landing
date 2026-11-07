@@ -3,7 +3,7 @@
 **Требования:** G05, G06, R30
 **Зависит от:** 08
 **Зона:** `src/sections/{targeting,reviews,materials,formats}.js` · `src/styles/sections/{targeting,reviews,materials,formats}.css` · разметка `#targeting`, `#reviews`, `#materials`, `#formats` в `index.html` · разделы `targeting`, `reviews`, `founder`, `materials` в `content.*.json` (только новые подписи плиток, если нужны) · `docs/qa-report.md` · `tests/`
-**Волна:** 10
+**Волна:** 15
 **Ревью:** нет
 **Модель:** обычная
 
