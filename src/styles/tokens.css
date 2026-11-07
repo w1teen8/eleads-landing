@@ -1,7 +1,7 @@
 /* Токены eLeads. Литералы цветов — только в этом файле.
-   Слой 1 — палитры: канал клиента (9 цветов брифа), один нейтральный белый и палитра overtake (--ot-*, только для
-   версии «Overtake · оригинал»). Слой 2 — семантические переменные: секции используют только их.
-   Версию ставит инлайн-скрипт в <head>: <html data-theme="brand-light | brand-dark | overtake">. */
+   Слой 1 — палитры: канал клиента (9 цветов брифа), один нейтральный белый и палитра образца Aether
+   (--ae-*, только для версии «Aether · оригинал»). Слой 2 — семантические переменные: секции используют только их.
+   Версию ставит инлайн-скрипт в <head>: <html data-theme="brand | aether">; без атрибута — brand. */
 :root {
   /* — палитра канала (бриф) — */
   --ink: #070C18;   /* основной тёмный */
@@ -17,55 +17,50 @@
   /* — фирменный градиент канала — */
   --grad: linear-gradient(100deg, var(--sun), var(--ember));
 
-  /* — нейтральный белый: поверхности карточек светлой версии — */
+  /* — нейтральный белый: звёзды и блики — */
   --paper: #FFFFFF;
 
-  /* — палитра overtake (reference.md), только для версии «Overtake · оригинал» — */
-  --ot-bg: #F0F0F0;
-  --ot-paper: #FFFFFF;
-  --ot-ink: #0B0B0C;
-  --ot-emerald: #122020;
-  --ot-lime: #9EFC65;
-  --ot-pink: #FFBCFC;
-  --ot-yellow: #FDE589;
-  --ot-orange: #FF742E;
-  --ot-muted: #6A6E6E;
+  /* — палитра Aether (reference.md → «Aether»), только для версии «Aether · оригинал» — */
+  --ae-bg: #0B0B0D;     /* почти чёрный */
+  --ae-panel: #141417;  /* поверхность на чёрном */
+  --ae-white: #F2EEE8;  /* тёплый белый текста */
+  --ae-grey: #8C8A87;   /* приглушённый текст */
+  --ae-red: #FF3B2F;    /* единственный акцент */
+  --ae-red-deep: #C4201A; /* тень акцента: полосы планеты, градиент */
 
-  /* — производные палитры канала (тёмные блоки и секции, ещё не перекрашенные таском 07) — */
-  --line-strong: color-mix(in srgb, var(--fg) 16%, transparent);
-  --fg-soft: color-mix(in srgb, var(--fg) 78%, var(--muted));
-  --ember-glow: color-mix(in srgb, var(--ember) 55%, transparent);
-  --sun-glow: color-mix(in srgb, var(--sun) 35%, transparent);
-  --ink-veil: color-mix(in srgb, var(--ink) 70%, transparent);
-
-  /* — шрифты: у заголовочного шрифта overtake нет кириллицы → Onest с плотным трекингом — */
-  --font-display: 'Onest', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-body: 'Inter', 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* — шрифты: заголовки — широкий капс, текст — гротеск, подписи и цифры — моно; все с кириллицей — */
+  --font-display: 'Unbounded', 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
-  --tracking-tight: -0.03em;
+  --tracking-display: -0.02em;
+  --tracking-tight: var(--tracking-display); /* прежнее имя — его ещё читают не переписанные секции */
+  --tracking-mono: 0.14em;
 
   /* — шкала шрифтов — */
   --fs-xs: 0.75rem;
   --fs-sm: 0.875rem;
   --fs-base: 1rem;
   --fs-lg: clamp(1.0625rem, 0.98rem + 0.4vw, 1.3125rem);
-  --fs-h2: clamp(2rem, 1.35rem + 2.6vw, 3.75rem);
-  --fs-h1: clamp(2.5rem, 1.2rem + 5.6vw, 6rem);
+  --fs-mono: 0.75rem;
+  --fs-h3: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  --fs-h2: clamp(1.75rem, 1.1rem + 2.8vw, 4rem);
+  --fs-h1: clamp(2.25rem, 1rem + 5.4vw, 6.5rem);
+  --fs-display: clamp(2.5rem, 0.9rem + 6.6vw, 7.5rem);
 
   /* — отступы — */
-  --gutter: clamp(1rem, 2.6vw, 2rem);
-  --panel-gap: clamp(0.5rem, 1.4vw, 1.25rem); /* отступ контейнера-панели от краёв экрана */
-  --section-y: clamp(4.5rem, 3.5rem + 5vw, 8rem);
-  --header-h: 76px;
-  --container: 1440px;
+  --gutter: clamp(1rem, 3.3vw, 3rem);
+  --panel-gap: 0px;
+  --section-y: clamp(4.5rem, 3.5rem + 5vw, 9rem);
+  --header-h: 72px;
+  --container: 1520px;
 
-  /* — радиусы по ролям (бриф: не один радиус на всё) — */
+  /* — радиусы по ролям — */
   --r-pill: 999px;
-  --r-panel: clamp(20px, 2.4vw, 32px); /* контейнер секции */
-  --r-card: 24px;
+  --r-panel: 0px;
+  --r-card: 20px;
   --r-card-lg: 28px;
-  --r-card-sm: 20px;
-  --r-media: 12px;
+  --r-card-sm: 14px;
+  --r-media: 10px;
 
   /* — движение — */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -79,36 +74,14 @@
   --z-preloader: 100;
 }
 
-/* ——— «Бренд · светлая» (по умолчанию): тёплая светлая основа, тёмные блоки канала, акцент — жёлтый→оранжевый ——— */
+/* ——— «Бренд · Aether» (по умолчанию): облик Aether на тёмной основе канала, акцент — жёлтый→оранжевый, без красного ——— */
 :root,
-[data-theme='brand-light'] {
-  color-scheme: light;
-  --bg: color-mix(in srgb, var(--fg) 40%, var(--paper));
-  --surface: var(--paper);
-  --surface-2: color-mix(in srgb, var(--fg) 94%, var(--ink));
-  --block: var(--ink);
-  --block-2: var(--navy);
-  --text: var(--ink);
-  --text-muted: color-mix(in srgb, var(--ink) 68%, var(--fg));
-  --text-on-block: var(--fg);
-  --text-on-block-muted: var(--muted);
-  --accent: var(--sun);
-  --accent-2: var(--ember);
-  --accent-ink: var(--ink);
-  --tag-1: color-mix(in srgb, var(--sun) 42%, var(--paper));
-  --tag-2: color-mix(in srgb, var(--tg) 16%, var(--paper));
-  --line: color-mix(in srgb, var(--ink) 10%, transparent);
-  --line-strong: color-mix(in srgb, var(--ink) 22%, transparent);
-  --grad: linear-gradient(100deg, var(--sun), var(--ember));
-}
-
-/* ——— «Бренд · тёмная»: то же оформление на тёмной основе канала ——— */
-[data-theme='brand-dark'] {
+[data-theme='brand'] {
   color-scheme: dark;
   --bg: var(--ink);
   --surface: var(--card);
   --surface-2: var(--navy);
-  --block: color-mix(in srgb, var(--card) 70%, var(--navy));
+  --block: var(--navy);
   --block-2: var(--card);
   --text: var(--fg);
   --text-muted: var(--muted);
@@ -117,31 +90,44 @@
   --accent: var(--sun);
   --accent-2: var(--ember);
   --accent-ink: var(--ink);
-  --tag-1: color-mix(in srgb, var(--sun) 24%, var(--navy));
-  --tag-2: color-mix(in srgb, var(--tg) 30%, var(--navy));
-  --line: color-mix(in srgb, var(--fg) 9%, transparent);
-  --line-strong: color-mix(in srgb, var(--fg) 18%, transparent);
+  --tag-1: color-mix(in srgb, var(--sun) 22%, var(--navy));
+  --tag-2: color-mix(in srgb, var(--tg) 26%, var(--navy));
+  --line: color-mix(in srgb, var(--fg) 10%, transparent);
+  --line-strong: color-mix(in srgb, var(--fg) 20%, transparent);
   --grad: linear-gradient(100deg, var(--sun), var(--ember));
+  /* производные облика: свечение, полосы планеты, вторая лента, звёзды */
+  --glow: color-mix(in srgb, var(--ember) 42%, transparent);
+  --planet-light: var(--sun);
+  --planet-mid: var(--ember);
+  --planet-dark: color-mix(in srgb, var(--ember) 30%, var(--ink));
+  --ribbon-2: color-mix(in srgb, var(--fg) 26%, transparent);
+  --star: color-mix(in srgb, var(--paper) 70%, transparent);
 }
 
-/* ——— «Overtake · оригинал»: палитра образца целиком, для сравнения ——— */
-[data-theme='overtake'] {
-  color-scheme: light;
-  --bg: var(--ot-paper);
-  --surface: var(--ot-paper);
-  --surface-2: var(--ot-bg);
-  --block: var(--ot-ink);
-  --block-2: var(--ot-emerald);
-  --text: var(--ot-ink);
-  --text-muted: var(--ot-muted);
-  --text-on-block: var(--ot-bg);
-  --text-on-block-muted: color-mix(in srgb, var(--ot-bg) 64%, var(--ot-ink));
-  --accent: var(--ot-lime);
-  --accent-2: var(--ot-yellow);
-  --accent-ink: var(--ot-ink);
-  --tag-1: var(--ot-pink);
-  --tag-2: var(--ot-yellow);
-  --line: color-mix(in srgb, var(--ot-ink) 10%, transparent);
-  --line-strong: color-mix(in srgb, var(--ot-ink) 22%, transparent);
-  --grad: linear-gradient(100deg, var(--ot-lime), color-mix(in srgb, var(--ot-lime) 55%, var(--ot-yellow)));
+/* ——— «Aether · оригинал»: палитра образца целиком, для сравнения ——— */
+[data-theme='aether'] {
+  color-scheme: dark;
+  --bg: var(--ae-bg);
+  --surface: var(--ae-panel);
+  --surface-2: color-mix(in srgb, var(--ae-panel) 60%, var(--ae-bg));
+  --block: var(--ae-panel);
+  --block-2: color-mix(in srgb, var(--ae-panel) 80%, var(--ae-white));
+  --text: var(--ae-white);
+  --text-muted: var(--ae-grey);
+  --text-on-block: var(--ae-white);
+  --text-on-block-muted: var(--ae-grey);
+  --accent: var(--ae-red);
+  --accent-2: var(--ae-red-deep);
+  --accent-ink: var(--ae-bg);
+  --tag-1: color-mix(in srgb, var(--ae-red) 24%, var(--ae-panel));
+  --tag-2: color-mix(in srgb, var(--ae-white) 12%, var(--ae-panel));
+  --line: color-mix(in srgb, var(--ae-white) 10%, transparent);
+  --line-strong: color-mix(in srgb, var(--ae-white) 20%, transparent);
+  --grad: linear-gradient(100deg, var(--ae-red), var(--ae-red));
+  --glow: color-mix(in srgb, var(--ae-red) 40%, transparent);
+  --planet-light: var(--ae-red);
+  --planet-mid: var(--ae-red-deep);
+  --planet-dark: color-mix(in srgb, var(--ae-red-deep) 28%, var(--ae-bg));
+  --ribbon-2: color-mix(in srgb, var(--ae-white) 24%, transparent);
+  --star: color-mix(in srgb, var(--paper) 70%, transparent);
 }

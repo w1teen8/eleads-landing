@@ -1,10 +1,40 @@
-/* Подвал в идиоме overtake: тёмный скруглённый блок (.panel.panel--block) с отступом от краёв;
-   сверху логотип, якоря, Telegram и UA/EN, ниже — огромный вордмарк «eLeads» на всю ширину,
-   внизу © 2026 eLeads и строка автора-заглушка. Цвета — тёмный контекст из components.css. */
+/* Подвал как у Aether (G15): сверху свечение акцента, абзац и колонки ссылок, тонкая орбита через весь блок;
+   ниже огромное «ELEADS» во всю ширину — буквы поднимаются снизу по одной из маски (overflow: hidden +
+   translateY), цвета чередуются акцент / белый; внизу © 2026 eLeads, автор-заглушка и «Нагору» моно-капсом. */
 .footer {
-  margin-block: var(--panel-gap);
-  padding-top: clamp(3rem, 6vw, 5.5rem);
+  position: relative;
+  border-top: 1px solid var(--line);
+  padding-top: clamp(5rem, 10vw, 9rem);
+  overflow: clip;
   container-type: inline-size;
+  isolation: isolate;
+}
+
+/* свечение акцента над подвалом: статичный радиальный градиент */
+.footer__glow {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 0;
+  width: 140%;
+  height: clamp(16rem, 34vw, 30rem);
+  transform: translate3d(-50%, -50%, 0);
+  background: radial-gradient(closest-side, var(--glow), transparent);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* тонкая орбита — эллипс, проходящий через вордмарк */
+.footer__orbit {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1440 / 400;
+  color: color-mix(in srgb, var(--accent-2) 70%, transparent);
+  pointer-events: none;
 }
 
 .footer__inner {
@@ -13,159 +43,131 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
-.footer__brand {
-  display: grid;
-  gap: 1.25rem;
-  align-content: start;
-  max-width: 26rem;
-}
-
-.footer__brand .logo {
+.footer__tagline {
+  max-width: 24rem;
+  font-size: var(--fs-lg);
+  line-height: 1.45;
   color: var(--text);
 }
 
-.footer__tagline {
-  color: var(--text-muted);
-  font-size: var(--fs-lg);
-  line-height: 1.45;
+.footer__nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem 1.5rem;
 }
 
 .footer__heading {
-  margin-bottom: 1rem;
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  margin-bottom: 1.1rem;
   color: var(--text-muted);
 }
 
 .footer__links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, max-content));
-  gap: 0.6rem 2.5rem;
+  gap: 0.55rem;
 }
 
 .footer__link {
   display: inline-block;
-  font-weight: 500;
+  font-size: var(--fs-base);
   color: var(--text);
-  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .footer__link:hover {
   transform: translateX(4px);
 }
 
-.footer__contact {
+.footer__col--contact {
   display: grid;
-  gap: 1.25rem;
+  gap: 1rem;
   align-content: start;
   justify-items: start;
 }
 
+.footer__col--contact .footer__heading {
+  margin-bottom: 0.1rem;
+}
+
 .footer__tg {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
-  font-weight: 600;
-  letter-spacing: var(--tracking-tight);
-  line-height: 1;
-}
-
-.footer__tg-icon {
   display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: var(--grad);
-  color: var(--accent-ink);
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.footer__tg-icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-.footer__tg:hover .footer__tg-icon {
-  transform: rotate(-12deg) scale(1.06);
+  gap: 4px;
+  font-size: var(--fs-base);
+  color: var(--text);
 }
 
 .footer__tg-handle {
-  display: block;
-  margin-top: 6px;
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  color: var(--text-muted);
+  color: var(--accent);
 }
 
-/* огромный вордмарк: знак + «eLeads» на всю ширину блока (ширина — от контейнера, без горизонтального скролла) */
+/* — огромный вордмарк: ширина — от контейнера подвала (cqi), без горизонтального скролла — */
 .footer__wordmark {
-  display: flex;
-  align-items: center;
-  gap: 0.06em;
-  margin-top: clamp(3rem, 7cqi, 6rem);
+  margin-top: clamp(3rem, 8cqi, 7rem);
+  padding-inline: var(--gutter);
+  overflow: hidden;
   font-family: var(--font-display);
-  font-size: 23cqi;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.055em;
+  /* ширина «ELEADS» в Unbounded 800 ≈ 5.03 кегля — слово ровно во всю ширину между полями */
+  font-size: calc((100cqi - 2 * var(--gutter)) / 5.1);
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.02em;
   white-space: nowrap;
+  text-align: center;
   color: var(--text);
   user-select: none;
   pointer-events: none;
 }
 
-.footer__wordmark-mark {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 0.8em;
-  height: 0.8em;
-  margin-right: 0.06em;
-  border-radius: 50%;
+.footer__word {
+  display: inline-block;
+  padding-top: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer__char {
+  display: inline-block;
+  transition: transform 1s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+
+.footer__char--accent {
   background: var(--grad);
-  color: var(--accent-ink);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.footer__wordmark-mark svg {
-  width: 52%;
-  height: 52%;
-}
-
-.footer__wordmark-word {
-  padding-bottom: 0.08em;
+/* начальное состояние — только при живых анимациях (html.js-anim) и до входа в экран */
+.js-anim .footer__wordmark:not(.is-in) .footer__char {
+  transform: translate3d(0, 110%, 0);
 }
 
 .footer__bottom {
-  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem 2rem;
-  margin-top: clamp(1.5rem, 3cqi, 2.5rem);
-  padding-block: 1.5rem;
-  border-top: 1px solid var(--line);
+  padding-block: 1.25rem 1.5rem;
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.04em;
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
   color: var(--text-muted);
 }
 
-.footer__bottom > p:first-child {
+.footer__copy {
   color: var(--text);
+  text-transform: none;
 }
 
 .footer__credit {
   display: inline-flex;
   flex-wrap: wrap;
   gap: 0.5em;
+  text-transform: none;
+  letter-spacing: 0.04em;
 }
 
 .footer__top {
@@ -173,8 +175,8 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
   color: var(--text);
 }
@@ -189,9 +191,13 @@
   transform: translateY(-3px);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) {
   .footer__inner {
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
     gap: 3rem;
+  }
+
+  .footer__nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

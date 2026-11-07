@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title data-i18n="meta.title"></title>
     <meta name="description" content="" data-i18n-attr="content:meta.description" />
-    <meta name="theme-color" content="#F4F2EC" />
+    <meta name="theme-color" content="#070C18" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <meta property="og:type" content="website" />
@@ -24,25 +24,26 @@
     <!-- Шрифты не блокируют отрисовку: стилевой файл подключается как print и переключается на all после загрузки -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
     </noscript>
 
-    <!-- Версия оформления до первой отрисовки: ?theme= → sessionStorage → brand-light (панель версий — только в dev). -->
+    <!-- Версия оформления до первой отрисовки: ?theme= → sessionStorage → brand (панель версий — только в dev).
+         Старые значения (brand-light, brand-dark, overtake) не в списке — ведут на brand. -->
     <script>
       (function (h) {
-        var themes = ['brand-light', 'brand-dark', 'overtake'];
+        var themes = ['brand', 'aether'];
         var m = /[?&]theme=([\w-]+)/.exec(location.search);
         var theme = m && themes.indexOf(m[1]) > -1 ? m[1] : null;
         try {
           if (theme) sessionStorage.setItem('eleads-theme', theme);
           else theme = sessionStorage.getItem('eleads-theme');
         } catch (e) {}
-        h.setAttribute('data-theme', themes.indexOf(theme) > -1 ? theme : 'brand-light');
+        h.setAttribute('data-theme', themes.indexOf(theme) > -1 ? theme : 'brand');
       })(document.documentElement);
     </script>
     <!-- Начальные состояния анимаций ставит только этот скрипт: без JS и при reduced-motion классов нет, всё видно. -->
@@ -131,24 +132,20 @@
     <header class="header" data-section="header">
       <div class="header__bar">
         <div class="header__inner container">
-          <a class="logo" href="#hero" data-i18n-attr="aria-label:common.home">
+          <nav class="header__nav" data-i18n-attr="aria-label:nav.label">
+            <ul class="header__links">
+              <li><a class="header__link" href="#cases" data-i18n="nav.sections.cases"></a></li>
+              <li><a class="header__link" href="#calculator" data-i18n="nav.sections.calculator"></a></li>
+              <li><a class="header__link" href="#process" data-i18n="nav.sections.process"></a></li>
+            </ul>
+          </nav>
+
+          <a class="logo header__logo" href="#hero" data-i18n-attr="aria-label:common.home">
             <span class="logo__mark" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg>
             </span>
             <span class="logo__word" data-i18n="common.brand"></span>
           </a>
-
-          <nav class="header__nav" data-i18n-attr="aria-label:nav.label">
-            <ul class="header__links">
-              <li><a class="header__link" href="#stats" data-i18n="nav.sections.stats"></a></li>
-              <li><a class="header__link" href="#niches" data-i18n="nav.sections.niches"></a></li>
-              <li><a class="header__link" href="#calculator" data-i18n="nav.sections.calculator"></a></li>
-              <li><a class="header__link" href="#cases" data-i18n="nav.sections.cases"></a></li>
-              <li><a class="header__link" href="#process" data-i18n="nav.sections.process"></a></li>
-              <li><a class="header__link" href="#geo" data-i18n="nav.sections.geo"></a></li>
-              <li><a class="header__link" href="#faq" data-i18n="nav.sections.faq"></a></li>
-            </ul>
-          </nav>
 
           <div class="header__actions">
             <div class="lang-switch" role="group" data-lang-switch data-active="ua" data-i18n-attr="aria-label:common.langLabel">
@@ -156,9 +153,8 @@
               <button type="button" class="lang-switch__btn" data-lang="ua" aria-pressed="true" data-i18n-attr="aria-label:common.langUaFull"><span data-i18n="common.langUa"></span></button>
               <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false" data-i18n-attr="aria-label:common.langEnFull"><span data-i18n="common.langEn"></span></button>
             </div>
-            <a class="btn btn--primary btn--sm header__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="header">
+            <a class="btn btn--pill btn--sm header__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="header">
               <span data-i18n="nav.write"></span>
-              <span class="btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
             </a>
             <button class="burger" type="button" aria-expanded="false" aria-controls="menu" data-i18n-attr="aria-label:nav.menuOpen">
               <span class="burger__line"></span>
@@ -170,7 +166,7 @@
 
       <div class="menu" id="menu" role="dialog" aria-modal="true" hidden data-lenis-prevent data-i18n-attr="aria-label:nav.menuLabel">
         <div class="menu__inner container">
-          <p class="menu__title eyebrow" data-i18n="nav.menuTitle"></p>
+          <p class="menu__title mono-label" data-i18n="nav.menuTitle"></p>
           <nav data-i18n-attr="aria-label:nav.menuLabel">
             <ol class="menu__list">
             <li class="menu__item" style="--i: 0"><a class="menu__link" href="#hero"><span class="menu__num">01</span><span data-i18n="nav.sections.hero"></span></a></li>
@@ -195,9 +191,8 @@
               <button type="button" class="lang-switch__btn" data-lang="ua" aria-pressed="true" data-i18n-attr="aria-label:common.langUaFull"><span data-i18n="common.langUa"></span></button>
               <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false" data-i18n-attr="aria-label:common.langEnFull"><span data-i18n="common.langEn"></span></button>
             </div>
-            <a class="btn btn--primary btn--lg menu__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="mobile_menu">
+            <a class="btn btn--pill btn--lg menu__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="mobile_menu">
               <span data-i18n="nav.writeTelegram"></span>
-              <span class="btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
             </a>
           </div>
         </div>
@@ -307,6 +302,42 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- Ленты крест-накрест (G16): без id — не сдвигает номера секций -->
+      <section class="ribbons" data-section="ribbons" data-i18n-attr="aria-label:ribbons.label">
+      <div class="ribbons__band ribbons__band--muted" data-ribbon="bottom">
+        <div class="ribbons__viewport">
+          <div class="ribbons__track">
+            <ul class="ribbons__group">
+              <li class="ribbons__item"><span data-i18n="ribbons.bottom.0"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.bottom.1"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.bottom.2"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.bottom.3"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.bottom.0"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.bottom.1"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.bottom.2"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.bottom.3"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="ribbons__band ribbons__band--accent" data-ribbon="top">
+        <div class="ribbons__viewport">
+          <div class="ribbons__track">
+            <ul class="ribbons__group">
+              <li class="ribbons__item"><span data-i18n="ribbons.top.0"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.top.1"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.top.2"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.top.3"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.0"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.1"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.2"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.3"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+            </ul>
+          </div>
+        </div>
+      </div>
       </section>
 
       <section id="stats" class="section section--stats section--alt" data-section="stats" aria-labelledby="stats-title">
@@ -1038,57 +1069,53 @@
     </main>
 
     <!-- Подвал -->
-    <footer class="footer panel panel--block" data-section="footer">
+    <footer class="footer" data-section="footer">
+      <div class="footer__glow" aria-hidden="true"></div>
+      <svg class="footer__orbit" viewBox="0 0 1440 400" preserveAspectRatio="none" fill="none" aria-hidden="true"><ellipse cx="720" cy="240" rx="760" ry="120" transform="rotate(-8 720 240)" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" /></svg>
+
       <div class="footer__inner container">
-        <div class="footer__brand">
-          <a class="logo" href="#hero" data-i18n-attr="aria-label:common.home">
-            <span class="logo__mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg>
-            </span>
-            <span class="logo__word" data-i18n="common.brand"></span>
-          </a>
-          <p class="footer__tagline" data-i18n="footer.tagline"></p>
-        </div>
+        <p class="footer__tagline" data-i18n="footer.tagline"></p>
 
         <nav class="footer__nav" data-i18n-attr="aria-label:nav.label">
-          <p class="footer__heading" data-i18n="footer.navTitle"></p>
-          <ul class="footer__links">
-            <li><a class="footer__link" href="#stats" data-i18n="nav.sections.stats"></a></li>
-            <li><a class="footer__link" href="#niches" data-i18n="nav.sections.niches"></a></li>
-            <li><a class="footer__link" href="#calculator" data-i18n="nav.sections.calculator"></a></li>
-            <li><a class="footer__link" href="#cases" data-i18n="nav.sections.cases"></a></li>
-            <li><a class="footer__link" href="#process" data-i18n="nav.sections.process"></a></li>
-            <li><a class="footer__link" href="#geo" data-i18n="nav.sections.geo"></a></li>
-            <li><a class="footer__link" href="#faq" data-i18n="nav.sections.faq"></a></li>
-          </ul>
-        </nav>
-
-        <div class="footer__contact">
-          <p class="footer__heading" data-i18n="footer.contactTitle"></p>
-          <a class="footer__tg" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="footer">
-            <span class="footer__tg-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
-            </span>
-            <span>
+          <div class="footer__col">
+            <p class="footer__heading mono-label" data-i18n="footer.navTitle"></p>
+            <ul class="footer__links">
+              <li><a class="footer__link" href="#stats" data-i18n="nav.sections.stats"></a></li>
+              <li><a class="footer__link" href="#niches" data-i18n="nav.sections.niches"></a></li>
+              <li><a class="footer__link" href="#formats" data-i18n="nav.sections.formats"></a></li>
+              <li><a class="footer__link" href="#calculator" data-i18n="nav.sections.calculator"></a></li>
+            </ul>
+          </div>
+          <div class="footer__col">
+            <p class="footer__heading mono-label" data-i18n="footer.moreTitle"></p>
+            <ul class="footer__links">
+              <li><a class="footer__link" href="#cases" data-i18n="nav.sections.cases"></a></li>
+              <li><a class="footer__link" href="#process" data-i18n="nav.sections.process"></a></li>
+              <li><a class="footer__link" href="#geo" data-i18n="nav.sections.geo"></a></li>
+              <li><a class="footer__link" href="#faq" data-i18n="nav.sections.faq"></a></li>
+            </ul>
+          </div>
+          <div class="footer__col footer__col--contact">
+            <p class="footer__heading mono-label" data-i18n="footer.contactTitle"></p>
+            <a class="footer__tg" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="footer">
               <span data-i18n="footer.telegram"></span>
               <span class="footer__tg-handle">{{config.telegramHandle}}</span>
-            </span>
-          </a>
-          <div class="lang-switch" role="group" data-lang-switch data-active="ua" data-i18n-attr="aria-label:common.langLabel">
-            <span class="lang-switch__thumb" aria-hidden="true"></span>
-            <button type="button" class="lang-switch__btn" data-lang="ua" aria-pressed="true" data-i18n-attr="aria-label:common.langUaFull"><span data-i18n="common.langUa"></span></button>
-            <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false" data-i18n-attr="aria-label:common.langEnFull"><span data-i18n="common.langEn"></span></button>
+            </a>
+            <div class="lang-switch" role="group" data-lang-switch data-active="ua" data-i18n-attr="aria-label:common.langLabel">
+              <span class="lang-switch__thumb" aria-hidden="true"></span>
+              <button type="button" class="lang-switch__btn" data-lang="ua" aria-pressed="true" data-i18n-attr="aria-label:common.langUaFull"><span data-i18n="common.langUa"></span></button>
+              <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false" data-i18n-attr="aria-label:common.langEnFull"><span data-i18n="common.langEn"></span></button>
+            </div>
           </div>
-        </div>
+        </nav>
       </div>
 
-      <div class="footer__wordmark container" aria-hidden="true">
-        <span class="footer__wordmark-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg></span>
-        <span class="footer__wordmark-word" data-i18n="common.brand"></span>
+      <div class="footer__wordmark" aria-hidden="true">
+        <span class="footer__word" data-wordmark data-i18n="common.brand"></span>
       </div>
 
       <div class="footer__bottom container">
-        <p data-i18n="footer.copyright"></p>
+        <p class="footer__copy" data-i18n="footer.copyright"></p>
         <p class="footer__credit">
           <span data-i18n="footer.creditLabel"></span>
           <a class="is-placeholder" href="#" data-placeholder data-i18n="footer.creditName"></a>

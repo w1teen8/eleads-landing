@@ -1,0 +1,76 @@
+/* Ленты крест-накрест (G16, как у Aether): две полосы шире экрана под углом ±3.5°.
+   Верхняя по слоям — акцентная с тёмным текстом, нижняя — без фона, полупрозрачный светлый текст.
+   Секция обрезает выступы полос (overflow: clip) — горизонтального скролла страницы нет. */
+.ribbons {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(12rem, 8rem + 16vw, 26rem);
+  padding-block: clamp(2.5rem, 5vw, 5rem);
+  overflow: clip;
+  isolation: isolate;
+}
+
+.ribbons__band {
+  grid-area: 1 / 1;
+  width: 124vw;
+  max-width: none;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 0.7rem + 3.6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ribbons__band--accent {
+  z-index: 2;
+  padding-block: 0.32em 0.28em;
+  background: var(--grad);
+  color: var(--accent-ink);
+  transform: rotate(-3.5deg);
+}
+
+.ribbons__band--muted {
+  z-index: 1;
+  padding-block: 0.32em 0.28em;
+  color: var(--ribbon-2);
+  transform: translate3d(0, 1.05em, 0) rotate(3.5deg);
+}
+
+.ribbons__viewport {
+  overflow: hidden;
+}
+
+.ribbons__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.ribbons__band.is-reverse .ribbons__track {
+  margin-left: calc(-1 * var(--ribbon-shift, 0px));
+}
+
+.ribbons__group {
+  display: flex;
+  flex: none;
+}
+
+.ribbons__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding-right: 0.5em;
+}
+
+.ribbons__icon {
+  width: 1.15em;
+  height: auto;
+  flex: none;
+}
+
+.ribbons__band--muted .ribbons__icon {
+  opacity: 0.8;
+}

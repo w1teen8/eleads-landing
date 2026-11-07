@@ -3,16 +3,15 @@
 // поэтому выбор держится до конца вкладки. В собранном сайте панели нет; там версия выбирается через ?theme=.
 const KEY = 'eleads-theme';
 const THEMES = [
-  ['brand-light', 'Бренд · светлая'],
-  ['brand-dark', 'Бренд · тёмная'],
-  ['overtake', 'Overtake · оригинал'],
+  ['brand', 'Бренд · Aether'],
+  ['aether', 'Aether · оригинал'],
 ];
 
 const CSS = `
 .dev-theme{position:fixed;left:12px;bottom:12px;z-index:400;display:flex;gap:4px;padding:4px;
-  border-radius:999px;background:var(--block);color:var(--text-on-block);font:500 12px/1 var(--font-body);
+  border-radius:999px;background:var(--surface);color:var(--text);border:1px solid var(--line-strong);font:500 11px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;
   box-shadow:0 10px 30px -10px color-mix(in srgb,var(--block) 80%,transparent)}
-.dev-theme__btn{padding:8px 12px;border-radius:999px;color:var(--text-on-block-muted)}
+.dev-theme__btn{padding:8px 12px;border-radius:999px;color:var(--text-muted)}
 .dev-theme__btn[aria-pressed='true']{background:var(--grad);color:var(--accent-ink)}
 .dev-theme__btn:focus-visible{outline:2px solid var(--accent)}
 `;
@@ -52,7 +51,7 @@ export function mountThemeSwitcher() {
     sync();
   }
   function sync() {
-    const current = html.getAttribute('data-theme') || 'brand-light';
+    const current = html.getAttribute('data-theme') || 'brand';
     for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.theme === current));
   }
   sync();

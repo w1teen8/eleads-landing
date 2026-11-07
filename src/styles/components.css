@@ -1,28 +1,22 @@
-/* Компоненты оформления overtake (сборка 2) — только на семантических переменных из tokens.css.
-   .panel / .panel--block — скруглённый контейнер секции; .pill-label — метка с точками; .btn — кнопка-пилюля
-   с кружком-стрелкой; .chip — цветной тег; .stat-card — карточка-цифра; .inline-pill — пилюля-иконка в строке заголовка.
-   Тёмный контекст (.panel--block, .on-block) переопределяет --text / --surface / --line под тёмный фон —
-   компоненты внутри него перекрашиваются сами. */
+/* Компоненты облика Aether (сборка 2) — только на семантических переменных из tokens.css.
+   Новые: .mono-label — моно-капс с разрядкой; .display / .display__accent — широкий капс Unbounded со второй строкой
+   акцентом; .btn--pill — акцентная пилюля; .planet — планета с кольцом и свечением (CSS, параметры — переменные).
+   Оставлены от прошлого оформления и перекрашены под тёмный облик (их используют ещё не переписанные секции):
+   .panel, .pill-label, .btn--primary / --accent / --ghost, .chip, .stat-card, .inline-pill. */
 
-/* ——— тёмный контекст ——— */
+/* ——— тёмный контекст (в облике Aether всё тёмное — оставлен для совместимости разметки) ——— */
 .panel--block,
 .on-block {
   --bg: var(--block);
-  --surface: color-mix(in srgb, var(--block-2), var(--text-on-block) 6%);
-  --surface-2: var(--block-2);
+  --surface: var(--block-2);
   --text: var(--text-on-block);
   --text-muted: var(--text-on-block-muted);
-  --line: color-mix(in srgb, var(--text-on-block) 10%, transparent);
-  --line-strong: color-mix(in srgb, var(--text-on-block) 22%, transparent);
   color: var(--text);
 }
 
-/* ——— контейнер секции: крупное скругление, отступ от краёв экрана ——— */
+/* ——— бывший контейнер-панель: в облике Aether экраны полноширинные ——— */
 .panel {
   position: relative;
-  margin-inline: var(--panel-gap);
-  border-radius: var(--r-panel);
-  background: var(--surface-2);
   color: var(--text);
   overflow: clip;
 }
@@ -31,51 +25,90 @@
   background: var(--block);
 }
 
-/* ——— метка-пилюля «• Текст •» ——— */
+/* ——— моно-подпись: «OUTERWEAR FOR LOW LIGHT» ——— */
+.mono-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.mono-label--accent {
+  color: var(--accent);
+}
+
+.mono-label--muted {
+  color: var(--text-muted);
+}
+
+/* ——— дисплейный заголовок: «ORBIT 01 IS / OUT NOW» ——— */
+.display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  color: var(--text);
+}
+
+.display__accent {
+  display: block;
+  width: fit-content;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ——— метка-пилюля (прошлое оформление) — тонкая обводка и моно-капс ——— */
 .pill-label {
   display: inline-flex;
   align-items: center;
   gap: 0.7em;
-  padding: 0.5em 1em;
+  padding: 0.55em 1.1em;
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
-  background: var(--surface);
   color: var(--text);
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;
   line-height: 1.2;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
-  box-shadow: 0 1px 0 var(--line);
 }
 
-.pill-label::before,
-.pill-label::after {
+.pill-label::before {
   content: '';
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   flex: none;
   border-radius: 50%;
-  background: currentColor;
+  background: var(--accent);
 }
 
 /* ——— кнопки-пилюли ——— */
 .btn {
-  --btn-h: 52px;
+  --btn-h: 50px;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.75em;
   min-height: var(--btn-h);
-  padding: 0 1.5em;
+  padding: 0 1.6em;
   border: 1px solid transparent;
   border-radius: var(--r-pill);
   font-family: var(--font-body);
   font-size: var(--fs-base);
   font-weight: 600;
   line-height: 1.15;
-  letter-spacing: -0.01em;
   white-space: nowrap;
   isolation: isolate;
   transition: transform var(--dur-fast) var(--ease-out);
@@ -87,7 +120,7 @@
 }
 
 .btn:hover {
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
 .btn:active {
@@ -134,35 +167,25 @@ a:focus-visible .btn__arrow {
   transform: rotate(0deg);
 }
 
-/* основная: инверсия текста (тёмная на светлом, светлая на тёмном), кружок — акцент */
-.btn--primary {
-  background: var(--text);
-  color: var(--bg);
-  box-shadow: 0 14px 30px -14px color-mix(in srgb, var(--block) 70%, transparent);
-}
-
-.btn--primary > .btn__arrow,
-.btn--accent > .btn__arrow {
-  background: var(--grad);
-  color: var(--accent-ink);
-}
-
-/* акцентная: градиент канала (финальный призыв, тёмные блоки) */
+/* акцентная пилюля облика Aether: «Shop the drop», «Get access» */
+.btn--pill,
+.btn--primary,
 .btn--accent {
   background: var(--grad);
   color: var(--accent-ink);
 }
 
+.btn--primary > .btn__arrow,
 .btn--accent > .btn__arrow {
-  background: var(--block);
-  color: var(--text-on-block);
+  background: var(--accent-ink);
+  color: var(--accent);
 }
 
 /* вторичная: прозрачная с тонкой обводкой */
 .btn--ghost {
   background: transparent;
   color: var(--text);
-  border-color: color-mix(in srgb, var(--text) 60%, transparent);
+  border-color: var(--line-strong);
 }
 
 .btn--ghost > .btn__arrow {
@@ -171,14 +194,14 @@ a:focus-visible .btn__arrow {
 }
 
 .btn--sm {
-  --btn-h: 44px;
-  padding-inline: 1.15em;
+  --btn-h: 40px;
+  padding-inline: 1.25em;
   font-size: var(--fs-sm);
 }
 
 .btn--lg {
-  --btn-h: 58px;
-  padding-inline: 1.75em;
+  --btn-h: 56px;
+  padding-inline: 1.8em;
   font-size: 1.0625rem;
 }
 
@@ -218,17 +241,18 @@ a:focus-visible .btn__arrow {
   gap: 1.25rem;
   min-width: 0;
   padding: clamp(1.25rem, 2vw, 1.75rem);
+  border: 1px solid var(--line);
   border-radius: var(--r-card);
   background: var(--surface);
   color: var(--text);
 }
 
 .stat-card__value {
-  font-family: var(--font-mono);
-  font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+  font-weight: 800;
   line-height: 1;
-  letter-spacing: -0.05em;
+  letter-spacing: var(--tracking-display);
   font-variant-numeric: tabular-nums;
 }
 
@@ -239,7 +263,7 @@ a:focus-visible .btn__arrow {
 }
 
 .stat-card--accent {
-  background: var(--accent);
+  background: var(--grad);
   color: var(--accent-ink);
 }
 
@@ -269,8 +293,8 @@ a:focus-visible .btn__arrow {
   padding: 0 0.16em 0 0.08em;
   margin-inline: 0.04em 0.1em;
   border-radius: var(--r-pill);
-  background: var(--text);
-  color: var(--bg);
+  background: var(--surface);
+  color: var(--text);
   vertical-align: -0.06em;
   line-height: 1;
 }
@@ -294,4 +318,88 @@ a:focus-visible .btn__arrow {
 .inline-pill__trail {
   width: 0.62em;
   height: 0.4em;
+}
+
+/* ——— планета с кольцом и свечением (G13, G17): своя, нарисованная CSS — без картинок образца ———
+   Разметка:
+   <div class="planet" aria-hidden="true">
+     <span class="planet__glow"></span>
+     <span class="planet__ring planet__ring--back"></span>
+     <span class="planet__body"></span>
+     <span class="planet__ring planet__ring--front"></span>
+   </div>
+   Параметры (на .planet или предке): --planet-size (диаметр шара), --planet-tilt (наклон кольца),
+   --planet-ring (ширина кольца в диаметрах шара), --planet-glow (свечение в диаметрах шара).
+   Цвета — из темы: --planet-light / --planet-mid / --planet-dark / --glow.
+   Двигать — только transform/opacity самой .planet или её слоёв (scale — для «влёта» первого экрана). */
+.planet {
+  --_size: var(--planet-size, min(46vw, 34rem));
+  --_tilt: var(--planet-tilt, -14deg);
+  --_ring: var(--planet-ring, 2.1);
+  --_glow: var(--planet-glow, 2.2);
+  position: relative;
+  width: var(--_size);
+  height: var(--_size);
+  pointer-events: none;
+}
+
+.planet > * {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.planet__glow {
+  inset: calc(var(--_size) * (1 - var(--_glow)) / 2);
+  background: radial-gradient(closest-side, var(--glow), color-mix(in srgb, var(--glow) 35%, transparent) 55%, transparent);
+}
+
+/* шар: полосы газового гиганта, блик слева сверху, тень справа снизу, тонкий акцентный ободок */
+.planet__body {
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 30% 24%, color-mix(in srgb, var(--planet-light) 30%, transparent), transparent 46%),
+    radial-gradient(circle at 74% 80%, color-mix(in srgb, var(--bg) 92%, transparent) 16%, transparent 66%),
+    repeating-linear-gradient(
+      176deg,
+      var(--planet-dark) 0 5%,
+      color-mix(in srgb, var(--planet-mid) 70%, var(--planet-dark)) 5% 8%,
+      var(--planet-dark) 8% 12.5%,
+      color-mix(in srgb, var(--planet-light) 55%, var(--planet-dark)) 12.5% 13.8%,
+      color-mix(in srgb, var(--planet-mid) 38%, var(--planet-dark)) 13.8% 18%,
+      var(--planet-dark) 18% 23%
+    );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--planet-light) 50%, transparent),
+    inset calc(var(--_size) * -0.05) calc(var(--_size) * -0.04) calc(var(--_size) * 0.12) color-mix(in srgb, var(--bg) 80%, transparent);
+}
+
+/* кольцо: эллипс с градиентной обводкой (маска вырезает середину); задняя половина под шаром, передняя — над ним */
+.planet__ring {
+  top: 50%;
+  left: 50%;
+  width: calc(var(--_size) * var(--_ring));
+  height: calc(var(--_size) * var(--_ring) * 0.24);
+  border: max(2px, calc(var(--_size) * 0.014)) solid transparent;
+  background: linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--planet-mid) 10%, transparent),
+      var(--planet-light) 40%,
+      var(--text) 60%,
+      color-mix(in srgb, var(--planet-mid) 25%, transparent)
+    )
+    border-box;
+  -webkit-mask: linear-gradient(currentColor 0 0) padding-box, linear-gradient(currentColor 0 0) border-box;
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(currentColor 0 0) padding-box exclude, linear-gradient(currentColor 0 0) border-box;
+  transform: translate(-50%, -50%) rotate(var(--_tilt));
+}
+
+.planet__ring--back {
+  clip-path: inset(0 0 50% 0);
+  opacity: 0.5;
+}
+
+.planet__ring--front {
+  clip-path: inset(50% 0 0 0);
 }

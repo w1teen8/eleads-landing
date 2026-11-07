@@ -1,6 +1,6 @@
-/* Шапка в идиоме overtake: логотип слева, пункты меню пилюлями по центру, UA/EN и кнопка-пилюля со стрелкой
-   справа. Липкая; при прокрутке проявляется подложка с размытием (единственное место с backdrop-filter).
-   Бургер и полноэкранное меню < 900px. */
+/* Шапка как у Aether: слева три ссылки моно-капсом, по центру логотип, справа UA/EN и пилюля «Написати».
+   Липкая; при прокрутке проявляется подложка с размытием (единственное место с backdrop-filter).
+   < 900px: логотип слева, справа пилюля и бургер; полноэкранное меню — тёмное, пункты широким капсом. */
 .header {
   position: fixed;
   inset: 0 0 auto;
@@ -20,9 +20,9 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  backdrop-filter: blur(14px) saturate(130%);
   border-bottom: 1px solid var(--line);
   opacity: 0;
   transition: opacity var(--dur) var(--ease-out);
@@ -34,31 +34,38 @@
 }
 
 .header__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: clamp(0.75rem, 1.6vw, 1.5rem);
   height: var(--header-h);
 }
 
-/* — логотип — */
+/* — логотип: знак + «ELEADS» широким капсом — */
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   flex: none;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.375rem;
-  letter-spacing: var(--tracking-tight);
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   line-height: 1;
   color: var(--text);
+}
+
+.header__logo {
+  grid-column: 2;
+  justify-self: center;
 }
 
 .logo__mark {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: var(--grad);
   color: var(--accent-ink);
@@ -66,91 +73,80 @@
 }
 
 .logo__mark svg {
-  width: 17px;
-  height: 17px;
+  width: 15px;
+  height: 15px;
 }
 
 .logo:hover .logo__mark {
   transform: rotate(-45deg);
 }
 
-/* — навигация: пункты-пилюли, активный — на подложке — */
+/* — навигация: моно-капс с разрядкой, подчёркивание растёт слева (scaleX) — */
 .header__nav {
-  margin-inline: auto;
+  grid-column: 1;
+  justify-self: start;
 }
 
 .header__links {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: clamp(1.25rem, 2.2vw, 2rem);
 }
 
 .header__link {
   position: relative;
   display: inline-flex;
   align-items: center;
-  min-height: 38px;
-  padding: 0 0.85em;
-  border-radius: var(--r-pill);
-  font-size: var(--fs-sm);
+  min-height: 40px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
   font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text-muted);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--text);
   white-space: nowrap;
-  isolation: isolate;
-  transition: opacity var(--dur-fast) var(--ease-out);
 }
 
-/* подложка пункта — слой, проявляется opacity и чуть растёт */
-.header__link::before {
+.header__link::after {
   content: '';
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--surface-2);
-  opacity: 0;
-  transform: scale(0.9);
-  transition:
-    opacity var(--dur-fast) var(--ease-out),
-    transform var(--dur-fast) var(--ease-out);
+  left: 0;
+  right: 0;
+  bottom: 9px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
 }
 
-.header__link:hover::before,
-.header__link[aria-current='true']::before {
-  opacity: 1;
-  transform: none;
-}
-
-.header__link[aria-current='true'] {
-  color: var(--text);
-}
-
-.header__link:hover {
-  color: var(--text);
+.header__link:hover::after,
+.header__link[aria-current='true']::after {
+  transform: scaleX(1);
 }
 
 .header__actions {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex: none;
+  gap: 12px;
 }
 
-/* — бургер — */
+/* — бургер: кружок с тонкой обводкой — */
 .burger {
   display: none;
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
-  background: var(--surface-2);
 }
 
 .burger__line {
   position: absolute;
-  left: 14px;
-  right: 14px;
+  left: 13px;
+  right: 13px;
   height: 1.5px;
   border-radius: 2px;
   background: var(--text);
@@ -158,11 +154,11 @@
 }
 
 .burger__line:nth-child(1) {
-  top: 18px;
+  top: 16px;
 }
 
 .burger__line:nth-child(2) {
-  top: 25px;
+  top: 23px;
 }
 
 .burger[aria-expanded='true'] .burger__line:nth-child(1) {
@@ -173,7 +169,7 @@
   transform: translate3d(0, -3.5px, 0) rotate(-45deg);
 }
 
-/* — полноэкранное меню: светлая основа, крупные пункты обычным регистром — */
+/* — полноэкранное меню: тёмное, пункты широким капсом, номера акцентным моно — */
 .menu {
   position: fixed;
   inset: 0;
@@ -202,6 +198,7 @@
 
 .menu__title {
   margin-bottom: 1rem;
+  color: var(--text-muted);
 }
 
 .menu__list {
@@ -227,12 +224,13 @@
   display: flex;
   align-items: baseline;
   gap: 14px;
-  padding: 0.6rem 0;
+  padding: 0.7rem 0;
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 6.4vw, 2.25rem);
-  font-weight: 600;
+  font-size: clamp(1.125rem, 5vw, 1.75rem);
+  font-weight: 700;
   line-height: 1.1;
-  letter-spacing: var(--tracking-tight);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
 }
 
 .menu__num {
@@ -240,13 +238,13 @@
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--accent);
   letter-spacing: 0.04em;
 }
 
-.menu__link:hover .menu__num,
-.menu__link:focus-visible .menu__num {
-  color: var(--text);
+.menu__link:hover,
+.menu__link:focus-visible {
+  color: var(--accent);
 }
 
 .menu__foot {
@@ -261,30 +259,31 @@
 
 .menu__cta {
   flex: 1 1 auto;
-  justify-content: space-between;
 }
 
 /* — адаптив — */
-@media (max-width: 1239px) {
-  .header__link {
-    padding: 0 0.6em;
-    font-size: 0.8125rem;
-  }
-}
-
-@media (max-width: 1059px) {
+@media (max-width: 1099px) {
   .header__actions > .lang-switch {
     display: none;
   }
 }
 
 @media (max-width: 899px) {
+  .header__inner {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
   .header__nav {
     display: none;
   }
 
+  .header__logo {
+    grid-column: 1;
+    justify-self: start;
+  }
+
   .header__actions {
-    margin-left: auto;
+    grid-column: 2;
   }
 
   .burger {
@@ -298,7 +297,7 @@
   }
 }
 
-@media (max-width: 359px) {
+@media (max-width: 339px) {
   .header__cta {
     display: none;
   }

@@ -16,46 +16,32 @@ main {
   display: block;
 }
 
-/* Секции 02–14 — тёмные скруглённые контейнеры с отступом от краёв (идиома overtake).
-   Мост до таска 07: секции ещё написаны на именах палитры канала (--ink, --fg, --sun …) —
-   здесь эти имена указывают на семантические переменные тёмного блока текущей версии,
-   поэтому секции читаемы во всех трёх версиях. Секция без класса .panel — тёмный блок (и тёмный контекст
-   для компонентов); с .panel / .panel--block (components.css) — контейнер нужного цвета. Когда секции
-   перестают использовать имена палитры (таск 07), мост ничего не делает. */
+/* Секции 02–14 в облике Aether — полноширинные экраны на общем космическом фоне (без скруглённых панелей).
+   Мост: секции, ещё написанные на именах палитры канала (--ink, --fg, --sun …), получают через эти имена
+   семантические переменные текущей версии — поэтому читаемы в обеих версиях, пока их не перепишут таски 11–13. */
 .section {
-  --ink: var(--block);
-  --navy: var(--block-2);
-  --card: color-mix(in srgb, var(--block-2), var(--text-on-block) 7%);
-  --fg: var(--text-on-block);
-  --muted: var(--text-on-block-muted);
+  --ink: var(--bg);
+  --navy: var(--surface-2);
+  --card: var(--surface);
+  --fg: var(--text);
+  --muted: var(--text-muted);
   --sun: var(--accent);
   --ember: var(--accent-2);
   --fg-soft: color-mix(in srgb, var(--fg) 80%, var(--muted));
-  --line: color-mix(in srgb, var(--fg) 9%, transparent);
-  --line-strong: color-mix(in srgb, var(--fg) 18%, transparent);
-  --ember-glow: color-mix(in srgb, var(--ember) 55%, transparent);
-  --sun-glow: color-mix(in srgb, var(--sun) 35%, transparent);
+  --line: color-mix(in srgb, var(--fg) 10%, transparent);
+  --line-strong: color-mix(in srgb, var(--fg) 20%, transparent);
+  --ember-glow: color-mix(in srgb, var(--ember) 45%, transparent);
+  --sun-glow: color-mix(in srgb, var(--sun) 30%, transparent);
   --ink-veil: color-mix(in srgb, var(--ink) 70%, transparent);
   position: relative;
-  margin: var(--panel-gap) var(--panel-gap) 0;
   padding-block: var(--section-y);
-  border-radius: var(--r-panel);
-  background: var(--ink);
-  color: var(--fg);
+  color: var(--text);
   scroll-margin-top: 0;
 }
 
+/* «альтернативная» секция — лишь тонкая линия сверху: фон у всех экранов общий, космос */
 .section--alt {
-  background: var(--navy);
-}
-
-/* тёмный контекст для компонентов внутри тёмной секции — как у .panel--block */
-.section:not(.panel) {
-  --bg: var(--block);
-  --surface: var(--card);
-  --surface-2: var(--block-2);
-  --text: var(--text-on-block);
-  --text-muted: var(--text-on-block-muted);
+  border-top: 1px solid var(--line);
 }
 
 .section__head {
@@ -67,8 +53,7 @@ main {
 
 .section__title {
   font-size: var(--fs-h2);
-  line-height: 1.02;
-  max-width: 20ch;
+  max-width: 18ch;
 }
 
 .section__lead {

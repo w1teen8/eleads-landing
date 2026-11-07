@@ -27,9 +27,9 @@ const BRIEF = {
   '--tg': '#3B8CFF',
 };
 
-// --paper и палитра overtake (reference.md): фон, белый, почти чёрный, изумрудный, салатовый, розовый, жёлтый,
-// оранжевый, приглушённый текст
-const EXTRA = ['#FFFFFF', '#F0F0F0', '#FFFFFF', '#0B0B0C', '#122020', '#9EFC65', '#FFBCFC', '#FDE589', '#FF742E', '#6A6E6E'];
+// --paper и палитра Aether (reference.md → «Aether»): почти чёрный фон, поверхность, тёплый белый, серый,
+// красный акцент и его тень
+const EXTRA = ['#FFFFFF', '#0B0B0D', '#141417', '#F2EEE8', '#8C8A87', '#FF3B2F', '#C4201A'];
 
 test('tokens.css: цвета брифа как есть и --grad = --sun → --ember', () => {
   const css = strip(read('src/styles/tokens.css'));
@@ -39,7 +39,7 @@ test('tokens.css: цвета брифа как есть и --grad = --sun → --
     assert.equal(m[1].replace(/\s/g, '').toLowerCase(), value.replace(/\s/g, '').toLowerCase(), name);
   }
   assert.match(css, /--grad:\s*linear-gradient\(100deg,\s*var\(--sun\),\s*var\(--ember\)\)/);
-  // сборка 2: кроме палитры канала — один нейтральный белый и палитра overtake (reference.md, версия «Overtake · оригинал»)
+  // сборка 2 — Aether: кроме палитры канала — один нейтральный белый и палитра образца (версия «Aether · оригинал»)
   const norm = (v) => v.replace(/\s/g, '').toLowerCase();
   const allowed = new Set([...Object.values(BRIEF), ...EXTRA].map(norm));
   const literals = css.match(/#[0-9a-f]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\)/gi) || [];

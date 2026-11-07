@@ -59,12 +59,12 @@ function runHead({ search = '', session = storage(), local = storage(), reduced 
   return { theme: documentElement.getAttribute('data-theme'), preload: classes.has('js-preload'), session, local };
 }
 
-test('тема: без параметра и хранилища — brand-light', () => {
-  assert.equal(runHead().theme, 'brand-light');
+test('тема: без параметра и хранилища — brand', () => {
+  assert.equal(runHead().theme, 'brand');
 });
 
 test('тема: ?theme= ставит версию и запоминает её в sessionStorage', () => {
-  for (const name of ['brand-light', 'brand-dark', 'overtake']) {
+  for (const name of ['brand', 'aether']) {
     const r = runHead({ search: `?theme=${name}` });
     assert.equal(r.theme, name);
     assert.equal(r.session.map.get('eleads-theme'), name);
@@ -72,19 +72,26 @@ test('тема: ?theme= ставит версию и запоминает её �
 });
 
 test('тема: без параметра берётся из sessionStorage, параметр важнее хранилища', () => {
-  assert.equal(runHead({ session: storage({ 'eleads-theme': 'brand-dark' }) }).theme, 'brand-dark');
-  assert.equal(runHead({ search: '?theme=overtake', session: storage({ 'eleads-theme': 'brand-dark' }) }).theme, 'overtake');
+  assert.equal(runHead({ session: storage({ 'eleads-theme': 'aether' }) }).theme, 'aether');
+  assert.equal(runHead({ search: '?theme=brand', session: storage({ 'eleads-theme': 'aether' }) }).theme, 'brand');
 });
 
-test('тема: неизвестное значение и сломанное хранилище — brand-light', () => {
-  assert.equal(runHead({ search: '?theme=pink' }).theme, 'brand-light');
-  assert.equal(runHead({ session: storage({ 'eleads-theme': '<x>' }) }).theme, 'brand-light');
-  assert.equal(runHead({ search: '?theme=brand-dark', session: storage({}, { broken: true }) }).theme, 'brand-dark');
-  assert.equal(runHead({ session: storage({}, { broken: true }) }).theme, 'brand-light');
+test('тема: старые версии overtake (brand-light, brand-dark, overtake) ведут на brand', () => {
+  for (const old of ['brand-light', 'brand-dark', 'overtake']) {
+    assert.equal(runHead({ search: `?theme=${old}` }).theme, 'brand', `?theme=${old}`);
+    assert.equal(runHead({ session: storage({ 'eleads-theme': old }) }).theme, 'brand', `session ${old}`);
+  }
+});
+
+test('тема: неизвестное значение и сломанное хранилище — brand', () => {
+  assert.equal(runHead({ search: '?theme=pink' }).theme, 'brand');
+  assert.equal(runHead({ session: storage({ 'eleads-theme': '<x>' }) }).theme, 'brand');
+  assert.equal(runHead({ search: '?theme=aether', session: storage({}, { broken: true }) }).theme, 'aether');
+  assert.equal(runHead({ session: storage({}, { broken: true }) }).theme, 'brand');
 });
 
 test('тема ставится и при reduced-motion (скрипт анимаций выходит раньше)', () => {
-  assert.equal(runHead({ search: '?nomotion=1&theme=overtake' }).theme, 'overtake');
+  assert.equal(runHead({ search: '?nomotion=1&theme=aether' }).theme, 'aether');
 });
 
 test('заставка: первый заход — показывается', () => {
