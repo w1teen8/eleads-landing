@@ -1,14 +1,15 @@
 // Панель версий оформления — инструмент заказчика, только в `npm run dev` (main.js грузит её под import.meta.env.DEV).
 // Ставит <html data-theme> и пишет sessionStorage['eleads-theme'] — тот же ключ читает инлайн-скрипт в <head>,
 // поэтому выбор держится до конца вкладки. В собранном сайте панели нет; там версия выбирается через ?theme=.
-// Второй ряд — вариант первого экрана «Хиро: 1 / 2 / 3» (1 = orbit, 2 = mockup, 3 = plane — интро с самолётиком): пишет sessionStorage['eleads-hero']
-// и перезагружает страницу — инициализируется только активный вариант.
+// Второй ряд — вариант первого экрана «Хиро: Кольцо / Самолётик / Синий» (mockup = ?hero=2, plane = 3 — интро
+// с самолётиком, blue = 4): пишет sessionStorage['eleads-hero'] и перезагружает страницу — инициализируется только
+// активный вариант.
 const KEY = 'eleads-theme';
 const HERO_KEY = 'eleads-hero';
 const HEROES = [
-  { id: 'orbit', label: '1' },
-  { id: 'mockup', label: '2' },
-  { id: 'plane', label: '3' },
+  { id: 'mockup', label: 'Кольцо', param: '2' },
+  { id: 'plane', label: 'Самолётик', param: '3' },
+  { id: 'blue', label: 'Синий', param: '4' },
 ];
 const THEMES = [
   ['brand', 'Бренд · Aether'],
@@ -79,7 +80,7 @@ function mountHeroSwitcher() {
   label.className = 'dev-theme__label';
   label.textContent = 'Хиро:';
   const current = html.getAttribute('data-hero') || 'mockup';
-  const buttons = HEROES.map(({ id, label: text }) => {
+  const buttons = HEROES.map(({ id, label: text, param }) => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'dev-theme__btn';
@@ -94,7 +95,7 @@ function mountHeroSwitcher() {
         /* без хранилища — через параметр */
       }
       const url = new URL(location.href);
-      url.searchParams.set('hero', text);
+      url.searchParams.set('hero', param);
       location.replace(url);
     });
     return btn;

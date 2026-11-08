@@ -24,12 +24,12 @@
     <!-- Шрифты не блокируют отрисовку: стилевой файл подключается как print и переключается на all после загрузки -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
     </noscript>
 
     <!-- Версия оформления до первой отрисовки: ?theme= → sessionStorage → brand (панель версий — только в dev).
@@ -46,17 +46,18 @@
         h.setAttribute('data-theme', themes.indexOf(theme) > -1 ? theme : 'brand');
       })(document.documentElement);
     </script>
-    <!-- Вариант первого экрана до первой отрисовки: ?hero=1 (orbit) | 2 (mockup) | 3 (plane) → sessionStorage → mockup. -->
+    <!-- Вариант первого экрана до первой отрисовки: ?hero=2 (mockup) | 3 (plane) | 4 (blue) → sessionStorage → mockup.
+         Вариант 1 (orbit) удалён: ?hero=1 и старый выбор в хранилище ведут на mockup. -->
     <script>
       (function (h) {
-        var names = { 1: 'orbit', 2: 'mockup', 3: 'plane', orbit: 'orbit', mockup: 'mockup', plane: 'plane' };
+        var names = { 2: 'mockup', 3: 'plane', 4: 'blue', mockup: 'mockup', plane: 'plane', blue: 'blue' };
         var m = /[?&]hero=(\w+)/.exec(location.search);
         var hero = m && names[m[1]] ? names[m[1]] : null;
         try {
           if (hero) sessionStorage.setItem('eleads-hero', hero);
           else hero = sessionStorage.getItem('eleads-hero');
         } catch (e) {}
-        h.setAttribute('data-hero', hero === 'orbit' || hero === 'plane' ? hero : 'mockup');
+        h.setAttribute('data-hero', hero === 'plane' || hero === 'blue' ? hero : 'mockup');
       })(document.documentElement);
     </script>
     <!-- Начальные состояния анимаций ставит только этот скрипт: без JS и при reduced-motion классов нет, всё видно. -->
@@ -353,124 +354,63 @@
           </div>
         </div>
 
-        <!-- вариант 1 «orbit»: «ELEADS» поверх огромного значка Telegram с окошками рекламы, влёт в него и круглое окно -->
-        <div class="hero-orbit" data-hero-variant="orbit">
-          <div class="hero-orbit__stage">
-            <div class="hero__space" aria-hidden="true">
-              <div class="hero__gradient"></div>
-              <video
-                class="hero__video"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="none"
-                disablepictureinpicture
-                data-src-desktop="/video/hero-1080.mp4"
-                data-src-mobile="/video/hero-720.mp4"
-                data-poster="/video/poster.jpg"
-              ></video>
+        <!-- вариант 4 «blue» (?hero=4, G26; reference/hero-v4/mockup.png): синий фон Telegram, огромное «eLeads» за Володимиром
+             без фона, слева заголовок и белая пилюля, справа белые карточки с цифрами брифа и карточка рекламы Telegram.
+             Фото без src: hero-blue.js ставит его только в этом варианте -->
+        <div class="hero-blue" data-hero-variant="blue">
+          <div class="hero-blue__stage" data-hero-visual>
+            <div class="hero-blue__bg" aria-hidden="true"></div>
+            <div class="hero-blue__depth hero-blue__depth--word" data-depth="0.12" aria-hidden="true">
+              <p class="hero-blue__word" data-v4-word><span data-i18n="hero.v4.word"></span></p>
+            </div>
+            <div class="hero-blue__depth hero-blue__depth--person" data-depth="0.3">
+              <picture class="hero-blue__person" data-v4-person>
+                <source type="image/avif" data-srcset="/img/hero/volodymyr-blue-720.avif 720w, /img/hero/volodymyr-blue-1200.avif 1200w" sizes="(min-width: 900px) 66vw, 118vw" />
+                <source type="image/webp" data-srcset="/img/hero/volodymyr-blue-720.webp 720w, /img/hero/volodymyr-blue-1200.webp 1200w" sizes="(min-width: 900px) 66vw, 118vw" />
+                <img class="hero-blue__person-img" data-src="/img/hero/volodymyr-blue-720.png" data-srcset="/img/hero/volodymyr-blue-720.png 720w, /img/hero/volodymyr-blue-1200.png 1200w" sizes="(min-width: 900px) 66vw, 118vw" width="932" height="652" alt="" data-i18n-attr="alt:hero.photo.alt" decoding="async" />
+              </picture>
             </div>
 
-            <!-- сцена 1: «ELEADS» поверх значка Telegram, вокруг — окошки рекламы Telegram Ads -->
-            <div class="hero-orbit__intro">
-              <p class="hero-orbit__eyebrow mono-label" data-hero-fade data-i18n="hero.eyebrow"></p>
-              <div class="hero-orbit__orbit">
-                <div class="hero-orbit__planet hero-orbit__mark" aria-hidden="true">
-                  <span class="planet__glow hero-orbit__mark-glow"></span>
-                  <svg class="hero-orbit__mark-icon" viewBox="0 0 100 100">
-                    <defs>
-                      <linearGradient id="hero-tg-grad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0" style="stop-color: var(--accent)" />
-                        <stop offset="1" style="stop-color: var(--accent-2)" />
-                      </linearGradient>
-                    </defs>
-                    <circle cx="50" cy="50" r="50" fill="url(#hero-tg-grad)" />
-                    <path d="M21 49.5 76.5 28c2.6-1 4.9.6 4.1 4.5l-9.4 44.3c-.7 3.1-2.6 3.9-5.2 2.4L51.6 68.8l-6.9 6.7c-.8.8-1.4 1.4-2.9 1.4l1-14.6 26.6-24c1.2-1-.3-1.6-1.8-.6L34.8 58.4 20.6 54c-3.1-1-3.1-3.1.4-4.5Z" style="fill: var(--accent-ink)" />
-                  </svg>
-                </div>
-                <p class="hero-orbit__word"><span class="hero-orbit__word-text" data-i18n="hero.word"></span></p>
-                <div class="hero-orbit__ads" aria-hidden="true">
-                  <div class="hero-orbit__ad hero-orbit__ad--0" data-hero-fade><div class="hero-orbit__ad-float">
-                    <p class="hero-orbit__ad-head"><span class="hero-orbit__ad-avatar"></span><span class="hero-orbit__ad-name" data-i18n="hero.ads.0.name"></span><span class="hero-orbit__ad-tag" data-i18n="hero.ads.0.tag"></span></p>
-                    <p class="hero-orbit__ad-text" data-i18n="hero.ads.0.text"></p>
-                    <span class="hero-orbit__ad-btn" data-i18n="hero.ads.0.button"></span>
-                  </div></div>
-                  <div class="hero-orbit__ad hero-orbit__ad--1" data-hero-fade><div class="hero-orbit__ad-float">
-                    <p class="hero-orbit__ad-head"><span class="hero-orbit__ad-avatar"></span><span class="hero-orbit__ad-name" data-i18n="hero.ads.1.name"></span><span class="hero-orbit__ad-tag" data-i18n="hero.ads.1.tag"></span></p>
-                    <p class="hero-orbit__ad-text" data-i18n="hero.ads.1.text"></p>
-                    <span class="hero-orbit__ad-btn" data-i18n="hero.ads.1.button"></span>
-                  </div></div>
-                  <div class="hero-orbit__ad hero-orbit__ad--2" data-hero-fade><div class="hero-orbit__ad-float">
-                    <p class="hero-orbit__ad-head"><span class="hero-orbit__ad-avatar"></span><span class="hero-orbit__ad-name" data-i18n="hero.ads.2.name"></span><span class="hero-orbit__ad-tag" data-i18n="hero.ads.2.tag"></span></p>
-                    <span class="hero-orbit__ad-media"></span>
-                    <p class="hero-orbit__ad-text" data-i18n="hero.ads.2.text"></p>
-                    <span class="hero-orbit__ad-btn" data-i18n="hero.ads.2.button"></span>
-                  </div></div>
-                  <div class="hero-orbit__ad hero-orbit__ad--3" data-hero-fade><div class="hero-orbit__ad-float">
-                    <p class="hero-orbit__ad-head"><span class="hero-orbit__ad-avatar"></span><span class="hero-orbit__ad-name" data-i18n="hero.ads.3.name"></span><span class="hero-orbit__ad-tag" data-i18n="hero.ads.3.tag"></span></p>
-                    <p class="hero-orbit__ad-text" data-i18n="hero.ads.3.text"></p>
-                    <span class="hero-orbit__ad-btn" data-i18n="hero.ads.3.button"></span>
-                  </div></div>
-                </div>
-              </div>
-              <p class="hero-orbit__subtitle" data-hero-fade data-i18n="hero.subtitle"></p>
-              <p class="hero-orbit__scroll mono-label" data-hero-fade>
-                <span class="hero-orbit__wheel" aria-hidden="true"><span></span></span>
-                <span data-i18n="hero.scroll"></span>
+            <div class="hero-blue__copy">
+              <p class="hero-blue__eyebrow mono-label" data-v4-item data-i18n="hero.eyebrow"></p>
+              <p id="hero-title-blue" class="hero-blue__title" role="heading" aria-level="1">
+                <span class="hero-blue__line"><span class="hero-blue__line-inner" data-i18n="hero.v4.titleLine1"></span></span>
+                <span class="hero-blue__line"><span class="hero-blue__line-inner"><span data-i18n="hero.v4.titleLine2"></span> <span class="hero-blue__accent" data-i18n="hero.v4.titleAccent"></span></span></span>
               </p>
+              <p class="hero-blue__subtitle" data-v4-item data-i18n="hero.subtitle"></p>
+              <a class="hero-blue__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero" data-v4-item>
+                <span data-i18n="hero.v4.cta"></span>
+                <span class="hero-blue__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+              </a>
             </div>
 
-            <!-- круглое окно: обёртка растёт scale-ом, содержимое — обратным scale (без clip-path) -->
-            <div class="hero-orbit__window">
-              <div class="hero-orbit__window-inner">
-                <figure class="hero-orbit__media" data-hero-media>
-                  <div class="hero-orbit__layer hero-orbit__layer--photo" data-depth="0.5">
-                    <div class="hero-orbit__photo">
-                      <picture>
-                        <source type="image/avif" srcset="/img/photo/volodymyr-cta-480.avif 480w, /img/photo/volodymyr-cta-900.avif 900w" sizes="(min-width: 900px) 52vw, 100vw" />
-                        <source type="image/webp" srcset="/img/photo/volodymyr-cta-480.webp 480w, /img/photo/volodymyr-cta-900.webp 900w" sizes="(min-width: 900px) 52vw, 100vw" />
-                        <img class="photo-img" src="/img/photo/volodymyr-cta-480.jpg" srcset="/img/photo/volodymyr-cta-480.jpg 480w, /img/photo/volodymyr-cta-900.jpg 900w" sizes="(min-width: 900px) 52vw, 100vw" width="480" height="703" alt="" data-i18n-attr="alt:hero.photo.alt" loading="lazy" decoding="async" />
-                      </picture>
-                    </div>
-                  </div>
-                  <div class="hero-orbit__layer hero-orbit__layer--glow" data-glow aria-hidden="true"><div class="hero-orbit__glow"></div></div>
-                  <figcaption class="hero-orbit__name mono-label">
-                    <span class="hero-orbit__name-title" data-i18n="hero.photo.name"></span>
-                    <span class="hero-orbit__name-role mono-label--accent" data-i18n="hero.photo.role"></span>
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-
-            <!-- сцена 2: заголовок, цифры, кнопка (H1 страницы — в варианте 2; здесь заголовок ролью) -->
-            <div class="hero-orbit__scene">
-              <div class="hero-orbit__copy container">
-                <p id="hero-title-orbit" class="hero-orbit__title display" role="heading" aria-level="1">
-                  <span class="hero-orbit__line"><span class="hero-orbit__line-inner"><span data-i18n="hero.titleLine1"></span> <span data-i18n="hero.titleLine2"></span></span></span>
-                  <span class="hero-orbit__line"><span class="hero-orbit__line-inner display__accent" data-i18n="hero.titleAccent"></span></span>
+            <div class="hero-blue__side" data-v4-item>
+              <ul class="hero-blue__stats">
+                <li class="hero-blue__card hero-blue__card--budgets" data-depth="0.55"><div class="hero-blue__float">
+                  <span class="hero-blue__card-label" data-i18n="hero.v4.cards.budgets.label"></span>
+                  <span class="hero-blue__card-value" data-i18n="hero.v4.cards.budgets.value"></span>
+                  <span class="hero-blue__icon hero-blue__icon--solid" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 16.5 6-6 4 4 7.5-7.5" /><path d="M15 7h5.5v5.5" /></svg></span>
+                </div></li>
+                <li class="hero-blue__card hero-blue__card--years" data-depth="0.7"><div class="hero-blue__float">
+                  <span class="hero-blue__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5" /><path d="M4 10.5h16M8.5 3.5v4M15.5 3.5v4" /></svg></span>
+                  <span class="hero-blue__card-label" data-i18n="hero.v4.cards.years.label"></span>
+                  <span class="hero-blue__card-value" data-i18n="hero.v4.cards.years.value"></span>
+                </div></li>
+                <li class="hero-blue__card hero-blue__card--projects" data-depth="0.85"><div class="hero-blue__float">
+                  <span class="hero-blue__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5.5a4 4 0 0 1-8 0V4Z" /><path d="M8 6H5v1.5A3 3 0 0 0 8 10.5M16 6h3v1.5a3 3 0 0 1-3 3M12 13.5V17M8.5 20h7M10 17h4" /></svg></span>
+                  <span class="hero-blue__card-label" data-i18n="hero.v4.cards.projects.label"></span>
+                  <span class="hero-blue__card-value" data-i18n="hero.v4.cards.projects.value"></span>
+                </div></li>
+              </ul>
+              <div class="hero-blue__ad" data-depth="0.75"><div class="hero-blue__float">
+                <p class="hero-blue__ad-head">
+                  <span class="hero-blue__ad-tag" data-i18n="hero.v4.ad.tag"></span>
+                  <span class="hero-blue__ad-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M19.9 5.1 3.7 11.3c-1 .4-1 1.4 0 1.7l4 1.3 1.6 4.8c.2.6.9.8 1.4.4l2.3-1.9 4.3 3.1c.6.4 1.4.1 1.6-.6l2.6-12.7c.2-.9-.7-1.6-1.6-1.3ZM9.6 14l7-5.4-5.6 6-.3 2.7L9.6 14Z" /></svg></span>
                 </p>
-                <div class="hero-orbit__bottom">
-                  <ul class="hero-orbit__stats" data-scene-item>
-                    <li class="hero-orbit__stat">
-                      <span class="hero-orbit__stat-value" data-count data-i18n="hero.stats.years.value"></span>
-                      <span class="hero-orbit__stat-label mono-label mono-label--muted" data-i18n="hero.stats.years.label"></span>
-                    </li>
-                    <li class="hero-orbit__stat">
-                      <span class="hero-orbit__stat-value" data-count data-i18n="hero.stats.budgets.value"></span>
-                      <span class="hero-orbit__stat-label mono-label mono-label--muted" data-i18n="hero.stats.budgets.label"></span>
-                    </li>
-                    <li class="hero-orbit__stat">
-                      <span class="hero-orbit__stat-value" data-count data-i18n="hero.stats.projects.value"></span>
-                      <span class="hero-orbit__stat-label mono-label mono-label--muted" data-i18n="hero.stats.projects.label"></span>
-                    </li>
-                  </ul>
-                  <a class="btn btn--pill btn--lg hero-orbit__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero" data-scene-item>
-                    <span data-i18n="hero.cta.label"></span>
-                    <span class="btn__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
-                  </a>
-                </div>
-              </div>
+                <p class="hero-blue__ad-title" data-i18n="hero.v4.ad.title"></p>
+                <p class="hero-blue__ad-text" data-i18n="hero.v4.ad.text"></p>
+                <a class="hero-blue__ad-btn" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero_ad"><span data-i18n="hero.v4.ad.button"></span></a>
+              </div></div>
             </div>
           </div>
         </div>

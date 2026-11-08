@@ -9,8 +9,8 @@ import { read, readJson } from './helpers.js';
 
 const html = read('index.html');
 const section = html.split(/<section\b[^>]*\sid="hero"/)[1].split('</section>')[0];
-// вариант 2 — до обёртки варианта 1; «Мені довіряють» — общий, после обоих
-const hero = section.split('data-hero-variant="orbit"')[0];
+// вариант 2 — до обёртки варианта 4; «Мені довіряють» — общий, после обоих
+const hero = section.split('data-hero-variant="blue"')[0];
 const ua = readJson('src/data/content.ua.json');
 const en = readJson('src/data/content.en.json');
 const strip = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
@@ -117,5 +117,5 @@ test('десктоп: холст варианта 2 — на весь экран
   assert.match(canvas, /height:[^;]*100svh/, 'высота холста — от высоты экрана');
   assert.match(canvas, /container-type:\s*size/, 'элементы считаются от ширины и высоты сцены');
   assert.doesNotMatch(canvas, /aspect-ratio|max-width/, 'холст не ограничен пропорцией или контейнером');
-  assert.doesNotMatch(section.split('data-hero-variant="orbit"')[0], /class="[^"]*\bcontainer\b/, 'вариант 2 не в .container');
+  assert.doesNotMatch(section.split('data-hero-variant="blue"')[0], /class="[^"]*\bcontainer\b/, 'вариант 2 не в .container');
 });

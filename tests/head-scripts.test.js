@@ -136,16 +136,28 @@ test('заставка: метка, которую пишет preloader.js, пр
   assert.doesNotThrow(() => rememberIntro(storage({}, { broken: true }), NOW));
 });
 
-test('вариант первого экрана: по умолчанию mockup; ?hero=1 → orbit, ?hero=2 → mockup, выбор держится в sessionStorage', () => {
+test('вариант первого экрана: по умолчанию mockup; ?hero=2 → mockup; ?hero=1 (удалённый orbit) и неизвестное → mockup', () => {
   assert.equal(runHead().hero, 'mockup');
   const r1 = runHead({ search: '?hero=1' });
-  assert.equal(r1.hero, 'orbit');
-  assert.equal(r1.session.map.get('eleads-hero'), 'orbit');
-  assert.equal(runHead({ search: '?hero=2', session: storage({ 'eleads-hero': 'orbit' }) }).hero, 'mockup');
-  assert.equal(runHead({ session: storage({ 'eleads-hero': 'orbit' }) }).hero, 'orbit');
+  assert.equal(r1.hero, 'mockup');
+  assert.notEqual(r1.session.map.get('eleads-hero'), 'orbit');
+  assert.equal(runHead({ search: '?hero=orbit' }).hero, 'mockup');
+  assert.equal(runHead({ session: storage({ 'eleads-hero': 'orbit' }) }).hero, 'mockup', 'старый выбор orbit → mockup');
+  assert.equal(runHead({ search: '?hero=2', session: storage({ 'eleads-hero': 'plane' }) }).hero, 'mockup');
+  assert.equal(runHead({ search: '?hero=mockup', session: storage({ 'eleads-hero': 'blue' }) }).hero, 'mockup');
   assert.equal(runHead({ search: '?hero=9', session: storage({ 'eleads-hero': '<x>' }) }).hero, 'mockup');
-  assert.equal(runHead({ search: '?hero=1', session: storage({}, { broken: true }) }).hero, 'orbit');
-  assert.equal(runHead({ search: '?nomotion=1&hero=1' }).hero, 'orbit', 'и при reduced-motion');
+});
+
+test('вариант 4: ?hero=4 и ?hero=blue → blue, держится в sessionStorage; заставка — поиск, как в варианте 2', () => {
+  const r = runHead({ search: '?hero=4' });
+  assert.equal(r.hero, 'blue');
+  assert.equal(r.session.map.get('eleads-hero'), 'blue');
+  assert.equal(runHead({ search: '?hero=blue' }).hero, 'blue');
+  assert.equal(runHead({ session: storage({ 'eleads-hero': 'blue' }) }).hero, 'blue');
+  assert.equal(runHead({ search: '?hero=4', session: storage({}, { broken: true }) }).hero, 'blue');
+  assert.equal(runHead({ search: '?nomotion=1&hero=4' }).hero, 'blue', 'и при reduced-motion');
+  assert.equal(r.preload, true, 'первый заход — заставка-поиск');
+  assert.equal(r.planeIntro, false);
 });
 
 test('вариант 3: ?hero=3 → plane и держится в sessionStorage; вместо заставки-поиска — интро самолётика по тем же правилам', () => {

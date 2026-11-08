@@ -1,6 +1,7 @@
-// 01 Hero — два варианта в одной секции: data-hero="mockup|orbit" на <html> (ставит инлайн-скрипт <head> по
-// ?hero=1|2|3 → sessionStorage['eleads-hero'] → mockup) или на секции. Инициализируется только активный вариант;
-// «orbit» (1) — модуль hero-orbit.js, «plane» (3, интро с самолётиком) — hero-plane.js. Вариант 2 «mockup» (по умолчанию) — по макету пользователя (G18): слева наклонный H1 по строкам из маски, абзац с чертой,
+// 01 Hero — варианты в одной секции: data-hero="mockup|plane|blue" на <html> (ставит инлайн-скрипт <head> по
+// ?hero=2|3|4 → sessionStorage['eleads-hero'] → mockup) или на секции. Инициализируется только активный вариант;
+// «plane» (3, интро с самолётиком) — hero-plane.js, «blue» (4, синий по макету reference/hero-v4) — hero-blue.js.
+// Вариант 2 «mockup» (по умолчанию) — по макету пользователя (G18): слева наклонный H1 по строкам из маски, абзац с чертой,
 // пилюля в Telegram и три цифры брифа; справа Володимир без фона на тёмной планете, горящее кольцо перед ним и
 // за ним, вокруг — присланные PNG-карточки. Кольцо и плавание карточек — CSS (@keyframes, только transform);
 // здесь — появление после заставки, параллакс слоёв за курсором (десктоп с мышью), видео, «Мені довіряють»,
@@ -10,8 +11,8 @@ import { t } from '../core/i18n.js';
 import { reduced, marquee } from '../core/motion.js';
 import { countTo } from '../core/format.js';
 import { whenIntroDone } from '../core/intro.js';
-import { initOrbit } from './hero-orbit.js';
 import { initPlane } from './hero-plane.js';
+import { initBlue } from './hero-blue.js';
 
 const DESKTOP = '(min-width: 900px)';
 const FINE_POINTER = '(hover: hover) and (pointer: fine)';
@@ -22,7 +23,7 @@ const COUNTABLE = /^(\D*?)(\d+)(\D*)$/;
 const PARALLAX_X = 26;
 const PARALLAX_Y = 18;
 
-export const HERO_VARIANTS = ['mockup', 'orbit', 'plane'];
+export const HERO_VARIANTS = ['mockup', 'plane', 'blue'];
 
 /** Активный вариант: data-hero на секции или <html>; иначе — mockup. */
 export function heroVariant(root, html = document.documentElement) {
@@ -38,13 +39,14 @@ export function init(root) {
     initPlane(stage);
     return;
   }
-  initVideo($('.hero__video', stage), root);
   initTrusted(root);
   pauseOffscreen(root);
-  if (variant === 'orbit') {
-    initOrbit(stage);
+  if (variant === 'blue') {
+    initBlue(stage, root);
+    initParallax(stage);
     return;
   }
+  initVideo($('.hero__video', stage), root);
   initRingStretch(stage);
   initParallax(root);
   if (reduced) return; // всё видно, цифры стоят итоговые

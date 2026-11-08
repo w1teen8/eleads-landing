@@ -99,15 +99,15 @@ test('разметка: свой блок варианта, медиа в HTML �
   assert.equal((plane.match(/<h1\b/g) || []).length, 0, 'H1 страницы — в варианте 2');
 });
 
-test('переключатель: plane — третий вариант, по умолчанию mockup, dev-кнопка «3»; hero.js зовёт initPlane', () => {
+test('переключатель: plane — вариант 3, по умолчанию mockup, dev-кнопка «Самолётик»; hero.js зовёт initPlane', () => {
   const heroJs = strip(read('src/sections/hero.js'));
-  assert.match(heroJs, /HERO_VARIANTS = \['mockup', 'orbit', 'plane'\]/);
+  assert.match(heroJs, /HERO_VARIANTS = \['mockup', 'plane', 'blue'\]/);
   assert.match(heroJs, /if \(variant === 'plane'\) \{\s*initPlane\(stage\);\s*return;/);
   const css = strip(read('src/styles/sections/hero-plane.css'));
   assert.match(css, /\[data-hero-variant='plane'\],\s*\[data-hero='plane'\] \[data-hero-variant='mockup'\]\s*\{\s*display:\s*none/);
   assert.match(css, /\[data-hero='plane'\] \[data-hero-variant='plane'\]\s*\{\s*display:\s*block/);
   const dev = read('src/dev/theme-switcher.js');
-  assert.match(dev, /\{ id: 'plane', label: '3' \}/);
+  assert.match(dev, /\{ id: 'plane', label: 'Самолётик', param: '3' \}/);
 });
 
 test('движение варианта 3 — только transform и opacity, без stroke-dashoffset и фильтров', () => {

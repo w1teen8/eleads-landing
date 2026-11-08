@@ -30,6 +30,8 @@ const BRIEF = {
 // --paper и палитра Aether (reference.md → «Aether»): почти чёрный фон, поверхность, тёплый белый, серый,
 // красный акцент и его тень
 const EXTRA = ['#FFFFFF', '#0B0B0D', '#141417', '#F2EEE8', '#8C8A87', '#FF3B2F', '#C4201A'];
+// вариант 4 первого экрана (?hero=4, G26/G27): синий Telegram по макету пользователя reference/hero-v4 — палитра --v4-*
+const V4 = ['#0647E6', '#0A4FF2', '#1F62F6', '#7FB2FF', '#0337CB', '#0128A8', '#A3D2FF', '#1463FF', '#0A1430', '#5B6480', '#E9F0FF', '#E3E8F2', 'rgba(0,22,96,.3)'];
 
 test('tokens.css: цвета брифа как есть и --grad = --sun → --ember', () => {
   const css = strip(read('src/styles/tokens.css'));
@@ -41,16 +43,18 @@ test('tokens.css: цвета брифа как есть и --grad = --sun → --
   assert.match(css, /--grad:\s*linear-gradient\(100deg,\s*var\(--sun\),\s*var\(--ember\)\)/);
   // сборка 2 — Aether: кроме палитры канала — один нейтральный белый и палитра образца (версия «Aether · оригинал»)
   const norm = (v) => v.replace(/\s/g, '').toLowerCase();
-  const allowed = new Set([...Object.values(BRIEF), ...EXTRA].map(norm));
+  const allowed = new Set([...Object.values(BRIEF), ...EXTRA, ...V4].map(norm));
   const literals = css.match(/#[0-9a-f]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\)/gi) || [];
   const extra = literals.filter((l) => !allowed.has(norm(l)));
   assert.deepEqual(extra, [], `лишние цвета: ${extra.join(' ')}`);
-  assert.equal(literals.length, Object.keys(BRIEF).length + EXTRA.length, 'каждый цвет объявлен один раз');
+  assert.equal(literals.length, Object.keys(BRIEF).length + EXTRA.length + V4.length, 'каждый цвет объявлен один раз');
 });
 
 test('вне tokens.css нет ни одного литерала цвета', () => {
   for (const f of files.filter((f) => !f.endsWith('tokens.css'))) {
-    const found = strip(read(f)).match(/#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(|\b(purple|violet|blue|indigo)\b/gi);
+    // имя варианта 4 «blue» (класс .hero-blue, [data-hero='blue']) — не цвет
+    const css = strip(read(f)).replace(/hero-blue[\w-]*|'blue'/g, '');
+    const found = css.match(/#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(|\b(purple|violet|blue|indigo)\b/gi);
     assert.equal(found, null, `${f}: ${found}`);
   }
 });

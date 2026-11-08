@@ -74,9 +74,7 @@
     },
     "photo": {
       "alt": "Volodymyr Kucher, founder of eLeads",
-      "caption": "PHOTO OF VOLODYMYR",
-      "name": "Volodymyr Kucher",
-      "role": "founder of eLeads"
+      "caption": "PHOTO OF VOLODYMYR"
     },
     "cards": {
       "views": { "alt": "Views: +1,280,000" },
@@ -88,13 +86,20 @@
     },
     "word": "ELEADS",
     "v3": { "skip": "Skip", "skipLabel": "Skip intro", "heading": "ELEADS — promotion via Telegram Ads" },
+    "v4": {
+      "word": "eLeads",
+      "titleLine1": "Promotion via",
+      "titleLine2": "Telegram",
+      "titleAccent": "Ads",
+      "cta": "Discuss a project",
+      "cards": {
+        "budgets": { "label": "Ad budgets under management", "value": "$2M+" },
+        "years": { "label": "Years in digital", "value": "7+" },
+        "projects": { "label": "Projects", "value": "Dozens" }
+      },
+      "ad": { "tag": "Ad", "title": "Your project — in the Telegram feed", "text": "Ads are shown to audiences of channels, bots and media content.", "button": "View" }
+    },
     "scroll": "Scroll",
-    "ads": [
-      { "name": "A channel in your niche", "tag": "Ad", "text": "A sponsored message of up to 160 characters below the channel posts", "button": "Open" },
-      { "name": "Bot", "tag": "Ad", "text": "An ad in the chat with a bot, next to its replies", "button": "Start" },
-      { "name": "Media", "tag": "Ad", "text": "An ad with a photo or video", "button": "Learn more" },
-      { "name": "Telegram search", "tag": "Ad", "text": "Your channel among the search results", "button": "Open channel" }
-    ],
     "trusted": {
       "title": "Trusted by",
       "items": [

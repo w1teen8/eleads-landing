@@ -1,11 +1,4 @@
-/* фото Володимира: hero, вариант «orbit» (DSC_3087 в круглом окне сцены), блок засновника, финальный CTA */
-.hero-orbit__photo {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.hero-orbit__photo picture,
+/* фото Володимира: блок засновника, финальный CTA */
 .founder__photo picture,
 .cta__photo picture {
   position: absolute;
@@ -19,10 +12,6 @@
   display: block;
 }
 
-.hero-orbit__photo .photo-img {
-  object-position: 50% 18%;
-}
-
 .founder__photo .photo-img {
   object-position: 50% 15%;
 }
@@ -32,7 +21,6 @@
 }
 
 /* низ фото растворяется в фоне — фото «садится» в тёмный блок темы, а не висит прямоугольником */
-.hero-orbit__photo::after,
 .founder__photo::after,
 .cta__photo::after {
   content: '';
