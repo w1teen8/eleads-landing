@@ -86,10 +86,13 @@
   margin-top: 2vw;
 }
 
+/* у PNG жёсткий горизонтальный срез снизу: на телефоне и планшете он гаснет градиентом (на десктопе уходит за край сцены) */
 .hero-blue__person-img {
   display: block;
   width: 100%;
   height: auto;
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
 
 /* ——— левая колонка ——— */
@@ -513,10 +516,10 @@
     transform: scaleX(1.06);
   }
 
-  /* фигура: от низа сцены, высота 761 «пикселя макета» — верх волос на 19% высоты */
+  /* фигура: вырезка из макета (781 «пиксель» + 30 запаса вниз под срез): верх волос на 19% высоты, срез ниже сцены */
   .hero-blue__depth--person {
-    bottom: 0;
-    height: calc(761 * var(--u));
+    bottom: calc(-30 * var(--u));
+    height: calc(811 * var(--u));
   }
 
   .hero-blue__person {
@@ -528,6 +531,8 @@
   .hero-blue__person-img {
     width: auto;
     height: 100%;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   /* левая колонка: метка у верха, заголовок — ниже букв */
