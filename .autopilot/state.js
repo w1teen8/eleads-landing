@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-08T01:10:31+02:00",
+  "updatedAt": "2026-11-08T18:59:02+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -61,9 +61,9 @@ window.STATE =
     }
   ],
   "requirements": {
-    "total": 125,
-    "done": 108,
-    "inTicket": 8,
+    "total": 127,
+    "done": 111,
+    "inTicket": 7,
     "inSpec": 4,
     "placeholder": 3,
     "deferred": 1,
@@ -712,6 +712,81 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
+      "status": "done",
+      "startedAt": "2026-11-08T01:10:36+02:00",
+      "finishedAt": "2026-11-08T01:34:54+02:00",
+      "retries": 0,
+      "repairs": 0,
+      "tests": {
+        "passed": 136,
+        "failed": 0
+      },
+      "commit": "6846302"
+    },
+    {
+      "id": "15",
+      "title": "Вариант 2 первого экрана на весь экран 1920×1080",
+      "requirements": [
+        "G18",
+        "G25"
+      ],
+      "blockedBy": [
+        "14"
+      ],
+      "wave": 14,
+      "zone": [
+        "src/styles/sections/hero.css",
+        "src/styles/sections/photos.css",
+        "src/sections/hero.js",
+        "<section id=\"hero\">",
+        "tests/hero-*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "done",
+      "startedAt": "2026-11-08T01:40:55+02:00",
+      "finishedAt": "2026-11-08T01:47:51+02:00",
+      "retries": 0,
+      "repairs": 0,
+      "tests": {
+        "passed": 137,
+        "failed": 0
+      },
+      "commit": "be20d4e"
+    },
+    {
+      "id": "16",
+      "title": "Вариант 4 первого экрана: синий, огромное «eLeads» за Володимиром, белые карточки",
+      "requirements": [
+        "G26",
+        "G19",
+        "R40",
+        "R41",
+        "R42",
+        "R43",
+        "R44"
+      ],
+      "blockedBy": [
+        "15"
+      ],
+      "wave": 15,
+      "zone": [
+        "src/sections/hero-blue.js",
+        "src/styles/sections/hero-blue.css",
+        "src/sections/hero.js",
+        "<head>",
+        "src/dev/theme-switcher.js",
+        "src/styles/sections/header.css",
+        "data-hero=\"blue\"",
+        "public/img/hero/",
+        "<section id=\"hero\">",
+        "hero.v4",
+        "content.*.json",
+        "tests/hero-blue*.test.js",
+        "tests/head-scripts.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
       "status": "pending",
       "retries": 0,
       "repairs": 0
@@ -761,7 +836,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 127,
+    "passed": 137,
     "failed": 0
   },
   "debt": {
@@ -911,9 +986,15 @@ window.STATE =
     "2026-11-08T01:06:44+02:00",
     "2026-11-08T01:06:45+02:00",
     "2026-11-08T01:10:30+02:00",
-    "2026-11-08T01:10:31+02:00"
+    "2026-11-08T01:10:31+02:00",
+    "2026-11-08T01:10:36+02:00",
+    "2026-11-08T01:34:54+02:00",
+    "2026-11-08T01:40:53+02:00",
+    "2026-11-08T01:40:55+02:00",
+    "2026-11-08T01:47:51+02:00",
+    "2026-11-08T18:59:02+02:00"
   ],
-  "rev": 101,
+  "rev": 107,
   "waiting": null,
   "waits": [
     {
@@ -1660,6 +1741,56 @@ window.STATE =
       "t": "2026-11-08T01:10:31+02:00",
       "k": "tickets",
       "n": 15
+    },
+    {
+      "t": "2026-11-08T01:10:36+02:00",
+      "k": "ticket",
+      "ids": [
+        "14"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-08T01:34:54+02:00",
+      "k": "ticket",
+      "ids": [
+        "14"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 136,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-08T01:40:53+02:00",
+      "k": "tickets",
+      "n": 16
+    },
+    {
+      "t": "2026-11-08T01:40:55+02:00",
+      "k": "ticket",
+      "ids": [
+        "15"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-08T01:47:51+02:00",
+      "k": "ticket",
+      "ids": [
+        "15"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 137,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-08T18:59:02+02:00",
+      "k": "tickets",
+      "n": 17
     }
   ],
   "reqList": [
@@ -2266,7 +2397,7 @@ window.STATE =
     {
       "id": "G19",
       "text": "«будет 2 варианта, тот который я сейчас предложил и старый» + переключатель",
-      "status": "in-ticket"
+      "status": "done"
     },
     {
       "id": "G20",
@@ -2291,6 +2422,16 @@ window.STATE =
     {
       "id": "G24",
       "text": "«Это вариант 3. Наш герой Владимир сидит в офисе, берет в руки самолетик, запускает его, тот летит в космос делает круг вокруг надписи елидс и залетает на место планеты в круг»",
+      "status": "done"
+    },
+    {
+      "id": "G25",
+      "text": "«Сделай хиро 2 в 1920 на 1080. расстяни его как-то»",
+      "status": "done"
+    },
+    {
+      "id": "G26",
+      "text": "«Давай еще один хиро» — вариант 4 по макету reference/hero-v4/mockup.png",
       "status": "in-ticket"
     }
   ],
