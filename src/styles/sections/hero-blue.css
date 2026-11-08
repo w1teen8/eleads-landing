@@ -1,7 +1,7 @@
 /* 01 Hero, вариант 4 «blue» (?hero=4, G26/G27; макет reference/hero-v4/mockup.png, 1672×941).
    Насыщенный синий фон Telegram со светлым пятном за головой; огромное белое «eLeads» на всю ширину за Володимиром
    (фото без фона, обрезано выше шахмат); слева метка, заголовок из маски («Ads» голубым), абзац и белая пилюля;
-   справа белые карточки с цифрами брифа и карточка рекламы Telegram. Палитра — своя, переменные на .hero-blue:
+   цифры брифа и строка рекламы Telegram простым текстом под буквами (без плашек). Палитра — своя, переменные на .hero-blue:
    темы brand/aether и другие варианты не меняются.
    Десктоп (≥900px): сцена на весь экран, как вариант 2; доли — от сцены, размеры — в «пикселях макета» (--u,
    масштаб по меньшей стороне), левая колонка — от левого края, карточки — от правого. Телефон: текст, затем фото
@@ -42,8 +42,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    'copy'
     'visual'
+    'copy'
     'side';
   padding: calc(var(--header-h) + 1.5rem) var(--gutter) 2.5rem;
 }
@@ -193,169 +193,90 @@
   outline-offset: 3px;
 }
 
-/* ——— карточки: белые, скругление, мягкая тень; плавает внутренний слой ——— */
+/* ——— цифры брифа и строка рекламы: простой текст под буквами, без плашек и теней ——— */
 .hero-blue__side {
   grid-area: side;
   position: relative;
   z-index: 3;
   display: grid;
-  gap: 12px;
-  margin-top: -14vw;
+  gap: 1.5rem;
+  margin-top: 1.75rem;
 }
 
 .hero-blue__stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.hero-blue__card--budgets {
-  grid-column: 1 / -1;
-}
-
-.hero-blue__float {
-  position: relative;
+.hero-blue__stat {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  height: 100%;
-  padding: 16px 18px;
-  border-radius: 16px;
-  background: var(--paper);
-  color: var(--v4-ink);
-  box-shadow: 0 18px 40px -16px var(--v4-shadow);
+  gap: 4px;
 }
 
-.hero-blue__card-label {
-  font-size: 0.875rem;
-  line-height: 1.3;
-  color: var(--v4-muted);
-}
-
-.hero-blue__card-value {
-  margin-top: 4px;
+.hero-blue__stat-value {
   font-family: var(--font-body);
   font-weight: 800;
   font-size: 1.6rem;
   line-height: 1.05;
   letter-spacing: -0.01em;
-  color: var(--v4-ink);
-}
-
-.hero-blue__card--budgets .hero-blue__float {
-  justify-content: center;
-  padding-right: 72px;
-}
-
-.hero-blue__card--budgets .hero-blue__card-value {
-  font-size: 2.2rem;
-}
-
-.hero-blue__icon {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 38px;
-  height: 38px;
-  margin-bottom: 12px;
-  border-radius: 50%;
-  background: var(--v4-icon-bg);
-  color: var(--v4-accent);
-}
-
-.hero-blue__icon svg {
-  width: 52%;
-  height: 52%;
-}
-
-.hero-blue__icon--solid {
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  width: 44px;
-  height: 44px;
-  margin: -22px 0 0;
-  background: var(--v4-accent);
   color: var(--paper);
 }
 
-/* карточка рекламы Telegram */
-.hero-blue__ad .hero-blue__float {
-  padding: 14px 18px 4px 30px;
-}
-
-.hero-blue__ad .hero-blue__float::before {
-  content: '';
-  position: absolute;
-  left: 14px;
-  top: 14px;
-  bottom: 14px;
-  width: 3px;
-  border-radius: 3px;
-  background: var(--v4-accent);
-}
-
-.hero-blue__ad-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  align-self: stretch;
-  margin: 0;
-}
-
-.hero-blue__ad-tag {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--v4-accent);
-}
-
-.hero-blue__ad-icon {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--v4-accent);
-  color: var(--paper);
-}
-
-.hero-blue__ad-icon svg {
-  width: 62%;
-  height: 62%;
-  margin-left: -1px;
+.hero-blue__stat-label {
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--paper) 90%, transparent);
 }
 
 .hero-blue__ad-title {
-  margin: 4px 0 0;
+  margin: 0;
   font-size: 1.0625rem;
   font-weight: 700;
   line-height: 1.3;
-  color: var(--v4-ink);
+  color: var(--paper);
+}
+
+.hero-blue__ad-tag {
+  margin-right: 0.35em;
+  padding: 1px 6px;
+  border: 1px solid color-mix(in srgb, var(--paper) 70%, transparent);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  vertical-align: 0.08em;
+  color: var(--paper);
 }
 
 .hero-blue__ad-text {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
   font-size: 0.875rem;
   line-height: 1.45;
-  color: var(--v4-muted);
+  color: color-mix(in srgb, var(--paper) 90%, transparent);
 }
 
 .hero-blue__ad-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  align-self: stretch;
+  gap: 6px;
   min-height: 44px;
-  margin-top: 10px;
-  border-top: 1px solid var(--v4-line);
   font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--v4-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: var(--paper);
+}
+
+.hero-blue__ad-btn svg {
+  width: 14px;
+  height: 14px;
 }
 
 /* ——— появление после заставки: строки заголовка из маски, остальное проявляется ——— */
@@ -421,45 +342,6 @@
   transition-delay: 0s;
 }
 
-/* ——— живое: карточки мягко плавают вверх-вниз (своя длительность и фаза) ——— */
-@media (prefers-reduced-motion: no-preference) {
-  .js-anim .hero-blue__float {
-    animation: hero-blue-float var(--float, 5.6s) ease-in-out var(--float-delay, 0s) infinite;
-    will-change: transform;
-  }
-}
-
-.hero-blue__card--budgets {
-  --float: 6.2s;
-  --float-delay: -1.4s;
-}
-
-.hero-blue__card--years {
-  --float: 5.2s;
-  --float-delay: -3.1s;
-}
-
-.hero-blue__card--projects {
-  --float: 5.8s;
-  --float-delay: -0.4s;
-}
-
-.hero-blue__ad {
-  --float: 6.6s;
-  --float-delay: -2.5s;
-}
-
-/* амплитуда — в процентах высоты карточки (≈ ±5–7px на 1920): без var() в ключевых кадрах */
-@keyframes hero-blue-float {
-  0%,
-  100% {
-    transform: translate3d(0, -4%, 0);
-  }
-  50% {
-    transform: translate3d(0, 4%, 0);
-  }
-}
-
 /* ——— планшет ——— */
 @media (min-width: 600px) and (max-width: 899px) {
   .hero-blue__word {
@@ -473,7 +355,6 @@
   .hero-blue__side {
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     align-items: start;
-    margin-top: -6vw;
   }
 }
 
@@ -498,15 +379,15 @@
     right: 0;
   }
 
-  /* базовая линия букв — 57,9% высоты, центр — 49,5% ширины (как на макете) */
+  /* слово почти на всю ширину сцены (поля по бокам), базовая линия — на 52% высоты */
   .hero-blue__depth--word {
-    top: calc(57.9cqh - 292 * var(--u));
+    --word-fs: 25.2cqw;
+    top: calc(52cqh - 0.77 * var(--word-fs));
     margin: 0;
   }
 
   .hero-blue__word {
-    padding-right: 1%;
-    font-size: calc(400 * var(--u));
+    font-size: var(--word-fs);
     letter-spacing: -0.02em;
   }
 
@@ -516,7 +397,7 @@
     transform: scaleX(1.06);
   }
 
-  /* фигура: вырезка из макета (781 «пиксель» + 30 запаса вниз под срез): верх волос на 19% высоты, срез ниже сцены */
+  /* фигура: вырезка из макета (781 «пиксель» + 30 запаса вниз под срез), срез ниже сцены */
   .hero-blue__depth--person {
     bottom: calc(-30 * var(--u));
     height: calc(811 * var(--u));
@@ -535,164 +416,77 @@
     mask-image: none;
   }
 
-  /* левая колонка: метка у верха, заголовок — ниже букв */
+  /* левая колонка: целиком под буквами; метка — над ними */
   .hero-blue__copy {
     position: absolute;
     left: 5.68%;
-    top: 60.4%;
-    width: calc(560 * var(--u));
+    top: 58%;
+    width: calc(520 * var(--u));
   }
 
   .hero-blue__eyebrow {
-    position: absolute;
-    left: 0;
-    top: calc(15.4cqh - 60.4cqh - 0.7em);
-    margin: 0;
+    margin-bottom: calc(14 * var(--u));
     font-size: max(11px, calc(15.5 * var(--u)));
-    white-space: nowrap;
   }
 
   .hero-blue__title {
-    font-size: calc(46 * var(--u));
+    font-size: calc(44 * var(--u));
     line-height: 1.1;
   }
 
   .hero-blue__subtitle {
-    max-width: calc(440 * var(--u));
-    margin-top: calc(18 * var(--u));
+    max-width: calc(400 * var(--u));
+    margin-top: calc(16 * var(--u));
     font-size: max(14px, calc(17.5 * var(--u)));
     line-height: 1.45;
   }
 
   .hero-blue__cta {
-    --cta-h: calc(60 * var(--u));
+    --cta-h: calc(58 * var(--u));
     gap: calc(22 * var(--u));
-    margin-top: calc(26 * var(--u));
+    margin-top: calc(22 * var(--u));
     padding: 0 calc(8 * var(--u)) 0 calc(28 * var(--u));
     font-size: max(14px, calc(18 * var(--u)));
   }
 
   .hero-blue__cta-arrow {
-    width: calc(44 * var(--u));
-    height: calc(44 * var(--u));
+    width: calc(42 * var(--u));
+    height: calc(42 * var(--u));
   }
 
-  /* правая колонка: от правого края (5,5% — как на макете) */
+  /* правая колонка: цифры и строка рекламы текстом, от правого края, верх — на уровне заголовка */
   .hero-blue__side {
     position: absolute;
-    inset: 0;
-    display: block;
+    right: 5.5%;
+    top: 58%;
+    width: calc(430 * var(--u));
     margin: 0;
-    pointer-events: none;
+    gap: calc(26 * var(--u));
   }
 
   .hero-blue__stats {
-    display: block;
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
+    gap: calc(18 * var(--u));
   }
 
-  .hero-blue__card,
-  .hero-blue__ad {
-    position: absolute;
-    pointer-events: auto;
+  .hero-blue__stat-value {
+    font-size: calc(38 * var(--u));
   }
 
-  .hero-blue__card--budgets {
-    right: 5.5%;
-    top: 13.6%;
-    width: calc(377 * var(--u));
-    height: calc(110 * var(--u));
-  }
-
-  .hero-blue__card--years {
-    right: calc(5.5% + 192 * var(--u));
-    top: 26.8%;
-    width: calc(185 * var(--u));
-    height: calc(143 * var(--u));
-  }
-
-  .hero-blue__card--projects {
-    right: 5.5%;
-    top: 26.8%;
-    width: calc(177 * var(--u));
-    height: calc(143 * var(--u));
-  }
-
-  .hero-blue__ad {
-    right: 5.5%;
-    top: 67.8%;
-    width: calc(368 * var(--u));
-    min-height: calc(175 * var(--u));
-  }
-
-  .hero-blue__float {
-    padding: calc(20 * var(--u)) calc(23 * var(--u));
-    border-radius: calc(20 * var(--u));
-    box-shadow: 0 calc(20 * var(--u)) calc(44 * var(--u)) calc(-14 * var(--u)) var(--v4-shadow);
-  }
-
-  .hero-blue__card-label {
+  .hero-blue__stat-label {
     font-size: max(12px, calc(14.5 * var(--u)));
   }
 
-  .hero-blue__card-value {
-    margin-top: calc(6 * var(--u));
-    font-size: calc(30 * var(--u));
-  }
-
-  .hero-blue__card--budgets .hero-blue__float {
-    padding-right: calc(80 * var(--u));
-  }
-
-  .hero-blue__card--budgets .hero-blue__card-value {
-    font-size: calc(44 * var(--u));
-  }
-
-  .hero-blue__icon {
-    width: calc(40 * var(--u));
-    height: calc(40 * var(--u));
-    margin-bottom: calc(16 * var(--u));
-  }
-
-  .hero-blue__icon--solid {
-    right: calc(22 * var(--u));
-    width: calc(46 * var(--u));
-    height: calc(46 * var(--u));
-    margin: calc(-23 * var(--u)) 0 0;
-  }
-
-  .hero-blue__ad .hero-blue__float {
-    padding: calc(16 * var(--u)) calc(20 * var(--u)) calc(4 * var(--u)) calc(34 * var(--u));
-  }
-
-  .hero-blue__ad .hero-blue__float::before {
-    left: calc(14 * var(--u));
-    top: calc(16 * var(--u));
-    bottom: calc(16 * var(--u));
-    width: max(2px, calc(3 * var(--u)));
-  }
-
-  .hero-blue__ad-tag {
-    font-size: max(12px, calc(15 * var(--u)));
-  }
-
-  .hero-blue__ad-icon {
-    width: calc(30 * var(--u));
-    height: calc(30 * var(--u));
-  }
-
   .hero-blue__ad-title {
-    margin-top: calc(6 * var(--u));
     font-size: max(14px, calc(18 * var(--u)));
   }
 
   .hero-blue__ad-text {
-    margin-top: calc(6 * var(--u));
     font-size: max(12px, calc(15 * var(--u)));
   }
 
   .hero-blue__ad-btn {
-    min-height: calc(40 * var(--u));
-    margin-top: calc(10 * var(--u));
     font-size: max(12px, calc(15 * var(--u)));
   }
 }

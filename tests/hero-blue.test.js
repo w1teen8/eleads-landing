@@ -1,6 +1,6 @@
 // Первый экран, вариант 4 «blue» (?hero=4, G26/G27; макет reference/hero-v4/mockup.png): синий фон Telegram, огромное
-// белое «eLeads» за Володимиром без фона, слева заголовок и белая пилюля, справа белые карточки с цифрами брифа и
-// карточка рекламы Telegram. Вариант 1 «orbit» удалён. Проверяется разметка, тексты из JSON, файлы и правила движения.
+// белое «eLeads» за Володимиром без фона, слева заголовок и белая пилюля, под буквами цифры брифа и строка рекламы
+// Telegram простым текстом (без карточек). Вариант 1 «orbit» удалён. Проверяется разметка, тексты из JSON, файлы и правила движения.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
@@ -43,7 +43,7 @@ test('вариант 1 «orbit» удалён: модуль, стили, раз�
   }
 });
 
-test('разметка: заголовок ролью H1, огромное «eLeads» из JSON, пилюля в Telegram, карточки и реклама — тексты из JSON', () => {
+test('разметка: заголовок ролью H1, огромное «eLeads» из JSON, пилюля в Telegram, строка цифр и реклама текстом — тексты из JSON', () => {
   assert.ok(blue, 'data-hero-variant="blue"');
   assert.match(blue, /id="hero-title-blue"[^>]*role="heading" aria-level="1"/);
   assert.equal((blue.match(/<h1\b/g) || []).length, 0, 'H1 страницы — в варианте 2');
@@ -65,7 +65,14 @@ test('разметка: заголовок ролью H1, огромное «eLe
   assert.equal(ua.hero.v4.cards.budgets.value, ua.hero.stats.budgets.value, '$2M+ — цифра брифа');
   assert.equal(ua.hero.v4.cards.years.value, ua.hero.stats.years.value, '7+ — цифра брифа');
   assert.match(ua.hero.v4.titleAccent, /^Ads$/);
-  assert.equal((blue.match(/<svg\b/g) || []).length >= 5, true, 'иконки — инлайн-SVG');
+  assert.equal((blue.match(/<svg\b/g) || []).length >= 2, true, 'стрелки — инлайн-SVG');
+  // нижняя строка: три цифры + реклама — простой текст, без белых плашек и теней
+  assert.equal((blue.match(/<li class="hero-blue__stat\b/g) || []).length, 3, 'три цифры брифа');
+  assert.doesNotMatch(blue, /hero-blue__card|hero-blue__float|hero-blue__icon/, 'карточек и иконок-плашек нет');
+  assert.doesNotMatch(css, /hero-blue__(card|float|icon)/, 'в CSS нет карточек');
+  assert.match(css, /\.hero-blue__stat-value\s*\{[^}]*color:\s*var\(--paper\)/, 'цифры — светлым на синем');
+  assert.match(css, /\.hero-blue__ad-btn\s*\{[^}]*text-decoration:\s*underline/, '«Переглянути» — текстовая ссылка');
+  assert.doesNotMatch(css.replace(/\.hero-blue__cta\s*\{[^}]*\}/, ''), /box-shadow/, 'теней нет (кроме пилюли)');
   assert.doesNotMatch(blue.replace(/<!--[\s\S]*?-->/g, ''), /[А-Яа-яЁёІіЇїЄєҐґ]/, 'ни одной фразы в HTML');
 });
 
@@ -96,7 +103,7 @@ test('цвета варианта 4 — свои (--v4-* в tokens.css); шап�
   }
 });
 
-test('движение варианта 4 — только transform и opacity; плавание — без reduced-motion; параллакс за курсором', () => {
+test('движение варианта 4 — только transform и opacity; карточки не плавают; параллакс слова и фигуры за курсором', () => {
   assert.ok(css, 'hero-blue.css');
   for (const [, props] of css.matchAll(/transition(?:-property)?:\s*([^;]+);/g)) {
     for (const part of props.split(/,(?![^(]*\))/)) {
@@ -107,10 +114,17 @@ test('движение варианта 4 — только transform и opacity;
   for (const [, body] of css.matchAll(/@keyframes\s+[\w-]+\s*\{([\s\S]*?)\}\s*\}/g)) {
     assert.doesNotMatch(body, /\b(top|left|width|height|margin|filter)\s*:/);
   }
-  const live = css.match(/@media \(prefers-reduced-motion: no-preference\) \{([\s\S]*?)\n\}/)?.[1] || '';
-  assert.match(live, /animation:\s*hero-blue-float/);
-  assert.equal((css.match(/animation:/g) || []).length, (live.match(/animation:/g) || []).length, 'анимация вне no-preference');
+  assert.doesNotMatch(css, /animation:|@keyframes/, 'плавающих карточек больше нет');
   assert.doesNotMatch(css, /filter\s*:|mix-blend-mode/);
   assert.match(blue, /data-hero-visual/);
-  assert.match(blue, /data-depth="/);
+  assert.match(blue, /data-depth="0\.12"/, 'параллакс слова');
+  assert.match(blue, /data-depth="0\.3"/, 'параллакс фигуры');
+});
+
+test('слово крупное и за фигурой; ничто, кроме фигуры, не заходит на буквы (текст — под словом)', () => {
+  assert.match(css, /--word-fs:\s*2[4-9](\.\d+)?cqw/, 'слово почти на всю ширину сцены');
+  assert.match(css, /\.hero-blue__depth--word\s*\{[^}]*z-index:\s*1/);
+  assert.match(css, /\.hero-blue__depth--person\s*\{[^}]*z-index:\s*2/);
+  assert.match(css, /\.hero-blue__copy\s*\{[^}]*top:\s*58%/, 'левый блок под буквами');
+  assert.match(css, /\.hero-blue__side\s*\{[^}]*top:\s*58%/, 'цифры и реклама под буквами');
 });
