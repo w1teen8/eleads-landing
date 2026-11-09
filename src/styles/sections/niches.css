@@ -239,10 +239,9 @@
   }
 }
 
-/* — появление блока (niches.js): начальные состояния — только при живых анимациях (html.js-anim); без JS, при
+/* — появление заголовка (niches.js): прячется только при живых анимациях (html.js-anim); без JS, при
      reduced-motion и ?nomotion=1 всё видно сразу — */
-.js-anim .section--niches:not(.is-in) .section__title,
-.js-anim .section--niches:not(.is-in) .niches__item {
+.js-anim .section--niches:not(.is-in) .section__title {
   opacity: 0;
 }
 

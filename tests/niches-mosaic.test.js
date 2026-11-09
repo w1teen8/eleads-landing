@@ -84,39 +84,19 @@ test('абзаца под заголовком блока нет: ни разм�
   for (const l of ['ua', 'en']) assert.equal(JSON.parse(read(`src/data/content.${l}.json`)).niches.lead, undefined, l);
 });
 
-test('появление: под .js-anim плитки и заголовок скрыты до .is-in; без .js-anim (reduced-motion, nomotion) ничего не скрыто', () => {
+test('плитки видны сразу: под .js-anim до .is-in прячется только заголовок; раздачи, падения и стопки нет', () => {
   const hidden = [...css.matchAll(/([^{}]+)\{[^}]*opacity:\s*0;[^}]*\}/g)].map((m) => m[1].trim()).filter((sel) => !/^\d+%$/.test(sel));
-  assert.ok(hidden.length > 0);
-  for (const sel of hidden) assert.match(sel, /\.js-anim [^,]*:not\(\.is-in\)/, `скрыто без .js-anim или без .is-in: ${sel}`);
-  assert.match(css, /\.js-anim \.section--niches:not\(\.is-in\) \.niches__item/);
+  assert.deepEqual(hidden, ['.js-anim .section--niches:not(.is-in) .section__title']);
   const js = read('src/sections/niches.js');
-  assert.match(js, /if \(reduced\) return;[\s\S]*enter\(root\)/, 'при reduced-motion появления нет');
+  assert.doesNotMatch(js, /dealTiles|dealTotal|fallOrder|ENTER\b|--dx|--dy|zIndex|revealTiles|\.niches__item.*animate|Math\.random/);
+  assert.match(js, /if \(reduced\) return;[\s\S]*enter\(root\)/, 'при reduced-motion заголовок не прячется и не едет');
   assert.match(js, /if \(entered\) return;/, 'один раз');
   assert.match(js, /classList\.add\('is-in'\)/);
-  assert.match(js, /fill: 'both'/);
+  assert.match(js, /niches__mask/, 'заголовок — две строки из маски');
+  assert.match(js, /\.animate\(\s*\{ transform:/, 'анимируется только заголовок');
 });
 
-test('появление «раздача из колоды»: стопка в центре, плитки по рядам слева направо, шаг 70 мс, перелёт, всё ≤ 1,6 с; падения нет', async () => {
-  const { ENTER, dealTotal } = await import('../src/sections/niches.js');
-  const js = read('src/sections/niches.js');
-  assert.doesNotMatch(js, /fallOrder|bounce|tilts|Free Fall|Math\.random/, 'падения нет, углы заданы в коде');
-  assert.equal(ENTER.step, 70);
-  assert.equal(ENTER.fly, 520);
-  assert.ok(ENTER.appear >= 150 && ENTER.appear <= 250, 'стопка проявляется ≈200 мс');
-  assert.equal(ENTER.scale, 0.55);
-  assert.equal(ENTER.angles.length, 8);
-  assert.equal(Math.min(...ENTER.angles), -8);
-  assert.equal(Math.max(...ENTER.angles), 8);
-  assert.deepEqual([...ENTER.angles].sort((a, b) => a - b), ENTER.angles, 'веер по возрастанию');
-  assert.match(ENTER.ease, /cubic-bezier\(0\.2, 1\.2, 0\.3, 1\)/, 'перелёт');
-  assert.ok(dealTotal(8) <= 1600, `${dealTotal(8)} мс`);
-  // порядок раздачи — порядок разметки: ряды слева направо, «Інша ніша?» (восьмая) последней
-  assert.match(js, /ENTER\.appear \+ i \* ENTER\.step/);
-  assert.match(js, /style\.zIndex = String\(i \+ 1\)/, 'верхние перекрывают нижние');
-  assert.match(js, /setProperty\('--dx'/);
-  assert.match(js, /setProperty\('--dy'/);
-  assert.match(js, /on\(window, 'resize', place\)/, 'пересчёт при ресайзе до появления');
-  assert.match(js, /item\.style\.zIndex = ''/, 'z-index сбрасывается в конце');
+test('наведение: подъём и наклон плитки, рост иконки, полёт самолётика и поворот стрелки «Інша ніша?»', () => {
   assert.match(css, /@keyframes niches-fly[\s\S]*?translate\(130%, -130%\)/);
   assert.match(css, /\.niches__card--other:hover \.niches__icon[^{]*\{[^}]*animation:\s*niches-fly 700ms/);
   assert.match(css, /\.niches__card--other:hover \.niches__arrow[^{]*\{[^}]*transform:\s*rotate\(/);
