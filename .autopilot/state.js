@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-10T00:30:45+02:00",
+  "updatedAt": "2026-11-10T01:01:57+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1251,14 +1251,129 @@ window.STATE =
       "model": "сильная",
       "status": "done",
       "startedAt": "2026-11-10T00:12:37+02:00",
+      "finishedAt": "2026-11-10T00:30:45+02:00",
       "retries": 0,
       "repairs": 0,
-      "finishedAt": "2026-11-10T00:30:45+02:00",
       "tests": {
         "passed": 177,
         "failed": 0
       },
       "commit": "6791775"
+    },
+    {
+      "id": "29",
+      "title": "Блоки 06 «Кейси», 07 «Процес», 08 «GEO»",
+      "requirements": [
+        "H41",
+        "H15",
+        "H14",
+        "H18",
+        "H24",
+        "R69",
+        "R81"
+      ],
+      "blockedBy": [
+        "28"
+      ],
+      "wave": 24,
+      "zone": [
+        "src/sections/cases.js",
+        "src/styles/sections/cases.css",
+        "src/sections/process.js",
+        "src/styles/sections/process.css",
+        "src/sections/geo.js",
+        "src/styles/sections/geo.css",
+        "index.html",
+        "content.*.json",
+        "cases.json",
+        "faq.json",
+        "src/data/config.json → sections.enabled",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "retries": 0,
+      "repairs": 0,
+      "startedAt": "2026-11-10T01:01:55+02:00"
+    },
+    {
+      "id": "30",
+      "title": "Блоки 09 «Таргетинг», 10 «Відгуки + засновник», 11 «Екосистема»",
+      "requirements": [
+        "H41",
+        "H07",
+        "H15",
+        "H14",
+        "H18",
+        "H24",
+        "R82",
+        "R90"
+      ],
+      "blockedBy": [
+        "28"
+      ],
+      "wave": 24,
+      "zone": [
+        "src/sections/targeting.js",
+        "src/styles/sections/targeting.css",
+        "src/sections/reviews.js",
+        "src/styles/sections/reviews.css",
+        "src/sections/ecosystem.js",
+        "src/styles/sections/ecosystem.css",
+        "index.html",
+        "content.*.json",
+        "cases.json",
+        "faq.json",
+        "src/data/config.json → sections.enabled",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "retries": 0,
+      "repairs": 0,
+      "startedAt": "2026-11-10T01:01:56+02:00"
+    },
+    {
+      "id": "31",
+      "title": "Блоки 12 «Матеріали», 13 «FAQ», 14 «Фінальний CTA», подвал",
+      "requirements": [
+        "H41",
+        "H07",
+        "H15",
+        "H14",
+        "H18",
+        "H24",
+        "R91",
+        "R99"
+      ],
+      "blockedBy": [
+        "28"
+      ],
+      "wave": 24,
+      "zone": [
+        "src/sections/materials.js",
+        "src/styles/sections/materials.css",
+        "src/sections/faq.js",
+        "src/styles/sections/faq.css",
+        "src/sections/cta.js",
+        "src/styles/sections/cta.css",
+        "src/sections/footer.js",
+        "src/styles/sections/footer.css",
+        "index.html",
+        "content.*.json",
+        "cases.json",
+        "faq.json",
+        "src/data/config.json → sections.enabled",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "retries": 0,
+      "repairs": 0,
+      "startedAt": "2026-11-10T01:01:57+02:00"
     },
     {
       "id": "F1",
@@ -1516,9 +1631,13 @@ window.STATE =
     "2026-11-10T00:12:35+02:00",
     "2026-11-10T00:12:37+02:00",
     "2026-11-10T00:19:29+02:00",
-    "2026-11-10T00:30:45+02:00"
+    "2026-11-10T00:30:45+02:00",
+    "2026-11-10T01:01:53+02:00",
+    "2026-11-10T01:01:55+02:00",
+    "2026-11-10T01:01:56+02:00",
+    "2026-11-10T01:01:57+02:00"
   ],
-  "rev": 162,
+  "rev": 166,
   "waiting": null,
   "waits": [
     {
@@ -2747,6 +2866,35 @@ window.STATE =
         "passed": 177,
         "failed": 0
       }
+    },
+    {
+      "t": "2026-11-10T01:01:53+02:00",
+      "k": "tickets",
+      "n": 32
+    },
+    {
+      "t": "2026-11-10T01:01:55+02:00",
+      "k": "ticket",
+      "ids": [
+        "29"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-10T01:01:56+02:00",
+      "k": "ticket",
+      "ids": [
+        "30"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-10T01:01:57+02:00",
+      "k": "ticket",
+      "ids": [
+        "31"
+      ],
+      "act": "start"
     }
   ],
   "reqList": [
