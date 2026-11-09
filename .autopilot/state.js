@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-09T13:25:31+02:00",
+  "updatedAt": "2026-11-09T16:23:48+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -905,9 +905,9 @@ window.STATE =
       "model": "сильная",
       "status": "done",
       "startedAt": "2026-11-09T13:11:57+02:00",
+      "finishedAt": "2026-11-09T13:25:30+02:00",
       "retries": 0,
       "repairs": 0,
-      "finishedAt": "2026-11-09T13:25:30+02:00",
       "tests": {
         "passed": 120,
         "failed": 0
@@ -940,10 +940,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
+      "startedAt": "2026-11-09T13:25:31+02:00",
+      "finishedAt": "2026-11-09T16:17:29+02:00",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-09T13:25:31+02:00"
+      "tests": {
+        "passed": 132,
+        "failed": 0
+      },
+      "commit": "ff8d135"
     },
     {
       "id": "21",
@@ -972,10 +978,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
+      "startedAt": "2026-11-09T13:25:31+02:00",
+      "finishedAt": "2026-11-09T16:17:29+02:00",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-09T13:25:31+02:00"
+      "tests": {
+        "passed": 132,
+        "failed": 0
+      },
+      "commit": "ff8d135"
     },
     {
       "id": "22",
@@ -1012,10 +1024,42 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
+      "startedAt": "2026-11-09T13:25:31+02:00",
+      "finishedAt": "2026-11-09T16:17:29+02:00",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-09T13:25:31+02:00"
+      "tests": {
+        "passed": 132,
+        "failed": 0
+      },
+      "commit": "ff8d135"
+    },
+    {
+      "id": "23",
+      "title": "Узкая шапка, каждый блок в один экран, фон без швов",
+      "requirements": [
+        "H12",
+        "H11",
+        "H03"
+      ],
+      "blockedBy": [
+        "22"
+      ],
+      "wave": 20,
+      "zone": [
+        "src/styles/sections/header.css",
+        "src/sections/header.js",
+        "index.html",
+        "src/styles/{tokens,base,layout}.css",
+        "src/styles/sections/{hero,stats,niches,formats,calculator}.css",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
     },
     {
       "id": "F1",
@@ -1062,7 +1106,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 120,
+    "passed": 132,
     "failed": 0
   },
   "debt": {
@@ -1237,9 +1281,11 @@ window.STATE =
     "2026-11-09T13:11:57+02:00",
     "2026-11-09T13:22:37+02:00",
     "2026-11-09T13:25:30+02:00",
-    "2026-11-09T13:25:31+02:00"
+    "2026-11-09T13:25:31+02:00",
+    "2026-11-09T16:17:29+02:00",
+    "2026-11-09T16:23:48+02:00"
   ],
-  "rev": 126,
+  "rev": 128,
   "waiting": null,
   "waits": [
     {
@@ -2193,6 +2239,25 @@ window.STATE =
         "22"
       ],
       "act": "start"
+    },
+    {
+      "t": "2026-11-09T16:17:29+02:00",
+      "k": "ticket",
+      "ids": [
+        "20",
+        "21",
+        "22"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 132,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-09T16:23:48+02:00",
+      "k": "tickets",
+      "n": 24
     }
   ],
   "reqList": [
