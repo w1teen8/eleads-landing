@@ -96,16 +96,27 @@ test('появление: под .js-anim плитки и заголовок с�
   assert.match(js, /fill: 'both'/);
 });
 
-test('появление: волна по диагонали, шаг ≈70 мс, иконка позже плитки, всё ≤ 1,4 с; «Інша ніша?» — самолётик улетает за 700 мс', async () => {
-  const { ENTER } = await import('../src/sections/niches.js');
+test('появление «раздача из колоды»: стопка в центре, плитки по рядам слева направо, шаг 70 мс, перелёт, всё ≤ 1,6 с; падения нет', async () => {
+  const { ENTER, dealTotal } = await import('../src/sections/niches.js');
+  const js = read('src/sections/niches.js');
+  assert.doesNotMatch(js, /fallOrder|bounce|tilts|Free Fall|Math\.random/, 'падения нет, углы заданы в коде');
   assert.equal(ENTER.step, 70);
-  assert.equal(ENTER.scale, 0.92);
-  assert.equal(ENTER.y, 28);
-  const lastWave = 3 + 1; // 4 колонки, 2 строки
-  const total = lastWave * ENTER.step + ENTER.icon.delay + ENTER.icon.duration;
-  assert.ok(total <= 1400, `${total} мс`);
-  assert.ok(lastWave * ENTER.step + ENTER.duration <= 1400);
-  assert.ok(ENTER.icon.delay > 0);
+  assert.equal(ENTER.fly, 520);
+  assert.ok(ENTER.appear >= 150 && ENTER.appear <= 250, 'стопка проявляется ≈200 мс');
+  assert.equal(ENTER.scale, 0.55);
+  assert.equal(ENTER.angles.length, 8);
+  assert.equal(Math.min(...ENTER.angles), -8);
+  assert.equal(Math.max(...ENTER.angles), 8);
+  assert.deepEqual([...ENTER.angles].sort((a, b) => a - b), ENTER.angles, 'веер по возрастанию');
+  assert.match(ENTER.ease, /cubic-bezier\(0\.2, 1\.2, 0\.3, 1\)/, 'перелёт');
+  assert.ok(dealTotal(8) <= 1600, `${dealTotal(8)} мс`);
+  // порядок раздачи — порядок разметки: ряды слева направо, «Інша ніша?» (восьмая) последней
+  assert.match(js, /ENTER\.appear \+ i \* ENTER\.step/);
+  assert.match(js, /style\.zIndex = String\(i \+ 1\)/, 'верхние перекрывают нижние');
+  assert.match(js, /setProperty\('--dx'/);
+  assert.match(js, /setProperty\('--dy'/);
+  assert.match(js, /on\(window, 'resize', place\)/, 'пересчёт при ресайзе до появления');
+  assert.match(js, /item\.style\.zIndex = ''/, 'z-index сбрасывается в конце');
   assert.match(css, /@keyframes niches-fly[\s\S]*?translate\(130%, -130%\)/);
   assert.match(css, /\.niches__card--other:hover \.niches__icon[^{]*\{[^}]*animation:\s*niches-fly 700ms/);
   assert.match(css, /\.niches__card--other:hover \.niches__arrow[^{]*\{[^}]*transform:\s*rotate\(/);

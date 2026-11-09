@@ -1,8 +1,8 @@
 // 03 Ніші (T20; T26 — мозаика с иконками и движение блока). Переходов между экранами нет (H11): блок идёт обычной
 // прокруткой. Своё движение блока (просьба пользователя «анимации добавить», как у блока 02):
-//   появление — один раз, когда блок вошёл в окно: заголовок выезжает двумя строками из-под маски; плитки встают на
-//               место мозаикой — волной по диагонали от левой верхней к правой нижней (чуть меньше, ниже и с поворотом →
-//               на месте); иконка въезжает из своего угла чуть позже плитки. Всё вместе — около секунды;
+//   появление — один раз, когда блок вошёл в окно: заголовок выезжает двумя строками из-под маски; плитки «раздаются
+//               из колоды»: стопка в центре сетки проявляется, потом плитки по одной разлетаются на места, как карты
+//               при раздаче (порядок — по рядам слева направо, «Інша ніша?» последней). Иконка летит с плиткой. До 1,6 с;
 //   наведение — плитка приподнимается и наклоняется к курсору (здесь), иконка вырастает из угла, самолётик
 //               «Інша ніша?» улетает и возвращается (CSS niches.css; только мышь, без reduced-motion).
 // Двигаются только transform и opacity. До появления текст есть в разметке; прячет его только CSS под .js-anim, так что
@@ -17,8 +17,33 @@ const TILT = 5;
 const ENTER_START = 'top 55%';
 const ENTER_START_NARROW = 'top 80%';
 const WIDE = '(min-width: 900px)';
-/** Мозаика: шаг волны по диагонали, длительность плитки, сдвиг вниз, масштаб, поворот; иконка — позже и короче. */
-export const ENTER = { step: 70, duration: 700, y: 28, scale: 0.92, rotate: 2, icon: { delay: 160, duration: 600, shift: 30 } };
+/** «Раздача из колоды»: стопка в центре сетки проявляется за `appear` мс, затем плитки по одной разлетаются на свои
+ *  места (по рядам слева направо, «Інша ніша?» последней): шаг `step`, полёт `fly` мс с лёгким перелётом. Стопка —
+ *  уменьшенная (`scale`) и раскрытая веером (`angles` по индексу плитки, заданы здесь, не случайные). */
+export const ENTER = {
+  appear: 200,
+  step: 70,
+  fly: 520,
+  scale: 0.55,
+  angles: [-8, -5.7, -3.4, -1.1, 1.1, 3.4, 5.7, 8],
+  ease: 'cubic-bezier(0.2, 1.2, 0.3, 1)',
+};
+
+/** Общая длительность раздачи, мс. */
+export const dealTotal = (count) => ENTER.appear + (count - 1) * ENTER.step + ENTER.fly;
+
+/** Сдвиг каждой плитки в центр сетки — из реальных размеров; кладётся в --dx/--dy (px) на плитке. */
+function measure(items, grid) {
+  const g = grid.getBoundingClientRect();
+  const cx = g.left + g.width / 2;
+  const cy = g.top + g.height / 2;
+  for (const item of items) {
+    const r = item.getBoundingClientRect();
+    item.style.setProperty('--dx', `${(cx - (r.left + r.width / 2)).toFixed(1)}px`);
+    item.style.setProperty('--dy', `${(cy - (r.top + r.height / 2)).toFixed(1)}px`);
+  }
+}
+
 /** Заголовок: строка выезжает из-под маски; вторая — с задержкой. */
 const TITLE = { duration: 760, step: 90 };
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
@@ -67,43 +92,49 @@ function revealTitle(title) {
   return moves;
 }
 
-/** Плитки встают волной по диагонали (номер волны = столбец + строка при 4 колонках), иконка — следом. */
-function revealTiles(items, columns) {
-  const anims = [];
-  items.forEach((item, i) => {
-    const wave = (i % columns) + Math.floor(i / columns);
-    const delay = wave * ENTER.step;
-    const turn = (i % 2 ? 1 : -1) * ENTER.rotate;
-    anims.push(
-      item.animate(
-        [{ offset: 0, opacity: 0, transform: `translateY(${ENTER.y}px) rotate(${turn}deg) scale(${ENTER.scale})` }],
-        { duration: ENTER.duration, delay, easing: EASE, fill: 'both' },
-      ),
+/** Раздача: стопка проявляется, потом плитки по одной летят на свои места; верхние в стопке перекрывают нижние. */
+function dealTiles(items) {
+  const total = dealTotal(items.length);
+  const at = (ms) => ms / total;
+  return items.map((item, i) => {
+    const stack = `translate(var(--dx), var(--dy)) rotate(${ENTER.angles[i % ENTER.angles.length]}deg) scale(${ENTER.scale})`;
+    const launch = ENTER.appear + i * ENTER.step;
+    item.style.zIndex = String(i + 1);
+    return item.animate(
+      [
+        { offset: 0, opacity: 0, transform: stack, easing: 'linear' },
+        { offset: at(ENTER.appear), opacity: 1, transform: stack, easing: 'linear' },
+        { offset: at(launch), opacity: 1, transform: stack, easing: ENTER.ease },
+        { offset: 1, opacity: 1, transform: 'translate(0, 0) rotate(0deg) scale(1)' },
+      ],
+      { duration: total, fill: 'both' },
     );
-    const icon = $('.niches__icon', item);
-    if (icon) {
-      anims.push(
-        icon.animate(
-          [{ offset: 0, opacity: 0, transform: `translate(${ENTER.icon.shift}%, ${ENTER.icon.shift}%) scale(0.7)` }],
-          { duration: ENTER.icon.duration, delay: delay + ENTER.icon.delay, easing: EASE, fill: 'both' },
-        ),
-      );
-    }
   });
-  return anims;
 }
 
 function enter(root) {
+  const grid = $('.niches__grid', root);
+  const items = $$('.niches__item', root);
   let entered = false;
+  // до появления плитки уже спрятаны CSS-ом; сдвиг в центр сетки пересчитывается при ресайзе
+  const place = () => !entered && grid && measure(items, grid);
+  place();
+  on(window, 'resize', place);
   const start = () => {
     if (entered) return;
+    place();
     entered = true;
     // класс — в одном кадре с созданием анимаций: плитки сразу под fill 'both', вспышки нет
     root.classList.add('is-in');
-    const items = $$('.niches__item', root);
-    const columns = window.matchMedia?.(WIDE).matches ? 4 : 1;
-    const anims = [...revealTitle($('.section__title', root)), ...revealTiles(items, columns)];
-    const settle = () => anims.forEach((a) => a.cancel());
+    const anims = [...revealTitle($('.section__title', root)), ...dealTiles(items)];
+    const settle = () => {
+      anims.forEach((a) => a.cancel());
+      for (const item of items) {
+        item.style.zIndex = '';
+        item.style.removeProperty('--dx');
+        item.style.removeProperty('--dy');
+      }
+    };
     Promise.all(anims.map((a) => a.finished)).then(settle, settle);
   };
   motionReady().then((api) => {
