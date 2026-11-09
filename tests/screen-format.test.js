@@ -137,7 +137,7 @@ test('H18: шрифт канала Sofia Sans Extra Condensed 800/900 — в с�
     stats: ['.section--stats .display.section__title', '.stats__value', '.stats__tag'],
     niches: ['.section--niches .display.section__title'],
     formats: ['.section--formats .display.section__title'],
-    calculator: ['.section--calculator .display.section__title', '.calc__budget-value', '.calc__money-value'],
+    calculator: ['.section--calculator .display.section__title', '.calc__budget-value', '.calc__cell-value'],
     ribbons: ['.ribbons__band'],
   };
   for (const [file, selectors] of Object.entries(uses)) {

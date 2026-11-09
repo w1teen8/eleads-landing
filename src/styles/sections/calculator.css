@@ -1,15 +1,19 @@
-/* 05 Калькулятор (T22; T23 — палитра канала и формат «один экран»). Переходов по прокрутке нет (H11): блок идёт за
-   предыдущим обычной прокруткой, всё видно сразу. Слева панель «Параметри кампанії» (пилюли Ніша / GEO / Ціль, ползунок
-   бюджета), справа «Орієнтовний прогноз»: живая воронка «Покази → Кліки → Підписники», CTR между ступенями, CPC и CPA,
-   CTA, дисклеймер. Обе панели — тёмные поверхности с тонкой светлой границей; выбранные пилюли, бюджет, нижняя ступень
-   воронки, CPA и CTA — жёлтый → оранжевый. Фон — фон страницы. Ширина ступеней — transform: scaleX (ставит
-   calculator.js). На широком экране блок — ровно экран под шапкой: кегль, высоты и отступы — от высоты окна (svh).
-   Двигаются только transform и opacity. */
+/* 05 Калькулятор (T22; T23 — палитра канала и формат «один экран»; T28 — «Повідомлення від бота» по образцу
+   reference/run3/calc-G-chosen.png). Переходов по прокрутке нет (H11): всё видно сразу.
+   Две колонки. Слева — заголовок панели «Оберіть параметри — бот порахує», параметры как крупные клавиши клавиатуры
+   бота в два столбца (ниша / GEO / цель; выбранная — жёлтый → оранжевый с тёмным текстом), под ними строка бюджета:
+   подпись, ползунок, цифра. Справа — прогноз как сообщение от бота в пузыре: аватар «e», имя, подпись
+   «бот · демо-коефіцієнти», вступительная фраза из параметров, сетка цифр (цель — крупно и акцентом), inline-кнопка
+   Telegram во всю ширину, время в углу. Под сеткой мелкой строкой дисклеймер и «Не знайшли свою нішу?».
+   Цифры меняют барабаны (stats-odometer.js, разметка .odo — маски и срезы градиента в stats.css). На широком экране
+   блок — ровно экран под шапкой: кегль, высоты и отступы — от высоты окна (svh). Двигаются только transform и opacity. */
 
 .section--calculator {
-  --calc-gap: clamp(0.75rem, 1.1vw, 1.25rem);
-  --calc-pad: clamp(1.25rem, 1rem + 1.4vw, 2.5rem);
-  --calc-soft: color-mix(in srgb, var(--text) 72%, transparent);
+  --calc-gap: clamp(1rem, 1.8vw, 1.75rem);
+  --calc-soft: color-mix(in srgb, var(--text) 55%, transparent);
+  --calc-key: color-mix(in srgb, var(--text) 8%, transparent); /* клавиша бота и строка бюджета */
+  --calc-key-h: clamp(48px, 3.4vw, 56px);
+  --calc-r: 14px;
   overflow-x: clip;
   padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5.5rem);
   color: var(--text);
@@ -32,50 +36,38 @@
   color: var(--text);
 }
 
-/* хвост заголовка — жёлтый → оранжевый (градиент из components.css), в строку: заголовок в одну строку,
-   место по высоте отдано панелям */
+/* хвост заголовка — жёлтый → оранжевый (градиент из components.css), в строку */
 .section--calculator .display__accent {
   display: inline;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 
-/* — две панели — */
+/* — две колонки — */
 .calc {
   display: grid;
   gap: var(--calc-gap);
-  align-items: stretch;
+  align-items: center;
 }
 
-@media (min-width: 1000px) {
-  .calc {
-    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
-  }
+/* ——— слева: клавиатура бота ——— */
+.calc__params {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.625rem, 0.9vw, 0.75rem);
+  min-width: 0;
+  margin: 0;
 }
 
 .calc__panel-title {
-  font-family: var(--font-body);
-  font-size: clamp(1.3rem, 1.05rem + 0.8vw, 1.875rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-  text-transform: none;
-  color: var(--text);
-}
-
-/* ——— левая панель: параметры ——— */
-.calc__params {
-  --calc-groups-gap: clamp(1.25rem, 2vw, 1.9rem);
-  display: flex;
-  flex-direction: column;
-  gap: var(--calc-groups-gap);
-  min-width: 0;
-  margin: 0;
-  padding: var(--calc-pad);
-  border-radius: var(--r-card-lg);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  color: var(--text);
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
+  font-family: var(--font-head);
+  font-size: clamp(1.5rem, 1.1rem + 1.1vw, 2.125rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--text) 90%, transparent);
 }
 
 .calc__group {
@@ -85,27 +77,17 @@
   border: 0;
 }
 
-.calc__legend {
-  display: block;
-  margin-bottom: 0.75rem;
-  padding: 0;
-  font-family: var(--font-body);
-  font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem);
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--text-muted);
-}
-
-.calc__pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+/* клавиши — два столбца, как inline-клавиатура Telegram */
+.calc__keys {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.5rem, 0.7vw, 0.625rem);
 }
 
 .calc__pill {
   position: relative;
-  display: inline-flex;
+  display: flex;
+  min-width: 0;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -122,18 +104,20 @@
 }
 
 .calc__pill-face {
-  --pill-h: 46px;
   position: relative;
-  display: inline-flex;
+  display: flex;
+  flex: 1;
   align-items: center;
-  min-height: var(--pill-h);
-  padding: 0 1.3rem;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--text) 5%, transparent);
+  justify-content: center;
+  min-width: 0;
+  min-height: var(--calc-key-h);
+  padding: 0.5rem 1rem;
+  border-radius: var(--calc-r);
+  background: var(--calc-key);
   color: var(--text);
-  font-size: clamp(0.9375rem, 0.88rem + 0.2vw, 1.0625rem);
+  font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem);
   font-weight: 600;
+  text-align: center;
   isolation: isolate;
   overflow: hidden;
   transition: transform var(--dur-fast) var(--ease-out);
@@ -148,7 +132,7 @@
   border-radius: inherit;
   background: var(--grad);
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(0.92);
   transition:
     opacity var(--dur) var(--ease-out),
     transform var(--dur) var(--ease-out);
@@ -156,6 +140,8 @@
 
 .calc__pill-text {
   position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -164,7 +150,6 @@
 }
 
 .calc__pill-input:checked + .calc__pill-face {
-  border-color: transparent;
   color: var(--accent-ink);
 }
 
@@ -178,46 +163,50 @@
   outline-offset: 3px;
 }
 
-/* ——— бюджет ——— */
+/* ——— строка бюджета: подпись · ползунок · цифра ——— */
 .calc__budget {
-  margin-top: auto;
-  padding-top: clamp(1.25rem, 2vw, 1.75rem);
-  border-top: 1px solid var(--line);
-}
-
-.calc__budget-head {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
+  align-items: center;
+  gap: clamp(0.75rem, 1.2vw, 1.25rem);
+  min-height: var(--calc-key-h);
+  margin-top: clamp(0.5rem, 1vw, 1rem);
+  padding: 0.5rem clamp(1rem, 1.4vw, 1.5rem);
+  border-radius: var(--calc-r);
+  background: var(--calc-key);
 }
 
-.calc__budget-head .calc__legend {
-  margin-bottom: 0;
+.calc__budget-label {
+  flex: none;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--calc-soft);
 }
 
-/* бюджет — крупно, жёлтый → оранжевый (текст ставится сразу, без табло) */
+/* бюджет — крупно, жёлтый → оранжевый (текст ставится сразу, без барабанов) */
 .calc__budget-value {
+  flex: none;
+  min-width: 4.2ch;
   background: var(--grad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 1.6rem + 2.6vw, 4.25rem);
+  font-size: clamp(1.75rem, 1.2rem + 1.2vw, 2.25rem);
   font-weight: 900;
-  line-height: 1;
+  line-height: 0.9;
   letter-spacing: 0;
+  text-align: right;
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
 }
 
 .calc__range {
-  --thumb: 28px;
-  --range-h: 44px;
+  --thumb: 22px;
+  --range-h: 40px;
   position: relative;
+  flex: 1;
+  min-width: 0;
   height: var(--range-h);
-  margin-top: 0.85rem;
 }
 
 .calc__range-track {
@@ -271,16 +260,17 @@
   background: transparent;
 }
 
+/* бегунок — жёлтый кружок с мягким ореолом, как на образце */
 .calc__range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: var(--thumb);
   height: var(--thumb);
   margin-top: calc((var(--range-h) - var(--thumb)) / 2);
-  border: 7px solid var(--accent);
+  border: 0;
   border-radius: 50%;
-  background: var(--bg);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+  background: var(--accent);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 25%, transparent);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
@@ -288,10 +278,10 @@
   width: var(--thumb);
   height: var(--thumb);
   box-sizing: border-box;
-  border: 7px solid var(--accent);
+  border: 0;
   border-radius: 50%;
-  background: var(--bg);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+  background: var(--accent);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 25%, transparent);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
@@ -307,301 +297,266 @@
 
 .calc__range-input:focus-visible::-webkit-slider-thumb {
   outline: 2px solid var(--text);
-  outline-offset: 6px;
+  outline-offset: 5px;
 }
 
 .calc__range-input:focus-visible::-moz-range-thumb {
   outline: 2px solid var(--text);
-  outline-offset: 6px;
+  outline-offset: 5px;
 }
 
-.calc__range-scale {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.35rem;
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--text-muted);
-}
-
-/* ——— правая панель: прогноз ——— */
-.calc__forecast {
-  --calc-forecast-gap: clamp(1rem, 1.4vw, 1.35rem);
+/* ——— справа: сообщение от бота ——— */
+.calc__bubble {
+  --calc-bubble-pad: clamp(1.25rem, 1rem + 1.2vw, 2.125rem);
   position: relative;
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
-  gap: var(--calc-forecast-gap);
   min-width: 0;
   margin: 0;
-  padding: var(--calc-pad);
-  border-radius: var(--r-card-lg);
-  background: var(--surface);
+  padding: var(--calc-bubble-pad) var(--calc-bubble-pad) calc(var(--calc-bubble-pad) + 0.5rem);
+  border-radius: 26px 26px 26px 6px;
+  background: var(--surface-2);
   border: 1px solid var(--line);
   color: var(--text);
+  box-shadow: 0 40px 80px -40px color-mix(in srgb, var(--bg) 90%, transparent);
   isolation: isolate;
-  overflow: hidden;
 }
 
-/* тёплое свечение снизу справа: сила растёт с бюджетом (opacity ставит calculator.js) */
-.calc__glow {
-  position: absolute;
-  z-index: -1;
-  right: -25%;
-  bottom: -40%;
-  width: 85%;
-  aspect-ratio: 1;
+.calc__from {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: clamp(0.75rem, 1.2vw, 1.125rem);
+}
+
+.calc__avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent-2) 30%, transparent), color-mix(in srgb, var(--accent) 6%, transparent) 60%, transparent);
-  opacity: 0.45;
-  pointer-events: none;
-  transition: opacity var(--dur-slow) var(--ease-out);
+  background: var(--grad);
+  color: var(--accent-ink);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  font-weight: 800;
 }
 
-.calc__forecast-head {
+.calc__from-text {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.calc__bot-name {
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.calc__bot-tag {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1rem;
-}
-
-/* плашка демо-коэффициентов */
-.calc__demo {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-  border-radius: var(--r-pill);
-  font-family: var(--font-mono);
+  gap: 0.35em;
   font-size: var(--fs-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.calc__demo::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-/* воронка */
-.calc__funnel {
-  display: grid;
-  gap: 0.25rem;
-  counter-reset: step;
-}
-
-.calc__step {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas:
-    'rate rate'
-    'label value'
-    'bar bar';
-  align-items: baseline;
-  gap: 0.4rem 1rem;
-  padding-block: 0.25rem;
-}
-
-.calc__step-label {
-  grid-area: label;
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 0.6rem;
-  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.25rem);
-  font-weight: 600;
-  color: var(--text);
-}
-
-.calc__step-label::before {
-  counter-increment: step;
-  content: '0' counter(step);
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-}
-
-.calc__step-meta {
-  font-size: var(--fs-xs);
-  font-weight: 500;
   color: var(--calc-soft);
 }
 
-.calc__step-value {
-  grid-area: value;
-  font-family: var(--font-head);
-  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.4rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  text-align: right;
+/* плашка демо-коэффициентов — часть подписи бота */
+.calc__demo::before {
+  content: '· ';
 }
 
-.calc__step-bar {
-  grid-area: bar;
-  display: block;
-  height: clamp(24px, 2.2vw, 32px);
-  border-radius: 10px;
-  transform-origin: 50% 50%;
-  transform: scaleX(1);
-  transition: transform var(--dur) var(--ease-out);
-  will-change: transform;
+.calc__intro {
+  margin: 0 0 clamp(0.75rem, 1.2vw, 1.125rem);
+  font-size: clamp(1rem, 0.92rem + 0.3vw, 1.125rem);
+  line-height: 1.5;
 }
 
-/* три ступени: от приглушённого оранжевого к полному акценту — чем ниже, тем ярче */
-.calc__step--1 .calc__step-bar {
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-2) 24%, var(--surface)), color-mix(in srgb, var(--accent-2) 38%, var(--surface)));
+.calc__intro-val {
+  font-weight: 600;
 }
 
-/* средняя ступень — только оранжевый по тёмному: жёлтый в смеси с тёмно-синим уходит в оливковый */
-.calc__step--2 .calc__step-bar {
-  background: linear-gradient(90deg, color-mix(in srgb, var(--accent-2) 50%, var(--surface)), color-mix(in srgb, var(--accent-2) 78%, var(--surface)));
-}
-
-.calc__step--3 .calc__step-bar {
-  background: var(--grad);
-}
-
-/* CTR — пилюля между показами и кликами */
-.calc__rate {
-  grid-area: rate;
-  justify-self: center;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-block: 0.15rem 0.2rem;
-  padding: 0.3rem 0.85rem;
-  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-  border-radius: var(--r-pill);
-  font-size: var(--fs-sm);
+.calc__intro b {
   font-weight: 700;
-  color: var(--text);
-  background: var(--bg);
+  color: var(--accent);
 }
 
-.calc__rate-label {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
+/* сетка цифр: две колонки, строка цели — во всю ширину, крупно и акцентом */
+.calc__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.5rem, 1vw, 0.75rem) 1.5rem;
+  margin: 0;
+}
+
+.calc__cell {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.calc__cell--big {
+  grid-column: 1 / -1;
+}
+
+.calc__cell-label {
+  font-size: var(--fs-sm);
   font-weight: 500;
-  letter-spacing: 0.1em;
-  color: var(--accent);
+  color: var(--calc-soft);
 }
 
 .calc__rate-value {
   font-variant-numeric: tabular-nums;
 }
 
-.calc__step-value.is-empty .calc__dash,
-.calc__money-value.is-empty .calc__dash,
-.calc__rate-value.is-empty .calc__dash {
-  display: none;
-}
-
-/* CPC и CPA */
-.calc__money {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin: 0;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-}
-
-.calc__money-item {
-  display: grid;
-  gap: 0.45rem;
-  min-width: 0;
-  padding: 0.85rem 0;
-}
-
-.calc__money-item + .calc__money-item {
-  padding-left: clamp(1rem, 2vw, 1.75rem);
-  border-left: 1px solid var(--line);
-}
-
-.calc__money-label {
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  color: var(--calc-soft);
-}
-
-.calc__money-value {
+.calc__cell-value {
   margin: 0;
   font-family: var(--font-head);
-  font-size: clamp(2rem, 1.2rem + 2vw, 3.25rem);
+  font-size: clamp(1.75rem, 6.2cqw, 2.875rem);
   font-weight: 900;
-  line-height: 1;
-  letter-spacing: 0.01em;
+  line-height: 0.95;
+  letter-spacing: 0;
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-/* CPA — главный итог: жёлтым (цифры меняет табло — цвет сплошной, без градиента в движущихся слоях) */
-.calc__money-item--accent .calc__money-value {
+.calc__cell--big .calc__cell-value {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: clamp(2.5rem, 9.4cqw, 4.375rem);
+}
+
+.calc__cell--money .calc__cell-value {
+  font-size: clamp(1.5rem, 4.6cqw, 2.125rem);
+}
+
+.calc__cell-value.is-empty .calc__dash,
+.calc__rate-value.is-empty .calc__dash {
+  display: none;
+}
+
+/* барабаны (разметка из stats-odometer.js, маски — в stats.css): обычные цифры — сплошным цветом текста,
+   строка цели — срезы общего градиента, как в блоке 02 */
+.calc .odo {
+  position: relative;
+  display: inline-flex;
+  background: none;
+  white-space: pre;
+}
+
+.calc .odo__char,
+.calc .odo__strip {
+  background: none;
+  color: inherit;
+}
+
+/* `background: none` выше сбрасывает и background-clip — здесь обрезка по тексту ставится заново, иначе
+   градиент ляжет сплошным прямоугольником поверх цифры */
+.calc__cell--big .odo__char,
+.calc__cell--big .odo__strip {
+  background-image: var(--grad);
+  background-position: calc(-1 * var(--odo-x, 0px)) 0;
+  background-size: var(--odo-w, 100%) 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.calc__cell--big .odo__strip {
+  background-size: var(--odo-w, 100%) calc(100% / var(--n, 1));
+}
+
+/* inline-кнопка Telegram во всю ширину пузыря */
+.calc__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 50px;
+  margin-top: clamp(0.875rem, 1.4vw, 1.25rem);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
   color: var(--accent);
-}
-
-/* CTA — акцентная пилюля с тёмным кружком-стрелкой, как «Обговорити проєкт» первого экрана */
-.calc__cta.btn {
-  align-self: flex-start;
+  font-size: var(--fs-base);
   font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
-.calc__cta.btn:focus-visible {
-  outline: 2px solid var(--text);
+.calc__cta:hover {
+  transform: translateY(-2px);
+}
+
+.calc__cta:focus-visible {
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
-.calc__disclaimer {
-  max-width: 62ch;
+.calc__cta-icon {
+  width: 1em;
+  height: 1em;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.calc__cta:hover .calc__cta-icon {
+  transform: translate(2px, -2px);
+}
+
+.calc__time {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 0.75rem;
   font-size: var(--fs-xs);
-  line-height: 1.6;
+  color: color-mix(in srgb, var(--text) 45%, transparent);
+}
+
+/* ——— строка под сеткой: дисклеймер и «Не знайшли свою нішу?» ——— */
+.calc__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin-top: clamp(1rem, 1.8vw, 1.75rem);
+  font-size: var(--fs-xs);
+  line-height: 1.5;
   color: var(--calc-soft);
 }
 
-/* строка «Не знайшли свою нішу?» */
 .calc__note {
-  display: block;
-  max-width: 62rem;
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
-  font-size: var(--fs-lg);
-  color: color-mix(in srgb, var(--text) 82%, transparent);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+  color: var(--calc-soft);
+  white-space: nowrap;
 }
 
 .calc__note-link {
   color: var(--text);
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: underline;
   text-decoration-color: var(--accent);
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
 
 .calc__note-icon {
   display: inline-block;
-  vertical-align: -0.15em;
-  margin-left: 0.2em;
-  width: 1.1em;
-  height: 1.1em;
+  align-self: center;
+  width: 1em;
+  height: 1em;
   color: var(--accent);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .calc__note:hover .calc__note-icon,
 .calc__note:focus-visible .calc__note-icon {
-  transform: translate(3px, -3px);
+  transform: translate(2px, -2px);
 }
 
 .calc__note:focus-visible {
@@ -610,17 +565,21 @@
   border-radius: 4px;
 }
 
-@media (min-width: 1100px) {
+/* — две колонки от 1000px — */
+@media (min-width: 1000px) {
+  .calc {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
   .section--calculator .display.section__title {
     max-width: none;
   }
 }
 
-/* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна — панели, ползунок с подписями, дисклеймер
-     и строка «Не знайшли свою нішу?»; кегль, высоты и отступы — от высоты окна — */
+/* — экран (H15): блок целиком между шапкой и низом окна; кегль, высоты и отступы — от высоты окна — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--calculator {
-    --calc-pad: clamp(1rem, 3.2svh, 2.5rem);
+    --calc-key-h: clamp(40px, 5.8svh, 56px);
     padding-block: var(--screen-pad);
   }
 
@@ -634,144 +593,118 @@
   }
 
   .calc__panel-title {
-    font-size: clamp(1.2rem, min(1.05rem + 0.8vw, 3.2svh), 1.875rem);
+    font-size: clamp(1.5rem, min(1.1rem + 1.1vw, 3.6svh), 2.125rem);
   }
 
   .calc__params {
-    --calc-groups-gap: clamp(0.75rem, 2.2svh, 1.9rem);
+    gap: clamp(0.4rem, 1.1svh, 0.75rem);
   }
 
-  .calc__legend {
-    margin-bottom: clamp(0.4rem, 1svh, 0.75rem);
+  .calc__keys {
+    gap: clamp(0.4rem, 1.1svh, 0.625rem);
   }
 
-  .calc__pill-face {
-    --pill-h: clamp(36px, 4.6svh, 46px);
+  .calc__bubble {
+    --calc-bubble-pad: clamp(1rem, 3.2svh, 2.125rem);
   }
 
-  .calc__budget {
-    padding-top: clamp(0.75rem, 2svh, 1.75rem);
+  .calc__from {
+    margin-bottom: clamp(0.5rem, 1.9svh, 1.125rem);
   }
 
-  .calc__budget-value {
-    font-size: clamp(2.25rem, min(1.6rem + 2.6vw, 6.4svh), 4.25rem);
+  .calc__avatar {
+    width: clamp(34px, 4.5svh, 42px);
+    height: clamp(34px, 4.5svh, 42px);
   }
 
-  .calc__range {
-    --range-h: clamp(34px, 4.4svh, 44px);
-    margin-top: clamp(0.4rem, 1.2svh, 0.85rem);
+  .calc__intro {
+    margin-bottom: clamp(0.5rem, 1.9svh, 1.125rem);
+    font-size: clamp(0.9375rem, min(0.92rem + 0.3vw, 1.9svh), 1.125rem);
   }
 
-  .calc__forecast {
-    --calc-forecast-gap: clamp(0.6rem, 1.6svh, 1.35rem);
+  .calc__grid {
+    row-gap: clamp(0.35rem, 1svh, 0.75rem);
   }
 
-  .calc__step {
-    gap: clamp(0.25rem, 0.6svh, 0.4rem) 1rem;
-    padding-block: clamp(0.1rem, 0.3svh, 0.25rem);
+  .calc__cell {
+    gap: clamp(0.2rem, 0.6svh, 0.35rem);
   }
 
-  .calc__step-label {
-    font-size: clamp(0.9375rem, min(0.92rem + 0.35vw, 2.2svh), 1.25rem);
+  .calc__cell-value {
+    font-size: clamp(1.75rem, min(6.2cqw, 4.9svh), 2.875rem);
   }
 
-  .calc__step-value {
-    font-size: clamp(1.375rem, min(1.1rem + 1.2vw, 3.5svh), 2.4rem);
+  .calc__cell--big .calc__cell-value {
+    font-size: clamp(2.5rem, min(9.4cqw, 7.5svh), 4.375rem);
   }
 
-  .calc__step-bar {
-    height: clamp(14px, 2.6svh, 32px);
+  .calc__cell--money .calc__cell-value {
+    font-size: clamp(1.5rem, min(4.6cqw, 3.6svh), 2.125rem);
   }
 
-  .calc__rate {
-    padding-block: clamp(0.15rem, 0.4svh, 0.3rem);
+  .calc__cta {
+    min-height: clamp(42px, 5.3svh, 50px);
+    margin-top: clamp(0.6rem, 2.1svh, 1.25rem);
   }
 
-  .calc__money-item {
-    padding-block: clamp(0.45rem, 1.3svh, 0.85rem);
-  }
-
-  .calc__money-value {
-    font-size: clamp(1.75rem, min(1.2rem + 2vw, 5svh), 3.25rem);
-  }
-
-  .calc__cta.btn {
-    --btn-h: clamp(44px, 5.8svh, 56px);
-  }
-
-  /* дисклеймер — одной строкой во всю ширину панели */
-  .calc__disclaimer {
-    max-width: none;
-  }
-
-  /* строка «Не знайшли свою нішу?» — одной строкой */
-  .calc__note {
-    max-width: none;
-    margin-top: clamp(0.75rem, 2svh, 2.5rem);
+  .calc__foot {
+    margin-top: clamp(0.5rem, 1.8svh, 1.75rem);
   }
 }
 
-/* невысокий широкий экран (1366×768): блок плотнее по вертикали, чтобы целиком встать между шапкой и низом окна */
+/* невысокий широкий экран (1366×768): плотнее по вертикали */
 @media (min-width: 900px) and (orientation: landscape) and (max-height: 820px) {
-  .section--calculator {
-    --calc-pad: clamp(0.9rem, 2.6svh, 1.5rem);
-  }
-
   .calc__head {
-    margin-bottom: clamp(0.6rem, 1.5svh, 1rem);
+    margin-bottom: clamp(0.5rem, 1.5svh, 1rem);
   }
 
   .section--calculator .display.section__title {
     font-size: clamp(2.25rem, 6.6svh, 3.5rem);
   }
-
-  .calc__forecast {
-    --calc-forecast-gap: clamp(0.5rem, 1.2svh, 0.9rem);
-  }
-
-  .calc__step-bar {
-    height: clamp(12px, 2.2svh, 20px);
-  }
 }
 
+/* — узкий экран: клавиатура, под ней пузырь; сетка цифр в один столбец, чтобы диапазоны не ломались — */
 @media (max-width: 599px) {
-  .calc__params,
-  .calc__forecast {
-    border-radius: var(--r-card);
+  .calc__bubble {
+    border-radius: 20px 20px 20px 6px;
   }
 
-  .calc__pill-face {
-    --pill-h: 44px;
-    padding: 0 1rem;
+  .calc__budget {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
   }
-}
 
-@media (max-width: 519px) {
-  .calc__money {
+  .calc__budget-label {
+    order: 1;
+  }
+
+  .calc__budget-value {
+    order: 2;
+    margin-left: auto;
+  }
+
+  .calc__range {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .calc__grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .calc__money-item + .calc__money-item {
-    padding-left: 0;
-    border-left: 0;
-    border-top: 1px solid var(--line);
+  .calc__cell-value {
+    font-size: clamp(1.75rem, 9vw, 2.5rem);
   }
 
-  .calc__step {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      'rate'
-      'label'
-      'value'
-      'bar';
+  .calc__cell--big .calc__cell-value {
+    font-size: clamp(2.5rem, 13vw, 3.5rem);
   }
 
-  .calc__step-value {
-    text-align: left;
+  .calc__cell--money .calc__cell-value {
+    font-size: clamp(1.5rem, 7.5vw, 2rem);
   }
 
-  .calc__cta.btn {
-    align-self: stretch;
+  .calc__note {
     white-space: normal;
   }
 }

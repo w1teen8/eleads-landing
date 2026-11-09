@@ -307,3 +307,10 @@ export function forecast(input, rates): Forecast
 - Контент: `formats.phone.{tabsLabel,time,avatar,channel,bot,sponsored,join,message}`; `formats.hint` / `formats.caption` сохранены (вопрос пользователю).
 - CSS: `.phone` — `container-type:size`, `aspect-ratio:300/620`, внутри всё в `cqw`; на десктопе телефон через оба ряда сетки, `max-height:46rem`.
 
+### T28 — блок 05: калькулятор как сообщение от бота (H38)
+
+- `calculator.js`: `board(node, text, move: 'roll'|'flip'|null)` — очередь смен; цифры — `rollTo` из `stats-odometer.js`, подпись цели — `flipSwap`; `paintIntro(lang)` — фраза бота из шаблона `calculator.intro` (`{budget}`, `{niche}`, `{geo}` → `calculator.introGeo.<geoId>`). Модель и `calculator.json` не тронуты; `funnelWidths` больше не используется.
+- Разметка: `form.calc__params` → `.calc__keys[data-calc-options]` (клавиши 2 столбца), `.calc__budget`; `.calc__bubble` → `[data-calc-intro]`, `dl.calc__grid` из `.calc__cell[data-calc-step]` (`--big` — цель, `--money`), `a.calc__cta[data-calc-cta]`, `.calc__time`, `p.calc__foot` (дисклеймер + ссылка `calculator_note`).
+- Контент: `calculator.bot.{avatar,tag,time}`, `calculator.intro`, `calculator.introGeo.{ua,worldwide}`; `paramsTitle`/`budget`/`forecastTitle` переписаны; `note.tail` удалён.
+- CSS: барабаны внутри `.calc` — сплошной цвет; в `.calc__cell--big` градиент с `background-clip:text` (тест-регресс на «квадраты»).
+

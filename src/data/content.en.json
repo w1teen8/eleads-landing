@@ -256,12 +256,12 @@
   "calculator": {
     "title": "Estimate your Telegram Ads potential",
     "titleAccent": "Telegram Ads potential",
-    "paramsTitle": "Campaign settings",
+    "paramsTitle": "Pick the settings — the bot will do the math",
     "niche": "Niche",
     "geo": "GEO",
     "goal": "Goal",
-    "budget": "Ad budget",
-    "forecastTitle": "Estimated forecast",
+    "budget": "Budget",
+    "forecastTitle": "eLeads Forecast",
     "demoBadge": "demo coefficients",
     "funnelLabel": "Campaign funnel",
     "steps": {
@@ -283,10 +283,19 @@
     "disclaimer": "The estimate is based on past eLeads campaigns. Actual results depend on GEO, offer, landing page and creatives.",
     "note": {
       "lead": "Didn't find your niche?",
-      "link": "Message me",
-      "tail": "— I'll check whether I have relevant experience and give you a separate forecast."
+      "link": "Message me"
     },
-    "live": "Forecast for {budget}: impressions {impressions}, clicks {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}."
+    "live": "Forecast for {budget}: impressions {impressions}, clicks {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}.",
+    "bot": {
+      "avatar": "e",
+      "tag": "bot",
+      "time": "9:41"
+    },
+    "intro": "With a {budget} budget for the {niche} niche {geo}, roughly:",
+    "introGeo": {
+      "ua": "in Ukraine",
+      "worldwide": "worldwide"
+    }
   },
   "cases": {
     "title": "Results across niches and GEOs",

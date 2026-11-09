@@ -584,94 +584,81 @@
               <h3 id="calc-params-title" class="calc__panel-title" data-i18n="calculator.paramsTitle"></h3>
 
               <fieldset class="calc__group" data-calc-group="niche">
-                <legend class="calc__legend" data-i18n="calculator.niche"></legend>
-                <div class="calc__pills" data-calc-options></div>
+                <legend class="visually-hidden" data-i18n="calculator.niche"></legend>
+                <div class="calc__keys" data-calc-options></div>
               </fieldset>
 
               <fieldset class="calc__group" data-calc-group="geo">
-                <legend class="calc__legend" data-i18n="calculator.geo"></legend>
-                <div class="calc__pills" data-calc-options></div>
+                <legend class="visually-hidden" data-i18n="calculator.geo"></legend>
+                <div class="calc__keys" data-calc-options></div>
               </fieldset>
 
               <fieldset class="calc__group" data-calc-group="goal">
-                <legend class="calc__legend" data-i18n="calculator.goal"></legend>
-                <div class="calc__pills" data-calc-options></div>
+                <legend class="visually-hidden" data-i18n="calculator.goal"></legend>
+                <div class="calc__keys" data-calc-options></div>
               </fieldset>
 
               <div class="calc__budget">
-                <div class="calc__budget-head">
-                  <label class="calc__legend" id="calc-budget-label" for="calc-budget" data-i18n="calculator.budget"></label>
-                  <output class="calc__budget-value" for="calc-budget" data-calc-budget-value></output>
-                </div>
+                <label class="calc__budget-label" id="calc-budget-label" for="calc-budget" data-i18n="calculator.budget"></label>
                 <div class="calc__range">
                   <span class="calc__range-track" aria-hidden="true"><span class="calc__range-fill" data-calc-fill></span></span>
                   <input id="calc-budget" class="calc__range-input" type="range" min="0" max="59" step="1" value="17" aria-labelledby="calc-budget-label" data-calc-budget />
                 </div>
-                <div class="calc__range-scale" aria-hidden="true">
-                  <span data-calc-min></span>
-                  <span data-calc-max></span>
-                </div>
+                <output class="calc__budget-value" for="calc-budget" data-calc-budget-value></output>
               </div>
             </form>
 
-            <div class="calc__forecast" role="group" aria-labelledby="calc-forecast-title">
-              <span class="calc__glow" aria-hidden="true"></span>
-              <div class="calc__forecast-head">
-                <h3 id="calc-forecast-title" class="calc__panel-title" data-i18n="calculator.forecastTitle"></h3>
-                <span class="calc__demo" data-calc-demo data-i18n="calculator.demoBadge"></span>
+            <div class="calc__bubble" role="group" aria-labelledby="calc-forecast-title">
+              <div class="calc__from">
+                <span class="calc__avatar" aria-hidden="true" data-i18n="calculator.bot.avatar"></span>
+                <span class="calc__from-text">
+                  <b id="calc-forecast-title" class="calc__bot-name" data-i18n="calculator.forecastTitle"></b>
+                  <small class="calc__bot-tag"><span data-i18n="calculator.bot.tag"></span><span class="calc__demo" data-calc-demo data-i18n="calculator.demoBadge"></span></small>
+                </span>
               </div>
 
-              <ol class="calc__funnel" data-i18n-attr="aria-label:calculator.funnelLabel">
-                <li class="calc__step calc__step--1" data-calc-step="impressions">
-                  <span class="calc__step-bar" aria-hidden="true"></span>
-                  <span class="calc__step-label" data-i18n="calculator.steps.impressions"></span>
-                  <span class="calc__step-value"><span data-calc-lo="impressions"></span><span class="calc__dash"> – </span><span data-calc-hi="impressions"></span></span>
-                </li>
-                <li class="calc__step calc__step--2" data-calc-step="clicks">
-                  <span class="calc__rate">
-                    <span class="calc__rate-label" data-i18n="calculator.metrics.ctr"></span>
-                    <span class="calc__rate-value"><span data-calc-lo="ctr"></span><span class="calc__dash">–</span><span data-calc-hi="ctr"></span></span>
-                  </span>
-                  <span class="calc__step-bar" aria-hidden="true"></span>
-                  <span class="calc__step-label" data-i18n="calculator.steps.clicks"></span>
-                  <span class="calc__step-value"><span data-calc-lo="clicks"></span><span class="calc__dash"> – </span><span data-calc-hi="clicks"></span></span>
-                </li>
-                <li class="calc__step calc__step--3" data-calc-step="conversions">
-                  <span class="calc__step-bar" aria-hidden="true"></span>
-                  <span class="calc__step-label">
-                    <span data-calc-goal-step></span>
-                    <span class="calc__step-meta" data-i18n="calculator.metrics.conversions"></span>
-                  </span>
-                  <span class="calc__step-value"><span data-calc-lo="conversions"></span><span class="calc__dash"> – </span><span data-calc-hi="conversions"></span></span>
-                </li>
-              </ol>
+              <p class="calc__intro" data-calc-intro></p>
 
-              <dl class="calc__money">
-                <div class="calc__money-item">
-                  <dt class="calc__money-label" data-i18n="calculator.metrics.cpc"></dt>
-                  <dd class="calc__money-value"><span data-calc-lo="cpc"></span><span class="calc__dash"> – </span><span data-calc-hi="cpc"></span></dd>
+              <dl class="calc__grid">
+                <div class="calc__cell" data-calc-step="impressions">
+                  <dt class="calc__cell-label" data-i18n="calculator.steps.impressions"></dt>
+                  <dd class="calc__cell-value"><span data-calc-lo="impressions"></span><span class="calc__dash"> – </span><span data-calc-hi="impressions"></span></dd>
                 </div>
-                <div class="calc__money-item calc__money-item--accent">
-                  <dt class="calc__money-label" data-i18n="calculator.metrics.cpa"></dt>
-                  <dd class="calc__money-value"><span data-calc-lo="cpa"></span><span class="calc__dash"> – </span><span data-calc-hi="cpa"></span></dd>
+                <div class="calc__cell" data-calc-step="clicks">
+                  <dt class="calc__cell-label"><span data-i18n="calculator.steps.clicks"></span> · <span data-i18n="calculator.metrics.ctr"></span> <span class="calc__rate-value"><span data-calc-lo="ctr"></span><span class="calc__dash">–</span><span data-calc-hi="ctr"></span></span></dt>
+                  <dd class="calc__cell-value"><span data-calc-lo="clicks"></span><span class="calc__dash"> – </span><span data-calc-hi="clicks"></span></dd>
+                </div>
+                <div class="calc__cell calc__cell--big" data-calc-step="conversions">
+                  <dt class="calc__cell-label" data-calc-goal-step></dt>
+                  <dd class="calc__cell-value"><span data-calc-lo="conversions"></span><span class="calc__dash"> – </span><span data-calc-hi="conversions"></span></dd>
+                </div>
+                <div class="calc__cell calc__cell--money">
+                  <dt class="calc__cell-label" data-i18n="calculator.metrics.cpc"></dt>
+                  <dd class="calc__cell-value"><span data-calc-lo="cpc"></span><span class="calc__dash"> – </span><span data-calc-hi="cpc"></span></dd>
+                </div>
+                <div class="calc__cell calc__cell--money">
+                  <dt class="calc__cell-label" data-i18n="calculator.metrics.cpa"></dt>
+                  <dd class="calc__cell-value"><span data-calc-lo="cpa"></span><span class="calc__dash"> – </span><span data-calc-hi="cpa"></span></dd>
                 </div>
               </dl>
 
-              <a class="btn btn--primary btn--lg calc__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="calculator" data-calc-cta>
+              <a class="calc__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="calculator" data-calc-cta>
                 <span data-i18n="calculator.cta.label"></span>
-                <span class="btn__arrow" aria-hidden="true" data-i18n="calculator.cta.arrow"></span>
+                <svg class="calc__cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
               </a>
-              <p class="calc__disclaimer" data-i18n="calculator.disclaimer"></p>
+              <span class="calc__time" aria-hidden="true" data-i18n="calculator.bot.time"></span>
               <p class="visually-hidden" aria-live="polite" aria-atomic="true" data-calc-live></p>
             </div>
           </div>
 
-          <a class="calc__note" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="calculator_note">
-            <span class="calc__note-lead" data-i18n="calculator.note.lead"></span>
-            <span class="calc__note-link" data-i18n="calculator.note.link"></span>
-            <span class="calc__note-tail" data-i18n="calculator.note.tail"></span>
-            <svg class="calc__note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
-          </a>
+          <p class="calc__foot">
+            <span class="calc__disclaimer" data-i18n="calculator.disclaimer"></span>
+            <a class="calc__note" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="calculator_note">
+              <span class="calc__note-lead" data-i18n="calculator.note.lead"></span>
+              <span class="calc__note-link" data-i18n="calculator.note.link"></span>
+              <svg class="calc__note-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+            </a>
+          </p>
         </div>
       </section>
 

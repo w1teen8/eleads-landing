@@ -255,12 +255,12 @@
   "calculator": {
     "title": "Розрахуйте потенціал Telegram Ads",
     "titleAccent": "Telegram Ads",
-    "paramsTitle": "Параметри кампанії",
+    "paramsTitle": "Оберіть параметри — бот порахує",
     "niche": "Ніша",
     "geo": "GEO",
     "goal": "Ціль",
-    "budget": "Рекламний бюджет",
-    "forecastTitle": "Орієнтовний прогноз",
+    "budget": "Бюджет",
+    "forecastTitle": "eLeads Forecast",
     "demoBadge": "демо-коефіцієнти",
     "funnelLabel": "Воронка кампанії",
     "steps": {
@@ -282,10 +282,19 @@
     "disclaimer": "Розрахунок базується на історичних кампаніях eLeads. Фактичний результат залежить від GEO, оферу, посадкової та креативів.",
     "note": {
       "lead": "Не знайшли свою нішу?",
-      "link": "Напишіть мені",
-      "tail": "— перевірю, чи є релевантний досвід, і дам окремий прогноз."
+      "link": "Напишіть мені"
     },
-    "live": "Прогноз на {budget}: покази {impressions}, кліки {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}."
+    "live": "Прогноз на {budget}: покази {impressions}, кліки {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}.",
+    "bot": {
+      "avatar": "e",
+      "tag": "бот",
+      "time": "9:41"
+    },
+    "intro": "За бюджету {budget} для ніші {niche} {geo} орієнтовно:",
+    "introGeo": {
+      "ua": "в Україні",
+      "worldwide": "по всьому світу"
+    }
   },
   "cases": {
     "title": "Результати в різних нішах і GEO",
