@@ -1,0 +1,70 @@
+/* Образец, по которому сделан выбранный пользователем вариант B «Пост у Telegram» с шрифтом канала
+   (картинка — reference/run3/hero-B-font-chosen.png, 1903×937). Это НЕ код для копирования: стили впрыскивались
+   поверх старого синего первого экрана в headless Chrome. В проекте — через токены (hex только в tokens.css),
+   тексты — через content.*.json, разметка шапки карточки — в index.html. GRAD = linear-gradient(90deg,#FFD23F,#FF8A1F). */
+
+/* ——— палитра первого экрана ——— */
+.hero__screen { background: #070C18; color: #F4F2EC; }
+.hero__bg {
+  background:
+    radial-gradient(18% 28% at 50% 30%, rgba(255,186,72,.20), transparent 70%),
+    radial-gradient(44% 58% at 50% 34%, rgba(255,138,31,.10), transparent 76%),
+    #070C18;
+}
+.hero__word { color: #F4F2EC; }
+.hero__title { color: #F4F2EC; }
+.hero__subtitle { color: rgba(244,242,236,.72); }
+.hero__cta { background: GRAD; color: #070C18; box-shadow: 0 18px 44px -18px rgba(255,138,31,.6); }
+.hero__cta-arrow { background: #070C18; color: #FFD23F; }
+.hero__fact-value { background: GRAD; -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero__fact-label, .hero__ad-text { color: rgba(244,242,236,.66); }
+.hero__ad-title { color: #F4F2EC; }
+
+/* ——— шрифт канала: Sofia Sans Extra Condensed 900, заглавные ——— */
+.hero__copy { top: 56%; }                           /* заголовок стал выше — колонка поднята */
+.hero__title {
+  font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; text-transform: uppercase;
+  font-size: calc(74 * var(--u)); line-height: .9; letter-spacing: -.002em;
+}
+.hero__line { padding-bottom: 0; }                  /* проверить, что маска строки не режет хвосты Д/Ц/Щ/У и EN */
+.hero__line:nth-child(2) .hero__line-inner {        /* вся вторая строка «TELEGRAM ADS» — жёлто-оранжевая */
+  background: GRAD; -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero__fact-value {
+  font-family: 'Sofia Sans Extra Condensed', sans-serif; font-weight: 900; text-transform: uppercase;
+  letter-spacing: 0; line-height: .95; font-size: calc(54 * var(--u));
+}
+
+/* ——— левая колонка: метка с жёлто-оранжевым штрихом ——— */
+.hero__eyebrow { display: flex; align-items: center; gap: 14px; color: #FFD23F; }
+.hero__eyebrow::before { content: ""; width: 30px; height: 2px; background: GRAD; }
+
+/* ——— правая колонка: цифры строкой с тонкими разделителями ——— */
+.hero__facts { gap: calc(30 * var(--u)); justify-content: start; }
+.hero__fact { position: relative; }
+.hero__fact + .hero__fact::before {
+  content: ""; position: absolute; left: calc(-15 * var(--u)); top: 8%; bottom: 8%; width: 1px;
+  background: rgba(244,242,236,.16);
+}
+
+/* ——— карточка рекламы как сообщение в Telegram (тёмная тема) ——— */
+.hero__ad {
+  padding: calc(14 * var(--u)) calc(18 * var(--u)) 0; border-radius: 18px; background: #111A2C;
+  border: 1px solid rgba(244,242,236,.09); box-shadow: 0 34px 70px -34px rgba(0,0,0,.8); overflow: hidden;
+}
+.hero__ad-tag { display: none; }                    /* метку «Ad» заменяет строка-шапка карточки */
+/* новая разметка в начале .hero__ad:
+   <div class="…head"><span class="…ava">[знак-стрелка логотипа]</span><span class="…name">Ваш канал</span><span class="…label">Реклама</span></div> */
+.mock-head { display: flex; align-items: center; gap: 12px; margin-bottom: calc(10 * var(--u)); }
+.mock-ava { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: GRAD; color: #070C18; }
+.mock-ava svg { width: 20px; height: 20px; }
+.mock-name { font-weight: 700; font-size: 15px; color: #FFD23F; line-height: 1.2; }
+.mock-label {
+  margin-left: auto; padding: 3px 9px; border-radius: 999px; background: rgba(244,242,236,.08);
+  font-size: 11px; letter-spacing: .06em; color: rgba(244,242,236,.6);
+}
+.hero__ad-btn {                                     /* кнопка во всю ширину снизу, как у рекламы в Telegram */
+  display: flex; justify-content: center; margin: calc(14 * var(--u)) calc(-18 * var(--u)) 0; min-height: 48px;
+  border-top: 1px solid rgba(244,242,236,.08); background: rgba(255,210,63,.07); color: #FFD23F;
+  text-decoration: none; letter-spacing: .08em;
+}
