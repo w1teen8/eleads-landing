@@ -55,7 +55,8 @@ test('стили: название шрифтом канала заглавны�
 
 test('наведение: подъём и наклон плитки, сдвиг иконки; только на мыши и без reduced-motion; transform/opacity', () => {
   assert.match(css, /@media\s*\(hover:\s*hover\)\s*and\s*\(pointer:\s*fine\)\s*and\s*\(prefers-reduced-motion:\s*no-preference\)\s*\{[\s\S]*?\.niches__card:hover[\s\S]*?--lift:\s*-\d/);
-  assert.match(css, /\.niches__card:hover \.niches__icon[^{]*\{[^}]*transform:\s*translate/);
+  assert.match(css, /\.niches__card:hover \.niches__icon[^{]*\{[^}]*transform:\s*scale\(2\.[234]\)/);
+  assert.match(css, /\.niches__icon\s*\{[^}]*transform-origin:\s*100% 100%/, 'растёт из правого нижнего угла');
   assert.doesNotMatch(css, /@media[^{]*max-width[^{]*\{[\s\S]*?:hover/, 'нет hover внутри мобильных правил');
   for (const [, value] of css.matchAll(/transition:\s*([^;]+);/g)) {
     for (const part of value.split(',')) assert.match(part.trim(), /^(transform|opacity)\b/, `transition: ${value}`);
@@ -75,4 +76,37 @@ test('у семи ниш только название и иконка; назв
   assert.match(ic, /width:\s*2\d%/);
   assert.match(ic, /max-height:\s*60%/);
   assert.match(css, /min\(2\.9vw,\s*6svh\)/, 'кегль названия: от ширины и высоты окна');
+});
+
+test('абзаца под заголовком блока нет: ни разметки, ни ключа, ни стилей', () => {
+  assert.doesNotMatch(section, /niches\.lead|niches__lead/);
+  assert.doesNotMatch(css, /niches__lead/);
+  for (const l of ['ua', 'en']) assert.equal(JSON.parse(read(`src/data/content.${l}.json`)).niches.lead, undefined, l);
+});
+
+test('появление: под .js-anim плитки и заголовок скрыты до .is-in; без .js-anim (reduced-motion, nomotion) ничего не скрыто', () => {
+  const hidden = [...css.matchAll(/([^{}]+)\{[^}]*opacity:\s*0;[^}]*\}/g)].map((m) => m[1].trim()).filter((sel) => !/^\d+%$/.test(sel));
+  assert.ok(hidden.length > 0);
+  for (const sel of hidden) assert.match(sel, /\.js-anim [^,]*:not\(\.is-in\)/, `скрыто без .js-anim или без .is-in: ${sel}`);
+  assert.match(css, /\.js-anim \.section--niches:not\(\.is-in\) \.niches__item/);
+  const js = read('src/sections/niches.js');
+  assert.match(js, /if \(reduced\) return;[\s\S]*enter\(root\)/, 'при reduced-motion появления нет');
+  assert.match(js, /if \(entered\) return;/, 'один раз');
+  assert.match(js, /classList\.add\('is-in'\)/);
+  assert.match(js, /fill: 'both'/);
+});
+
+test('появление: волна по диагонали, шаг ≈70 мс, иконка позже плитки, всё ≤ 1,4 с; «Інша ніша?» — самолётик улетает за 700 мс', async () => {
+  const { ENTER } = await import('../src/sections/niches.js');
+  assert.equal(ENTER.step, 70);
+  assert.equal(ENTER.scale, 0.92);
+  assert.equal(ENTER.y, 28);
+  const lastWave = 3 + 1; // 4 колонки, 2 строки
+  const total = lastWave * ENTER.step + ENTER.icon.delay + ENTER.icon.duration;
+  assert.ok(total <= 1400, `${total} мс`);
+  assert.ok(lastWave * ENTER.step + ENTER.duration <= 1400);
+  assert.ok(ENTER.icon.delay > 0);
+  assert.match(css, /@keyframes niches-fly[\s\S]*?translate\(130%, -130%\)/);
+  assert.match(css, /\.niches__card--other:hover \.niches__icon[^{]*\{[^}]*animation:\s*niches-fly 700ms/);
+  assert.match(css, /\.niches__card--other:hover \.niches__arrow[^{]*\{[^}]*transform:\s*rotate\(/);
 });

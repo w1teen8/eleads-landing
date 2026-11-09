@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-09T18:18:39+02:00",
+  "updatedAt": "2026-11-09T18:25:22+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1137,10 +1137,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "startedAt": "2026-11-09T17:28:01+02:00",
+      "finishedAt": "2026-11-09T18:21:57+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 167,
+        "failed": 0
+      },
+      "commit": "9740b45"
     },
     {
       "id": "26",
@@ -1149,6 +1155,8 @@ window.STATE =
         "H26",
         "H27",
         "H28",
+        "H29",
+        "H30",
         "H15",
         "H14",
         "H18"
@@ -1171,7 +1179,12 @@ window.STATE =
       "status": "in-progress",
       "startedAt": "2026-11-09T18:14:10+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 167,
+        "failed": 0
+      },
+      "commit": "9740b45"
     },
     {
       "id": "F1",
@@ -1218,7 +1231,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 141,
+    "passed": 167,
     "failed": 0
   },
   "debt": {
@@ -1413,9 +1426,13 @@ window.STATE =
     "2026-11-09T18:14:09+02:00",
     "2026-11-09T18:14:10+02:00",
     "2026-11-09T18:16:12+02:00",
-    "2026-11-09T18:18:39+02:00"
+    "2026-11-09T18:18:39+02:00",
+    "2026-11-09T18:21:57+02:00",
+    "2026-11-09T18:21:58+02:00",
+    "2026-11-09T18:24:21+02:00",
+    "2026-11-09T18:25:22+02:00"
   ],
-  "rev": 146,
+  "rev": 150,
   "waiting": null,
   "waits": [
     {
@@ -2502,6 +2519,43 @@ window.STATE =
     },
     {
       "t": "2026-11-09T18:18:39+02:00",
+      "k": "tickets",
+      "n": 27
+    },
+    {
+      "t": "2026-11-09T18:21:57+02:00",
+      "k": "ticket",
+      "ids": [
+        "25"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 167,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-09T18:21:58+02:00",
+      "k": "ticket",
+      "ids": [
+        "26"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 167,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-09T18:24:21+02:00",
+      "k": "ticket",
+      "ids": [
+        "26"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-09T18:25:22+02:00",
       "k": "tickets",
       "n": 27
     }

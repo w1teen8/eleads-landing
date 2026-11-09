@@ -30,11 +30,11 @@ test('восемь карточек по порядку брифа; восьма
   assert.doesNotMatch(niches, /niches__orbit|class="planet"|data-reveal/, 'орбита и собственные ревилы убраны');
 });
 
-// H11: «убери все переходы которые сейчас есть» — блок идёт обычной прокруткой, плитки видны сразу
-test('движение: ни наезда, ни лесенки, ни табло при появлении; только hover-наклон transform-ом', () => {
+// H11 + T26: переходов между экранами нет; своё движение блока — появление один раз и hover (тесты — niches-mosaic.test.js)
+test('движение: без наезда и табло; hover-наклон transform-ом; GSAP только как триггер входа в окно', () => {
   const js = read('src/sections/niches.js');
-  for (const fn of ['stackReveal', 'stagger', 'flipSwap']) assert.doesNotMatch(js, new RegExp(`\\b${fn}\\b`), fn);
-  assert.doesNotMatch(js, /gsap|ScrollTrigger|requestAnimationFrame|\.animate\(|textContent\s*=/);
+  for (const fn of ["stackReveal", "stagger", "flipSwap"]) assert.doesNotMatch(js, new RegExp(`\\b${fn}\\(`), fn);
+  assert.doesNotMatch(js, /gsap\.|requestAnimationFrame|textContent\s*=/);
   assert.match(js, /pointermove/);
   assert.match(read('src/styles/sections/niches.css'), /transform:\s*translateY\(var\(--lift\)\)\s*rotateX\(var\(--tilt-x\)\)/);
 });

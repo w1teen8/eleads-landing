@@ -37,13 +37,6 @@
 
 /* хвост заголовка — второй строкой, жёлтый → оранжевый (градиент и строка — из components.css .display__accent) */
 
-.niches__lead {
-  max-width: 62ch;
-  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.3125rem);
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--text) 82%, transparent);
-}
-
 /* — плитки-мозаика (T26, образец reference/run3/niches-D1-chosen.png) — */
 .niches__grid {
   display: grid;
@@ -118,7 +111,8 @@
   color: currentColor;
   opacity: 0.16;
   pointer-events: none;
-  transition: transform var(--dur) var(--ease-out);
+  transform-origin: 100% 100%;
+  transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
 }
 
 .niches__card--yellow .niches__icon,
@@ -186,6 +180,11 @@
   height: 46%;
 }
 
+/* кружок со стрелкой поворачивается при наведении (правило — ниже, в блоке hover) */
+.niches__arrow {
+  transition: transform var(--dur) var(--ease-out);
+}
+
 .niches__card--other:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
@@ -200,10 +199,62 @@
     transform: translateY(var(--lift)) rotate(-0.8deg) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
   }
 
+  /* иконка вырастает из правого нижнего угла и становится заметнее; название лежит поверх (z-index) */
   .niches__card:hover .niches__icon,
   .niches__card:focus-visible .niches__icon {
-    transform: translate(-6px, -4px) rotate(2deg);
+    transform: scale(2.3);
+    opacity: 0.24;
   }
+
+  /* «Інша ніша?»: самолётик улетает вправо-вверх за край и возвращается снизу-слева, стрелка в кружке поворачивается */
+  .niches__card--other:hover .niches__icon,
+  .niches__card--other:focus-visible .niches__icon {
+    transform: none;
+    opacity: 0.22;
+    animation: niches-fly 700ms var(--ease-out) 1;
+  }
+
+  .niches__card--other:hover .niches__arrow,
+  .niches__card--other:focus-visible .niches__arrow {
+    transform: rotate(45deg);
+  }
+}
+
+@keyframes niches-fly {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.22;
+  }
+  45% {
+    transform: translate(130%, -130%);
+    opacity: 0;
+  }
+  46% {
+    transform: translate(-130%, 130%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.22;
+  }
+}
+
+/* — появление блока (niches.js): начальные состояния — только при живых анимациях (html.js-anim); без JS, при
+     reduced-motion и ?nomotion=1 всё видно сразу — */
+.js-anim .section--niches:not(.is-in) .section__title,
+.js-anim .section--niches:not(.is-in) .niches__item {
+  opacity: 0;
+}
+
+.niches__mask {
+  display: block;
+  overflow: clip;
+  margin-block: -0.16em -0.06em;
+  padding-block: 0.16em 0.06em;
+}
+
+.niches__line {
+  display: block;
 }
 
 /* телефон: одна колонка, плитки-строки компактнее */
@@ -240,18 +291,6 @@
 @media (min-width: 900px) {
   .niches__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1100px) {
-  .niches__top {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
-    align-items: end;
-    column-gap: clamp(2rem, 5vw, 6rem);
-  }
-
-  .niches__lead {
-    padding-bottom: 0.4em;
   }
 }
 
