@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { statSync } from 'node:fs';
 import { join } from 'node:path';
 import { read, readJson, root } from './helpers.js';
-import { introCeilingMs, coverPoint, ringSpins, ringGeometry, ellipseAt, planePose } from '../src/sections/hero-plane-model.js';
+import { introCeilingMs, coverPoint, ringSpins, ringGeometry, ellipseAt, planePose, scrollScene, letterArc, SCENE } from '../src/sections/hero-plane-model.js';
 
 const config = readJson('src/data/config.json');
 const ua = readJson('src/data/content.ua.json');
@@ -124,4 +124,79 @@ test('движение варианта 3 — только transform и opacity,
   assert.doesNotMatch(css, /stroke-dash|filter\s*:/);
   const js = strip(read('src/sections/hero-plane.js'));
   assert.doesNotMatch(js, /strokeDashoffset|stroke-dashoffset|\.style\.(left|top|width|height|filter)\b/);
+});
+
+// Сцена прокрутки (≥900px, после интро): буквы разлетаются по дуге кольца → кольцо с самолётиком растёт до экрана →
+// из центра раскрывается круглое окно со следующей частью страницы → сцена открепляется.
+test('сцена прокрутки: в начале — главный экран как есть, в конце — от первого экрана ничего не осталось', () => {
+  const opts = { letters: 6, fill: 9, holeEnd: 40 };
+  const a = scrollScene(0, opts);
+  assert.equal(a.copy.opacity, 1);
+  assert.equal(a.copy.y, 0);
+  assert.equal(a.letters.length, 6);
+  for (const l of a.letters) assert.deepEqual([l.arc, l.fly], [0, 0]);
+  assert.deepEqual([a.mark.scale, a.ring.open, a.ring.opacity, a.flyer.t, a.flyer.opacity], [1, 0, 1, 0, 1]);
+  assert.deepEqual([a.stars.scale, a.stars.opacity, a.hole.scale], [1, 1, 1]);
+
+  const z = scrollScene(1, opts);
+  assert.equal(z.copy.opacity, 0);
+  for (const l of z.letters) assert.equal(l.fly, 1, 'буквы улетели и погасли');
+  assert.equal(z.mark.scale, 9, 'кольцо заполнило экран');
+  assert.equal(z.ring.open, 1, 'эллипс развернулся в круг');
+  assert.equal(z.ring.opacity, 0);
+  assert.equal(z.flyer.opacity, 0);
+  assert.equal(z.stars.opacity, 0);
+  assert.equal(z.hole.scale, 40, 'окно на весь экран');
+  assert.deepEqual(scrollScene(-1, opts), a, 'до начала — как в начале');
+  assert.deepEqual(scrollScene(2, opts), z, 'после конца — как в конце');
+});
+
+test('сцена прокрутки: порядок — буквы, потом кольцо заполняет экран, и только потом открывается окно', () => {
+  const opts = { letters: 6, fill: 9, holeEnd: 40 };
+  const at = (fn) => {
+    for (let i = 0; i <= 1000; i++) if (fn(scrollScene(i / 1000, opts))) return i / 1000;
+    return 2;
+  };
+  const lettersGone = at((s) => s.letters.every((l) => l.fly === 1));
+  const ringFull = at((s) => s.mark.scale === 9);
+  const holeOpens = at((s) => s.hole.scale > 1);
+  assert.ok(lettersGone < ringFull, `буквы ${lettersGone} раньше кольца ${ringFull}`);
+  assert.ok(ringFull <= holeOpens + 0.02, `кольцо ${ringFull} к окну ${holeOpens}`);
+  assert.ok(holeOpens >= SCENE.window - 0.001 && holeOpens < 0.8);
+  // крайние буквы уходят раньше центральных? нет — от центра к краям: центральные первыми
+  const s = scrollScene(0.12, opts);
+  assert.ok(s.letters[2].arc >= s.letters[0].arc && s.letters[3].arc >= s.letters[5].arc);
+  // всё монотонно: назад прокрутка возвращает тот же кадр
+  let prev = scrollScene(0, opts);
+  for (let i = 1; i <= 100; i++) {
+    const cur = scrollScene(i / 100, opts);
+    assert.ok(cur.mark.scale >= prev.mark.scale && cur.hole.scale >= prev.hole.scale && cur.stars.opacity <= prev.stars.opacity);
+    prev = cur;
+  }
+});
+
+test('дуга букв: верхняя дуга эллипса кольца слева направо, наклон по касательной в пределах ±60°', () => {
+  const geo = ringGeometry(1000);
+  const arc = [0, 1, 2, 3, 4, 5].map((i) => letterArc(geo, i, 6));
+  assert.ok(arc.every((p) => p.y < 0), 'над центром');
+  for (let i = 1; i < 6; i++) assert.ok(arc[i].x > arc[i - 1].x, 'слева направо');
+  assert.ok(arc[0].r < 0 && arc[5].r > 0, `левые клонятся влево, правые вправо: ${arc[0].r} ${arc[5].r}`);
+  assert.ok(arc.every((p) => Math.abs(p.r) <= 60));
+  const t = (-geo.tilt * Math.PI) / 180;
+  for (const p of arc) {
+    const lx = p.x * Math.cos(t) - p.y * Math.sin(t);
+    const ly = p.x * Math.sin(t) + p.y * Math.cos(t);
+    assert.ok(near((lx / geo.rx) ** 2 + (ly / geo.ry) ** 2, 1, 0.01), 'точка на эллипсе кольца');
+  }
+});
+
+test('сцена прокрутки: закрепление от 900px, без закрепления при reduced-motion; после интро; без фильтров', () => {
+  const js = strip(read('src/sections/hero-plane.js'));
+  assert.match(js, /SCENE_MEDIA = '\(min-width: 900px\)'/);
+  assert.match(js, /if \(reduced\) return;/);
+  assert.match(js, /pin: true/);
+  assert.match(js, /scrollScene\(/);
+  const css = strip(read('src/styles/sections/hero-plane.css'));
+  assert.match(css, /\.hero-plane__veil/);
+  assert.match(css, /\.hero-plane__letter {/);
 });

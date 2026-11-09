@@ -411,6 +411,12 @@
     padding: 0 12vw 0 calc(var(--gutter) + clamp(380px, 36vw, 620px));
   }
 
+  /* лента и слово-фон едут transform-ом каждый кадр: свой слой, иначе карточки перерисовываются (кадры 50–80 мс) */
+  .is-pinned .cases__track,
+  .is-pinned .cases__word {
+    will-change: transform;
+  }
+
   .is-pinned .cases__item {
     --card-w: clamp(290px, 22vw, 380px);
     --card-h: max(340px, 52vh);

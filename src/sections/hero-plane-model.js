@@ -142,3 +142,56 @@ export function planePose(ms, start, geo, codeMs = BASE_MS) {
     done: ms >= codeMs,
   };
 }
+
+/* ——— сцена прокрутки (≥900px, после интро): p — прогресс закрепления 0…1 ——— */
+
+/** Доли прогресса: когда начинается каждое движение. window — с этого момента из центра открывается окно. */
+export const SCENE = {
+  copy: [0, 0.16],
+  letters: { start: 0.02, step: 0.03, arc: 0.14, fly: 0.16 },
+  halo: [0.02, 0.3],
+  flyer: [0.08, 0.5],
+  flyerFade: [0.3, 0.5],
+  grow: [0.12, 0.6],
+  open: [0.12, 0.5],
+  ringFade: [0.58, 0.7],
+  stars: [0.1, 0.62],
+  starsFade: [0.56, 0.62],
+  window: 0.62,
+};
+
+const span = (p, [a, b]) => clamp01((p - a) / (b - a));
+const smooth = (t) => t * t * (3 - 2 * t);
+
+/**
+ * Кадр сцены. letters — число букв, fill — масштаб знака, при котором кольцо закрывает экран,
+ * holeEnd — масштаб окна, при котором оно шире экрана. Всё — числа для transform и opacity.
+ */
+export function scrollScene(progress, { letters = 6, fill = 8, holeEnd = 40 } = {}) {
+  const p = clamp01(Number(progress) || 0);
+  const L = SCENE.letters;
+  const mid = (letters - 1) / 2;
+  const copy = span(p, SCENE.copy);
+  const grow = span(p, SCENE.grow);
+  const hole = span(p, [SCENE.window, 1]);
+  return {
+    copy: { opacity: 1 - copy, y: copy },
+    letters: Array.from({ length: letters }, (_, i) => {
+      const at = L.start + Math.abs(i - mid) * L.step;
+      return { arc: span(p, [at, at + L.arc]), fly: span(p, [at + L.arc, at + L.arc + L.fly]) };
+    }),
+    halo: { opacity: 1 - span(p, SCENE.halo) },
+    mark: { scale: 1 + (fill - 1) * grow * grow },
+    ring: { open: smooth(span(p, SCENE.open)), opacity: 1 - span(p, SCENE.ringFade) },
+    flyer: { t: span(p, SCENE.flyer), opacity: 1 - span(p, SCENE.flyerFade) },
+    stars: { scale: 1 + 0.6 * smooth(span(p, SCENE.stars)), opacity: 1 - span(p, SCENE.starsFade) },
+    hole: { scale: 1 + (holeEnd - 1) * hole ** 1.5 },
+  };
+}
+
+/** Точка буквы i из n на верхней дуге кольца (от центра надписи) и наклон по касательной, градусы. */
+export function letterArc(geo, i, n) {
+  const e = ellipseAt(geo, 200 + ((i + 0.5) / n) * 140);
+  const r = ((((e.a - 180) % 360) + 540) % 360) - 180;
+  return { x: e.x, y: e.y, r: Math.max(-60, Math.min(60, r)) };
+}

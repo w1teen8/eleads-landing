@@ -19,10 +19,15 @@ const yieldToBrowser = () =>
   typeof scheduler !== 'undefined' && scheduler.yield ? scheduler.yield() : new Promise((resolve) => setTimeout(resolve, 0));
 
 async function initSections() {
+  const hero = document.documentElement.dataset.hero; // вариант первого экрана — ставит инлайн-скрипт <head>
+  // пункты навигации на секции чужого варианта (их прячет <style data-hero-sections>) — hidden и для JS
+  for (const item of document.querySelectorAll('[data-hero-on]:not([data-section])')) {
+    if (!item.dataset.heroOn.split(' ').includes(hero)) item.hidden = true;
+  }
   for (const node of document.querySelectorAll('[data-section]')) {
     const name = node.dataset.section;
-    // отключённая в config.json → sections.enabled: не инициализируется и уходит из DOM до старта движения
-    if (!isSectionEnabled(name, config) || node.hidden) {
+    // отключённая в config.json → sections (enabled / byHero): не инициализируется и уходит из DOM до старта движения
+    if (!isSectionEnabled(name, config, hero) || node.hidden) {
       node.remove();
       continue;
     }

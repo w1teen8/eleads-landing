@@ -2,7 +2,8 @@
   "telegramUrl": "https://t.me/Kucherflow",
   "telegramHandle": "@Kucherflow",
   "sections": {
-    "enabled": ["hero"]
+    "enabled": ["hero"],
+    "byHero": { "plane": "all" }
   },
   "heroV3": {
     "video": {

@@ -499,3 +499,77 @@
     translate: none;
   }
 }
+
+/* ——— стык с лентами без сцены (телефон, reduced-motion): звёздное небо внизу плавно переходит в фон страницы ——— */
+.hero-plane::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  height: clamp(5rem, 16vh, 11rem);
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  pointer-events: none;
+}
+
+/* ——— сцена прокрутки (≥900px, класс ставит hero-plane.js после интро) ——— */
+.hero-plane__letter {
+  display: inline-block;
+  transform-origin: 50% 60%;
+}
+
+.hero-plane__fly {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* вуаль — небо с прозрачным кругом в центре: окно в следующую часть страницы, растёт только scale */
+.hero-plane__veil {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: var(--veil-size, 250vmax);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: radial-gradient(
+    circle closest-side,
+    transparent 0 4%,
+    color-mix(in srgb, var(--accent) 40%, var(--plane-sky)) 4.25%,
+    var(--plane-sky) 5%
+  );
+  will-change: transform;
+}
+
+.is-plane-scene {
+  z-index: 3;
+}
+
+.is-plane-scene .hero-plane {
+  background: transparent;
+}
+
+.is-plane-scene .hero-plane::after {
+  display: none;
+}
+
+.is-plane-scene .hero-plane__veil {
+  display: block;
+}
+
+.is-plane-scene .hero-plane__stars,
+.is-plane-scene .hero-plane__mark {
+  will-change: transform;
+}
+
+.is-plane-scene .hero-plane__halo {
+  transition: none;
+}
+
+.hero-plane__copy.is-gone,
+.hero-plane__copy.is-gone * {
+  pointer-events: none;
+}
