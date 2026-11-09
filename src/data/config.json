@@ -10,9 +10,9 @@
       "source": "Photos/gemini_generated_video_ed594695.mp4",
       "in": 0,
       "out": 6.71,
-      "src": "/video/hero-v3-1080.mp4",
-      "srcMobile": "/video/hero-v3-720.mp4",
-      "poster": "/video/hero-v3-poster.jpg",
+      "src": "video/hero-v3-1080.mp4",
+      "srcMobile": "video/hero-v3-720.mp4",
+      "poster": "video/hero-v3-poster.jpg",
       "plane": {
         "x": 0.648,
         "y": 0.525,
@@ -20,7 +20,7 @@
         "angle": -40
       }
     },
-    "earth": "/img/hero/hero-v3-earth.webp",
+    "earth": "img/hero/hero-v3-earth.webp",
     "codeMs": 3600
   },
   "analytics": {

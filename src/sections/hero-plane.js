@@ -20,6 +20,7 @@ import { reduced, lockScroll, motionReady } from '../core/motion.js';
 import { onLangChange } from '../core/i18n.js';
 import { countTo } from '../core/format.js';
 import config from '../data/config.json';
+import { publicUrl } from '../core/public-url.js';
 import { introCeilingMs, coverPoint, ringSpins, ringGeometry, planePose, PHASES, scrollScene, letterArc, SCENE } from './hero-plane-model.js';
 
 /** Тот же ключ, что у заставки-поиска (preloader.js): время последнего показа интро. */
@@ -102,7 +103,7 @@ function runIntro(root, cfg, { html, mark, flyer, spins, geo, done }) {
   });
 
   if (cfg.earth && earth) {
-    earth.src = cfg.earth;
+    earth.src = publicUrl(cfg.earth);
     earth.hidden = false;
   }
 
@@ -121,14 +122,14 @@ function runIntro(root, cfg, { html, mark, flyer, spins, geo, done }) {
     startCode();
   } else {
     video.preload = 'auto';
-    if (v.poster) video.poster = v.poster;
+    if (v.poster) video.poster = publicUrl(v.poster);
     video.addEventListener('playing', () => clearTimeout(videoWait), { once: true });
     video.addEventListener('ended', startCode, { once: true });
     video.addEventListener('error', startCode, { once: true });
     videoWait = setTimeout(() => {
       if (video.paused || video.currentTime === 0) startCode();
     }, VIDEO_START_MS);
-    video.src = src;
+    video.src = publicUrl(src);
     video.play?.()?.catch?.(() => startCode());
   }
 
