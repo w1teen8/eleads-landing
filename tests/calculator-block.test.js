@@ -38,8 +38,7 @@ test('разметка по вайрфрейму: H2, параметры, про
   }
   assert.match(calc, /aria-live="polite"[^>]*data-calc-live/);
   assert.match(calc, /data-place="calculator" data-calc-cta/);
-  assert.match(calc, /data-place="calculator_note"/);
-  assert.match(calc, /data-i18n="calculator\.disclaimer"/);
+  assert.doesNotMatch(calc, /calc__foot|calculator_note|calculator\.disclaimer/, 'строки под блоком убраны — «убрать» (2026-11-10)');
 });
 
 test('H11: переходов по прокрутке нет — без наезда, лесенки и ревилов; на ввод цифры крутят барабаны, подпись — табло', () => {
@@ -89,8 +88,6 @@ test('T28: клавиатура бота слева, пузырь сообщен
   assert.match(calc, /<dl class="calc__grid">[\s\S]*calc__cell--big[^>]*data-calc-step="conversions"[\s\S]*data-calc-goal-step/);
   assert.match(calc, /class="calc__cta"[^>]*data-place="calculator" data-calc-cta/);
   assert.doesNotMatch(calc, /calc__step|calc__funnel|calc__money/);
-  // дисклеймер и строка «Не знайшли свою нішу?» — мелко под блоком
-  assert.match(calc, /<p class="calc__foot">[\s\S]*data-i18n="calculator\.disclaimer"[\s\S]*data-place="calculator_note"/);
   // фраза бота собирается из текущих параметров: шаблон с плейсхолдерами и падежи GEO — в обоих словарях
   assert.match(js, /t\('calculator\.intro'\)/);
   assert.match(js, /calculator\.introGeo\./);

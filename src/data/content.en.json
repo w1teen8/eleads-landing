@@ -280,11 +280,6 @@
       "label": "Get an exact forecast",
       "arrow": "→"
     },
-    "disclaimer": "The estimate is based on past eLeads campaigns. Actual results depend on GEO, offer, landing page and creatives.",
-    "note": {
-      "lead": "Didn't find your niche?",
-      "link": "Message me"
-    },
     "live": "Forecast for {budget}: impressions {impressions}, clicks {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}.",
     "bot": {
       "avatar": "e",

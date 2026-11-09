@@ -517,53 +517,11 @@
   color: color-mix(in srgb, var(--text) 45%, transparent);
 }
 
-/* ——— строка под сеткой: дисклеймер и «Не знайшли свою нішу?» ——— */
-.calc__foot {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.25rem;
-  margin-top: clamp(1rem, 1.8vw, 1.75rem);
-  font-size: var(--fs-xs);
-  line-height: 1.5;
-  color: var(--calc-soft);
-}
 
-.calc__note {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.3em;
-  color: var(--calc-soft);
-  white-space: nowrap;
-}
 
-.calc__note-link {
-  color: var(--text);
-  font-weight: 600;
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-}
 
-.calc__note-icon {
-  display: inline-block;
-  align-self: center;
-  width: 1em;
-  height: 1em;
-  color: var(--accent);
-  transition: transform var(--dur-fast) var(--ease-out);
-}
 
-.calc__note:hover .calc__note-icon,
-.calc__note:focus-visible .calc__note-icon {
-  transform: translate(2px, -2px);
-}
 
-.calc__note:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-  border-radius: 4px;
-}
 
 /* — две колонки от 1000px — */
 @media (min-width: 1000px) {
@@ -647,9 +605,6 @@
     margin-top: clamp(0.6rem, 2.1svh, 1.25rem);
   }
 
-  .calc__foot {
-    margin-top: clamp(0.5rem, 1.8svh, 1.75rem);
-  }
 }
 
 /* невысокий широкий экран (1366×768): плотнее по вертикали */
@@ -704,7 +659,4 @@
     font-size: clamp(1.5rem, 7.5vw, 2rem);
   }
 
-  .calc__note {
-    white-space: normal;
-  }
 }
