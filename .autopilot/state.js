@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-08T18:59:02+02:00",
+  "updatedAt": "2026-11-09T12:43:19+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -61,13 +61,13 @@ window.STATE =
     }
   ],
   "requirements": {
-    "total": 127,
-    "done": 111,
-    "inTicket": 7,
+    "total": 131,
+    "done": 113,
+    "inTicket": 8,
     "inSpec": 4,
     "placeholder": 3,
     "deferred": 1,
-    "dropped": 1
+    "dropped": 2
   },
   "tickets": [
     {
@@ -759,6 +759,7 @@ window.STATE =
       "title": "Вариант 4 первого экрана: синий, огромное «eLeads» за Володимиром, белые карточки",
       "requirements": [
         "G26",
+        "G27",
         "G19",
         "R40",
         "R41",
@@ -783,13 +784,60 @@ window.STATE =
         "hero.v4",
         "content.*.json",
         "tests/hero-blue*.test.js",
-        "tests/head-scripts.test.js"
+        "tests/head-scripts.test.js",
+        "src/sections/hero-orbit.js",
+        "src/styles/sections/hero-orbit.css",
+        "tests/hero-orbit.test.js",
+        "#hero",
+        "hero.word",
+        "hero.ads",
+        "hero.scroll",
+        "public/img/hero/"
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "pending",
+      "status": "done",
+      "startedAt": "2026-11-08T18:59:06+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 142,
+        "failed": 0
+      },
+      "commit": "8d4852a",
+      "finishedAt": "2026-11-08T19:50:08+02:00"
+    },
+    {
+      "id": "17",
+      "title": "Вариант «Самолётик»: продолжение страницы под первым экраном",
+      "requirements": [
+        "G28",
+        "G23",
+        "G13"
+      ],
+      "blockedBy": [
+        "16"
+      ],
+      "wave": 16,
+      "zone": [
+        "src/data/config.json",
+        "src/core/sections.js",
+        "src/main.js",
+        "<head>",
+        "build/i18n-prerender.js",
+        "hidden",
+        "tests/sections-config.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "failed",
+      "retries": 0,
+      "repairs": 0,
+      "startedAt": "2026-11-08T19:42:20+02:00",
+      "finishedAt": "2026-11-09T12:43:19+02:00",
+      "concerns": [
+        "прервано сбоем API: продолжение страницы сделано, переход с разлётом букв начат и не доделан"
+      ]
     },
     {
       "id": "F1",
@@ -836,7 +884,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 137,
+    "passed": 142,
     "failed": 0
   },
   "debt": {
@@ -992,9 +1040,19 @@ window.STATE =
     "2026-11-08T01:40:53+02:00",
     "2026-11-08T01:40:55+02:00",
     "2026-11-08T01:47:51+02:00",
-    "2026-11-08T18:59:02+02:00"
+    "2026-11-08T18:59:02+02:00",
+    "2026-11-08T18:59:06+02:00",
+    "2026-11-08T18:59:38+02:00",
+    "2026-11-08T19:18:24+02:00",
+    "2026-11-08T19:19:06+02:00",
+    "2026-11-08T19:26:03+02:00",
+    "2026-11-08T19:42:17+02:00",
+    "2026-11-08T19:42:20+02:00",
+    "2026-11-08T19:43:38+02:00",
+    "2026-11-08T19:50:08+02:00",
+    "2026-11-09T12:43:19+02:00"
   ],
-  "rev": 107,
+  "rev": 117,
   "waiting": null,
   "waits": [
     {
@@ -1791,6 +1849,93 @@ window.STATE =
       "t": "2026-11-08T18:59:02+02:00",
       "k": "tickets",
       "n": 17
+    },
+    {
+      "t": "2026-11-08T18:59:06+02:00",
+      "k": "ticket",
+      "ids": [
+        "16"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-08T18:59:38+02:00",
+      "k": "tickets",
+      "n": 17
+    },
+    {
+      "t": "2026-11-08T19:18:24+02:00",
+      "k": "ticket",
+      "ids": [
+        "16"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 140,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-08T19:19:06+02:00",
+      "k": "ticket",
+      "ids": [
+        "16"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-08T19:26:03+02:00",
+      "k": "ticket",
+      "ids": [
+        "16"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 140,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-08T19:42:17+02:00",
+      "k": "tickets",
+      "n": 18
+    },
+    {
+      "t": "2026-11-08T19:42:20+02:00",
+      "k": "ticket",
+      "ids": [
+        "17"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-08T19:43:38+02:00",
+      "k": "ticket",
+      "ids": [
+        "16"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-08T19:50:08+02:00",
+      "k": "ticket",
+      "ids": [
+        "16"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 142,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-09T12:43:19+02:00",
+      "k": "ticket",
+      "ids": [
+        "17"
+      ],
+      "act": "fail",
+      "note": "прервано сбоем API: продолжение страницы сделано, переход с разлётом букв начат и не доделан"
     }
   ],
   "reqList": [
@@ -2402,7 +2547,8 @@ window.STATE =
     {
       "id": "G20",
       "text": "«вместо значка планеты огромный значок телеграмма и вокруг окошки с телеграмм адс»",
-      "status": "in-spec"
+      "status": "dropped",
+      "why": "пользователь про вариант 1 (значок Telegram и окна Telegram Ads): «Этот хиро удали»"
     },
     {
       "id": "G21",
@@ -2417,7 +2563,7 @@ window.STATE =
     {
       "id": "G23",
       "text": "«Остальное все на странице убери, надо сделать так чтобы не лагало»",
-      "status": "in-spec"
+      "status": "in-ticket"
     },
     {
       "id": "G24",
@@ -2432,7 +2578,27 @@ window.STATE =
     {
       "id": "G26",
       "text": "«Давай еще один хиро» — вариант 4 по макету reference/hero-v4/mockup.png",
+      "status": "done"
+    },
+    {
+      "id": "G27",
+      "text": "«Этот хиро удали» — вариант 1 (орбита со значком Telegram)",
+      "status": "done"
+    },
+    {
+      "id": "G28",
+      "text": "«Добавь в хиро самолетик продолжение страницы чтобы показать анимацию»",
       "status": "in-ticket"
+    },
+    {
+      "id": "G29",
+      "text": "«eLeads текст больше за спиной и его не должно ничего закрывать … остальное … просто текстом снизу, а не окошками» (вариант «Синий»)",
+      "status": "in-spec"
+    },
+    {
+      "id": "G30",
+      "text": "«чтобы человек увидел как разлетаются буквы и тд» (вариант «Самолётик»)",
+      "status": "in-spec"
     }
   ],
   "gates": {

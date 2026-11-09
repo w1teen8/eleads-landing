@@ -1,8 +1,8 @@
 # 16 — Вариант 4 первого экрана: синий, огромное «eLeads» за Володимиром, белые карточки
 
-**Требования:** G26, G19, R40, R41, R42, R43, R44
+**Требования:** G26, G27, G19, R40, R41, R42, R43, R44
 **Зависит от:** 15
-**Зона:** `src/sections/hero-blue.js` + `src/styles/sections/hero-blue.css` (новые) · `src/sections/hero.js` (только подключение варианта 4) · инлайн-скрипт `<head>` (строки про hero) · `src/dev/theme-switcher.js` (кнопка «4») · `src/styles/sections/header.css` (только облик шапки при `data-hero="blue"`) · `public/img/hero/` (новые файлы варианта 4) · разметка внутри `<section id="hero">` · ключ `hero.v4` в `content.*.json` · `tests/hero-blue*.test.js`, `tests/head-scripts.test.js` (добавить тест)
+**Зона:** `src/sections/hero-blue.js` + `src/styles/sections/hero-blue.css` (новые) · `src/sections/hero.js` (только подключение варианта 4) · инлайн-скрипт `<head>` (строки про hero) · `src/dev/theme-switcher.js` (кнопка «4») · `src/styles/sections/header.css` (только облик шапки при `data-hero="blue"`) · `public/img/hero/` (новые файлы варианта 4) · разметка внутри `<section id="hero">` · ключ `hero.v4` в `content.*.json` · `tests/hero-blue*.test.js`, `tests/head-scripts.test.js` (добавить тест) · удаление варианта 1: `src/sections/hero-orbit.js`, `src/styles/sections/hero-orbit.css`, `tests/hero-orbit.test.js`, его разметка в `#hero`, ключи `hero.word`/`hero.ads`/`hero.scroll` (если не нужны другим вариантам), его ассеты в `public/img/hero/`
 **Волна:** 15
 **Ревью:** нет
 **Модель:** сильная
@@ -33,4 +33,6 @@
 - [ ] Цвета варианта 4 — свои (синий фон), заданы переменными в `hero-blue.css`/`tokens.css`, не ломают темы `brand`/`aether` в других вариантах; контраст текста AA
 - [ ] Заставка-поиск в варианте 4 — как в вариантах 1 и 2; неактивные варианты не грузят медиа варианта 4; по умолчанию остаётся вариант 2
 - [ ] Мобильный 390: заголовок, текст, кнопка, фото с буквами, карточки ниже; без горизонтального скролла; `npm run check` зелёный
+- [ ] **Вариант 1 (`orbit`, значок Telegram и окна рекламы) удалён полностью** — по слову пользователя «Этот хиро удали»: код, CSS, разметка, ключи контента, ассеты, тесты; общие вещи, нужные другим вариантам, остаются
+- [ ] **Переключатель:** варианты `mockup` (по умолчанию), `plane`, `blue`; `?hero=2|3|4` и `?hero=mockup|plane|blue`; `?hero=1` и неизвестное → `mockup`; кнопки dev-панели подписаны словами «Кольцо / Самолётик / Синий»; тесты head-скрипта обновлены
 - [ ] В возврате — сравнение «макет | сайт 1920×1080»
