@@ -1,18 +1,20 @@
-/* 02 Telegram у цифрах (T19; T23 — палитра канала и формат «один экран»). Bento: главная цифра крупно на две строки,
-   две карточки с цифрами, акцентная жёлто-оранжевая карточка с тёмным текстом — последней. Карточки — тёмные
-   поверхности с тонкой светлой границей, цифры — жёлтый → оранжевый; фон — фон страницы (свой блок не рисует).
-   На широком экране блок — ровно экран под шапкой (layout.css): размеры цифр, карточек и отступов — от высоты окна
-   (svh), так что от метки до сноски всё видно на 1920×1080 и 1903×937. Двигаются только transform и opacity. */
+/* 02 Telegram у цифрах (T19; T23 — палитра канала и формат «один экран»; T25 — образец reference/run3/stats-E-chosen.png).
+   Слева большая карточка: главная цифра, подпись и карта из точек (без легенды и сноски — правка клиента). Справа без рамок: две строки с тонкими
+   линиями (цифра слева, подпись справа) и акцентная жёлто-оранжевая плашка с тёмным текстом. Цифры — жёлтый → оранжевый;
+   фон — фон страницы (свой блок не рисует). На широком экране блок — ровно экран под шапкой (layout.css): высота
+   раскладки, цифры и отступы — от высоты окна (svh), так что от заголовка до низа карточек всё видно на 1920×1080, 1903×937
+   и 1366×768. Двигаются только transform и opacity: появление блока, цифры-барабаны и волны по точкам карт —
+   в stats.js, stats-odometer.js и stats-dots.js; здесь — только начальные состояния и маски. */
 
 .section--stats {
   --stats-gap: clamp(0.75rem, 1.1vw, 1.25rem);
-  --stats-pad: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+  --stats-pad: clamp(1.25rem, 1rem + 1.2vw, 2.125rem);
   overflow-x: clip;
   padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
   color: var(--text);
 }
 
-/* — шапка блока: метка-пилюля и заголовок слева, вкладки справа — */
+/* — шапка блока: заголовок слева, вкладки справа — */
 .stats__top {
   display: grid;
   gap: clamp(1.25rem, 2.5vw, 2rem);
@@ -22,29 +24,6 @@
 .stats__head {
   gap: clamp(0.9rem, 1.5vw, 1.5rem);
   margin-bottom: 0;
-}
-
-.stats__eyebrow {
-  justify-self: start;
-  padding: 0.6em 1.15em;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--text) 4%, transparent);
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  font-weight: 500;
-  letter-spacing: var(--tracking-mono);
-  text-transform: uppercase;
-  color: var(--text);
-}
-
-.stats__eyebrow::before {
-  content: '';
-  flex: none;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
 }
 
 .section--stats .display.section__title {
@@ -109,34 +88,44 @@
   outline-offset: 3px;
 }
 
-/* — bento — */
+/* — раскладка: карточка с картой и колонка строк; на телефоне — друг под другом — */
+.stats {
+  position: relative;
+}
+
 .stats__panel {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--stats-gap);
+}
+
+/* общий градиент точек обеих карт: жёлтый → оранжевый внутри каждой точки */
+.stats__defs {
+  position: absolute;
+  pointer-events: none;
+}
+
+.stats__grad-from {
+  stop-color: var(--accent);
+}
+
+.stats__grad-to {
+  stop-color: var(--accent-2);
 }
 
 .stats__card {
   position: relative;
-  display: grid;
-  align-content: start;
-  gap: 0.85rem;
   min-width: 0;
-  padding: var(--stats-pad);
   border-radius: var(--r-card-lg);
-  background: var(--surface);
+  background: color-mix(in srgb, var(--text) 5.5%, transparent);
   border: 1px solid var(--line);
   color: var(--text);
-}
-
-.stats__card--main,
-.stats__card--accent {
-  grid-column: 1 / -1;
 }
 
 /* цифры — жёлтый → оранжевый по ширине самой цифры. Пока идёт табло (flipSwap: внутри две строки-span под маской),
    градиент несут сами строки — у узла его снимаем, иначе текст в движущихся слоях пропадает */
 .stats__value {
+  flex: none;
   width: fit-content;
   max-width: 100%;
   background: var(--grad);
@@ -145,11 +134,10 @@
   color: transparent;
   font-family: var(--font-head);
   font-weight: 900;
-  font-size: clamp(2.75rem, 1.6rem + 3.4vw, 5.5rem);
+  font-size: clamp(3rem, 1.9rem + 4.6vw, 5.75rem);
   line-height: 0.9;
   letter-spacing: 0;
   text-transform: uppercase;
-  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
@@ -165,53 +153,167 @@
   color: transparent;
 }
 
-.stats__label {
-  max-width: 34ch;
-  font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1.0625rem);
-  line-height: 1.45;
-  color: var(--text-muted);
+/* — цифры-барабаны (stats-odometer.js): пока значение крутится, каждый знак — своя ячейка. Градиент у всех знаков
+     общий: ячейка берёт свой срез по --odo-w (ширина значения) и --odo-x (сдвиг ячейки). Барабан — окно в одну
+     строку, размер держит невидимый знак, лента из --n цифр ездит под маской по вертикали — */
+.stats__value > .odo {
+  position: relative;
+  display: inline-flex;
+  background: none;
+  white-space: pre;
 }
 
-/* главная цифра — крупно, подпись прижата к низу карточки */
+.odo__char,
+.odo__strip {
+  background-image: var(--grad);
+  background-position: calc(-1 * var(--odo-x, 0px)) 0;
+  background-size: var(--odo-w, 100%) 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.odo__reel {
+  position: relative;
+  overflow-x: visible;
+  overflow-y: clip;
+}
+
+.odo__sizer {
+  visibility: hidden;
+}
+
+.odo__strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(var(--n, 1) * 100%);
+  background-size: var(--odo-w, 100%) calc(100% / var(--n, 1));
+}
+
+.odo__digit {
+  display: block;
+  height: calc(100% / var(--n, 1));
+  text-align: center;
+}
+
+.stats__label {
+  font-size: clamp(0.875rem, 0.8rem + 0.3vw, 1.125rem);
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--text) 72%, transparent);
+}
+
+/* — карточка: цифра и подпись, под ними карта; на широком экране карта справа во всю высоту — */
 .stats__card--main {
-  align-content: space-between;
-  min-height: clamp(15rem, 10rem + 16vw, 30rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 4vw, 1.5rem);
+  padding: var(--stats-pad);
+}
+
+.stats__lead {
+  display: grid;
+  align-content: start;
+  gap: clamp(0.6rem, 1.5svh, 0.9rem);
+  min-width: 0;
 }
 
 .stats__card--main .stats__value {
-  font-size: clamp(5.5rem, 2.5rem + 12vw, 16rem);
-  line-height: 0.85;
+  font-size: clamp(6rem, 2.5rem + 16vw, 11.875rem);
+  line-height: 0.86;
 }
 
 .stats__card--main .stats__label {
   max-width: 30ch;
-  font-size: clamp(1rem, 0.85rem + 0.5vw, 1.375rem);
-  color: color-mix(in srgb, var(--text) 86%, transparent);
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
+  color: var(--text);
 }
 
-/* акцентная: «UA» / «Що рекламуємо» — жёлто-оранжевая с тёмным текстом; тёмная точка — метка карточки */
+/* карта из точек: кружки ставит stats.js в единицах шага сетки, рамка — viewBox из разметки */
+.stats__map {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* курсор ловит сама рамка карты: сотни кружков в проверке попадания не участвуют */
+.stats__map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* точки: размер, сдвиг и яркость на гребне волны ставит stats-dots.js (transform и opacity). Непрозрачность покоя
+   ниже единицы, чтобы на гребне точка могла стать ярче; те же числа — DOT_OPACITY в stats-dots.js */
+.stats__dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0.88;
+}
+
+.stats__dot--off {
+  fill: color-mix(in srgb, var(--text) 42%, transparent);
+  opacity: 0.31;
+}
+
+/* до появления блока горящие точки тусклые — их зажигает волна от Киева (только при живых анимациях) */
+.js-anim .stats__map.is-dark .stats__dot:not(.stats__dot--off) {
+  opacity: 0.14;
+}
+
+/* прежняя карта на время смены вкладки — поверх новой, гаснет (stats.js) */
+.stats__map .stats__ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* — правая колонка без рамок: строки с тонкой линией сверху, цифра слева, подпись справа — */
+.stats__side {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stats__row {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  min-width: 0;
+  padding: clamp(1.1rem, 4.5vw, 1.75rem) 4px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.stats__row .stats__label {
+  max-width: 300px;
+  text-align: right;
+}
+
+/* акцентная: «UA» / «Що рекламуємо» — жёлто-оранжевая плашка с тёмным текстом */
 .stats__card--accent {
-  align-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem clamp(1rem, 2vw, 1.75rem);
+  margin-top: 6px;
+  padding: clamp(1.1rem, 2.4svh, 1.375rem) clamp(1.25rem, 1.6vw, 1.875rem);
+  border-radius: var(--r-card);
   background: var(--grad);
   border-color: transparent;
   color: var(--accent-ink);
 }
 
-.stats__card--accent::after {
-  content: '';
-  position: absolute;
-  top: var(--stats-pad);
-  right: var(--stats-pad);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent-ink);
-}
-
 .stats__tag {
+  flex: none;
   font-family: var(--font-head);
   font-weight: 900;
-  font-size: clamp(3.5rem, 2rem + 5vw, 8rem);
+  font-size: clamp(2.75rem, 2rem + 3vw, 3.75rem);
   line-height: 0.9;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -219,62 +321,66 @@
 }
 
 .stats__tag--sm {
-  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 3rem);
+  font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem);
   line-height: 1;
 }
 
 .stats__text {
-  max-width: 40ch;
-  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.3125rem);
-  line-height: 1.45;
-  color: color-mix(in srgb, var(--accent-ink) 84%, transparent);
-}
-
-.stats__text--list {
-  font-weight: 700;
-  font-size: clamp(1.125rem, 0.95rem + 0.7vw, 1.75rem);
-  line-height: 1.3;
+  flex: 1 1 12rem;
+  max-width: 26ch;
+  text-wrap: balance;
+  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.125rem);
+  font-weight: 500;
+  line-height: 1.4;
   color: var(--accent-ink);
 }
 
-.stats__footnote {
-  max-width: 110ch;
-  margin-top: clamp(1.25rem, 2.5vw, 2.25rem);
-  font-size: var(--fs-xs);
-  line-height: 1.6;
-  color: var(--text-muted);
+.stats__text--list {
+  max-width: none;
+  font-weight: 700;
 }
 
-/* — широкий экран: bento 12 колонок — */
+/* — широкий экран: карточка 1.32 части, колонка строк — 1; в карточке текст слева, карта справа — */
 @media (min-width: 900px) {
   .stats__panel {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: auto auto;
+    --stats-lead: clamp(12.5rem, 15.8vw, 18.75rem);
+    grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
+    min-height: clamp(22rem, 34vw, 30.75rem);
   }
 
   .stats__card--main {
-    grid-column: 1 / 7;
-    grid-row: 1 / 3;
-    min-height: 0;
+    grid-template-columns: minmax(0, var(--stats-lead)) minmax(0, 1fr);
+    grid-template-areas: 'lead map';
+    gap: clamp(0.5rem, 1.4svh, 0.875rem) clamp(0.5rem, 1vw, 1rem);
+    padding: var(--stats-pad) clamp(1.5rem, 2.1vw, 2.5rem);
   }
 
-  .stats__card--a {
-    grid-column: 7 / 10;
+  .stats__lead {
+    grid-area: lead;
   }
 
-  .stats__card--b {
-    grid-column: 10 / 13;
+  .stats__card--main .stats__value {
+    font-size: clamp(6rem, 10vw, 11.875rem);
   }
 
-  .stats__card--a,
-  .stats__card--b {
-    min-height: clamp(12rem, 6rem + 9vw, 17rem);
-    align-content: space-between;
+  /* карта занимает всю высоту карточки и на её размер не влияет: рисунок вписан и прижат вправо (xMaxYMid) */
+  .stats__map {
+    grid-area: map;
+  }
+
+  .stats__map svg {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+
+  .stats__row {
+    padding-block: 0.5rem;
   }
 
   .stats__card--accent {
-    grid-column: 7 / 13;
-    min-height: clamp(12rem, 6rem + 9vw, 17rem);
+    flex-wrap: nowrap;
+    border-radius: 24px;
   }
 }
 
@@ -292,7 +398,7 @@
 /* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна — всё по высоте окна — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--stats {
-    --stats-pad: clamp(1rem, 3.4svh, 2.25rem);
+    --stats-pad: clamp(1rem, 3.6svh, 2.125rem);
     padding-block: var(--screen-pad);
   }
 
@@ -312,34 +418,26 @@
     min-height: clamp(38px, 4.8svh, 46px);
   }
 
-  .stats__card {
-    gap: clamp(0.5rem, 1.4svh, 0.85rem);
-  }
-
-  .stats__card--a,
-  .stats__card--b,
-  .stats__card--accent {
-    min-height: clamp(8.5rem, 25svh, 17rem);
+  /* высота раскладки — как на образце: 492px при окне 937px */
+  .stats__panel {
+    height: clamp(19rem, 52.5svh, 36rem);
+    min-height: 0;
   }
 
   .stats__value {
-    font-size: clamp(2.75rem, min(1.6rem + 3.4vw, 9svh), 5.5rem);
+    font-size: clamp(2.75rem, min(1.9rem + 4.6vw, 9.8svh), 5.75rem);
   }
 
   .stats__card--main .stats__value {
-    font-size: clamp(5.5rem, min(2.5rem + 12vw, 27svh), 16rem);
+    font-size: clamp(5.5rem, min(10vw, 20.3svh), 11.875rem);
   }
 
   .stats__tag {
-    font-size: clamp(3.5rem, min(2rem + 5vw, 11svh), 8rem);
+    font-size: clamp(2.25rem, min(2rem + 3vw, 6.4svh), 3.75rem);
   }
 
   .stats__tag--sm {
-    font-size: clamp(1.75rem, min(1.3rem + 1.6vw, 4.4svh), 3rem);
-  }
-
-  .stats__footnote {
-    margin-top: clamp(0.75rem, 2.2svh, 2.25rem);
+    font-size: clamp(1.5rem, min(1.4rem + 1.2vw, 4svh), 2.5rem);
   }
 }
 
@@ -356,4 +454,22 @@
   .stats__card {
     border-radius: var(--r-card);
   }
+}
+
+/* — появление блока (stats.js): начальные состояния — только при живых анимациях (html.js-anim). Карточку, строки,
+     плашку и вкладки прячет и поднимает stagger; заголовок до входа блока в окно скрыт и выезжает строками из-под
+     масок. Запас сверху у маски — чтобы она не срезала точки над «Ї» — */
+.js-anim .section--stats:not(.is-in) .section__title {
+  opacity: 0;
+}
+
+.stats__mask {
+  display: block;
+  overflow: clip;
+  margin-block: -0.16em -0.06em;
+  padding-block: 0.16em 0.06em;
+}
+
+.stats__line {
+  display: block;
 }

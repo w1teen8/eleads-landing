@@ -24,7 +24,7 @@ test('блок 04 включён и стоит в списке по порядк
 
 test('три формата 01–03 с подписями из вайрфрейма; у каждого — пример канал / медиа / бот и кнопка лайтбокса', () => {
   assert.deepEqual(ua.formats.items.map((i) => i.title), ['У Telegram-каналах', 'У відео / медіаконтенті', 'У ботах']);
-  assert.equal(ua.formats.eyebrow, '04 / AD FORMATS');
+  assert.equal(ua.formats.eyebrow, undefined, 'метки-номера блока нет (правка клиента, T25)');
   assert.equal(ua.formats.title, 'Як ваша реклама виглядатиме в Telegram');
   assert.equal(count(formats, /class="formats__item"/g), 3);
   assert.equal(count(formats, /data-lightbox-open/g), 3);

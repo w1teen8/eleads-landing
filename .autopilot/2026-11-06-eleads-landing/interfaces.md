@@ -287,3 +287,16 @@ export function forecast(input, rates): Forecast
 - Первый экран: карточка рекламы — `hero.ad.channel` / `hero.ad.label` (ключ `hero.ad.tag` удалён), цифра проектов «50+» (3 места, UA/EN); `ribbons.bottom` удалён.
 - Шапка: нет `.header__nav` / `.header__link` (и `initActiveLink`), есть `.header__cta-arrow`; полный список разделов — только в бургере.
 
+### T25 — блок 02: карты из точек, барабаны, появление (H22–H25)
+
+- Правило H11 уточнено: переходов между экранами нет; внутри блока 02 появление и анимации разрешены (`stagger` из `motion-kit` вызывается только в `stats.js` — это проверяет тест). Для остальных блоков появление — только по слову пользователя.
+- Данные: `src/data/ua-dots.json` `{source, step, lonStep, shift, lon0, lat0, cols, rows, total, rowsData}` — сетка 33×22, 376 точек; собирается `scripts/ua-dots.js` из Natural Earth 1:10m (вариант с точкой зрения Украины, public domain); GeoJSON в репозитории нет.
+- Модули: `stats-model.js` (чистая математика: `parseShare`, `litCount`, `litSet`, `gridDots`, `waveStrength`, `repelOffset`, `springStep`, `igniteLevel`, `odoCells`, `reelDigits` …), `stats-dots.js` (`createDotMap(box, grid, {stride, share}) → {darken(), ignite(origin), wave(point, kind)}`), `stats-odometer.js` (`rollTo(node, next, {from, turns, delay})`, `shownValue(node)`).
+- Разметка: `[data-stats-map="ua|ww"]` (`role="img"`, подпись `stats.ua.mapLabel` / `stats.ww.mapLabel`), состояния `.section--stats.is-in`, `.stats__map.is-dark`; `[data-flip="0..7"]` сохранён.
+- Контент: `stats.ua.rank` вместо `stats.ua.sample`; удалены `stats.footnote` и `*.eyebrow` у секций 02–14 (`hero.eyebrow` остался); у логотипа нет `.logo__mark` (шапка, заставка, полоса перехода).
+- Доля горящих точек читается из `stats.ua.main.value`; подпись карты для скринридера — отдельный текст, при смене цифры править руками.
+
+### T26 — блок 03: мозаика плиток с иконками (H26–H28)
+
+- Плитки: `niches__card--dark|light|yellow|orange|other`, `svg.niches__icon` (opacity на весь svg), `.niches__top-row` в «Інша ніша?»; у ниши только `name` (`examples` удалены); первая плитка — «B2B»; `data-place="niches_other"` сохранён. Ключи `niches.other.cta` / `niches.other.arrow` в JSON не используются.
+

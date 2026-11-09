@@ -130,7 +130,6 @@
     "home": "eLeads — back to the top"
   },
   "stats": {
-    "eyebrow": "02 / CHANNEL SCALE",
     "title": "Telegram is a mass channel in Ukraine and worldwide",
     "titleAccent": "in Ukraine and worldwide",
     "tabsLabel": "Statistics region",
@@ -141,15 +140,16 @@
     "ua": {
       "main": {
         "value": "81%",
-        "label": "of messenger users aged 18–70 used Telegram during the year"
+        "label": "of messenger users aged 18–70 used Telegram within a day"
       },
+      "mapLabel": "Dotted map of Ukraine: 81 of every 100 dots are lit — that many messenger users use Telegram",
       "age": {
         "value": "18–70",
         "label": "high Telegram penetration in all main age groups"
       },
-      "sample": {
-        "value": "4,500",
-        "label": "respondents in the Suspilne / Gradus Research study"
+      "rank": {
+        "value": "#1",
+        "label": "messenger in Ukraine by popularity among users"
       },
       "note": {
         "tag": "UA",
@@ -161,54 +161,46 @@
         "value": "1B+",
         "label": "monthly active users worldwide; Telegram passed 1 billion MAU in 2025"
       },
+      "mapLabel": "Dotted world map",
       "top": {
         "value": "TOP-5",
         "label": "one of the most downloaded apps in the world"
       },
       "geo": {
         "value": "200+ GEO",
-        "label": "international advertising campaigns*"
+        "label": "international advertising campaigns"
       },
       "what": {
         "title": "What we advertise",
         "text": "Telegram channels · bots · websites · apps"
       }
-    },
-    "footnote": "*81% — Suspilne, Mediatrack 2025, n=4,500. 1B+ — Telegram Press Info. 200+ GEO — eLeads working positioning; check against current cabinet capabilities before publishing."
+    }
   },
   "niches": {
-    "eyebrow": "03 / NICHES",
     "title": "Where Telegram Ads perform best",
     "titleAccent": "perform best",
     "lead": "Especially strong in niches where the decision takes more than one contact: trust, warm-up and high customer value are needed.",
     "items": [
       {
-        "name": "Business",
-        "examples": "Finmap"
+        "name": "B2B"
       },
       {
-        "name": "Experts",
-        "examples": "eLeads · Mukhin · Dombovetskyi"
+        "name": "Experts"
       },
       {
-        "name": "Crypto",
-        "examples": "Cryptonite"
+        "name": "Crypto"
       },
       {
-        "name": "Education",
-        "examples": "Anna Haustova"
+        "name": "Education"
       },
       {
-        "name": "Auto",
-        "examples": "Global Auto Logistic"
+        "name": "Auto"
       },
       {
-        "name": "Finance / Investments",
-        "examples": "Monolit"
+        "name": "Finance / Investments"
       },
       {
-        "name": "SaaS / B2B",
-        "examples": "Trackdesk"
+        "name": "SaaS / B2B"
       }
     ],
     "other": {
@@ -219,7 +211,6 @@
     }
   },
   "formats": {
-    "eyebrow": "04 / AD FORMATS",
     "title": "How your ad will look in Telegram",
     "titleAccent": "will look in Telegram",
     "lead": "Telegram Ads blends into the messenger interface and can appear in different formats and placements.",
@@ -258,7 +249,6 @@
     "caption": "Real placement examples from client MONOLIT"
   },
   "calculator": {
-    "eyebrow": "05 / INTERACTIVE",
     "title": "Estimate your Telegram Ads potential",
     "titleAccent": "Telegram Ads potential",
     "paramsTitle": "Campaign settings",
@@ -294,7 +284,6 @@
     "live": "Forecast for {budget}: impressions {impressions}, clicks {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}."
   },
   "cases": {
-    "eyebrow": "06 / SOCIAL PROOF",
     "title": "Results across niches and GEOs",
     "word": "CASES",
     "listLabel": "Cases — swipe sideways",
@@ -318,7 +307,6 @@
     "close": "Close"
   },
   "process": {
-    "eyebrow": "07 / PROCESS",
     "title": "From analysis to scaling",
     "titleAccent": "to scaling",
     "steps": [
@@ -333,7 +321,6 @@
     "note": "The client does not have to figure out Telegram Ads alone: I join the task from strategy and ad materials through to optimisation and scaling."
   },
   "geo": {
-    "eyebrow": "08 / GEO",
     "title": "Audiences in Ukraine and all over the world",
     "titleAccent": "and all over the world",
     "mapLabel": "Interactive map",
@@ -374,7 +361,6 @@
     }
   },
   "targeting": {
-    "eyebrow": "09 / TARGETING",
     "title": "How we find the right audience",
     "titleAccent": "the right audience",
     "hint": "Hover or tap a card to see the explanation.",
@@ -419,7 +405,6 @@
     "note": "Availability of parameters depends on the current capabilities of Telegram Ads / Euro Cabinet."
   },
   "reviews": {
-    "eyebrow": "10 / TRUST",
     "title": "What clients say",
     "titleAccent": "clients say",
     "sliderLabel": "Client reviews",
@@ -446,7 +431,6 @@
     ]
   },
   "ecosystem": {
-    "eyebrow": "11 / ECOSYSTEM",
     "title": "We can cover the whole path to a lead",
     "titleAccent": "the whole path to a lead",
     "flowLabel": "Customer path",
@@ -500,7 +484,6 @@
     "caption": "A client can come only for Telegram Ads or hand eLeads the full Telegram system."
   },
   "materials": {
-    "eyebrow": "12 / EXPERTISE",
     "title": "Useful materials on Telegram",
     "titleAccent": "on Telegram",
     "post": "POST",
@@ -522,13 +505,11 @@
     ]
   },
   "faq": {
-    "eyebrow": "13 / FAQ",
     "title": "Frequently asked questions",
     "titleAccent": "questions",
     "note": "Minimum ad budget is €650. The cost of services is individual."
   },
   "cta": {
-    "eyebrow": "14 / FINAL CTA",
     "title": "Shall we discuss your project?",
     "titleAccent": "your project?",
     "text": "Write to me on Telegram. I will review your project, task and GEO and suggest which promotion format on Telegram will be the best.",

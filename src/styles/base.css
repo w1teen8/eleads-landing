@@ -171,19 +171,6 @@ h3 {
   box-decoration-break: clone;
 }
 
-/* — надзаголовок секции: акцентный моно-капс с разрядкой, как у Aether («ORBIT 01 / WINTER 26») — */
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6em;
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  font-weight: 500;
-  letter-spacing: var(--tracking-mono);
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
 /* — заглушка: то, чего у клиента ещё нет. Видно сразу, не путается с готовым — */
 .is-placeholder {
   font-family: var(--font-mono);

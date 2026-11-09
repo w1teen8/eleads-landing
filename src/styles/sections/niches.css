@@ -1,7 +1,8 @@
-/* 03 Ніші (T20; T23 — палитра канала и формат «один экран»). Обычная прокрутка, без переходов (H11). Восемь карточек
-   4×2: тёмные поверхности с тонкой светлой границей и жёлтой точкой, восьмая «Інша ніша?» — жёлто-оранжевая с тёмным
-   текстом, ссылка в Telegram. Фон — фон страницы. Наведение — лёгкий наклон к курсору (transform). На широком экране
-   блок — ровно экран под шапкой: высота карточек и кегль — от высоты окна (svh). Двигаются только transform и opacity. */
+/* 03 Ніші (T20; T23 — палитра канала и формат «один экран»; T26 — мозаика с иконками). Обычная прокрутка, без переходов
+   (H11). Восемь плиток 4×2 в цветах палитры: тёмная, светлая, тёмная, жёлтая, оранжевая, тёмная, светлая и «Інша ніша?»
+   (тёмная с жёлтым контуром, ссылка в Telegram). В каждой — название шрифтом канала и крупная контурная
+   иконка в правом нижнем углу. Наведение (мышь, без reduced-motion) — подъём и наклон плитки, сдвиг иконки. На широком
+   экране блок — ровно экран под шапкой: высота плиток и кегль — от высоты окна (svh). Двигаются только transform и opacity. */
 
 .section--niches {
   --niches-gap: clamp(0.75rem, 1.1vw, 1.25rem);
@@ -21,29 +22,6 @@
 .niches__head {
   gap: clamp(0.9rem, 1.5vw, 1.5rem);
   margin-bottom: 0;
-}
-
-.niches__eyebrow {
-  justify-self: start;
-  padding: 0.6em 1.15em;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--text) 4%, transparent);
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  font-weight: 500;
-  letter-spacing: var(--tracking-mono);
-  text-transform: uppercase;
-  color: var(--text);
-}
-
-.niches__eyebrow::before {
-  content: '';
-  flex: none;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
 }
 
 .section--niches .display.section__title {
@@ -66,7 +44,7 @@
   color: color-mix(in srgb, var(--text) 82%, transparent);
 }
 
-/* — карточки — */
+/* — плитки-мозаика (T26, образец reference/run3/niches-D1-chosen.png) — */
 .niches__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -82,103 +60,130 @@
 .niches__card {
   --tilt-x: 0deg;
   --tilt-y: 0deg;
+  --lift: 0px;
   position: relative;
-  display: grid;
-  align-content: start;
-  gap: 0.6rem;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
   width: 100%;
   min-height: min(clamp(8.5rem, 6rem + 6vw, 13rem), 17svh);
   padding: var(--niches-pad);
-  padding-right: calc(var(--niches-pad) + 1.25rem);
   border-radius: var(--r-card-lg);
   background: var(--surface);
   border: 1px solid var(--line);
   color: var(--text);
-  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform: translateY(var(--lift)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
   transition: transform var(--dur) var(--ease-out);
 }
 
-.niches__dot {
-  position: absolute;
-  top: calc(var(--niches-pad) + 0.35em);
-  right: var(--niches-pad);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
-/* название ниши: перенос только по пробелам — «Investments» не рвётся посреди слова */
-.niches__name {
-  font-family: var(--font-body);
-  font-size: clamp(1.125rem, 0.85rem + 1vw, 2rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  text-transform: none;
-  overflow-wrap: normal;
-  hyphens: manual;
-  color: var(--text);
-}
-
-.niches__examples {
-  font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1.0625rem);
-  line-height: 1.45;
-  color: var(--text-muted);
-}
-
-/* «Інша ніша?» — жёлто-оранжевая карточка-ссылка с тёмным текстом; тёмная точка и тёмный кружок-стрелка */
-.niches__card--other {
-  gap: 0.75rem;
-  background: var(--grad);
+/* тона: тёмная — по умолчанию; светлая, жёлтая и оранжевая — с тёмным текстом */
+.niches__card--light {
+  background: var(--text);
   border-color: transparent;
   color: var(--accent-ink);
 }
 
-.niches__card--other .niches__dot {
-  background: var(--accent-ink);
+.niches__card--yellow {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--accent-ink);
 }
 
-.niches__card--other .niches__name {
+.niches__card--orange {
+  background: var(--accent-2);
+  border-color: transparent;
   color: var(--accent-ink);
+}
+
+/* «Інша ніша?» — тёмная с жёлтым контуром, жёлтый заголовок, ссылка в Telegram */
+.niches__card--other {
+  background: var(--bg);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+}
+
+/* крупная контурная иконка ниши: правый нижний угол, целиком внутри плитки; прозрачность — на весь svg,
+   а не на обводке (иначе стыки линий темнее) */
+.niches__icon {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 0;
+  width: 23%;
+  max-height: 60%;
+  aspect-ratio: 1;
+  color: currentColor;
+  opacity: 0.16;
+  pointer-events: none;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.niches__card--yellow .niches__icon,
+.niches__card--orange .niches__icon {
+  opacity: 0.17;
+}
+
+.niches__card--other .niches__icon {
+  opacity: 0.22;
+}
+
+/* название ниши — шрифт канала, заглавными; перенос только по пробелам */
+.niches__name {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-head);
+  font-size: clamp(2.25rem, 2.9vw, 4rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  overflow-wrap: normal;
+  hyphens: manual;
+  color: inherit;
+}
+
+/* текст есть только у «Інша ніша?» — внизу плитки */
+.niches__examples {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1.0625rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: color-mix(in srgb, currentColor 78%, transparent);
 }
 
 .niches__card--other .niches__examples {
-  color: color-mix(in srgb, var(--accent-ink) 82%, transparent);
+  max-width: 66%;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--text) 85%, transparent);
 }
 
-.niches__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7em;
-  margin-top: auto;
-  padding-top: 0.25rem;
-  font-weight: 700;
-  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.125rem);
-  white-space: nowrap;
-  color: var(--accent-ink);
+.niches__top-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
 .niches__arrow {
   display: grid;
   place-items: center;
   flex: none;
-  width: 2.1em;
-  height: 2.1em;
+  width: clamp(2.25rem, 1.2rem + 2vw, 2.875rem);
+  aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--accent-ink);
-  color: var(--accent);
-  transition: transform var(--dur) var(--ease-out);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .niches__arrow svg {
-  width: 52%;
-  height: 52%;
-}
-
-.niches__card--other:hover .niches__arrow,
-.niches__card--other:focus-visible .niches__arrow {
-  transform: translate(3px, -3px);
+  width: 46%;
+  height: 46%;
 }
 
 .niches__card--other:focus-visible {
@@ -186,7 +191,22 @@
   outline-offset: 3px;
 }
 
-/* телефон: одна колонка, карточки-строки компактнее */
+/* наведение (только мышь, без reduced-motion): плитка приподнимается и чуть наклоняется, иконка слегка смещается;
+   на тач-экранах и при reduced-motion — статично. Только transform. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .niches__card:hover,
+  .niches__card:focus-visible {
+    --lift: -6px;
+    transform: translateY(var(--lift)) rotate(-0.8deg) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  }
+
+  .niches__card:hover .niches__icon,
+  .niches__card:focus-visible .niches__icon {
+    transform: translate(-6px, -4px) rotate(2deg);
+  }
+}
+
+/* телефон: одна колонка, плитки-строки компактнее */
 @media (max-width: 599px) {
   .niches__grid {
     grid-template-columns: minmax(0, 1fr);
@@ -194,20 +214,21 @@
   }
 
   .niches__card {
-    min-height: 0;
-    padding: 1.1rem 1.6rem 1.1rem 1.1rem;
+    min-height: 8.5rem;
+    padding: 1.1rem;
     border-radius: var(--r-card);
   }
 
-  .niches__dot {
-    top: 1.15rem;
-    right: 0.9rem;
-    width: 8px;
-    height: 8px;
+  .niches__icon {
+    width: 24%;
+  }
+
+  .niches__card--other {
+    min-height: 11rem;
   }
 
   .niches__name {
-    font-size: 1.25rem;
+    font-size: 2.75rem;
   }
 
   .niches__examples {
@@ -258,6 +279,6 @@
   }
 
   .niches__name {
-    font-size: clamp(1.125rem, min(0.85rem + 1vw, 3.6svh), 2rem);
+    font-size: clamp(2.25rem, min(2.9vw, 6svh), 4.25rem);
   }
 }

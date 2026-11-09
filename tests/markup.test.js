@@ -26,12 +26,37 @@ test('14 секций с id из interfaces.md, в порядке вайрфре
   assert.deepEqual(ids, SECTION_IDS);
 });
 
-test('у каждой секции после hero — eyebrow и H2 из словаря секции', () => {
+// Правка клиента (T25, дополнение 2): «номер блоков тоже не надо и их название» — меток «NN / НАЗВА» нет ни в одном
+// блоке, в том числе выключенном; метка первого экрана и номера в меню-бургере остаются.
+test('у каждой секции после hero — H2 из словаря секции; меток-номеров «NN / НАЗВА» нет', () => {
   for (const id of SECTION_IDS.slice(1)) {
     const block = html.split(new RegExp(`<section\\b[^>]*\\sid="${id}"`))[1].split('</section>')[0];
-    assert.match(block, new RegExp(`class="[^"]*\\beyebrow\\b[^"]*"[^>]*data-i18n="${id}\\.eyebrow"`), `${id}: нет eyebrow`);
     assert.match(block, new RegExp(`<h2\\b[^>]*data-i18n="${id}\\.title"`), `${id}: нет H2`);
+    assert.doesNotMatch(block, /eyebrow/, `${id}: метка блока осталась в разметке`);
+    for (const dict of [ua, en]) assert.equal(dict[id].eyebrow, undefined, `${id}: ключ eyebrow остался в словаре`);
   }
+  assert.match(html, /data-i18n="hero\.eyebrow"/, 'метка первого экрана — не номер блока, остаётся');
+  assert.equal(ua.hero.eyebrow, 'TELEGRAM PERFORMANCE MARKETING');
+  assert.equal((html.match(/class="menu__link"/g) || []).length, 14, 'разделы в меню на месте');
+  for (const file of ['base.css', 'sections/stats.css', 'sections/niches.css', 'sections/formats.css', 'sections/calculator.css']) {
+    assert.doesNotMatch(read(`src/styles/${file}`).replace(/\/\*[\s\S]*?\*\//g, ''), /(^|[^_\w])\.eyebrow\b|__eyebrow\b/, `${file}: стили метки`);
+  }
+});
+
+// Правка клиента: «возле eLeads не надо знак телеграм вообще никакой» — в шапке, на заставке и на полосе перехода
+// рядом со словом нет значка. Значок Telegram в лентах и знак в карточке рекламы — не логотип.
+test('логотип — только слово «eLeads», без значка: шапка, заставка, полоса перехода', () => {
+  const logo = html.match(/<a class="logo header__logo"[\s\S]*?<\/a>/)[0];
+  assert.match(logo, /class="logo__word" data-i18n="common\.brand"/);
+  assert.doesNotMatch(logo, /<svg|<img|logo__mark/);
+  const brand = html.match(/<span class="preloader__brand"[\s\S]*?<\/span>\s*<\/span>/)[0];
+  assert.match(brand, /data-i18n="common\.brand"/);
+  assert.doesNotMatch(brand, /<svg|<img|logo__mark/);
+  assert.doesNotMatch(html, /logo__mark/);
+  for (const file of ['src/styles/sections/header.css', 'src/styles/sections/preloader.css', 'src/core/transition.js']) {
+    assert.doesNotMatch(read(file), /logo__mark|sweep__mark/, file);
+  }
+  assert.match(html, /class="ribbons__icon"/, 'значок Telegram в лентах остаётся');
 });
 
 test('ровно один <h1>, и он в hero', () => {

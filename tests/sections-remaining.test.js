@@ -86,7 +86,7 @@ test('ссылки в Telegram этих секций размечены мест
 test('тексты: ключевые дословные строки UA и EN-черновик заполнены', () => {
   assert.equal(ua.stats.ua.main.value, '81%');
   assert.equal(ua.stats.ww.main.value, '1B+');
-  assert.match(ua.stats.footnote, /^\*81% — Суспільне, Mediatrack 2025, n=4 500\./);
+  assert.equal(ua.stats.footnote, undefined, 'сноску блока 02 клиент убрал (T25)');
   assert.equal(ua.niches.items.length, 7);
   assert.equal(ua.niches.other.name, 'Інша ніша?');
   assert.equal(ua.process.steps.length, 7);
@@ -97,7 +97,7 @@ test('тексты: ключевые дословные строки UA и EN-ч
   assert.equal(ua.cta.title, 'Обговоримо ваш проєкт?');
   assert.equal(ua.geo.regions.europe.figure, '4.43M');
   assert.equal(en.draft, true);
-  assert.notEqual(en.stats.footnote, ua.stats.footnote);
+  assert.notEqual(en.stats.ua.main.label, ua.stats.ua.main.label);
 });
 
 test('нет выдуманных фактов: отзывы и посты без клиентского текста — заглушки', () => {

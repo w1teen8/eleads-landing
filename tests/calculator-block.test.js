@@ -25,8 +25,8 @@ test('блок 05 включён после 02–04 по порядку стра
   assert.doesNotMatch(item[1], /\shidden/);
 });
 
-test('разметка по вайрфрейму: метка, H2, параметры, прогноз — воронка из трёх ступеней и шесть показателей', () => {
-  assert.match(calc, /data-i18n="calculator\.eyebrow"/);
+test('разметка по вайрфрейму: H2, параметры, прогноз — воронка из трёх ступеней и шесть показателей', () => {
+  assert.doesNotMatch(calc, /eyebrow/, 'метки-номера блока нет (правка клиента, T25)');
   assert.match(calc, /<h2 id="calculator-title"[^>]*data-i18n="calculator\.title"/);
   for (const group of ['niche', 'geo', 'goal']) assert.match(calc, new RegExp(`data-calc-group="${group}"`));
   assert.match(calc, /type="range"[^>]*data-calc-budget/);

@@ -5,14 +5,16 @@ import assert from 'node:assert/strict';
 
 const kit = await import('../src/core/motion-kit.js');
 
-// H11: «убери все переходы которые сейчас есть» — наезд (stackReveal) и лесенка (stagger) больше нигде не вызываются;
-// flipSwap остаётся только как ответ на действие (вкладки, смена значения).
-test('H11: ни один блок не зовёт stackReveal и stagger', async () => {
+// H11: «убери все переходы которые сейчас есть» — наезд (stackReveal) больше нигде не вызывается. Лесенка (stagger)
+// разрешена только блоку 02: его появление пользователь выбрал отдельно (T25, дополнение 3). flipSwap — только как
+// ответ на действие (вкладки, смена значения).
+test('H11: ни один блок не зовёт stackReveal; stagger — только блок 02', async () => {
   const { readdirSync, readFileSync } = await import('node:fs');
   const dir = new URL('../src/sections/', import.meta.url);
   for (const file of readdirSync(dir).filter((f) => f.endsWith('.js'))) {
     const js = readFileSync(new URL(file, dir), 'utf8');
-    for (const fn of ['stackReveal', 'stagger']) assert.doesNotMatch(js, new RegExp(`\\b${fn}\\(`), `${file}: ${fn}()`);
+    assert.doesNotMatch(js, /\bstackReveal\(/, `${file}: stackReveal()`);
+    if (file !== 'stats.js') assert.doesNotMatch(js, /\bstagger\(/, `${file}: stagger()`);
   }
 });
 

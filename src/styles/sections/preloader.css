@@ -625,21 +625,6 @@
   color: var(--accent-ink);
 }
 
-.sweep__mark {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--accent-ink);
-  color: var(--accent);
-}
-
-.sweep__mark svg {
-  width: 16px;
-  height: 16px;
-}
-
 .sweep__mid {
   position: absolute;
   left: 50%;

@@ -1,4 +1,5 @@
-// Блок 02 «Telegram у цифрах» (T19): включён, bento по вайрфрейму, собран из общих помощников движения.
+// Блок 02 «Telegram у цифрах» (T19; T25 — раскладка с картой из точек, см. tests/stats-map.test.js): включён,
+// собран из общих помощников движения.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
@@ -18,7 +19,7 @@ test('блок 02 включён сразу после первого экран
   assert.doesNotMatch(item[1], /\shidden/);
 });
 
-test('bento: в каждой вкладке главная цифра, две карточки и тёмная акцентная последней', () => {
+test('в каждой вкладке карточка с главной цифрой, две строки и акцентная плашка последней', () => {
   const panels = stats.split(/role="tabpanel"/).slice(1);
   assert.equal(panels.length, 2);
   for (const panel of panels) {
@@ -27,24 +28,28 @@ test('bento: в каждой вкладке главная цифра, две к
     assert.match(cards[0], /stats__card--main/);
     assert.match(cards[3], /stats__card--accent/);
   }
-  assert.match(stats, /data-i18n="stats\.footnote"/);
+  assert.doesNotMatch(stats, /footnote|legend/, 'сноски и легенды нет — правка клиента (T25, дополнение 2)');
 });
 
-// H11: «убери все переходы которые сейчас есть» — без наезда на первый экран и без лесенки; табло — только на вкладках
-test('движение блока: табло на вкладках; без наезда, лесенки, докрутки и ревилов — карточки видны сразу', () => {
+// H11: «убери все переходы которые сейчас есть» — наезда блока на блок нет. T25 (дополнение 3): для блока 02
+// пользователь выбрал своё появление («Для появления тоже какие-то анимации нужны») — лесенка разрешена только здесь;
+// подробно — tests/stats-motion.test.js
+test('движение блока: табло и барабаны на вкладках, лесенка появления; без наезда блока на блок', () => {
   const js = read('src/sections/stats.js');
   assert.match(js, /from '\.\.\/core\/motion-kit\.js'/);
   assert.match(js, /\bflipSwap\(/);
-  for (const fn of ['stackReveal', 'stagger', 'countTo']) assert.doesNotMatch(js, new RegExp(`\\b${fn}\\(`), fn);
+  assert.match(js, /\bstagger\(/);
+  for (const fn of ['stackReveal', 'countTo']) assert.doesNotMatch(js, new RegExp(`\\b${fn}\\(`), fn);
   assert.equal(count(stats, /data-reveal|data-stats-step|data-count/g), 0);
-  assert.doesNotMatch(js, /gsap|ScrollTrigger/);
+  assert.doesNotMatch(js.replace(/^\s*\/\/.*$/gm, ''), /\bgsap\b|ScrollTrigger/);
 });
 
 // T23 (H14): палитра канала — тёмные карточки с тонкой светлой границей, цифры жёлтый → оранжевый,
 // одна акцентная карточка — жёлто-оранжевая с тёмным текстом
 test('палитра канала: тёмные карточки с тонкой границей, цифры — акцентом, акцентная карточка с тёмным текстом', () => {
   const css = read('src/styles/sections/stats.css');
-  assert.match(css, /\.stats__card\s*\{[^}]*background:\s*var\(--surface\);[^}]*border:\s*1px solid var\(--line\)/);
+  // T25: поверхность карточки — как на образце stats-E: светлая плёнка 5.5% поверх фона
+  assert.match(css, /\.stats__card\s*\{[^}]*background:\s*color-mix\(in srgb, var\(--text\) 5\.5%, transparent\);[^}]*border:\s*1px solid var\(--line\)/);
   assert.match(css, /\.stats__value\s*\{[^}]*background:\s*var\(--grad\)/);
   assert.match(css, /\.stats__card--accent\s*\{[^}]*background:\s*var\(--grad\);[^}]*color:\s*var\(--accent-ink\)/);
 });

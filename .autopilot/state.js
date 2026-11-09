@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-09T17:28:01+02:00",
+  "updatedAt": "2026-11-09T18:18:39+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1092,16 +1092,25 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "startedAt": "2026-11-09T17:07:23+02:00",
+      "finishedAt": "2026-11-09T17:32:32+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 141,
+        "failed": 0
+      },
+      "commit": "e7735e3"
     },
     {
       "id": "25",
       "title": "Блок 02: карта Украины из точек (81% горит), Worldwide — карта мира",
       "requirements": [
         "H22",
+        "H23",
+        "H24",
+        "H25",
         "H15",
         "H11",
         "H14",
@@ -1112,6 +1121,8 @@ window.STATE =
       ],
       "wave": 21,
       "zone": [
+        ".eyebrow",
+        "index.html",
         "src/sections/stats.js",
         "src/styles/sections/stats.css",
         "#stats",
@@ -1127,9 +1138,40 @@ window.STATE =
       "review": "нет",
       "model": "сильная",
       "status": "in-progress",
+      "startedAt": "2026-11-09T17:28:01+02:00",
       "retries": 0,
-      "repairs": 0,
-      "startedAt": "2026-11-09T17:28:01+02:00"
+      "repairs": 0
+    },
+    {
+      "id": "26",
+      "title": "Блок 03 «Ніші»: мозаика плиток с иконками",
+      "requirements": [
+        "H26",
+        "H27",
+        "H28",
+        "H15",
+        "H14",
+        "H18"
+      ],
+      "blockedBy": [
+        "23"
+      ],
+      "wave": 21,
+      "zone": [
+        "src/sections/niches.js",
+        "src/styles/sections/niches.css",
+        "#niches",
+        "index.html",
+        "niches",
+        "content.*.json",
+        "tests/niches-*.test.js"
+      ],
+      "review": "нет",
+      "model": "обычная",
+      "status": "in-progress",
+      "startedAt": "2026-11-09T18:14:10+02:00",
+      "retries": 0,
+      "repairs": 0
     },
     {
       "id": "F1",
@@ -1363,9 +1405,17 @@ window.STATE =
     "2026-11-09T17:07:23+02:00",
     "2026-11-09T17:18:57+02:00",
     "2026-11-09T17:28:00+02:00",
-    "2026-11-09T17:28:01+02:00"
+    "2026-11-09T17:28:01+02:00",
+    "2026-11-09T17:32:32+02:00",
+    "2026-11-09T17:40:30+02:00",
+    "2026-11-09T17:49:38+02:00",
+    "2026-11-09T17:50:40+02:00",
+    "2026-11-09T18:14:09+02:00",
+    "2026-11-09T18:14:10+02:00",
+    "2026-11-09T18:16:12+02:00",
+    "2026-11-09T18:18:39+02:00"
   ],
-  "rev": 138,
+  "rev": 146,
   "waiting": null,
   "waits": [
     {
@@ -2404,6 +2454,56 @@ window.STATE =
         "25"
       ],
       "act": "start"
+    },
+    {
+      "t": "2026-11-09T17:32:32+02:00",
+      "k": "ticket",
+      "ids": [
+        "24"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 141,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-09T17:40:30+02:00",
+      "k": "tickets",
+      "n": 26
+    },
+    {
+      "t": "2026-11-09T17:49:38+02:00",
+      "k": "tickets",
+      "n": 26
+    },
+    {
+      "t": "2026-11-09T17:50:40+02:00",
+      "k": "tickets",
+      "n": 26
+    },
+    {
+      "t": "2026-11-09T18:14:09+02:00",
+      "k": "tickets",
+      "n": 27
+    },
+    {
+      "t": "2026-11-09T18:14:10+02:00",
+      "k": "ticket",
+      "ids": [
+        "26"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-09T18:16:12+02:00",
+      "k": "tickets",
+      "n": 27
+    },
+    {
+      "t": "2026-11-09T18:18:39+02:00",
+      "k": "tickets",
+      "n": 27
     }
   ],
   "reqList": [

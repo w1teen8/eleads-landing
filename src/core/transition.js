@@ -34,11 +34,8 @@ function build() {
   const ride = make('div', 'sweep__ride');
   const top = make('div', 'sweep__top');
   const brand = make('span', 'sweep__brand');
-  const mark = make('span', 'sweep__mark');
-  mark.innerHTML =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg>';
   const brandText = make('span', 'sweep__brand-text');
-  brand.append(mark, brandText);
+  brand.append(brandText); // только слово «eLeads», без значка
   const caption = make('span', 'sweep__caption');
   top.append(brand, caption);
   const mid = make('div', 'sweep__mid');

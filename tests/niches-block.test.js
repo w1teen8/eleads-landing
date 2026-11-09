@@ -24,29 +24,26 @@ test('восемь карточек по порядку брифа; восьма
   const keys = [...niches.matchAll(/data-i18n="(niches\.(?:items\.\d|other)\.name)"/g)].map((m) => m[1]);
   assert.deepEqual(keys, [0, 1, 2, 3, 4, 5, 6].map((i) => `niches.items.${i}.name`).concat('niches.other.name'));
   assert.match(niches, /<a class="niches__card niches__card--other"[^>]*href="\{\{config\.telegramUrl\}\}"[^>]*data-place="niches_other"/);
-  for (const dict of [ua, en]) {
-    assert.deepEqual(
-      dict.niches.items.map((n) => n.examples),
-      ['Finmap', dict === ua ? 'eLeads · Мухін · Домбовецький' : 'eLeads · Mukhin · Dombovetskyi', 'Cryptonite', 'Anna Haustova', 'Global Auto Logistic', 'Monolit', 'Trackdesk'],
-    );
-  }
+  // клиент-подписи убраны (слова клиента: «стоит просто убрать это»): у ниш только название
+  for (const dict of [ua, en]) assert.deepEqual(dict.niches.items.map((n) => Object.keys(n)), Array(7).fill(['name']));
+  assert.doesNotMatch(niches, /niches\.items\.\d\.examples/);
   assert.doesNotMatch(niches, /niches__orbit|class="planet"|data-reveal/, 'орбита и собственные ревилы убраны');
 });
 
-// H11: «убери все переходы которые сейчас есть» — блок идёт обычной прокруткой, карточки видны сразу
+// H11: «убери все переходы которые сейчас есть» — блок идёт обычной прокруткой, плитки видны сразу
 test('движение: ни наезда, ни лесенки, ни табло при появлении; только hover-наклон transform-ом', () => {
   const js = read('src/sections/niches.js');
   for (const fn of ['stackReveal', 'stagger', 'flipSwap']) assert.doesNotMatch(js, new RegExp(`\\b${fn}\\b`), fn);
   assert.doesNotMatch(js, /gsap|ScrollTrigger|requestAnimationFrame|\.animate\(|textContent\s*=/);
   assert.match(js, /pointermove/);
-  assert.match(read('src/styles/sections/niches.css'), /transform:\s*rotateX\(var\(--tilt-x\)\)/);
+  assert.match(read('src/styles/sections/niches.css'), /transform:\s*translateY\(var\(--lift\)\)\s*rotateX\(var\(--tilt-x\)\)/);
 });
 
-// T23 (H14): палитра канала — тёмные карточки с тонкой границей, «Інша ніша?» — акцентная с тёмным текстом
-test('облик: тёмные карточки с тонкой границей, «Інша ніша?» — жёлто-оранжевая; переходы только transform/opacity', () => {
+// T23 (H14) / T26 (H26): палитра канала — тёмные плитки с тонкой границей, «Інша ніша?» — тёмная с жёлтым контуром
+test('облик: тёмные плитки с тонкой границей, «Інша ніша?» — с жёлтым контуром; переходы только transform/opacity', () => {
   const css = read('src/styles/sections/niches.css');
   assert.match(css, /\.niches__card\s*\{[^}]*background:\s*var\(--surface\);[^}]*border:\s*1px solid var\(--line\)/);
-  assert.match(css, /\.niches__card--other\s*\{[^}]*background:\s*var\(--grad\);[^}]*color:\s*var\(--accent-ink\)/);
+  assert.match(css, /\.niches__card--other\s*\{[^}]*background:\s*var\(--bg\);[^}]*border:\s*1\.5px solid var\(--accent\)/);
   for (const [, value] of css.matchAll(/transition:\s*([^;]+);/g)) {
     for (const part of value.split(',')) assert.match(part.trim(), /^(transform|opacity)\b/, `transition: ${value}`);
   }

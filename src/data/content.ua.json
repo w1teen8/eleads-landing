@@ -129,7 +129,6 @@
     "home": "eLeads — на початок сторінки"
   },
   "stats": {
-    "eyebrow": "02 / МАСШТАБ КАНАЛУ",
     "title": "Telegram — масовий канал в Україні та глобально",
     "titleAccent": "в Україні та глобально",
     "tabsLabel": "Регіон статистики",
@@ -140,15 +139,16 @@
     "ua": {
       "main": {
         "value": "81%",
-        "label": "користувачів месенджерів 18–70 використовували Telegram протягом року"
+        "label": "користувачів месенджерів 18–70 використовували Telegram протягом дня"
       },
+      "mapLabel": "Мапа України з точок: світиться 81 зі 100 — стільки користувачів месенджерів користуються Telegram",
       "age": {
         "value": "18–70",
         "label": "високе проникнення Telegram у всіх основних вікових групах"
       },
-      "sample": {
-        "value": "4 500",
-        "label": "респондентів у дослідженні Суспільного / Gradus Research"
+      "rank": {
+        "value": "№1",
+        "label": "месенджер в Україні за популярністю серед користувачів"
       },
       "note": {
         "tag": "UA",
@@ -160,54 +160,46 @@
         "value": "1B+",
         "label": "monthly active users у світі; Telegram перетнув 1 млрд MAU у 2025 році"
       },
+      "mapLabel": "Мапа світу з точок",
       "top": {
         "value": "TOP-5",
         "label": "один із найбільш завантажуваних застосунків світу"
       },
       "geo": {
         "value": "200+ GEO",
-        "label": "робота з міжнародними рекламними кампаніями*"
+        "label": "робота з міжнародними рекламними кампаніями"
       },
       "what": {
         "title": "Що рекламуємо",
         "text": "Telegram-канали · боти · сайти · застосунки"
       }
-    },
-    "footnote": "*81% — Суспільне, Mediatrack 2025, n=4 500. 1B+ — Telegram Press Info. 200+ GEO — робоче позиціонування eLeads; перед публікацією звірити з актуальними можливостями кабінету."
+    }
   },
   "niches": {
-    "eyebrow": "03 / НІШІ",
     "title": "Де Telegram Ads розкривається найкраще",
     "titleAccent": "розкривається найкраще",
     "lead": "Особливо сильний у нішах, де рішення приймається не за один контакт: потрібні довіра, прогрів і висока цінність клієнта.",
     "items": [
       {
-        "name": "Бізнес",
-        "examples": "Finmap"
+        "name": "B2B"
       },
       {
-        "name": "Експерти",
-        "examples": "eLeads · Мухін · Домбовецький"
+        "name": "Експерти"
       },
       {
-        "name": "Crypto",
-        "examples": "Cryptonite"
+        "name": "Crypto"
       },
       {
-        "name": "Education",
-        "examples": "Anna Haustova"
+        "name": "Education"
       },
       {
-        "name": "Auto",
-        "examples": "Global Auto Logistic"
+        "name": "Auto"
       },
       {
-        "name": "Finance / Investments",
-        "examples": "Monolit"
+        "name": "Finance / Investments"
       },
       {
-        "name": "SaaS / B2B",
-        "examples": "Trackdesk"
+        "name": "SaaS / B2B"
       }
     ],
     "other": {
@@ -218,7 +210,6 @@
     }
   },
   "formats": {
-    "eyebrow": "04 / AD FORMATS",
     "title": "Як ваша реклама виглядатиме в Telegram",
     "titleAccent": "виглядатиме в Telegram",
     "lead": "Telegram Ads органічно інтегрується в інтерфейс месенджера та може показуватися в різних форматах і місцях розміщення.",
@@ -257,7 +248,6 @@
     "caption": "Реальні приклади розміщень клієнта MONOLIT"
   },
   "calculator": {
-    "eyebrow": "05 / ІНТЕРАКТИВ",
     "title": "Розрахуйте потенціал Telegram Ads",
     "titleAccent": "Telegram Ads",
     "paramsTitle": "Параметри кампанії",
@@ -293,7 +283,6 @@
     "live": "Прогноз на {budget}: покази {impressions}, кліки {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}."
   },
   "cases": {
-    "eyebrow": "06 / SOCIAL PROOF",
     "title": "Результати в різних нішах і GEO",
     "word": "КЕЙСИ",
     "listLabel": "Кейси — гортайте вбік",
@@ -317,7 +306,6 @@
     "close": "Закрити"
   },
   "process": {
-    "eyebrow": "07 / ПРОЦЕС",
     "title": "Від аналізу до масштабування",
     "titleAccent": "до масштабування",
     "steps": [
@@ -332,7 +320,6 @@
     "note": "Клієнту не потрібно самостійно розбиратися в Telegram Ads: я підключаюсь до задачі від стратегії та рекламних матеріалів до оптимізації й масштабування."
   },
   "geo": {
-    "eyebrow": "08 / GEO",
     "title": "Аудиторія в Україні та по всьому світу",
     "titleAccent": "та по всьому світу",
     "mapLabel": "Інтерактивна карта",
@@ -373,7 +360,6 @@
     }
   },
   "targeting": {
-    "eyebrow": "09 / TARGETING",
     "title": "Як знаходимо потрібну аудиторію",
     "titleAccent": "потрібну аудиторію",
     "hint": "Наведіть на картку або натисніть — з’явиться пояснення.",
@@ -418,7 +404,6 @@
     "note": "Доступність параметрів залежить від поточних можливостей Telegram Ads / Euro Cabinet."
   },
   "reviews": {
-    "eyebrow": "10 / TRUST",
     "title": "Що говорять клієнти",
     "titleAccent": "клієнти",
     "sliderLabel": "Відгуки клієнтів",
@@ -445,7 +430,6 @@
     ]
   },
   "ecosystem": {
-    "eyebrow": "11 / ECOSYSTEM",
     "title": "Можемо закрити весь шлях до заявки",
     "titleAccent": "весь шлях до заявки",
     "flowLabel": "Шлях клієнта",
@@ -499,7 +483,6 @@
     "caption": "Клієнт може прийти лише за Telegram Ads або передати eLeads повну Telegram-систему."
   },
   "materials": {
-    "eyebrow": "12 / EXPERTISE",
     "title": "Корисні матеріали в Telegram",
     "titleAccent": "в Telegram",
     "post": "ПОСТ",
@@ -521,13 +504,11 @@
     ]
   },
   "faq": {
-    "eyebrow": "13 / FAQ",
     "title": "Часті питання",
     "titleAccent": "питання",
     "note": "Мінімальний рекламний бюджет — €650. Вартість послуг — індивідуально."
   },
   "cta": {
-    "eyebrow": "14 / ФІНАЛЬНИЙ CTA",
     "title": "Обговоримо ваш проєкт?",
     "titleAccent": "ваш проєкт?",
     "text": "Напишіть мені в Telegram. Ознайомлюсь із вашим проєктом, задачею та GEO й підкажу, який формат просування через Telegram буде оптимальним.",

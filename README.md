@@ -47,8 +47,24 @@
 | `calculator.json` | коэффициенты калькулятора прогноза |
 | `config.json` | ссылка и ник Telegram, ID аналитики (`ga4Id`, `metaPixelId` — пустые, пока не заданы, аналитика не подключается) |
 | `geo-dots.json` | сетка точек карты мира и регионы |
+| `ua-dots.json` | Украина в виде сетки точек для блока 02 «Telegram у цифрах»; собирается скриптом `scripts/ua-dots.js`, руками не правится |
 
 В `index.html` нет текстов — только разметка с атрибутами `data-i18n="раздел.ключ"`. Новый текст = новый ключ в **обоих** `content.*.json`. Отсутствующий ключ роняет `npm run build` с перечнем.
+
+### Карта Украины из точек
+
+`src/data/ua-dots.json` — контур Украины в международно признанных границах (с Крымом, Донецкой и Луганской областями), переведённый в шахматную сетку точек. Сколько точек горит, задаёт цифра `stats.ua.main.value` в `content.*.json` («81%» — горит 81% точек).
+
+Источник контура: Natural Earth, Admin 0 – Countries, вариант «точка зрения Украины» (`ne_10m_admin_0_countries_ukr`, 1:10m), https://www.naturalearthdata.com/. Лицензия: общественное достояние (public domain). В обычном варианте Natural Earth Крым отнесён не к Украине — его брать нельзя.
+
+Пересобрать сетку (сам GeoJSON в репозиторий не кладётся):
+
+```
+curl -L -o ne_ukr.geojson https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_0_countries_ukr.geojson
+node scripts/ua-dots.js ne_ukr.geojson
+```
+
+Скрипт сам проверяет, что Симферополь, Донецк, Луганск, Львов и Киев лежат внутри контура и попали в сетку; то же проверяет `tests/stats-map.test.js`.
 
 ### Коэффициенты калькулятора
 
@@ -76,6 +92,7 @@
 ```
 index.html            разметка всех 14 секций (без текстов)
 build/                плагин сборки: вшивает украинский текст и пишет robots.txt
+scripts/ua-dots.js    сборка src/data/ua-dots.json из открытого контура Украины
 src/main.js           точка входа: язык, секции, анимации, аналитика
 src/core/             язык, DOM-помощники, форматы чисел, анимации (GSAP/Lenis), аналитика
 src/sections/         по модулю на секцию (подхватываются по data-section)

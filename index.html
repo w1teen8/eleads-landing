@@ -69,9 +69,6 @@
     <div class="preloader" data-section="preloader" role="dialog" data-i18n-attr="aria-label:preloader.label">
       <div class="preloader__top">
         <span class="preloader__brand" aria-hidden="true">
-          <span class="logo__mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg>
-          </span>
           <span data-i18n="common.brand"></span>
         </span>
         <button type="button" class="preloader__skip" data-preloader-skip data-i18n-attr="aria-label:preloader.skipLabel">
@@ -120,9 +117,6 @@
       <div class="header__bar">
         <div class="header__inner container">
           <a class="logo header__logo" href="#hero" data-i18n-attr="aria-label:common.home">
-            <span class="logo__mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.9 5.1 3.7 11.3c-1 .4-1 1.4 0 1.7l4 1.3 1.6 4.8c.2.6.9.8 1.4.4l2.3-1.9 4.3 3.1c.6.4 1.4.1 1.6-.6l2.6-12.7c.2-.9-.7-1.6-1.6-1.3ZM9.6 14l7-5.4-5.6 6-.3 2.7L9.6 14Z" /></svg>
-            </span>
             <span class="logo__word" data-i18n="common.brand"></span>
           </a>
 
@@ -281,14 +275,15 @@
       </div>
       </section>
 
-      <!-- 02 Telegram у цифрах (T19, reference/wireframe-02-telegram-v-cifrah.png): синее продолжение первого экрана,
-           обычная прокрутка (H11). Bento: главная цифра
-           крупно, две карточки, тёмная акцентная последней; вкладки Україна / Worldwide меняют цифры «табло». -->
+      <!-- 02 Telegram у цифрах (T19; T25 — образец reference/run3/stats-E-chosen.png): обычная прокрутка (H11).
+           Слева карточка: главная цифра, подпись и карта из точек (точки рисует src/sections/stats.js:
+           Украина — src/data/ua-dots.json, горит доля из главной цифры; мир — geo-dots.json, горят все).
+           Справа без рамок: две строки с тонкими линиями и акцентная плашка. Вкладки Україна / Worldwide меняют
+           тексты «табло», карты — через opacity. Метки-номера, легенды и сноски нет (правки клиента). viewBox карт = рамка сетки (проверяет tests/stats-map.test.js). -->
       <section id="stats" class="section section--stats" data-section="stats" aria-labelledby="stats-title">
         <div class="container">
           <div class="stats__top">
             <div class="section__head stats__head">
-              <p class="eyebrow stats__eyebrow" data-i18n="stats.eyebrow"></p>
               <h2 id="stats-title" class="display section__title" data-i18n="stats.title" data-title-accent="stats.titleAccent"></h2>
             </div>
             <div class="stats__tabs" role="tablist" data-i18n-attr="aria-label:stats.tabsLabel">
@@ -298,43 +293,65 @@
             </div>
           </div>
           <div class="stats" data-stats>
+            <!-- заливка горящих точек обеих карт: жёлтый → оранжевый внутри каждой точки (цвета — в stats.css) -->
+            <svg class="stats__defs" width="0" height="0" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="stats-dot-grad" x1="0" y1="0" x2="1" y2="0.4">
+                  <stop class="stats__grad-from" offset="0"/>
+                  <stop class="stats__grad-to" offset="1"/>
+                </linearGradient>
+              </defs>
+            </svg>
             <div class="stats__panel" role="tabpanel" id="stats-panel-ua" aria-labelledby="stats-tab-ua" data-stats-panel="ua">
               <article class="stats__card stats__card--main">
-                <p class="stats__value" data-flip="0" data-i18n="stats.ua.main.value"></p>
-                <p class="stats__label" data-flip="1" data-i18n="stats.ua.main.label"></p>
+                <div class="stats__lead">
+                  <p class="stats__value" data-flip="0" data-i18n="stats.ua.main.value"></p>
+                  <p class="stats__label" data-flip="1" data-i18n="stats.ua.main.label"></p>
+                </div>
+                <div class="stats__map" role="img" data-stats-map="ua" data-i18n-attr="aria-label:stats.ua.mapLabel">
+                  <svg viewBox="0 0 33.5 22" preserveAspectRatio="xMaxYMid meet" aria-hidden="true" focusable="false"><g fill="url(#stats-dot-grad)"></g></svg>
+                </div>
               </article>
-              <article class="stats__card stats__card--a">
-                <p class="stats__value" data-flip="2" data-i18n="stats.ua.age.value"></p>
-                <p class="stats__label" data-flip="3" data-i18n="stats.ua.age.label"></p>
-              </article>
-              <article class="stats__card stats__card--b">
-                <p class="stats__value" data-flip="4" data-i18n="stats.ua.sample.value"></p>
-                <p class="stats__label" data-flip="5" data-i18n="stats.ua.sample.label"></p>
-              </article>
-              <article class="stats__card stats__card--accent">
-                <p class="stats__tag" data-flip="6" data-i18n="stats.ua.note.tag"></p>
-                <p class="stats__text" data-flip="7" data-i18n="stats.ua.note.text"></p>
-              </article>
+              <div class="stats__side">
+                <article class="stats__row">
+                  <p class="stats__value" data-flip="2" data-i18n="stats.ua.age.value"></p>
+                  <p class="stats__label" data-flip="3" data-i18n="stats.ua.age.label"></p>
+                </article>
+                <article class="stats__row">
+                  <p class="stats__value" data-flip="4" data-i18n="stats.ua.rank.value"></p>
+                  <p class="stats__label" data-flip="5" data-i18n="stats.ua.rank.label"></p>
+                </article>
+                <article class="stats__card stats__card--accent">
+                  <p class="stats__tag" data-flip="6" data-i18n="stats.ua.note.tag"></p>
+                  <p class="stats__text" data-flip="7" data-i18n="stats.ua.note.text"></p>
+                </article>
+              </div>
             </div>
             <div class="stats__panel" role="tabpanel" id="stats-panel-ww" aria-labelledby="stats-tab-ww" data-stats-panel="ww" hidden>
               <article class="stats__card stats__card--main">
-                <p class="stats__value" data-flip="0" data-i18n="stats.ww.main.value"></p>
-                <p class="stats__label" data-flip="1" data-i18n="stats.ww.main.label"></p>
+                <div class="stats__lead">
+                  <p class="stats__value" data-flip="0" data-i18n="stats.ww.main.value"></p>
+                  <p class="stats__label" data-flip="1" data-i18n="stats.ww.main.label"></p>
+                </div>
+                <div class="stats__map" role="img" data-stats-map="ww" data-i18n-attr="aria-label:stats.ww.mapLabel">
+                  <svg viewBox="0 0 72.5 27" preserveAspectRatio="xMaxYMid meet" aria-hidden="true" focusable="false"><g fill="url(#stats-dot-grad)"></g></svg>
+                </div>
               </article>
-              <article class="stats__card stats__card--a">
-                <p class="stats__value" data-flip="2" data-i18n="stats.ww.top.value"></p>
-                <p class="stats__label" data-flip="3" data-i18n="stats.ww.top.label"></p>
-              </article>
-              <article class="stats__card stats__card--b">
-                <p class="stats__value" data-flip="4" data-i18n="stats.ww.geo.value"></p>
-                <p class="stats__label" data-flip="5" data-i18n="stats.ww.geo.label"></p>
-              </article>
-              <article class="stats__card stats__card--accent">
-                <p class="stats__tag stats__tag--sm" data-flip="6" data-i18n="stats.ww.what.title"></p>
-                <p class="stats__text stats__text--list" data-flip="7" data-i18n="stats.ww.what.text"></p>
-              </article>
+              <div class="stats__side">
+                <article class="stats__row">
+                  <p class="stats__value" data-flip="2" data-i18n="stats.ww.top.value"></p>
+                  <p class="stats__label" data-flip="3" data-i18n="stats.ww.top.label"></p>
+                </article>
+                <article class="stats__row">
+                  <p class="stats__value" data-flip="4" data-i18n="stats.ww.geo.value"></p>
+                  <p class="stats__label" data-flip="5" data-i18n="stats.ww.geo.label"></p>
+                </article>
+                <article class="stats__card stats__card--accent">
+                  <p class="stats__tag stats__tag--sm" data-flip="6" data-i18n="stats.ww.what.title"></p>
+                  <p class="stats__text stats__text--list" data-flip="7" data-i18n="stats.ww.what.text"></p>
+                </article>
+              </div>
             </div>
-            <p class="stats__footnote" data-i18n="stats.footnote"></p>
           </div>
         </div>
       </section>
@@ -345,52 +362,43 @@
         <div class="container">
           <div class="niches__top">
             <div class="section__head niches__head">
-              <p class="eyebrow niches__eyebrow" data-i18n="niches.eyebrow"></p>
               <h2 id="niches-title" class="display section__title" data-i18n="niches.title" data-title-accent="niches.titleAccent"></h2>
             </div>
             <p class="niches__lead" data-i18n="niches.lead"></p>
           </div>
           <ul class="niches__grid">
-            <li class="niches__item"><article class="niches__card" data-niches-card>
-              <span class="niches__dot" aria-hidden="true"></span>
+            <li class="niches__item"><article class="niches__card niches__card--dark" data-niches-card>
+              <svg class="niches__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7h18v13H3zM9 7V4h6v3M3 12h18" /></svg>
               <h3 class="niches__name" data-i18n="niches.items.0.name"></h3>
-              <p class="niches__examples" data-i18n="niches.items.0.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-card>
-              <span class="niches__dot" aria-hidden="true"></span>
+            <li class="niches__item"><article class="niches__card niches__card--light" data-niches-card>
+              <svg class="niches__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 4-6 8-6s8 2 8 6" /></svg>
               <h3 class="niches__name" data-i18n="niches.items.1.name"></h3>
-              <p class="niches__examples" data-i18n="niches.items.1.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-card>
-              <span class="niches__dot" aria-hidden="true"></span>
+            <li class="niches__item"><article class="niches__card niches__card--dark" data-niches-card>
+              <svg class="niches__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9" /><path d="M9.5 7.5h4a2.2 2.2 0 0 1 0 4.5h-4zm0 4.5h4.7a2.2 2.2 0 0 1 0 4.5H9.5zM11.5 5.5v2m0 9v2" /></svg>
               <h3 class="niches__name" data-i18n="niches.items.2.name"></h3>
-              <p class="niches__examples" data-i18n="niches.items.2.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-card>
-              <span class="niches__dot" aria-hidden="true"></span>
+            <li class="niches__item"><article class="niches__card niches__card--yellow" data-niches-card>
+              <svg class="niches__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 9l10-5 10 5-10 5zM6 11v5c3 3 9 3 12 0v-5" /></svg>
               <h3 class="niches__name" data-i18n="niches.items.3.name"></h3>
-              <p class="niches__examples" data-i18n="niches.items.3.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-card>
-              <span class="niches__dot" aria-hidden="true"></span>
+            <li class="niches__item"><article class="niches__card niches__card--orange" data-niches-card>
+              <svg class="niches__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M1.8 15.8v-2.3c0-.7.5-1.3 1.2-1.4l3-.5 2.3-3.5c.3-.5.8-.7 1.3-.7h5.2c.5 0 1 .2 1.3.6l2.9 3.6 2.2.5c.8.2 1.4.9 1.4 1.7v2c0 .4-.3.7-.7.7H20.3M3.7 16.5H1.8v-.7M8.7 16.5h6.6" /><path d="M6.3 11.5h12.4M11.8 7.5v4" /><circle cx="6.2" cy="16.5" r="2.2" /><circle cx="17.8" cy="16.5" r="2.2" /></svg>
               <h3 class="niches__name" data-i18n="niches.items.4.name"></h3>
-              <p class="niches__examples" data-i18n="niches.items.4.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-card>
-              <span class="niches__dot" aria-hidden="true"></span>
+            <li class="niches__item"><article class="niches__card niches__card--dark" data-niches-card>
+              <svg class="niches__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6" /></svg>
               <h3 class="niches__name" data-i18n="niches.items.5.name"></h3>
-              <p class="niches__examples" data-i18n="niches.items.5.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-card>
-              <span class="niches__dot" aria-hidden="true"></span>
+            <li class="niches__item"><article class="niches__card niches__card--light" data-niches-card>
+              <svg class="niches__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 18a5 5 0 1 1 1-9.9A6 6 0 0 1 19.5 10 4 4 0 0 1 18 18z" /></svg>
               <h3 class="niches__name" data-i18n="niches.items.6.name"></h3>
-              <p class="niches__examples" data-i18n="niches.items.6.examples"></p>
             </article></li>
             <li class="niches__item"><a class="niches__card niches__card--other" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="niches_other" data-niches-card>
-              <span class="niches__dot" aria-hidden="true"></span>
-              <h3 class="niches__name" data-i18n="niches.other.name"></h3>
+              <svg class="niches__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 4 3 11l6 2 2 6 3-4 5 4z" /></svg>
+              <div class="niches__top-row"><h3 class="niches__name" data-i18n="niches.other.name"></h3><span class="niches__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></div>
               <p class="niches__examples" data-i18n="niches.other.text"></p>
-              <span class="niches__cta"><span data-i18n="niches.other.cta"></span><span class="niches__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></span>
             </a></li>
           </ul>
         </div>
@@ -403,7 +411,6 @@
         <div class="container">
           <div class="formats__top">
             <div class="section__head formats__head">
-              <p class="eyebrow formats__eyebrow" data-i18n="formats.eyebrow"></p>
               <h2 id="formats-title" class="display section__title" data-i18n="formats.title" data-title-accent="formats.titleAccent"></h2>
             </div>
             <p class="formats__lead" data-i18n="formats.lead"></p>
@@ -490,7 +497,6 @@
       <section id="calculator" class="section section--calculator" data-section="calculator" aria-labelledby="calculator-title">
         <div class="container">
           <div class="section__head calc__head">
-            <p class="eyebrow calc__eyebrow" data-i18n="calculator.eyebrow"></p>
             <h2 id="calculator-title" class="display section__title" data-i18n="calculator.title" data-title-accent="calculator.titleAccent"></h2>
           </div>
           <div class="calc" data-calc>
@@ -593,7 +599,6 @@
         <div class="cases__stage" data-cases-stage>
           <p class="cases__word" aria-hidden="true" data-cases-word data-i18n="cases.word"></p>
           <div class="container cases__head" data-cases-head>
-            <p class="eyebrow" data-i18n="cases.eyebrow"></p>
             <h2 id="cases-title" class="display cases__title" data-i18n="cases.title"></h2>
           </div>
           <div class="cases__viewport" data-cases-viewport role="region" data-i18n-attr="aria-label:cases.listLabel">
@@ -665,7 +670,6 @@
       <section id="process" class="section section--process" data-section="process" aria-labelledby="process-title">
         <div class="container">
           <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="process.eyebrow"></p>
             <h2 id="process-title" class="display section__title" data-i18n="process.title" data-title-accent="process.titleAccent"></h2>
           </div>
           <div class="process" data-process>
@@ -711,7 +715,6 @@
       <section id="geo" class="section section--geo section--alt" data-section="geo" aria-labelledby="geo-title">
         <div class="container">
           <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="geo.eyebrow"></p>
             <h2 id="geo-title" class="display section__title" data-i18n="geo.title" data-title-accent="geo.titleAccent"></h2>
           </div>
           <div class="geo" data-reveal>
@@ -772,7 +775,6 @@
       <section id="targeting" class="section section--targeting" data-section="targeting" aria-labelledby="targeting-title">
         <div class="container">
           <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="targeting.eyebrow"></p>
             <h2 id="targeting-title" class="display section__title" data-i18n="targeting.title" data-title-accent="targeting.titleAccent"></h2>
           </div>
           <p class="targeting__hint" data-reveal data-i18n="targeting.hint"></p>
@@ -827,7 +829,6 @@
       <section id="reviews" class="section section--reviews section--alt" data-section="reviews" aria-labelledby="reviews-title">
         <div class="container">
           <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="reviews.eyebrow"></p>
             <h2 id="reviews-title" class="display section__title" data-i18n="reviews.title" data-title-accent="reviews.titleAccent"></h2>
           </div>
           <div class="reviews" data-slider>
@@ -887,7 +888,6 @@
       <section id="ecosystem" class="section section--ecosystem" data-section="ecosystem" aria-labelledby="ecosystem-title">
         <div class="container">
           <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="ecosystem.eyebrow"></p>
             <h2 id="ecosystem-title" class="display section__title" data-i18n="ecosystem.title" data-title-accent="ecosystem.titleAccent"></h2>
           </div>
           <div class="eco__flowwrap" data-eco-flow>
@@ -988,7 +988,6 @@
       <section id="materials" class="section section--materials section--alt" data-section="materials" aria-labelledby="materials-title">
         <div class="container">
           <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="materials.eyebrow"></p>
             <h2 id="materials-title" class="display section__title" data-i18n="materials.title" data-title-accent="materials.titleAccent"></h2>
           </div>
           <ul class="mat__grid" data-reveal="stagger">
@@ -1023,7 +1022,6 @@
       <section id="faq" class="section section--faq" data-section="faq" aria-labelledby="faq-title">
         <div class="container">
           <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="faq.eyebrow"></p>
             <h2 id="faq-title" class="display section__title" data-i18n="faq.title" data-title-accent="faq.titleAccent"></h2>
           </div>
           <div class="faq" data-faq>
@@ -1038,7 +1036,6 @@
         <div class="cta__inner container">
           <div class="cta__body">
             <div class="section__head" data-reveal="stagger">
-              <p class="eyebrow" data-i18n="cta.eyebrow"></p>
               <h2 id="cta-title" class="display section__title cta__title" data-i18n="cta.title" data-title-accent="cta.titleAccent"></h2>
             </div>
             <div data-reveal="stagger" class="cta__rest">
