@@ -46,8 +46,8 @@
         h.setAttribute('data-theme', themes.indexOf(theme) > -1 ? theme : 'brand');
       })(document.documentElement);
     </script>
-    <!-- Вариант первого экрана до первой отрисовки: ?hero=2 (mockup) | 3 (plane) | 4 (blue) → sessionStorage → mockup.
-         Вариант 1 (orbit) удалён: ?hero=1 и старый выбор в хранилище ведут на mockup. -->
+    <!-- Вариант первого экрана до первой отрисовки: ?hero=2 (mockup) | 3 (plane) | 4 (blue) → sessionStorage → blue.
+         Вариант 1 (orbit) удалён: ?hero=1 и старый выбор в хранилище ведут на blue. -->
     <script>
       (function (h) {
         var names = { 2: 'mockup', 3: 'plane', 4: 'blue', mockup: 'mockup', plane: 'plane', blue: 'blue' };
@@ -57,7 +57,7 @@
           if (hero) sessionStorage.setItem('eleads-hero', hero);
           else hero = sessionStorage.getItem('eleads-hero');
         } catch (e) {}
-        h.setAttribute('data-hero', hero === 'plane' || hero === 'blue' ? hero : 'mockup');
+        h.setAttribute('data-hero', hero === 'plane' || hero === 'mockup' ? hero : 'blue');
       })(document.documentElement);
     </script>
     <!-- Начальные состояния анимаций ставит только этот скрипт: без JS и при reduced-motion классов нет, всё видно. -->

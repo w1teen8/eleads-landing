@@ -25,10 +25,10 @@ const PARALLAX_Y = 18;
 
 export const HERO_VARIANTS = ['mockup', 'plane', 'blue'];
 
-/** Активный вариант: data-hero на секции или <html>; иначе — mockup. */
+/** Активный вариант: data-hero на секции или <html>; иначе — blue. */
 export function heroVariant(root, html = document.documentElement) {
   const v = root?.dataset?.hero || html?.dataset?.hero;
-  return HERO_VARIANTS.includes(v) ? v : 'mockup';
+  return HERO_VARIANTS.includes(v) ? v : 'blue';
 }
 
 export function init(root) {
