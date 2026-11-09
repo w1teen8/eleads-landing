@@ -2,7 +2,7 @@
   "telegramUrl": "https://t.me/Kucherflow",
   "telegramHandle": "@Kucherflow",
   "sections": {
-    "enabled": ["hero"]
+    "enabled": ["hero", "stats"]
   },
   "analytics": {
     "ga4Id": "",

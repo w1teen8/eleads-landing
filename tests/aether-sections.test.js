@@ -69,18 +69,8 @@ test('орбита вращается transform-ом в rAF, стоит вне �
   assert.doesNotMatch(js, /\.style\.(left|top|width|height)\s*=/);
 });
 
-test('changedChars: знаки, отличающиеся от прежнего значения на той же позиции, въезжают', async () => {
-  const { changedChars } = await import('../src/sections/stats.js');
-  assert.deepEqual(changedChars('81%', '1B+'), [true, true, true]);
-  assert.deepEqual(changedChars('4 500', '4 800'), [false, false, true, false, false]);
-  assert.deepEqual(changedChars('18', '180'), [false, false, true]);
-  assert.deepEqual(changedChars('', 'TOP'), [true, true, true]);
-});
-
-test('статистика-таймер: цифры без градиентного текста, знаки въезжают сверху translateY под маской', () => {
-  const s = section('stats');
-  assert.doesNotMatch(s, /stats__value[^"]*text-grad/);
-  const css = read('src/styles/sections/stats.css');
-  assert.match(css, /\.stats__char\b/);
-  assert.match(css, /translate3d\(0,\s*-1\d\d%/);
+// T19: «таймер» статистики заменён табло из общего языка движения (core/motion-kit.js → flipSwap) —
+// см. tests/stats-block.test.js и tests/stats-motion-kit.test.js
+test('статистика: цифры без градиентного текста', () => {
+  assert.doesNotMatch(section('stats'), /stats__value[^"]*text-grad/);
 });

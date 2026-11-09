@@ -298,55 +298,60 @@
       </div>
       </section>
 
-      <section id="stats" class="section section--stats section--alt" data-section="stats" aria-labelledby="stats-title">
+      <!-- 02 Telegram у цифрах (T19, reference/wireframe-02-telegram-v-cifrah.png): синее продолжение первого экрана,
+           наезжает на него снизу как следующая карточка стопки (core/motion-kit.js → stackReveal). Bento: главная цифра
+           крупно, две карточки, тёмная акцентная последней; вкладки Україна / Worldwide меняют цифры «табло». -->
+      <section id="stats" class="section section--stats" data-section="stats" aria-labelledby="stats-title">
         <div class="container">
-          <div class="section__head stats__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="stats.eyebrow"></p>
-            <h2 id="stats-title" class="display section__title" data-i18n="stats.title" data-title-accent="stats.titleAccent"></h2>
-          </div>
-          <div class="stats" data-stats>
-            <div class="stats__tabs" role="tablist" data-i18n-attr="aria-label:stats.tabsLabel">
+          <div class="stats__top">
+            <div class="section__head stats__head" data-stats-step>
+              <p class="eyebrow stats__eyebrow" data-i18n="stats.eyebrow"></p>
+              <h2 id="stats-title" class="display section__title" data-i18n="stats.title" data-title-accent="stats.titleAccent"></h2>
+            </div>
+            <div class="stats__tabs" role="tablist" data-i18n-attr="aria-label:stats.tabsLabel" data-stats-step>
               <span class="stats__thumb" aria-hidden="true"></span>
               <button type="button" class="stats__tab" role="tab" id="stats-tab-ua" aria-controls="stats-panel-ua" aria-selected="true" tabindex="0" data-stats-tab="ua" data-i18n="stats.tabs.ua"></button>
               <button type="button" class="stats__tab" role="tab" id="stats-tab-ww" aria-controls="stats-panel-ww" aria-selected="false" tabindex="-1" data-stats-tab="ww" data-i18n="stats.tabs.ww"></button>
             </div>
+          </div>
+          <div class="stats" data-stats>
             <div class="stats__panel" role="tabpanel" id="stats-panel-ua" aria-labelledby="stats-tab-ua" data-stats-panel="ua">
-            <article class="stats__card stats__card--main">
-              <p class="stats__value" data-count data-i18n="stats.ua.main.value"></p>
-              <p class="stats__label" data-i18n="stats.ua.main.label"></p>
-            </article>
-            <article class="stats__card stats__card--a">
-              <p class="stats__value" data-i18n="stats.ua.age.value"></p>
-              <p class="stats__label" data-i18n="stats.ua.age.label"></p>
-            </article>
-            <article class="stats__card stats__card--b">
-              <p class="stats__value" data-count data-i18n="stats.ua.sample.value"></p>
-              <p class="stats__label" data-i18n="stats.ua.sample.label"></p>
-            </article>
-            <article class="stats__card stats__card--wide">
-              <span class="stats__tag" data-i18n="stats.ua.note.tag"></span>
-              <p class="stats__text" data-i18n="stats.ua.note.text"></p>
-            </article>
+              <article class="stats__card stats__card--main">
+                <p class="stats__value" data-count data-flip="0" data-i18n="stats.ua.main.value"></p>
+                <p class="stats__label" data-flip="1" data-i18n="stats.ua.main.label"></p>
+              </article>
+              <article class="stats__card stats__card--a">
+                <p class="stats__value" data-flip="2" data-i18n="stats.ua.age.value"></p>
+                <p class="stats__label" data-flip="3" data-i18n="stats.ua.age.label"></p>
+              </article>
+              <article class="stats__card stats__card--b">
+                <p class="stats__value" data-count data-flip="4" data-i18n="stats.ua.sample.value"></p>
+                <p class="stats__label" data-flip="5" data-i18n="stats.ua.sample.label"></p>
+              </article>
+              <article class="stats__card stats__card--accent">
+                <p class="stats__tag" data-flip="6" data-i18n="stats.ua.note.tag"></p>
+                <p class="stats__text" data-flip="7" data-i18n="stats.ua.note.text"></p>
+              </article>
             </div>
             <div class="stats__panel" role="tabpanel" id="stats-panel-ww" aria-labelledby="stats-tab-ww" data-stats-panel="ww" hidden>
-            <article class="stats__card stats__card--main">
-              <p class="stats__value" data-count data-i18n="stats.ww.main.value"></p>
-              <p class="stats__label" data-i18n="stats.ww.main.label"></p>
-            </article>
-            <article class="stats__card stats__card--a">
-              <p class="stats__value" data-i18n="stats.ww.top.value"></p>
-              <p class="stats__label" data-i18n="stats.ww.top.label"></p>
-            </article>
-            <article class="stats__card stats__card--b">
-              <p class="stats__value" data-count data-i18n="stats.ww.geo.value"></p>
-              <p class="stats__label" data-i18n="stats.ww.geo.label"></p>
-            </article>
-            <article class="stats__card stats__card--wide">
-              <span class="stats__tag" data-i18n="stats.ww.what.title"></span>
-              <p class="stats__text" data-i18n="stats.ww.what.text"></p>
-            </article>
+              <article class="stats__card stats__card--main">
+                <p class="stats__value" data-count data-flip="0" data-i18n="stats.ww.main.value"></p>
+                <p class="stats__label" data-flip="1" data-i18n="stats.ww.main.label"></p>
+              </article>
+              <article class="stats__card stats__card--a">
+                <p class="stats__value" data-flip="2" data-i18n="stats.ww.top.value"></p>
+                <p class="stats__label" data-flip="3" data-i18n="stats.ww.top.label"></p>
+              </article>
+              <article class="stats__card stats__card--b">
+                <p class="stats__value" data-count data-flip="4" data-i18n="stats.ww.geo.value"></p>
+                <p class="stats__label" data-flip="5" data-i18n="stats.ww.geo.label"></p>
+              </article>
+              <article class="stats__card stats__card--accent">
+                <p class="stats__tag stats__tag--sm" data-flip="6" data-i18n="stats.ww.what.title"></p>
+                <p class="stats__text stats__text--list" data-flip="7" data-i18n="stats.ww.what.text"></p>
+              </article>
             </div>
-            <p class="stats__footnote" data-reveal data-i18n="stats.footnote"></p>
+            <p class="stats__footnote" data-stats-step data-i18n="stats.footnote"></p>
           </div>
         </div>
       </section>

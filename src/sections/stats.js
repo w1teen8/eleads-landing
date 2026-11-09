@@ -1,16 +1,21 @@
-// 02 Telegram у цифрах — «таймер» Aether: вкладки Україна / Worldwide (role=tablist, стрелки);
-// при первом показе цифры докручиваются, при смене вкладки отличающиеся знаки въезжают сверху.
+// 02 Telegram у цифрах (T19) — синее продолжение первого экрана. Движение — только общий язык (core/motion-kit.js):
+//   глава   — stackReveal: блок наезжает на первый экран снизу, как следующая карточка стопки (≥900px);
+//   лесенка — stagger: шапка и вкладки, затем карточки по одной (тёмная акцентная — последней), при появлении
+//             цифры докручиваются (countTo);
+//   табло   — flipSwap: вкладки Україна / Worldwide (role=tablist, стрелки, Home/End) меняют тексты карточек —
+//             старое уезжает вверх, новое въезжает снизу под маской.
 import { $, $$, on } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
 import { t, getLang } from '../core/i18n.js';
 import { countTo, formatInt } from '../core/format.js';
-import { reduced } from '../core/motion.js';
+import { stackReveal, flipSwap, stagger } from '../core/motion-kit.js';
 
 // «81%», «4 500», «1B+», «200+ GEO»: докручивается первое целое число, остальное — как в тексте
-const NUMBER = /\d[\d\s  ,]*/;
+const NUMBER = /\d[\d\s  ,]*/;
+/** Задержка табло между соседними строками карточек, мс — волна слева направо. */
+const FLIP_STEP_MS = 35;
 
-// Итоговая строка — всегда из словаря текущего языка (а не закэшированный текст первого показа):
-// после UA → EN докрутка кончается на строке из content.en.json.
+// Итоговая строка — всегда из словаря текущего языка: язык могли сменить посреди докрутки или табло.
 function finalText(node) {
   const key = node.dataset.i18n;
   const value = key ? t(key) : null;
@@ -21,14 +26,13 @@ function roll(node) {
   const start = finalText(node);
   node.textContent = start;
   const match = start.match(NUMBER);
-  if (!match || reduced) return;
+  if (!match) return;
   const target = Number(match[0].replace(/\D/g, ''));
   if (!target) return;
-  const grouped = /[\s  ,]/.test(match[0].trim());
+  const grouped = /[\s  ,]/.test(match[0].trim());
   countTo(node, 0, target, {
     duration: 1100,
     format: (v) => {
-      // язык могли переключить посреди докрутки — каждый кадр строится от строки текущего языка
       const text = finalText(node);
       const n = Math.round(v);
       const m = text.match(NUMBER);
@@ -38,51 +42,15 @@ function roll(node) {
   });
 }
 
-/** Какие знаки нового значения отличаются от прежнего на той же позиции — они и въезжают. */
-export function changedChars(prev, next) {
-  return [...next].map((ch, i) => [...prev][i] !== ch);
-}
-
-const SLOTS = ['.stats__card--main .stats__value', '.stats__card--a .stats__value', '.stats__card--b .stats__value'];
-const DROP_MS = 1300;
-
-// знаки по одному под маской; через DROP_MS — снова обычный текст (читалки, смена языка)
-function drop(node, prevText) {
-  const text = finalText(node);
-  const changed = changedChars(prevText, text);
-  let n = 0;
-  node.replaceChildren(
-    ...[...text].map((ch, i) => {
-      const outer = document.createElement('span');
-      outer.className = changed[i] ? 'stats__char is-new' : 'stats__char';
-      if (changed[i]) outer.style.setProperty('--i', String(n++));
-      const inner = document.createElement('span');
-      inner.textContent = ch;
-      outer.append(inner);
-      return outer;
-    }),
-  );
-  node.setAttribute('aria-label', text);
-  clearTimeout(node._dropTimer);
-  node._dropTimer = setTimeout(() => {
-    node.textContent = finalText(node);
-    node.removeAttribute('aria-label');
-  }, DROP_MS);
-}
-
 export function init(root) {
   accentTitles(root);
   const host = $('[data-stats]', root);
-  if (!host) return;
-  const tabs = $$('[data-stats-tab]', host);
+  const bar = $('.stats__tabs', root);
+  if (!host || !bar) return;
+  const tabs = $$('[data-stats-tab]', bar);
   const panels = $$('[data-stats-panel]', host);
-  const bar = $('.stats__tabs', host);
-
-  const rollPanel = (panel) => $$('[data-count]', panel).forEach(roll);
 
   function select(id, { focus = false, animate = true } = {}) {
-    const prev = panels.find((p) => !p.hidden);
-    const prevTexts = prev ? SLOTS.map((sel) => $(sel, prev)?.textContent ?? '') : [];
     tabs.forEach((tab, i) => {
       const active = tab.dataset.statsTab === id;
       tab.setAttribute('aria-selected', String(active));
@@ -93,20 +61,21 @@ export function init(root) {
         if (focus) tab.focus();
       }
     });
-    for (const panel of panels) {
-      const show = panel.dataset.statsPanel === id;
-      panel.hidden = !show;
-      panel.classList.remove('is-entering');
-      if (show && animate && panel !== prev) {
-        void panel.offsetWidth;
-        panel.classList.add('is-entering');
-        SLOTS.forEach((sel, i) => {
-          const node = $(sel, panel);
-          if (!node) return;
-          if (reduced) node.textContent = finalText(node);
-          else drop(node, prevTexts[i] || '');
-        });
-      }
+    const prev = panels.find((p) => !p.hidden);
+    const next = panels.find((p) => p.dataset.statsPanel === id);
+    if (!next || next === prev) return;
+    // табло: каждая строка новой вкладки стартует с текста той же строки прежней
+    const was = new Map(prev ? $$('[data-flip]', prev).map((n) => [n.dataset.flip, n.textContent]) : []);
+    if (prev) prev.hidden = true;
+    next.hidden = false;
+    if (!animate) return;
+    for (const node of $$('[data-flip]', next)) {
+      const from = was.get(node.dataset.flip);
+      if (from == null) continue;
+      node.textContent = from;
+      flipSwap(node, finalText(node), { delay: Number(node.dataset.flip) * FLIP_STEP_MS }).then(() => {
+        node.textContent = finalText(node);
+      });
     }
   }
 
@@ -126,16 +95,15 @@ export function init(root) {
 
   select('ua', { animate: false });
 
-  // первый показ: цифры докручиваются при входе в экран
+  // глава: наезд на первый экран
+  stackReveal(root);
+
+  // лесенка: шапка и вкладки; затем карточки открытой вкладки и сноска — цифры докручиваются при появлении
+  stagger($$('[data-stats-step]', $('.stats__top', root) || root), { trigger: root, start: 'top 70%' });
   const first = panels.find((p) => !p.hidden);
-  let seen = false;
-  new IntersectionObserver(
-    (entries, obs) => {
-      if (seen || !entries.some((e) => e.isIntersecting)) return;
-      seen = true;
-      obs.disconnect();
-      if (first && !first.hidden) rollPanel(first);
-    },
-    { threshold: 0.25 },
-  ).observe(host);
+  const cards = first ? $$('.stats__card', first) : [];
+  stagger([...cards, $('.stats__footnote', host)], {
+    trigger: host,
+    onEach: (node) => $$('[data-count]', node).forEach(roll),
+  });
 }
