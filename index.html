@@ -403,83 +403,170 @@
         </div>
       </section>
 
-      <!-- 04 Як виглядає реклама (T21, reference/wireframe-04-ad-formats.png): синий блок, три формата, без переходов
-           по прокрутке (H11). Примеры — реклама MONOLIT, собранная
-           в HTML/CSS по вайрфрейму (тексты — formats.mock.*); клик открывает пример крупно в лайтбоксе. -->
+      <!-- 04 Як виглядає реклама (T21; T27 — по образцу reference/run3/formats-A-chosen.png, H34): без переходов по
+           прокрутке (H11). Слева три формата — вкладки (наведение, клик, стрелки), справа крупный телефон, экран —
+           «как Telegram» в тёмной теме: строка состояния, шапка чата, лента, низ. На экране — реклама MONOLIT выбранного
+           формата (тексты — formats.mock.*); чужие посты в ленте — серые скелетоны, без придуманных текстов и цифр.
+           Клик по экрану открывает макет крупно в лайтбоксе. -->
       <section id="formats" class="section section--formats" data-section="formats" aria-labelledby="formats-title">
         <div class="container">
           <div class="formats__top">
             <div class="section__head formats__head">
               <h2 id="formats-title" class="display section__title" data-i18n="formats.title" data-title-accent="formats.titleAccent"></h2>
             </div>
-            <p class="formats__lead" data-i18n="formats.lead"></p>
           </div>
-          <ul class="formats__grid">
-            <li class="formats__item">
-              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open">
-                <span class="tg-ad tg-ad--channel">
-                  <span class="tg-ad__card">
-                    <span class="tg-ad__head">
-                      <span class="tg-ad__meta"><span class="tg-ad__ad" data-i18n="formats.mock.ad"></span><strong class="tg-ad__title" data-i18n="formats.mock.title"></strong></span>
-                      <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
+          <div class="formats__body">
+            <div class="formats__side">
+              <p class="formats__lead" data-i18n="formats.lead"></p>
+              <ul class="formats__tabs" role="tablist" data-i18n-attr="aria-label:formats.phone.tabsLabel">
+                <li class="formats__item" role="presentation">
+                  <button type="button" class="formats__tab" role="tab" id="formats-tab-channel" aria-controls="formats-panel-channel" aria-selected="true" tabindex="0" data-formats-tab="channel">
+                    <span class="formats__num" data-i18n="formats.items.0.num"></span>
+                    <span class="formats__info">
+                      <strong class="formats__title" data-i18n="formats.items.0.title"></strong>
+                      <span class="formats__text" data-i18n="formats.items.0.text"></span>
                     </span>
-                    <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
-                    <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
-                  </span>
-                </span>
-                <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
-              </button>
-              <div class="formats__info">
-                <span class="formats__num" data-i18n="formats.items.0.num"></span>
-                <h3 class="formats__title" data-i18n="formats.items.0.title"></h3>
-                <p class="formats__text" data-i18n="formats.items.0.text"></p>
-              </div>
-            </li>
-            <li class="formats__item">
-              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open">
-                <span class="tg-ad tg-ad--video">
-                  <span class="tg-ad__cover" aria-hidden="true">
-                    <span class="tg-ad__time">0:00</span>
-                    <span class="tg-ad__cover-top" data-i18n="formats.mock.coverTop"></span>
-                    <span class="tg-ad__cover-title"><span data-i18n="formats.mock.cover"></span> <span class="tg-ad__cover-accent" data-i18n="formats.mock.coverAccent"></span> <span data-i18n="formats.mock.coverEnd"></span></span>
-                    <span class="tg-ad__coins"><i>$</i><i>€</i></span>
-                  </span>
-                  <span class="tg-ad__card">
-                    <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
-                    <strong class="tg-ad__title" data-i18n="formats.mock.title"></strong>
-                    <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
-                    <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
-                  </span>
-                </span>
-                <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
-              </button>
-              <div class="formats__info">
-                <span class="formats__num" data-i18n="formats.items.1.num"></span>
-                <h3 class="formats__title" data-i18n="formats.items.1.title"></h3>
-                <p class="formats__text" data-i18n="formats.items.1.text"></p>
-              </div>
-            </li>
-            <li class="formats__item">
-              <button type="button" class="formats__shot formats__shot--dark" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open">
-                <span class="tg-ad tg-ad--bot">
-                  <span class="tg-ad__card">
-                    <span class="tg-ad__head">
-                      <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
-                      <strong class="tg-ad__title" data-i18n="formats.mock.title"></strong>
-                      <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
+                  </button>
+                </li>
+                <li class="formats__item" role="presentation">
+                  <button type="button" class="formats__tab" role="tab" id="formats-tab-video" aria-controls="formats-panel-video" aria-selected="false" tabindex="-1" data-formats-tab="video">
+                    <span class="formats__num" data-i18n="formats.items.1.num"></span>
+                    <span class="formats__info">
+                      <strong class="formats__title" data-i18n="formats.items.1.title"></strong>
+                      <span class="formats__text" data-i18n="formats.items.1.text"></span>
                     </span>
-                    <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
-                  </span>
-                </span>
-                <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
-              </button>
-              <div class="formats__info">
-                <span class="formats__num" data-i18n="formats.items.2.num"></span>
-                <h3 class="formats__title" data-i18n="formats.items.2.title"></h3>
-                <p class="formats__text" data-i18n="formats.items.2.text"></p>
+                  </button>
+                </li>
+                <li class="formats__item" role="presentation">
+                  <button type="button" class="formats__tab" role="tab" id="formats-tab-bot" aria-controls="formats-panel-bot" aria-selected="false" tabindex="-1" data-formats-tab="bot">
+                    <span class="formats__num" data-i18n="formats.items.2.num"></span>
+                    <span class="formats__info">
+                      <strong class="formats__title" data-i18n="formats.items.2.title"></strong>
+                      <span class="formats__text" data-i18n="formats.items.2.text"></span>
+                    </span>
+                  </button>
+                </li>
+              </ul>
+              <!-- на телефоне вкладки — пилюли без описания; описание выбранного формата — строкой под ними (formats.js) -->
+              <p class="formats__note" data-formats-note></p>
+            </div>
+
+            <div class="formats__stage">
+              <div class="phone" data-formats-phone>
+                <div class="phone__screen">
+                  <span class="phone__island" aria-hidden="true"></span>
+                  <div class="phone__status" aria-hidden="true">
+                    <span class="phone__time" data-i18n="formats.phone.time"></span>
+                    <span class="phone__icons">
+                      <svg class="phone__icon" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8" /><rect x="5" y="5.5" width="3" height="6.5" rx="0.8" /><rect x="10" y="3" width="3" height="9" rx="0.8" /><rect x="15" y="0" width="3" height="12" rx="0.8" /></svg>
+                      <svg class="phone__icon" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0L8 11.5Zm-4.1-4.2L2.2 5.6a8.2 8.2 0 0 1 11.6 0l-1.7 1.7a5.8 5.8 0 0 0-8.2 0ZM.5 3.9 0 3.4a11.3 11.3 0 0 1 16 0l-1.7 1.7a8.9 8.9 0 0 0-12.6 0L.5 3.9Z" /></svg>
+                      <svg class="phone__icon phone__icon--battery" viewBox="0 0 27 12" fill="none" stroke="currentColor" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke-opacity="0.45" /><rect x="2" y="2" width="19" height="8" rx="1.8" fill="currentColor" stroke="none" /><path d="M25 4v4" stroke-opacity="0.45" stroke-width="1.6" stroke-linecap="round" /></svg>
+                    </span>
+                  </div>
+                  <div class="phone__panels">
+                    <!-- 01 канал: лента канала, внизу — спонсорское сообщение с меткой «Спонсороване», снизу «Приєднатися» -->
+                    <div class="phone__panel" role="tabpanel" id="formats-panel-channel" aria-labelledby="formats-tab-channel" data-formats-panel="channel">
+                      <div class="phone__chat">
+                        <span class="phone__back" aria-hidden="true"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
+                        <span class="phone__who">
+                          <span class="phone__name" data-i18n="formats.mock.brand"></span>
+                          <span class="phone__sub" data-i18n="formats.phone.channel"></span>
+                        </span>
+                        <span class="phone__avatar" aria-hidden="true" data-i18n="formats.phone.avatar"></span>
+                      </div>
+                      <div class="phone__feed">
+                        <span class="phone__skel phone__skel--media" aria-hidden="true"><i></i><i></i><i></i></span>
+                        <span class="phone__skel" aria-hidden="true"><i></i><i></i></span>
+                        <span class="phone__skel phone__skel--short" aria-hidden="true"><i></i></span>
+                        <span class="phone__sponsored" data-i18n="formats.phone.sponsored"></span>
+                        <span class="tg-ad tg-ad--channel">
+                          <span class="tg-ad__card">
+                            <span class="tg-ad__head">
+                              <span class="tg-ad__meta"><span class="tg-ad__ad" data-i18n="formats.mock.ad"></span><strong class="tg-ad__title" data-i18n="formats.mock.title"></strong></span>
+                              <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
+                            </span>
+                            <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
+                            <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
+                          </span>
+                        </span>
+                      </div>
+                      <div class="phone__bottom"><span class="phone__join" data-i18n="formats.phone.join"></span></div>
+                    </div>
+                    <!-- 02 відео / медіа: пост с обложкой креатива и карточкой под ней -->
+                    <div class="phone__panel" role="tabpanel" id="formats-panel-video" aria-labelledby="formats-tab-video" data-formats-panel="video" hidden>
+                      <div class="phone__chat">
+                        <span class="phone__back" aria-hidden="true"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
+                        <span class="phone__who">
+                          <span class="phone__name" data-i18n="formats.mock.brand"></span>
+                          <span class="phone__sub" data-i18n="formats.phone.channel"></span>
+                        </span>
+                        <span class="phone__avatar" aria-hidden="true" data-i18n="formats.phone.avatar"></span>
+                      </div>
+                      <div class="phone__feed">
+                        <span class="phone__skel phone__skel--media" aria-hidden="true"><i></i><i></i></span>
+                        <span class="phone__skel" aria-hidden="true"><i></i><i></i><i></i></span>
+                        <span class="phone__skel phone__skel--short" aria-hidden="true"><i></i></span>
+                        <span class="tg-ad tg-ad--video">
+                          <span class="tg-ad__cover" aria-hidden="true">
+                            <span class="tg-ad__time">0:00</span>
+                            <span class="tg-ad__cover-top" data-i18n="formats.mock.coverTop"></span>
+                            <span class="tg-ad__cover-title"><span data-i18n="formats.mock.cover"></span> <span class="tg-ad__cover-accent" data-i18n="formats.mock.coverAccent"></span> <span data-i18n="formats.mock.coverEnd"></span></span>
+                            <span class="tg-ad__coins"><i>$</i><i>€</i></span>
+                          </span>
+                          <span class="tg-ad__card">
+                            <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
+                            <strong class="tg-ad__title" data-i18n="formats.mock.title"></strong>
+                            <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
+                            <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
+                          </span>
+                        </span>
+                      </div>
+                      <div class="phone__bottom"><span class="phone__join" data-i18n="formats.phone.join"></span></div>
+                    </div>
+                    <!-- 03 бот: чат с ботом — сообщение бота, ответ пользователя, реклама; снизу поле ввода -->
+                    <div class="phone__panel" role="tabpanel" id="formats-panel-bot" aria-labelledby="formats-tab-bot" data-formats-panel="bot" hidden>
+                      <div class="phone__chat">
+                        <span class="phone__back" aria-hidden="true"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
+                        <span class="phone__who">
+                          <span class="phone__name" data-i18n="formats.mock.brand"></span>
+                          <span class="phone__sub" data-i18n="formats.phone.bot"></span>
+                        </span>
+                        <span class="phone__avatar" aria-hidden="true" data-i18n="formats.phone.avatar"></span>
+                      </div>
+                      <div class="phone__feed">
+                        <span class="phone__skel" aria-hidden="true"><i></i><i></i><i></i></span>
+                        <span class="phone__skel phone__skel--out" aria-hidden="true"><i></i></span>
+                        <span class="phone__skel" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                        <span class="phone__skel phone__skel--out phone__skel--short" aria-hidden="true"><i></i></span>
+                        <span class="phone__skel phone__skel--short" aria-hidden="true"><i></i><i></i></span>
+                        <span class="tg-ad tg-ad--bot">
+                          <span class="tg-ad__card">
+                            <span class="tg-ad__head">
+                              <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
+                              <strong class="tg-ad__title" data-i18n="formats.mock.title"></strong>
+                              <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
+                            </span>
+                            <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
+                          </span>
+                        </span>
+                      </div>
+                      <div class="phone__bottom phone__bottom--input">
+                        <span class="phone__input">
+                          <svg class="phone__clip" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m14.5 8.5-5.8 5.8a2.5 2.5 0 0 1-3.5-3.5l6.4-6.4a1.6 1.6 0 0 1 2.3 2.3l-6.4 6.4a.7.7 0 0 1-1-1l5.8-5.8" /></svg>
+                          <span class="phone__placeholder" data-i18n="formats.phone.message"></span>
+                          <svg class="phone__mic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="7" y="2" width="6" height="10" rx="3" /><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v3" /></svg>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- клик по экрану — макет текущего формата крупно (лайтбокс) -->
+                <button type="button" class="phone__zoom" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open">
+                  <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
+                </button>
               </div>
-            </li>
-          </ul>
+            </div>
+          </div>
           <p class="formats__foot"><span data-i18n="formats.hint"></span> <span class="formats__caption" data-i18n="formats.caption"></span></p>
           <dialog class="lightbox" aria-label="" data-lightbox data-lenis-prevent data-i18n-attr="aria-label:formats.open">
             <button type="button" class="lightbox__close" data-lightbox-close data-i18n-attr="aria-label:formats.close">

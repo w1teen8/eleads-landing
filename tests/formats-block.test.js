@@ -22,12 +22,13 @@ test('блок 04 включён и стоит в списке по порядк
   assert.doesNotMatch(out.match(/<section\b[^>]*\sid="formats"[^>]*>/)[0], /\shidden/);
 });
 
-test('три формата 01–03 с подписями из вайрфрейма; у каждого — пример канал / медиа / бот и кнопка лайтбокса', () => {
+// T27: три формата — вкладки, примеры — на экране одного телефона, лайтбокс — одна кнопка на экране (tests/formats-phone.test.js)
+test('три формата 01–03 с подписями из вайрфрейма; примеры канал / медиа / бот и кнопка лайтбокса', () => {
   assert.deepEqual(ua.formats.items.map((i) => i.title), ['У Telegram-каналах', 'У відео / медіаконтенті', 'У ботах']);
   assert.equal(ua.formats.eyebrow, undefined, 'метки-номера блока нет (правка клиента, T25)');
   assert.equal(ua.formats.title, 'Як ваша реклама виглядатиме в Telegram');
   assert.equal(count(formats, /class="formats__item"/g), 3);
-  assert.equal(count(formats, /data-lightbox-open/g), 3);
+  assert.equal(count(formats, /data-lightbox-open/g), 1);
   for (const kind of ['channel', 'video', 'bot']) assert.match(formats, new RegExp(`class="tg-ad tg-ad--${kind}[ "]`), kind);
   assert.doesNotMatch(formats, /formats\.placeholder/, 'пример собран, плашки «placeholder» нет');
 });
@@ -56,11 +57,12 @@ test('H11: у блока нет переходов по прокрутке — �
   assert.match(js, /showModal/);
 });
 
-// T23 (H14): рамки — в палитре канала (тёмные с тонкой границей), сами макеты остаются похожими на Telegram
-test('облик: рамки — тёмные поверхности с тонкой границей, бот — самая тёмная; макеты похожи на Telegram', () => {
+// T23 (H14), T27: телефон и экран — в палитре канала (тёмный экран, поверхности чуть светлее, акценты вместо синего),
+// сами макеты остаются похожими на Telegram
+test('облик: рамка и экран телефона — тёмные поверхности палитры; макеты похожи на Telegram', () => {
   const css = read('src/styles/sections/formats.css');
-  assert.match(css, /\.formats__shot\s*\{[^}]*background:\s*var\(--surface\);[^}]*border:\s*1px solid var\(--line\)/);
-  assert.match(css, /\.formats__shot--dark\s*\{[^}]*background:\s*var\(--bg\)/);
-  assert.match(formats, /class="formats__shot formats__shot--dark"/);
+  assert.match(css, /\.phone\s*\{[^}]*background:\s*var\(--surface/);
+  assert.match(css, /\.phone__screen\s*\{[^}]*background:\s*var\(--bg\)/);
+  assert.doesNotMatch(css, /\.formats__shot\b/, 'прежних рамок-скриншотов нет');
   for (const part of ['tg-ad__card', 'tg-ad__ad', 'tg-ad__title', 'tg-ad__btn']) assert.match(css, new RegExp(`\\.${part}\\b`), part);
 });

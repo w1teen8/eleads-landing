@@ -242,6 +242,16 @@
       "coverAccent": "EXCHANGE",
       "coverEnd": "NEAR HOME"
     },
+    "phone": {
+      "tabsLabel": "Ad formats",
+      "time": "9:41",
+      "avatar": "M",
+      "channel": "channel",
+      "bot": "bot",
+      "sponsored": "Sponsored",
+      "join": "Join",
+      "message": "Message"
+    },
     "hint": "Click a screenshot to enlarge the example.",
     "open": "Enlarge screenshot",
     "close": "Close",

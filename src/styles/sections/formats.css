@@ -1,23 +1,25 @@
-/* 04 Як виглядає реклама (T21; T23 — палитра канала и формат «один экран»). Переходов по прокрутке нет (H11): блок
-   идёт за предыдущим обычной прокруткой, всё видно сразу. Три формата: «рамка-скриншот» с примером рекламы MONOLIT
-   (.tg-ad — сообщение Telegram, собранное в HTML/CSS) и подпись под ней. Рамки — в палитре канала: тёмные поверхности
-   с тонкой светлой границей, средняя (медиа) — жёлто-оранжевая акцентная, бот — самая тёмная. Сами примеры остаются
-   похожими на Telegram (ночная тема с тёплым акцентом: пузырь, «Ad», кнопка). Пример масштабируется целиком через
-   font-size (все размеры .tg-ad — в em): в лайтбоксе — крупнее, на широком экране — от высоты окна.
+/* 04 Як виглядає реклама (T21; T23 — палитра канала и формат «один экран»; T27 — вкладки и телефон по образцу
+   reference/run3/formats-A-chosen.png). Переходов по прокрутке нет (H11): блок идёт за предыдущим обычной прокруткой,
+   всё видно сразу. Слева три формата — вкладки (активная — жёлто-оранжевая), справа крупный телефон: рамка со
+   скруглением и «островком», экран — «как Telegram» в тёмной теме на палитре канала (экран --bg, поверхности чуть
+   светлее, акценты жёлто-оранжевые там, где у Telegram синие). Чужие посты в ленте — серые скелетоны.
+   Размер телефона: на десктопе — от высоты окна (ряд телефона забирает высоту экрана, что осталась после заголовка
+   и строки под блоком), на телефоне — от ширины; всё содержимое экрана — в контейнерных единицах cqw, т. е. от
+   ширины телефона; сами макеты .tg-ad масштабируются через font-size (все размеры в em).
    Двигаются только transform и opacity. */
 
 .section--formats {
-  --formats-gap: clamp(0.75rem, 1.1vw, 1.25rem);
+  --formats-gap: clamp(1.5rem, 3vw, 4rem);
   overflow-x: clip;
   padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 2.5vw, 4.5rem);
   color: var(--text);
 }
 
-/* — шапка: метка-пилюля и заголовок слева, подзаголовок справа — */
+/* — шапка: заголовок; подводка — в левой колонке над вкладками — */
 .formats__top {
   display: grid;
   gap: clamp(1rem, 2vw, 1.75rem);
-  margin-bottom: clamp(1.75rem, 3vw, 3rem);
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 .formats__head {
@@ -45,130 +47,510 @@
   color: color-mix(in srgb, var(--text) 82%, transparent);
 }
 
-/* — три формата — */
-.formats__grid {
+/* — тело: вкладки и телефон — */
+.formats__body {
   display: grid;
-  gap: clamp(1.75rem, 2.5vw, 2.5rem) var(--formats-gap);
   grid-template-columns: minmax(0, 1fr);
+  gap: var(--formats-gap);
+  align-items: center;
 }
 
-.formats__item {
+.formats__side {
   display: grid;
-  gap: clamp(1rem, 1.4vw, 1.4rem);
-  align-content: start;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
   min-width: 0;
 }
 
-/* рамка-скриншот: тёмная поверхность с тонкой границей, пример по центру; клик — лайтбокс */
-.formats__shot {
+/* — вкладки форматов: 01–03, подпись и описание; активная — акцентная — */
+.formats__tabs {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.formats__item {
+  min-width: 0;
+}
+
+.formats__tab {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(0.75rem, 1.2vw, 1.25rem);
+  align-items: start;
+  width: 100%;
+  padding: clamp(0.9rem, 1.5vw, 1.4rem) clamp(1rem, 1.7vw, 1.6rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  text-align: left;
+  color: var(--text);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+/* акцентная подложка активной вкладки — слой, проявляется opacity */
+.formats__tab::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--grad);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.formats__tab[aria-selected='true'] {
+  border-color: transparent;
+  color: var(--accent-ink);
+}
+
+.formats__tab[aria-selected='true']::before {
+  opacity: 1;
+}
+
+.formats__tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.formats__num {
+  padding-top: 0.12em;
+  font-family: var(--font-head);
+  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.875rem);
+  font-weight: 900;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.formats__tab[aria-selected='true'] .formats__num {
+  color: inherit;
+}
+
+.formats__info {
+  display: grid;
+  gap: 0.35em;
+  min-width: 0;
+}
+
+.formats__title {
+  font-family: var(--font-head);
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.375rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.formats__text {
+  font-size: clamp(0.9375rem, 0.85rem + 0.25vw, 1.0625rem);
+  line-height: 1.45;
+  color: color-mix(in srgb, currentColor 78%, transparent);
+}
+
+/* описание выбранного формата под пилюлями — только на узком экране */
+.formats__note {
+  display: none;
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text) 82%, transparent);
+}
+
+.formats__note:empty {
+  display: none;
+}
+
+/* — телефон — */
+.formats__stage {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* рамка: пропорции экрана 300×620; размеры внутри — в cqw от ширины рамки */
+.phone {
+  position: relative;
+  container-type: size;
+  width: min(100%, 18.75rem);
+  aspect-ratio: 300 / 620;
+  border-radius: 14.6% / 7.06%;
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--bg) 60%, transparent),
+    0 2.5rem 5rem -2rem color-mix(in srgb, var(--bg) 95%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+/* боковые кнопки корпуса */
+.phone::before,
+.phone::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--line-strong);
+}
+
+.phone::before {
+  top: 19%;
+  left: -3px;
+  height: 11%;
+}
+
+.phone::after {
+  top: 23%;
+  right: -3px;
+  height: 16%;
+}
+
+.phone__screen {
+  --phone-bubble: color-mix(in srgb, var(--text) 9%, var(--bg));
+  --phone-bar: color-mix(in srgb, var(--text) 5%, var(--bg));
+  position: absolute;
+  inset: 2.4cqw;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  border-radius: 12.4cqw;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 4.3cqw;
+  line-height: 1.35;
+  overflow: hidden;
+}
+
+/* «островок» — динамический остров */
+.phone__island {
+  position: absolute;
+  top: 3.4cqw;
+  left: 50%;
+  width: 29cqw;
+  height: 8.2cqw;
+  border-radius: 999px;
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 5%, transparent);
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+/* строка состояния: время слева, сигнал · wi-fi · батарея справа */
+.phone__status {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 15cqw;
+  padding: 1.2cqw 8.5cqw 0;
+  background: var(--phone-bar);
+  font-size: 4.6cqw;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.phone__icons {
+  display: flex;
+  align-items: center;
+  gap: 1.6cqw;
+}
+
+.phone__icon {
+  width: 5.4cqw;
+  height: 3.6cqw;
+}
+
+.phone__icon--battery {
+  width: 8.2cqw;
+}
+
+.phone__panels {
   position: relative;
   display: grid;
+  min-height: 0;
+}
+
+/* панели — друг над другом в одной ячейке: во время смены старая уезжает, новая въезжает */
+.phone__panel {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-height: 0;
+  will-change: transform, opacity;
+}
+
+.phone__panel[hidden] {
+  display: none;
+}
+
+/* шапка чата: стрелка назад, по центру название и подпись, справа аватар */
+.phone__chat {
+  display: grid;
+  grid-template-columns: 7cqw minmax(0, 1fr) 11cqw;
+  align-items: center;
+  gap: 2.4cqw;
+  padding: 1.6cqw 3.4cqw 2.6cqw;
+  background: var(--phone-bar);
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+}
+
+.phone__back {
+  display: grid;
   place-items: center;
-  width: 100%;
-  min-height: clamp(17rem, 12rem + 9vw, 23rem);
-  padding: clamp(0.9rem, 1.4vw, 1.5rem);
-  border-radius: var(--r-card-lg);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  text-align: left;
-  cursor: zoom-in;
+  width: 7cqw;
+  height: 7cqw;
+  color: var(--accent);
+}
+
+.phone__back svg {
+  width: 3.2cqw;
+  height: 5.4cqw;
+}
+
+.phone__who {
+  display: grid;
+  justify-items: center;
+  gap: 0.4cqw;
+  min-width: 0;
+  text-align: center;
+}
+
+.phone__name {
+  font-weight: 700;
+  font-size: 4.6cqw;
+  line-height: 1.15;
+  white-space: nowrap;
   overflow: hidden;
-  transition: transform var(--dur) var(--ease-out);
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
-/* бот — самая тёмная рамка, с тёплым отсветом по углам */
-.formats__shot--dark {
-  background: var(--bg);
+.phone__sub {
+  font-size: 3.5cqw;
+  line-height: 1.2;
+  color: var(--text-muted);
 }
 
-.formats__shot:hover,
-.formats__shot:focus-visible {
-  transform: translateY(-6px);
+.phone__avatar {
+  display: grid;
+  place-items: center;
+  width: 11cqw;
+  height: 11cqw;
+  border-radius: 50%;
+  background: var(--grad);
+  color: var(--accent-ink);
+  font-family: var(--font-head);
+  font-size: 6.2cqw;
+  font-weight: 900;
+  line-height: 1;
 }
 
-.formats__shot:focus-visible {
+/* лента: обои с точками, сообщения прижаты к низу — лента «докручена» до конца, лишнее сверху срезано */
+.phone__feed {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2.2cqw;
+  min-height: 0;
+  padding: 3cqw 3.2cqw 3cqw;
+  background:
+    radial-gradient(circle at 25% 30%, color-mix(in srgb, var(--text) 7%, transparent) 0 0.9cqw, transparent 1.05cqw) 0 0 / 11cqw 11cqw,
+    radial-gradient(circle at 75% 75%, color-mix(in srgb, var(--accent) 9%, transparent) 0 0.6cqw, transparent 0.75cqw) 0 0 / 8.5cqw 8.5cqw,
+    var(--bg);
+  overflow: hidden;
+}
+
+/* чужие посты — скелетоны: пузырь и серые полоски */
+.phone__skel {
+  display: grid;
+  flex: none;
+  gap: 1.8cqw;
+  width: 74%;
+  padding: 3cqw 3.6cqw;
+  border-radius: 5cqw 5cqw 5cqw 1.4cqw;
+  background: var(--phone-bubble);
+}
+
+.phone__skel i {
+  display: block;
+  height: 2.3cqw;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 18%, transparent);
+}
+
+.phone__skel i:nth-child(2) {
+  width: 82%;
+}
+
+.phone__skel i:nth-child(3) {
+  width: 58%;
+}
+
+.phone__skel i:nth-child(4) {
+  width: 72%;
+}
+
+.phone__skel--short {
+  width: 52%;
+}
+
+.phone__skel--short i:first-child {
+  width: 88%;
+}
+
+/* пост с картинкой — серый прямоугольник над строками */
+.phone__skel--media::before {
+  content: '';
+  display: block;
+  height: 30cqw;
+  margin-bottom: 0.6cqw;
+  border-radius: 3.2cqw;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+}
+
+/* исходящее сообщение пользователя (бот) — справа, тёплый оттенок */
+.phone__skel--out {
+  align-self: flex-end;
+  width: 46%;
+  border-radius: 5cqw 5cqw 1.4cqw 5cqw;
+  background: color-mix(in srgb, var(--accent-2) 24%, var(--bg));
+}
+
+.phone__skel--out i {
+  background: color-mix(in srgb, var(--text) 26%, transparent);
+}
+
+/* метка спонсорского сообщения — справа над пузырём */
+.phone__sponsored {
+  align-self: flex-end;
+  flex: none;
+  margin-bottom: -0.8cqw;
+  padding: 0.5cqw 2.2cqw;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  font-size: 2.9cqw;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+
+/* макеты рекламы на экране: масштаб от ширины телефона */
+.phone .tg-ad {
+  flex: none;
+  max-width: none;
+  font-size: 3.85cqw;
+}
+
+.phone .tg-ad__card {
+  box-shadow: none;
+}
+
+.phone .tg-ad--video {
+  max-width: 100%;
+}
+
+/* низ экрана: «Приєднатися» у канала, поле ввода у бота */
+.phone__bottom {
+  display: grid;
+  place-items: center;
+  min-height: 14cqw;
+  padding: 2cqw 3.2cqw 4.2cqw;
+  background: var(--phone-bar);
+  border-top: 1px solid color-mix(in srgb, var(--text) 7%, transparent);
+}
+
+.phone__join {
+  font-size: 4.3cqw;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.phone__input {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2.4cqw;
+  width: 100%;
+  min-height: 9.4cqw;
+  padding: 0 3cqw;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 8%, var(--bg));
+  color: var(--text-muted);
+  font-size: 4cqw;
+}
+
+.phone__clip,
+.phone__mic {
+  width: 5.4cqw;
+  height: 5.4cqw;
+}
+
+/* кнопка-лайтбокс поверх экрана: прозрачная, лупа проявляется при наведении */
+.phone__zoom {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.phone__zoom:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
 
 .formats__zoom {
-  position: absolute;
-  top: 0.9rem;
-  right: 0.9rem;
-  z-index: 2;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--grad);
   color: var(--accent-ink);
+  box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--bg) 70%, transparent);
   opacity: 0;
   transform: scale(0.85);
   transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
 
 .formats__zoom svg {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 
-.formats__shot:hover .formats__zoom,
-.formats__shot:focus-visible .formats__zoom {
+.phone__zoom:hover .formats__zoom,
+.phone__zoom:focus-visible .formats__zoom {
   opacity: 1;
   transform: none;
 }
 
-/* на сенсорных экранах наведения нет — лупа видна всегда, иначе непонятно, что пример увеличивается */
+/* на сенсорных экранах наведения нет — лупа в углу экрана видна всегда, иначе непонятно, что макет увеличивается */
 @media (hover: none) {
+  .phone__zoom {
+    place-items: end;
+    padding: 0 4cqw 18cqw 0;
+  }
+
   .formats__zoom {
+    width: 40px;
+    height: 40px;
     opacity: 1;
     transform: none;
   }
 }
 
-.formats__info {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-content: start; /* подписи трёх форматов начинаются на одной линии, даже если текст разной длины */
-  align-items: center;
-  gap: 0.6rem 0.9rem;
-}
-
-.formats__num {
-  display: inline-grid;
-  place-items: center;
-  min-width: 3.25em;
-  min-height: 2.1em;
-  padding: 0 0.8em;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--text) 4%, transparent);
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  line-height: 1;
-  color: var(--accent);
-}
-
-.formats__title {
-  font-family: var(--font-body);
-  font-size: clamp(1.25rem, 1rem + 0.7vw, 1.75rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  text-transform: none;
-  color: var(--text);
-}
-
-.formats__text {
-  grid-column: 1 / -1;
-  max-width: 44ch;
-  font-size: clamp(0.9375rem, 0.85rem + 0.25vw, 1.0625rem);
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--text) 82%, transparent);
-}
-
+/* — строка под блоком — */
 .formats__foot {
   margin-top: clamp(1.5rem, 2.5vw, 2.25rem);
   display: flex;
@@ -284,29 +666,7 @@
   color: var(--tg-link);
 }
 
-/* 01 канал: пузырь на фоне чата — тёмные обои с узором из точек */
-.formats__shot:has(.tg-ad--channel) {
-  background:
-    radial-gradient(circle at 20% 25%, color-mix(in srgb, var(--text) 10%, transparent) 0 0.3rem, transparent 0.35rem) 0 0 / 3.5rem 3.5rem,
-    radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--accent) 12%, transparent) 0 0.2rem, transparent 0.25rem) 0 0 / 2.75rem 2.75rem,
-    var(--surface);
-}
-
-/* 02 медиа: акцентная рамка; в ней вертикальный «экран» — обложка креатива и карточка с кнопкой под ней */
-.formats__shot:has(.tg-ad--video) {
-  background: var(--grad);
-  border-color: transparent;
-}
-
-.formats__shot:has(.tg-ad--video) .formats__zoom {
-  background: var(--accent-ink);
-  color: var(--accent);
-}
-
-.formats__shot:has(.tg-ad--video):focus-visible {
-  outline-color: var(--text);
-}
-
+/* 02 медиа: вертикальный пост — обложка креатива и карточка с кнопкой под ней */
 .tg-ad--video {
   max-width: 19em;
   gap: 0.5em;
@@ -396,20 +756,10 @@
   font-size: 0.86em;
 }
 
-/* 03 бот: самая тёмная рамка — тёмный пузырь чата с ботом */
+/* 03 бот: пузырь чата с ботом */
 .tg-ad--bot {
   --tg-bubble: color-mix(in srgb, var(--text) 8%, var(--bg));
   max-width: 26em;
-}
-
-.formats__shot--dark::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(55% 45% at 20% 0%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 70%),
-    radial-gradient(50% 45% at 100% 100%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%);
-  pointer-events: none;
 }
 
 .tg-ad--bot .tg-ad__card {
@@ -530,41 +880,52 @@
   outline-offset: 3px;
 }
 
-/* — широкий экран: три колонки — */
+/* — широкий экран: слева заголовок, подводка и вкладки (≈ 3/5), справа телефон на всю высоту блока — */
 @media (min-width: 900px) {
-  /* рамки трёх форматов — одной высоты, подписи начинаются на одной линии (subgrid) */
-  .formats__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: auto auto;
-    row-gap: 0;
-  }
-
-  .formats__item {
-    grid-row: span 2;
-    grid-template-rows: subgrid;
+  .formats__body {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
   }
 }
 
-@media (min-width: 1100px) {
-  .formats__top {
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-    align-items: end;
-    column-gap: clamp(2rem, 5vw, 6rem);
-  }
-
-  .formats__lead {
-    justify-self: end;
-  }
-}
-
-/* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна — рамки и примеры по высоте окна — */
+/* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна. Контейнер — сетка на всю высоту экрана под шапкой
+     сайта: слева ряды «заголовок / подводка и вкладки», справа телефон через оба ряда, внизу строка под блоком.
+     Телефон — вся высота своей области (с потолком), ширина — от пропорций — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--formats {
     padding-block: var(--screen-pad);
   }
 
+  .section--formats .container {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    column-gap: var(--formats-gap);
+    min-height: calc(100svh - var(--header-h) - 2 * var(--screen-pad));
+  }
+
+  .formats__body {
+    display: contents;
+  }
+
   .formats__top {
-    margin-bottom: clamp(1rem, 3.2svh, 3rem);
+    grid-area: 1 / 1;
+    margin-bottom: clamp(0.75rem, 2.4svh, 2rem);
+  }
+
+  .formats__side {
+    grid-area: 2 / 1;
+    align-self: center;
+    max-width: 52rem; /* вкладки — карточки, как на образце, а не полосы во всю колонку */
+    gap: clamp(0.75rem, 2.4svh, 1.75rem);
+  }
+
+  .formats__stage {
+    grid-area: 1 / 2 / 3 / 3;
+    height: 100%;
+  }
+
+  .formats__foot {
+    grid-area: 3 / 1 / 4 / 3;
   }
 
   .formats__head {
@@ -575,30 +936,75 @@
     font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
   }
 
-  .formats__item {
-    gap: clamp(0.6rem, 1.6svh, 1.4rem);
+  .formats__lead {
+    font-size: clamp(0.9375rem, min(0.9rem + 0.4vw, 2.1svh), 1.3125rem);
   }
 
-  .formats__shot {
-    min-height: clamp(12rem, 36svh, 23rem);
-    padding: clamp(0.75rem, 1.6svh, 1.5rem);
+  .formats__tabs {
+    gap: clamp(0.5rem, 1.2svh, 0.75rem);
   }
 
-  .formats__shot .tg-ad {
-    font-size: clamp(10.5px, 1.5svh, 14.5px);
+  .phone {
+    width: auto;
+    height: 100%;
+    max-height: 46rem;
+    min-height: 22rem;
+  }
+
+  .formats__tab {
+    padding: clamp(0.7rem, 2.3svh, 1.6rem) clamp(0.9rem, 1.7vw, 1.6rem);
   }
 
   .formats__title {
-    font-size: clamp(1.125rem, min(1rem + 0.7vw, 3svh), 1.75rem);
+    font-size: clamp(1.375rem, min(1.1rem + 1.2vw, 3.6svh), 2.375rem);
+  }
+
+  .formats__text {
+    font-size: clamp(0.875rem, min(0.85rem + 0.25vw, 1.9svh), 1.0625rem);
   }
 
   .formats__foot {
-    margin-top: clamp(0.75rem, 2.2svh, 2.25rem);
+    margin-top: clamp(0.6rem, 1.8svh, 2rem);
   }
 }
 
-@media (max-width: 599px) {
-  .formats__shot {
-    border-radius: var(--r-card);
+/* — узкий экран: вкладки — горизонтальные пилюли (номер и название), описание выбранной — строкой, телефон ниже — */
+@media (max-width: 899px) {
+  .formats__tabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .formats__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    width: auto;
+    min-height: 44px;
+    padding: 0.5rem 1rem 0.5rem 0.85rem;
+    border-radius: var(--r-pill);
+  }
+
+  .formats__num {
+    padding-top: 0;
+    font-size: 1.125rem;
+  }
+
+  .formats__title {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .formats__text {
+    display: none;
+  }
+
+  .formats__note {
+    display: block;
+  }
+
+  .formats__stage {
+    padding-top: 0.5rem;
   }
 }

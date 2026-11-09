@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-09T18:46:32+02:00",
+  "updatedAt": "2026-11-09T23:08:18+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1187,6 +1187,36 @@ window.STATE =
       "commit": "c50dddd"
     },
     {
+      "id": "27",
+      "title": "Блок 04 «Як виглядає реклама»: вкладки форматов и большой телефон с Telegram",
+      "requirements": [
+        "H34",
+        "H15",
+        "H14",
+        "H18",
+        "H24"
+      ],
+      "blockedBy": [
+        "23"
+      ],
+      "wave": 22,
+      "zone": [
+        "src/sections/formats.js",
+        "src/styles/sections/formats.css",
+        "#formats",
+        "index.html",
+        "formats",
+        "content.*.json",
+        "tests/formats-*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "retries": 0,
+      "repairs": 0,
+      "startedAt": "2026-11-09T23:08:18+02:00"
+    },
+    {
       "id": "F1",
       "title": "Исправления по ревью ветки",
       "requirements": [
@@ -1433,9 +1463,11 @@ window.STATE =
     "2026-11-09T18:25:22+02:00",
     "2026-11-09T18:28:41+02:00",
     "2026-11-09T18:30:45+02:00",
-    "2026-11-09T18:46:32+02:00"
+    "2026-11-09T18:46:32+02:00",
+    "2026-11-09T23:08:16+02:00",
+    "2026-11-09T23:08:18+02:00"
   ],
-  "rev": 153,
+  "rev": 155,
   "waiting": null,
   "waits": [
     {
@@ -2587,6 +2619,19 @@ window.STATE =
       "k": "ticket",
       "ids": [
         "26"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-09T23:08:16+02:00",
+      "k": "tickets",
+      "n": 28
+    },
+    {
+      "t": "2026-11-09T23:08:18+02:00",
+      "k": "ticket",
+      "ids": [
+        "27"
       ],
       "act": "start"
     }

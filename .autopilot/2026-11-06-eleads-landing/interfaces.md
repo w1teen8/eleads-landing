@@ -300,3 +300,10 @@ export function forecast(input, rates): Forecast
 
 - Плитки: `niches__card--dark|light|yellow|orange|other`, `svg.niches__icon` (opacity на весь svg), `.niches__top-row` в «Інша ніша?»; у ниши только `name` (`examples` удалены); первая плитка — «B2B»; `data-place="niches_other"` сохранён. Ключи `niches.other.cta` / `niches.other.arrow` в JSON не используются.
 
+### T27 — блок 04: вкладки форматов и телефон (H34)
+
+- Разметка: `ul.formats__tabs[role=tablist]` → `button.formats__tab[data-formats-tab=channel|video|bot]`; телефон `.phone[data-formats-phone]` с панелями `.phone__panel[data-formats-panel]`, лента из скелетонов `.phone__skel`, метка `.phone__sponsored`; одна кнопка лайтбокса `button.phone__zoom[data-lightbox-open]` поверх экрана (показывает `.tg-ad` активной панели). `.formats__shot*` удалены.
+- JS (`formats.js`): `initTabs` — наведение только мышью (`pointerType === 'mouse'`), клик/тап, стрелки/Home/End; смена панели WAAPI 350 мс (`SWAP_MS`), при reduced-motion мгновенно; `bar.dataset.active`.
+- Контент: `formats.phone.{tabsLabel,time,avatar,channel,bot,sponsored,join,message}`; `formats.hint` / `formats.caption` сохранены (вопрос пользователю).
+- CSS: `.phone` — `container-type:size`, `aspect-ratio:300/620`, внутри всё в `cqw`; на десктопе телефон через оба ряда сетки, `max-height:46rem`.
+
