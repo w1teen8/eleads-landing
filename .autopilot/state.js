@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-09T17:07:23+02:00",
+  "updatedAt": "2026-11-09T17:28:01+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1065,10 +1065,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "startedAt": "2026-11-09T16:23:49+02:00",
+      "finishedAt": "2026-11-09T17:18:57+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 141,
+        "failed": 0
+      },
+      "commit": "7fde75f"
     },
     {
       "id": "24",
@@ -1087,9 +1093,43 @@ window.STATE =
       "review": "нет",
       "model": "сильная",
       "status": "in-progress",
+      "startedAt": "2026-11-09T17:07:23+02:00",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "25",
+      "title": "Блок 02: карта Украины из точек (81% горит), Worldwide — карта мира",
+      "requirements": [
+        "H22",
+        "H15",
+        "H11",
+        "H14",
+        "H18"
+      ],
+      "blockedBy": [
+        "23"
+      ],
+      "wave": 21,
+      "zone": [
+        "src/sections/stats.js",
+        "src/styles/sections/stats.css",
+        "#stats",
+        "index.html",
+        "stats",
+        "content.*.json",
+        "src/data/ua-dots.json",
+        "build/",
+        "scripts/",
+        "src/data/geo-dots.json",
+        "tests/stats-*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-09T17:07:23+02:00"
+      "startedAt": "2026-11-09T17:28:01+02:00"
     },
     {
       "id": "F1",
@@ -1136,7 +1176,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 132,
+    "passed": 141,
     "failed": 0
   },
   "debt": {
@@ -1320,9 +1360,12 @@ window.STATE =
     "2026-11-09T16:55:50+02:00",
     "2026-11-09T17:00:45+02:00",
     "2026-11-09T17:07:22+02:00",
-    "2026-11-09T17:07:23+02:00"
+    "2026-11-09T17:07:23+02:00",
+    "2026-11-09T17:18:57+02:00",
+    "2026-11-09T17:28:00+02:00",
+    "2026-11-09T17:28:01+02:00"
   ],
-  "rev": 135,
+  "rev": 138,
   "waiting": null,
   "waits": [
     {
@@ -2334,6 +2377,31 @@ window.STATE =
       "k": "ticket",
       "ids": [
         "24"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-09T17:18:57+02:00",
+      "k": "ticket",
+      "ids": [
+        "23"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 141,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-09T17:28:00+02:00",
+      "k": "tickets",
+      "n": 26
+    },
+    {
+      "t": "2026-11-09T17:28:01+02:00",
+      "k": "ticket",
+      "ids": [
+        "25"
       ],
       "act": "start"
     }
