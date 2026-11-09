@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-09T13:08:23+02:00",
+  "updatedAt": "2026-11-09T13:25:30+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -860,10 +860,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "startedAt": "2026-11-09T12:54:15+02:00",
+      "finishedAt": "2026-11-09T13:11:26+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "tests": {
+        "passed": 113,
+        "failed": 0
+      },
+      "commit": "14f454c"
     },
     {
       "id": "19",
@@ -871,6 +877,7 @@ window.STATE =
       "requirements": [
         "H03",
         "H09",
+        "H10",
         "R47",
         "R48",
         "R49",
@@ -893,6 +900,113 @@ window.STATE =
         "src/core/",
         "stackReveal(section)",
         "tests/stats-*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "done",
+      "startedAt": "2026-11-09T13:11:57+02:00",
+      "retries": 0,
+      "repairs": 0,
+      "finishedAt": "2026-11-09T13:25:30+02:00",
+      "tests": {
+        "passed": 120,
+        "failed": 0
+      },
+      "commit": "0667f56"
+    },
+    {
+      "id": "20",
+      "title": "Блок 03 «Ніші»: карточки-табло",
+      "requirements": [
+        "H03",
+        "H10",
+        "R52",
+        "R53"
+      ],
+      "blockedBy": [
+        "19"
+      ],
+      "wave": 19,
+      "zone": [
+        "src/sections/niches.js",
+        "calculator-model.js",
+        "src/styles/sections/niches.css",
+        "#niches",
+        "index.html",
+        "niches",
+        "content.*.json",
+        "src/data/config.json → sections",
+        "tests/niches-*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "21",
+      "title": "Блок 04 «Як виглядає реклама»: три формата и лайтбокс",
+      "requirements": [
+        "H03",
+        "H10",
+        "R54",
+        "R55",
+        "R56"
+      ],
+      "blockedBy": [
+        "19"
+      ],
+      "wave": 19,
+      "zone": [
+        "src/sections/formats.js",
+        "calculator-model.js",
+        "src/styles/sections/formats.css",
+        "#formats",
+        "index.html",
+        "formats",
+        "content.*.json",
+        "src/data/config.json → sections",
+        "tests/formats-*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "pending",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "22",
+      "title": "Блок 05 «Калькулятор» в новом облике",
+      "requirements": [
+        "H03",
+        "H10",
+        "R58",
+        "R59",
+        "R60",
+        "R61",
+        "R62",
+        "R63",
+        "R64",
+        "R65",
+        "R66",
+        "R67",
+        "R68"
+      ],
+      "blockedBy": [
+        "19"
+      ],
+      "wave": 19,
+      "zone": [
+        "src/sections/calculator.js",
+        "calculator-model.js",
+        "src/styles/sections/calculator.css",
+        "#calculator",
+        "index.html",
+        "calculator",
+        "content.*.json",
+        "src/data/config.json → sections",
+        "tests/calculator-*.test.js"
       ],
       "review": "нет",
       "model": "сильная",
@@ -945,7 +1059,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 142,
+    "passed": 120,
     "failed": 0
   },
   "debt": {
@@ -1114,9 +1228,14 @@ window.STATE =
     "2026-11-09T12:43:19+02:00",
     "2026-11-09T12:54:11+02:00",
     "2026-11-09T12:54:15+02:00",
-    "2026-11-09T13:08:23+02:00"
+    "2026-11-09T13:08:23+02:00",
+    "2026-11-09T13:11:26+02:00",
+    "2026-11-09T13:11:56+02:00",
+    "2026-11-09T13:11:57+02:00",
+    "2026-11-09T13:22:37+02:00",
+    "2026-11-09T13:25:30+02:00"
   ],
-  "rev": 120,
+  "rev": 125,
   "waiting": null,
   "waits": [
     {
@@ -2018,6 +2137,48 @@ window.STATE =
       "t": "2026-11-09T13:08:23+02:00",
       "k": "tickets",
       "n": 20
+    },
+    {
+      "t": "2026-11-09T13:11:26+02:00",
+      "k": "ticket",
+      "ids": [
+        "18"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 113,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-09T13:11:56+02:00",
+      "k": "tickets",
+      "n": 20
+    },
+    {
+      "t": "2026-11-09T13:11:57+02:00",
+      "k": "ticket",
+      "ids": [
+        "19"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-09T13:22:37+02:00",
+      "k": "tickets",
+      "n": 23
+    },
+    {
+      "t": "2026-11-09T13:25:30+02:00",
+      "k": "ticket",
+      "ids": [
+        "19"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 120,
+        "failed": 0
+      }
     }
   ],
   "reqList": [
