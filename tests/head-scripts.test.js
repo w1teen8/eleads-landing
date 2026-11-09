@@ -1,4 +1,4 @@
-// Сборка 2: инлайн-скрипты <head> — тема до первой отрисовки (G11) и заставка не чаще раза в сутки (G12).
+// Инлайн-скрипты <head>: заставка не чаще раза в сутки (G12). Тем и вариантов первого экрана больше нет (сборка 3, T18).
 // Скрипты берутся из index.html как есть и выполняются в песочнице с подставными location и хранилищами.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -59,39 +59,16 @@ function runHead({ search = '', session = storage(), local = storage(), reduced 
   return { theme: documentElement.getAttribute('data-theme'), hero: documentElement.getAttribute('data-hero'), preload: classes.has('js-preload'), planeIntro: classes.has('js-plane-intro'), session, local };
 }
 
-test('тема: без параметра и хранилища — brand', () => {
-  assert.equal(runHead().theme, 'brand');
-});
-
-test('тема: ?theme= ставит версию и запоминает её в sessionStorage', () => {
-  for (const name of ['brand', 'aether']) {
-    const r = runHead({ search: `?theme=${name}` });
-    assert.equal(r.theme, name);
-    assert.equal(r.session.map.get('eleads-theme'), name);
+test('один облик и один первый экран: ни data-theme, ни data-hero; ?theme= и ?hero= ничего не меняют', () => {
+  for (const search of ['', '?theme=aether', '?hero=3', '?hero=2&theme=brand', '?hero=4']) {
+    const r = runHead({ search });
+    assert.equal(r.theme, null, `${search}: data-theme`);
+    assert.equal(r.hero, null, `${search}: data-hero`);
+    assert.equal(r.planeIntro, false, `${search}: интро самолётика`);
+    assert.equal(r.preload, true, `${search}: заставка-поиск`);
+    assert.equal(r.session.map.size, 0, `${search}: sessionStorage не трогается`);
   }
-});
-
-test('тема: без параметра берётся из sessionStorage, параметр важнее хранилища', () => {
-  assert.equal(runHead({ session: storage({ 'eleads-theme': 'aether' }) }).theme, 'aether');
-  assert.equal(runHead({ search: '?theme=brand', session: storage({ 'eleads-theme': 'aether' }) }).theme, 'brand');
-});
-
-test('тема: старые версии overtake (brand-light, brand-dark, overtake) ведут на brand', () => {
-  for (const old of ['brand-light', 'brand-dark', 'overtake']) {
-    assert.equal(runHead({ search: `?theme=${old}` }).theme, 'brand', `?theme=${old}`);
-    assert.equal(runHead({ session: storage({ 'eleads-theme': old }) }).theme, 'brand', `session ${old}`);
-  }
-});
-
-test('тема: неизвестное значение и сломанное хранилище — brand', () => {
-  assert.equal(runHead({ search: '?theme=pink' }).theme, 'brand');
-  assert.equal(runHead({ session: storage({ 'eleads-theme': '<x>' }) }).theme, 'brand');
-  assert.equal(runHead({ search: '?theme=aether', session: storage({}, { broken: true }) }).theme, 'aether');
-  assert.equal(runHead({ session: storage({}, { broken: true }) }).theme, 'brand');
-});
-
-test('тема ставится и при reduced-motion (скрипт анимаций выходит раньше)', () => {
-  assert.equal(runHead({ search: '?nomotion=1&theme=aether' }).theme, 'aether');
+  assert.doesNotMatch(head, /eleads-theme|eleads-hero|data-theme|data-hero|js-plane-intro/);
 });
 
 test('заставка: первый заход — показывается', () => {
@@ -134,43 +111,4 @@ test('заставка: метка, которую пишет preloader.js, пр
   assert.equal(runHead({ local }).preload, false);
   // сломанное хранилище не роняет заставку
   assert.doesNotThrow(() => rememberIntro(storage({}, { broken: true }), NOW));
-});
-
-test('вариант первого экрана: по умолчанию mockup; ?hero=2 → mockup; ?hero=1 (удалённый orbit) и неизвестное → mockup', () => {
-  assert.equal(runHead().hero, 'mockup');
-  const r1 = runHead({ search: '?hero=1' });
-  assert.equal(r1.hero, 'mockup');
-  assert.notEqual(r1.session.map.get('eleads-hero'), 'orbit');
-  assert.equal(runHead({ search: '?hero=orbit' }).hero, 'mockup');
-  assert.equal(runHead({ session: storage({ 'eleads-hero': 'orbit' }) }).hero, 'mockup', 'старый выбор orbit → mockup');
-  assert.equal(runHead({ search: '?hero=2', session: storage({ 'eleads-hero': 'plane' }) }).hero, 'mockup');
-  assert.equal(runHead({ search: '?hero=mockup', session: storage({ 'eleads-hero': 'blue' }) }).hero, 'mockup');
-  assert.equal(runHead({ search: '?hero=9', session: storage({ 'eleads-hero': '<x>' }) }).hero, 'mockup');
-});
-
-test('вариант 4: ?hero=4 и ?hero=blue → blue, держится в sessionStorage; заставка — поиск, как в варианте 2', () => {
-  const r = runHead({ search: '?hero=4' });
-  assert.equal(r.hero, 'blue');
-  assert.equal(r.session.map.get('eleads-hero'), 'blue');
-  assert.equal(runHead({ search: '?hero=blue' }).hero, 'blue');
-  assert.equal(runHead({ session: storage({ 'eleads-hero': 'blue' }) }).hero, 'blue');
-  assert.equal(runHead({ search: '?hero=4', session: storage({}, { broken: true }) }).hero, 'blue');
-  assert.equal(runHead({ search: '?nomotion=1&hero=4' }).hero, 'blue', 'и при reduced-motion');
-  assert.equal(r.preload, true, 'первый заход — заставка-поиск');
-  assert.equal(r.planeIntro, false);
-});
-
-test('вариант 3: ?hero=3 → plane и держится в sessionStorage; вместо заставки-поиска — интро самолётика по тем же правилам', () => {
-  const r = runHead({ search: '?hero=3' });
-  assert.equal(r.hero, 'plane');
-  assert.equal(r.session.map.get('eleads-hero'), 'plane');
-  assert.equal(runHead({ session: storage({ 'eleads-hero': 'plane' }) }).hero, 'plane');
-  assert.equal(r.planeIntro, true, 'первый заход — интро');
-  assert.equal(r.preload, false, 'поиска нет');
-  const seen = storage({ 'eleads-intro': String(NOW - 60_000) });
-  assert.deepEqual([runHead({ search: '?hero=3', local: seen }).planeIntro, runHead({ search: '?hero=3', local: seen }).preload], [false, false], 'за сутки второй раз нет');
-  assert.equal(runHead({ search: '?hero=3&intro=1', local: seen }).planeIntro, true, '?intro=1 — принудительно');
-  assert.equal(runHead({ search: '?hero=3&nomotion=1&intro=1' }).planeIntro, false, 'reduced-motion — сразу главный экран');
-  assert.equal(runHead({ search: '?hero=2' }).planeIntro, false, 'в других вариантах — заставка-поиск');
-  assert.equal(runHead({ search: '?hero=2' }).preload, true);
 });

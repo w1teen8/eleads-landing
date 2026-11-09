@@ -48,10 +48,35 @@
   },
   "hero": {
     "eyebrow": "TELEGRAM PERFORMANCE MARKETING",
-    "titleLine1": "Просування",
-    "titleLine2": "через",
-    "titleAccent": "Telegram Ads",
+    "word": "eLeads",
+    "titleLine1": "Просування через",
+    "titleLine2": "Telegram",
+    "titleAccent": "Ads",
     "subtitle": "Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу",
+    "cta": "Обговорити проєкт",
+    "facts": {
+      "budgets": {
+        "label": "Рекламні бюджети під керуванням",
+        "value": "$2M+"
+      },
+      "years": {
+        "label": "Роки у digital",
+        "value": "7+"
+      },
+      "projects": {
+        "label": "Проєктів",
+        "value": "Десятки"
+      }
+    },
+    "ad": {
+      "tag": "Ad",
+      "title": "Ваш проєкт — у стрічці Telegram",
+      "text": "Реклама показується аудиторії каналів, ботів і медіаконтенту.",
+      "button": "Переглянути"
+    },
+    "photo": {
+      "alt": "Володимир Кучер, засновник eLeads"
+    },
     "stats": {
       "years": {
         "value": "7+",
@@ -66,39 +91,6 @@
         "label": "проєктів"
       }
     },
-    "cta": {
-      "label": "Обговорити проєкт у Telegram",
-      "arrow": "→",
-      "secondary": "Дивитися кейси"
-    },
-    "photo": {
-      "alt": "Володимир Кучер, засновник eLeads",
-      "caption": "ФОТО ВОЛОДИМИРА"
-    },
-    "cards": {
-      "views": { "alt": "Перегляди: +1 280 000" },
-      "subscribers": { "alt": "Підписники: +32 400" },
-      "campaigns": { "alt": "Рекламні кампанії в Telegram — Telegram Ads" },
-      "growth": { "alt": "Зростання результатів: +245%" },
-      "telegram": { "alt": "Логотип Telegram" },
-      "audience": { "label": "Цільова аудиторія" }
-    },
-    "word": "ELEADS",
-    "v3": { "skip": "Пропустити", "skipLabel": "Пропустити інтро", "heading": "ELEADS — просування через Telegram Ads" },
-    "v4": {
-      "word": "eLeads",
-      "titleLine1": "Просування через",
-      "titleLine2": "Telegram",
-      "titleAccent": "Ads",
-      "cta": "Обговорити проєкт",
-      "cards": {
-        "budgets": { "label": "Рекламні бюджети під керуванням", "value": "$2M+" },
-        "years": { "label": "Роки у digital", "value": "7+" },
-        "projects": { "label": "Проєктів", "value": "Десятки" }
-      },
-      "ad": { "tag": "Ad", "title": "Ваш проєкт — у стрічці Telegram", "text": "Реклама показується аудиторії каналів, ботів і медіаконтенту.", "button": "Переглянути" }
-    },
-    "scroll": "Гортайте",
     "trusted": {
       "title": "Мені довіряють",
       "items": [

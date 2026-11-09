@@ -262,14 +262,6 @@ export function init(root) {
   ).observe(canvas);
   document.addEventListener('visibilitychange', sync);
 
-  // смена версии оформления (панель версий в dev меняет data-theme на <html>) — перекрасить карту
-  new MutationObserver(() => {
-    readPalette();
-    landKey = '';
-    paintLand();
-    draw(performance.now());
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
   getLang();
   watchDpr();
   select(active);

@@ -45,7 +45,10 @@ test('сборка с BASE_PATH: нет корневых ссылок на фа�
     assert.deepEqual(offenders, [], 'корневые ссылки без base');
     const html = readFileSync(join(outDir, 'index.html'), 'utf8');
     assert.match(html, /\/eleads-landing\/assets\/[^"]+\.js/, 'бандл подключён через base');
-    assert.match(html, /data-src-desktop="\/eleads-landing\/video\//, 'видео hero через base');
+    assert.match(html, /<img\b[^>]*\ssrc="\/eleads-landing\/img\/hero\/volodymyr-blue-720\.png"/, 'фото первого экрана через base');
+    assert.match(html, /srcset="\/eleads-landing\/img\/hero\/volodymyr-blue-720\.avif 720w, \/eleads-landing\/img\/hero\/volodymyr-blue-1200\.avif/, 'srcset через base');
+    // в собранном сайте нет ни тем, ни вариантов первого экрана, ни dev-панели
+    for (const f of files) assert.doesNotMatch(readFileSync(f, 'utf8'), /theme-switcher|data-dev-themes|eleads-theme|eleads-hero/, f);
   } finally {
     if (prev === undefined) delete process.env.BASE_PATH;
     else process.env.BASE_PATH = prev;

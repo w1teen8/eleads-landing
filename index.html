@@ -32,34 +32,6 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
     </noscript>
 
-    <!-- Версия оформления до первой отрисовки: ?theme= → sessionStorage → brand (панель версий — только в dev).
-         Старые значения (brand-light, brand-dark, overtake) не в списке — ведут на brand. -->
-    <script>
-      (function (h) {
-        var themes = ['brand', 'aether'];
-        var m = /[?&]theme=([\w-]+)/.exec(location.search);
-        var theme = m && themes.indexOf(m[1]) > -1 ? m[1] : null;
-        try {
-          if (theme) sessionStorage.setItem('eleads-theme', theme);
-          else theme = sessionStorage.getItem('eleads-theme');
-        } catch (e) {}
-        h.setAttribute('data-theme', themes.indexOf(theme) > -1 ? theme : 'brand');
-      })(document.documentElement);
-    </script>
-    <!-- Вариант первого экрана до первой отрисовки: ?hero=2 (mockup) | 3 (plane) | 4 (blue) → sessionStorage → mockup.
-         Вариант 1 (orbit) удалён: ?hero=1 и старый выбор в хранилище ведут на mockup. -->
-    <script>
-      (function (h) {
-        var names = { 2: 'mockup', 3: 'plane', 4: 'blue', mockup: 'mockup', plane: 'plane', blue: 'blue' };
-        var m = /[?&]hero=(\w+)/.exec(location.search);
-        var hero = m && names[m[1]] ? names[m[1]] : null;
-        try {
-          if (hero) sessionStorage.setItem('eleads-hero', hero);
-          else hero = sessionStorage.getItem('eleads-hero');
-        } catch (e) {}
-        h.setAttribute('data-hero', hero === 'plane' || hero === 'blue' ? hero : 'mockup');
-      })(document.documentElement);
-    </script>
     <!-- Начальные состояния анимаций ставит только этот скрипт: без JS и при reduced-motion классов нет, всё видно. -->
     <script>
       (function (d) {
@@ -76,15 +48,11 @@
           var age = Date.now() - seen;
           due = /[?&]intro=1/.test(location.search) || !(seen > 1e12 && age >= 0 && age < 864e5);
         } catch (e) {}
-        // вариант 3: вместо заставки-поиска — интро с самолётиком (hero-plane.js), тот же «раз в сутки»
-        var plane = h.getAttribute('data-hero') === 'plane';
-        if (due) h.classList.add(plane ? 'js-plane-intro' : 'js-preload');
+        if (due) h.classList.add('js-preload');
         setTimeout(function () {
           if (!h.classList.contains('motion-ok')) h.classList.remove('js-anim');
           // заставка не стартовала (скрипты не загрузились) — убрать её; живая 5-секундная уходит сама
           if (!h.dataset.introStart) h.classList.remove('js-preload');
-          // интро варианта 3 не стартовало — сразу главный экран; стартовавшее держит свой потолок (ролик + код + 2 с)
-          if (!h.dataset.planeStart) h.classList.remove('js-plane-intro');
         }, 4000);
         // последний рубеж: позже крайнего срока intro.js (≈7,9 с) заставки не бывает ни при каком сбое
         setTimeout(function () {
@@ -220,258 +188,61 @@
     <main id="main" tabindex="-1">
       <!-- 01 Hero -->
       <section id="hero" class="hero" data-section="hero" aria-labelledby="hero-title">
-        <!-- вариант 2 «mockup» (по умолчанию): макет пользователя -->
-        <div class="hero__stage" data-hero-variant="mockup">
-          <!-- космос: видео (если файл есть) под свечением темы -->
-          <div class="hero__space" aria-hidden="true">
-            <div class="hero__gradient"></div>
-            <video
-              class="hero__video"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="none"
-              disablepictureinpicture
-              data-src-desktop="/video/hero-1080.mp4"
-              data-src-mobile="/video/hero-720.mp4"
-              data-poster="/video/poster.jpg"
-            ></video>
+        <!-- Первый экран «Синий» (reference/run3/hero-keep.png): синий фон Telegram, огромное «eLeads» за Володимиром
+             без фона, слева заголовок и белая пилюля, справа цифры брифа и строка рекламы Telegram простым текстом,
+             ниже — «Мені довіряють» -->
+        <div class="hero__screen">
+        <div class="hero__stage" data-hero-visual>
+          <div class="hero__bg" aria-hidden="true"></div>
+          <div class="hero__depth hero__depth--word" data-depth="0.12" aria-hidden="true">
+            <p class="hero__word" data-hero-word><span data-i18n="hero.word"></span></p>
+          </div>
+          <div class="hero__depth hero__depth--person" data-depth="0.3">
+            <picture class="hero__person" data-hero-person>
+              <source type="image/avif" srcset="/img/hero/volodymyr-blue-720.avif 720w, /img/hero/volodymyr-blue-1200.avif 1200w" sizes="(min-width: 900px) 66vw, 118vw" />
+              <source type="image/webp" srcset="/img/hero/volodymyr-blue-720.webp 720w, /img/hero/volodymyr-blue-1200.webp 1200w" sizes="(min-width: 900px) 66vw, 118vw" />
+              <img class="hero__person-img" src="/img/hero/volodymyr-blue-720.png" srcset="/img/hero/volodymyr-blue-720.png 720w, /img/hero/volodymyr-blue-1200.png 1200w" sizes="(min-width: 900px) 66vw, 118vw" width="1460" height="1622" alt="" data-i18n-attr="alt:hero.photo.alt" loading="eager" fetchpriority="high" decoding="async" />
+            </picture>
           </div>
 
-          <!-- холст в пропорциях макета: на десктопе всё расставлено в его долях -->
-          <div class="hero__canvas">
-            <div class="hero__copy">
-              <p class="hero__eyebrow mono-label mono-label--accent" data-hero-item data-i18n="hero.eyebrow"></p>
-              <h1 id="hero-title" class="hero__title display">
-                <span class="hero__line"><span class="hero__line-inner" data-i18n="hero.titleLine1"></span></span>
-                <span class="hero__line"><span class="hero__line-inner" data-i18n="hero.titleLine2"></span></span>
-                <span class="hero__line"><span class="hero__line-inner display__accent" data-i18n="hero.titleAccent"></span></span>
-              </h1>
-              <p class="hero__subtitle" data-hero-item data-i18n="hero.subtitle"></p>
-              <a class="btn btn--pill btn--lg hero__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero" data-hero-item>
-                <span data-i18n="hero.cta.label"></span>
-                <svg class="hero__cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
-              </a>
-              <ul class="hero__stats" data-hero-item>
-                <li class="hero__stat">
-                  <span class="hero__stat-value" data-count data-i18n="hero.stats.years.value"></span>
-                  <span class="hero__stat-label mono-label mono-label--muted" data-i18n="hero.stats.years.label"></span>
-                </li>
-                <li class="hero__stat">
-                  <span class="hero__stat-value" data-count data-i18n="hero.stats.budgets.value"></span>
-                  <span class="hero__stat-label mono-label mono-label--muted" data-i18n="hero.stats.budgets.label"></span>
-                </li>
-                <li class="hero__stat">
-                  <span class="hero__stat-value" data-count data-i18n="hero.stats.projects.value"></span>
-                  <span class="hero__stat-label mono-label mono-label--muted" data-i18n="hero.stats.projects.label"></span>
-                </li>
-              </ul>
-            </div>
+          <div class="hero__copy">
+            <p class="hero__eyebrow mono-label" data-hero-item data-i18n="hero.eyebrow"></p>
+            <h1 id="hero-title" class="hero__title">
+              <span class="hero__line"><span class="hero__line-inner" data-i18n="hero.titleLine1"></span></span>
+              <span class="hero__line"><span class="hero__line-inner"><span data-i18n="hero.titleLine2"></span> <span class="hero__accent" data-i18n="hero.titleAccent"></span></span></span>
+            </h1>
+            <p class="hero__subtitle" data-hero-item data-i18n="hero.subtitle"></p>
+            <a class="hero__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero" data-hero-item>
+              <span data-i18n="hero.cta"></span>
+              <span class="hero__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </a>
+          </div>
 
-            <!-- справа: задняя половина кольца → планета → Володимир → передняя половина кольца → карточки -->
-            <div class="hero__visual" data-hero-visual>
-              <div class="hero__depth" data-depth="0.3" aria-hidden="true">
-                <picture class="hero__art hero__art--ring"><source type="image/avif" srcset="/img/hero/ring-back-1x.avif 1326w, /img/hero/ring-back-2x.avif 2652w" sizes="(min-width: 900px) 69vw, 114vw" /><source type="image/webp" srcset="/img/hero/ring-back-1x.webp 1326w, /img/hero/ring-back-2x.webp 2652w" sizes="(min-width: 900px) 69vw, 114vw" /><img src="/img/hero/ring-back-1x.png" alt="" loading="lazy" decoding="async" /></picture>
-                <div class="hero__ring hero__ring--back"><div class="hero__ring-clip"><div class="hero__ring-loop"><span class="hero__glints"><span class="hero__glint" style="--i: 0"></span><span class="hero__glint" style="--i: 1"></span><span class="hero__glint" style="--i: 2"></span><span class="hero__glint" style="--i: 3"></span><span class="hero__glint" style="--i: 4"></span><span class="hero__glint" style="--i: 5"></span><span class="hero__glint" style="--i: 6"></span></span></div></div></div>
-              </div>
-              <div class="hero__depth" data-depth="0.18" aria-hidden="true">
-                <div class="hero__planet"><picture class="hero__art hero__art--planet"><source type="image/avif" srcset="/img/hero/planet-1x.avif 1238w, /img/hero/planet-2x.avif 2475w" sizes="(min-width: 900px) 65vw, 106vw" /><source type="image/webp" srcset="/img/hero/planet-1x.webp 1238w, /img/hero/planet-2x.webp 2475w" sizes="(min-width: 900px) 65vw, 106vw" /><img src="/img/hero/planet-1x.png" alt="" loading="lazy" decoding="async" /></picture></div>
-              </div>
-              <div class="hero__depth" data-depth="0.3">
-                <picture class="hero__person">
-                  <source type="image/avif" srcset="/img/hero/volodymyr-cutout-720.avif 720w, /img/hero/volodymyr-cutout-1200.avif 1200w" sizes="(min-width: 900px) 39vw, 84vw" />
-                  <source type="image/webp" srcset="/img/hero/volodymyr-cutout-720.webp 720w, /img/hero/volodymyr-cutout-1200.webp 1200w" sizes="(min-width: 900px) 39vw, 84vw" />
-                  <img class="hero__person-img" src="/img/hero/volodymyr-cutout-720.png" srcset="/img/hero/volodymyr-cutout-720.png 720w, /img/hero/volodymyr-cutout-1200.png 1200w" sizes="(min-width: 900px) 39vw, 84vw" width="720" height="1234" alt="" data-i18n-attr="alt:hero.photo.alt" loading="eager" fetchpriority="high" decoding="async" />
-                </picture>
-              </div>
-              <div class="hero__depth" data-depth="0.3" aria-hidden="true">
-                <picture class="hero__art hero__art--ring"><source type="image/avif" srcset="/img/hero/ring-front-1x.avif 1326w, /img/hero/ring-front-2x.avif 2652w" sizes="(min-width: 900px) 69vw, 114vw" /><source type="image/webp" srcset="/img/hero/ring-front-1x.webp 1326w, /img/hero/ring-front-2x.webp 2652w" sizes="(min-width: 900px) 69vw, 114vw" /><img src="/img/hero/ring-front-1x.png" alt="" loading="lazy" decoding="async" /></picture>
-                <div class="hero__ring hero__ring--front"><div class="hero__ring-clip"><div class="hero__ring-loop"><span class="hero__glints"><span class="hero__glint" style="--i: 0"></span><span class="hero__glint" style="--i: 1"></span><span class="hero__glint" style="--i: 2"></span><span class="hero__glint" style="--i: 3"></span><span class="hero__glint" style="--i: 4"></span><span class="hero__glint" style="--i: 5"></span><span class="hero__glint" style="--i: 6"></span></span></div></div></div>
-              </div>
-
-              <div class="hero__card hero__card--telegram" data-depth="0.9"><div class="hero__card-float">
-                <picture data-card="telegram">
-                  <source type="image/webp" srcset="/img/hero/card-telegram-240.webp 240w, /img/hero/card-telegram-480.webp 480w" sizes="(min-width: 900px) 9vw, 20vw" />
-                  <img src="/img/hero/card-telegram-240.png" srcset="/img/hero/card-telegram-240.png 240w, /img/hero/card-telegram-480.png 480w" sizes="(min-width: 900px) 9vw, 20vw" width="240" height="247" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.telegram.alt" decoding="async" />
-                </picture>
-              </div></div>
-              <div class="hero__card hero__card--growth" data-depth="0.7"><div class="hero__card-float">
-                <picture data-card="growth">
-                  <source type="image/webp" srcset="/img/hero/card-growth-400.webp 400w, /img/hero/card-growth-800.webp 800w" sizes="(min-width: 900px) 17vw, 38vw" />
-                  <img src="/img/hero/card-growth-400.png" srcset="/img/hero/card-growth-400.png 400w, /img/hero/card-growth-800.png 800w" sizes="(min-width: 900px) 17vw, 38vw" width="400" height="325" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.growth.alt" decoding="async" />
-                </picture>
-              </div></div>
-              <div class="hero__card hero__card--campaigns" data-depth="0.8"><div class="hero__card-float">
-                <picture data-card="campaigns">
-                  <source type="image/webp" srcset="/img/hero/card-campaigns-400.webp 400w, /img/hero/card-campaigns-800.webp 800w" sizes="(min-width: 900px) 21vw, 46vw" />
-                  <img src="/img/hero/card-campaigns-400.png" srcset="/img/hero/card-campaigns-400.png 400w, /img/hero/card-campaigns-800.png 800w" sizes="(min-width: 900px) 21vw, 46vw" width="400" height="234" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.campaigns.alt" decoding="async" />
-                </picture>
-              </div></div>
-              <div class="hero__card hero__card--views" data-depth="1"><div class="hero__card-float">
-                <picture data-card="views">
-                  <source type="image/webp" srcset="/img/hero/card-views-400.webp 400w, /img/hero/card-views-800.webp 800w" sizes="(min-width: 900px) 23vw, 52vw" />
-                  <img src="/img/hero/card-views-400.png" srcset="/img/hero/card-views-400.png 400w, /img/hero/card-views-800.png 800w" sizes="(min-width: 900px) 23vw, 52vw" width="400" height="166" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.views.alt" decoding="async" />
-                </picture>
-              </div></div>
-              <div class="hero__card hero__card--subscribers" data-depth="0.85"><div class="hero__card-float">
-                <picture data-card="subscribers">
-                  <source type="image/webp" srcset="/img/hero/card-subscribers-400.webp 400w, /img/hero/card-subscribers-800.webp 800w" sizes="(min-width: 900px) 25vw, 52vw" />
-                  <img src="/img/hero/card-subscribers-400.png" srcset="/img/hero/card-subscribers-400.png 400w, /img/hero/card-subscribers-800.png 800w" sizes="(min-width: 900px) 25vw, 52vw" width="400" height="175" alt="" loading="lazy" data-i18n-attr="alt:hero.cards.subscribers.alt" decoding="async" />
-                </picture>
-              </div></div>
-              <div class="hero__card hero__card--audience" data-depth="0.75"><div class="hero__card-float">
-                <div class="hero__glass">
-                  <svg class="hero__glass-people" viewBox="0 0 48 32" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="hero-glass-grad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0" style="stop-color: var(--accent)" />
-                        <stop offset="1" style="stop-color: var(--accent-2)" />
-                      </linearGradient>
-                    </defs>
-                    <g style="fill: url(#hero-glass-grad)">
-                      <circle cx="10" cy="9" r="5" />
-                      <circle cx="38" cy="9" r="5" />
-                      <circle cx="24" cy="8" r="6.4" />
-                      <path d="M1 27c0-6 4-10 9-10 2.6 0 4.8 1 6.3 2.8C14.6 21.6 13.6 24.2 13.4 27Z" />
-                      <path d="M47 27c0-6-4-10-9-10-2.6 0-4.8 1-6.3 2.8 1.7 1.8 2.7 4.4 2.9 7.2Z" />
-                      <path d="M12.5 30c0-7.6 5-12.6 11.5-12.6S35.5 22.4 35.5 30Z" />
-                    </g>
-                  </svg>
-                  <span class="hero__glass-label" data-i18n="hero.cards.audience.label"></span>
-                  <svg class="hero__glass-target" viewBox="0 0 48 48" aria-hidden="true">
-                    <g fill="none" style="stroke: url(#hero-glass-grad)" stroke-linecap="round">
-                      <circle cx="22" cy="26" r="18" stroke-width="5" />
-                      <circle cx="22" cy="26" r="9.5" stroke-width="5" />
-                      <path d="M22 26 40 8" stroke-width="3.4" />
-                      <path d="M36 4v8h8" stroke-width="3.4" stroke-linejoin="round" />
-                    </g>
-                    <circle cx="22" cy="26" r="3.2" style="fill: var(--accent-2)" />
-                  </svg>
-                </div>
-              </div></div>
+          <div class="hero__side" data-hero-item>
+            <ul class="hero__facts">
+              <li class="hero__fact">
+                <span class="hero__fact-value" data-i18n="hero.facts.budgets.value"></span>
+                <span class="hero__fact-label" data-i18n="hero.facts.budgets.label"></span>
+              </li>
+              <li class="hero__fact">
+                <span class="hero__fact-value" data-i18n="hero.facts.years.value"></span>
+                <span class="hero__fact-label" data-i18n="hero.facts.years.label"></span>
+              </li>
+              <li class="hero__fact">
+                <span class="hero__fact-value" data-i18n="hero.facts.projects.value"></span>
+                <span class="hero__fact-label" data-i18n="hero.facts.projects.label"></span>
+              </li>
+            </ul>
+            <div class="hero__ad">
+              <p class="hero__ad-title"><span class="hero__ad-tag" data-i18n="hero.ad.tag"></span> <span data-i18n="hero.ad.title"></span></p>
+              <p class="hero__ad-text" data-i18n="hero.ad.text"></p>
+              <a class="hero__ad-btn" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero_ad"><span data-i18n="hero.ad.button"></span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>
             </div>
           </div>
         </div>
-
-        <!-- вариант 4 «blue» (?hero=4, G26; reference/hero-v4/mockup.png): синий фон Telegram, огромное «eLeads» за Володимиром
-             без фона, слева заголовок и белая пилюля, цифры брифа и строка рекламы Telegram простым текстом под буквами.
-             Фото без src: hero-blue.js ставит его только в этом варианте -->
-        <div class="hero-blue" data-hero-variant="blue">
-          <div class="hero-blue__stage" data-hero-visual>
-            <div class="hero-blue__bg" aria-hidden="true"></div>
-            <div class="hero-blue__depth hero-blue__depth--word" data-depth="0.12" aria-hidden="true">
-              <p class="hero-blue__word" data-v4-word><span data-i18n="hero.v4.word"></span></p>
-            </div>
-            <div class="hero-blue__depth hero-blue__depth--person" data-depth="0.3">
-              <picture class="hero-blue__person" data-v4-person>
-                <source type="image/avif" data-srcset="/img/hero/volodymyr-blue-720.avif 720w, /img/hero/volodymyr-blue-1200.avif 1200w" sizes="(min-width: 900px) 66vw, 118vw" />
-                <source type="image/webp" data-srcset="/img/hero/volodymyr-blue-720.webp 720w, /img/hero/volodymyr-blue-1200.webp 1200w" sizes="(min-width: 900px) 66vw, 118vw" />
-                <img class="hero-blue__person-img" data-src="/img/hero/volodymyr-blue-720.png" data-srcset="/img/hero/volodymyr-blue-720.png 720w, /img/hero/volodymyr-blue-1200.png 1200w" sizes="(min-width: 900px) 66vw, 118vw" width="1460" height="1622" alt="" data-i18n-attr="alt:hero.photo.alt" decoding="async" />
-              </picture>
-            </div>
-
-            <div class="hero-blue__copy">
-              <p class="hero-blue__eyebrow mono-label" data-v4-item data-i18n="hero.eyebrow"></p>
-              <p id="hero-title-blue" class="hero-blue__title" role="heading" aria-level="1">
-                <span class="hero-blue__line"><span class="hero-blue__line-inner" data-i18n="hero.v4.titleLine1"></span></span>
-                <span class="hero-blue__line"><span class="hero-blue__line-inner"><span data-i18n="hero.v4.titleLine2"></span> <span class="hero-blue__accent" data-i18n="hero.v4.titleAccent"></span></span></span>
-              </p>
-              <p class="hero-blue__subtitle" data-v4-item data-i18n="hero.subtitle"></p>
-              <a class="hero-blue__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero" data-v4-item>
-                <span data-i18n="hero.v4.cta"></span>
-                <span class="hero-blue__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-              </a>
-            </div>
-
-            <div class="hero-blue__side" data-v4-item>
-              <ul class="hero-blue__stats">
-                <li class="hero-blue__stat hero-blue__stat--budgets">
-                  <span class="hero-blue__stat-value" data-i18n="hero.v4.cards.budgets.value"></span>
-                  <span class="hero-blue__stat-label" data-i18n="hero.v4.cards.budgets.label"></span>
-                </li>
-                <li class="hero-blue__stat hero-blue__stat--years">
-                  <span class="hero-blue__stat-value" data-i18n="hero.v4.cards.years.value"></span>
-                  <span class="hero-blue__stat-label" data-i18n="hero.v4.cards.years.label"></span>
-                </li>
-                <li class="hero-blue__stat hero-blue__stat--projects">
-                  <span class="hero-blue__stat-value" data-i18n="hero.v4.cards.projects.value"></span>
-                  <span class="hero-blue__stat-label" data-i18n="hero.v4.cards.projects.label"></span>
-                </li>
-              </ul>
-              <div class="hero-blue__ad">
-                <p class="hero-blue__ad-title"><span class="hero-blue__ad-tag" data-i18n="hero.v4.ad.tag"></span> <span data-i18n="hero.v4.ad.title"></span></p>
-                <p class="hero-blue__ad-text" data-i18n="hero.v4.ad.text"></p>
-                <a class="hero-blue__ad-btn" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero_ad"><span data-i18n="hero.v4.ad.button"></span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <!-- вариант 3 «plane»: интро — ролик (самолётик из офиса к Земле), затем кодом самолётик рисует кольцо вокруг
-             «ELEADS» и садится в его центр; финал — этот же экран с текстами. Медиа ставит hero-plane.js из config.json -->
-        <div class="hero-plane" data-hero-variant="plane">
-          <div class="hero-plane__sky" aria-hidden="true">
-            <div class="hero-plane__stars"></div>
-            <img class="hero-plane__earth" alt="" decoding="async" hidden />
-            <div class="hero-plane__halo"></div>
-          </div>
-
-          <div class="hero-plane__mark">
-            <div class="hero-plane__ring" aria-hidden="true">
-              <div class="hero-plane__half hero-plane__half--r"><div class="hero-plane__spin"><div class="hero-plane__cut"><div class="hero-plane__line"></div></div></div></div>
-              <div class="hero-plane__half hero-plane__half--l"><div class="hero-plane__spin"><div class="hero-plane__cut"><div class="hero-plane__line"></div></div></div></div>
-            </div>
-            <div class="hero-plane__flyer" aria-hidden="true">
-              <svg class="hero-plane__glyph" viewBox="0 0 120 60">
-                <path d="M118 30 4 4l36 26Z" fill="#FFFFFF" />
-                <path d="M118 30H40l-10 13Z" fill="#C6CFDC" />
-                <path d="M118 30 30 43 14 57Z" fill="#E3E8F0" />
-                <path d="M40 30 30 43l-4-11Z" fill="#9AA7BA" />
-              </svg>
-            </div>
-            <p id="hero-title-plane" class="hero-plane__word display" role="heading" aria-level="1" data-i18n-attr="aria-label:hero.v3.heading"><span data-i18n="hero.word" aria-hidden="true"></span></p>
-          </div>
-
-          <div class="hero-plane__copy">
-            <p class="hero-plane__eyebrow mono-label mono-label--accent" data-plane-item data-i18n="hero.eyebrow"></p>
-            <div class="hero-plane__bottom">
-              <div class="hero-plane__lead" data-plane-item>
-                <p class="hero-plane__subtitle" data-i18n="hero.subtitle"></p>
-                <a class="btn btn--pill btn--lg hero-plane__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero">
-                  <span data-i18n="hero.cta.label"></span>
-                  <span class="hero-plane__cta-arrow" aria-hidden="true" data-i18n="hero.cta.arrow"></span>
-                </a>
-              </div>
-              <ul class="hero-plane__stats" data-plane-item>
-                <li class="hero-plane__stat">
-                  <span class="hero-plane__stat-value" data-count data-i18n="hero.stats.years.value"></span>
-                  <span class="hero-plane__stat-label mono-label mono-label--muted" data-i18n="hero.stats.years.label"></span>
-                </li>
-                <li class="hero-plane__stat">
-                  <span class="hero-plane__stat-value" data-count data-i18n="hero.stats.budgets.value"></span>
-                  <span class="hero-plane__stat-label mono-label mono-label--muted" data-i18n="hero.stats.budgets.label"></span>
-                </li>
-                <li class="hero-plane__stat">
-                  <span class="hero-plane__stat-value" data-count data-i18n="hero.stats.projects.value"></span>
-                  <span class="hero-plane__stat-label mono-label mono-label--muted" data-i18n="hero.stats.projects.label"></span>
-                </li>
-              </ul>
-              <p class="hero-plane__scroll mono-label mono-label--muted" data-plane-item>
-                <span class="hero-plane__wheel" aria-hidden="true"><span></span></span>
-                <span data-i18n="hero.scroll"></span>
-              </p>
-            </div>
-          </div>
-
-          <video class="hero-plane__video" muted playsinline preload="none" disablepictureinpicture aria-hidden="true" tabindex="-1"></video>
-          <button type="button" class="hero-plane__skip mono-label" data-plane-skip data-i18n-attr="aria-label:hero.v3.skipLabel">
-            <span data-i18n="hero.v3.skip"></span>
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" /></svg>
-          </button>
-        </div>
-
-        <div class="hero__trust" data-hero-item>
+        <div class="hero__trust">
           <div class="hero__trust-inner container">
             <p class="hero__trust-title mono-label mono-label--muted" id="hero-trusted" data-i18n="hero.trusted.title"></p>
             <div class="marquee" data-marquee>

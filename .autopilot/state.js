@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-09T12:54:11+02:00",
+  "updatedAt": "2026-11-09T13:08:23+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -860,6 +860,42 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
+      "status": "in-progress",
+      "startedAt": "2026-11-09T12:54:15+02:00",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "19",
+      "title": "Блок 02 «Telegram у цифрах»: наезд шторкой (Stack Reveal Scroll), счётчики, табло, лесенка",
+      "requirements": [
+        "H03",
+        "H09",
+        "R47",
+        "R48",
+        "R49",
+        "R50",
+        "R51"
+      ],
+      "blockedBy": [
+        "18"
+      ],
+      "wave": 18,
+      "zone": [
+        "src/sections/stats.js",
+        "src/styles/sections/stats.css",
+        "#stats",
+        "index.html",
+        "stats",
+        "content.*.json",
+        "src/data/config.json → sections",
+        "stats",
+        "src/core/",
+        "stackReveal(section)",
+        "tests/stats-*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
       "status": "pending",
       "retries": 0,
       "repairs": 0
@@ -1076,9 +1112,11 @@ window.STATE =
     "2026-11-08T19:43:38+02:00",
     "2026-11-08T19:50:08+02:00",
     "2026-11-09T12:43:19+02:00",
-    "2026-11-09T12:54:11+02:00"
+    "2026-11-09T12:54:11+02:00",
+    "2026-11-09T12:54:15+02:00",
+    "2026-11-09T13:08:23+02:00"
   ],
-  "rev": 118,
+  "rev": 120,
   "waiting": null,
   "waits": [
     {
@@ -1967,6 +2005,19 @@ window.STATE =
       "t": "2026-11-09T12:54:11+02:00",
       "k": "tickets",
       "n": 19
+    },
+    {
+      "t": "2026-11-09T12:54:15+02:00",
+      "k": "ticket",
+      "ids": [
+        "18"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-09T13:08:23+02:00",
+      "k": "tickets",
+      "n": 20
     }
   ],
   "reqList": [

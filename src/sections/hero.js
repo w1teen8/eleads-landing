@@ -1,107 +1,40 @@
-// 01 Hero — варианты в одной секции: data-hero="mockup|plane|blue" на <html> (ставит инлайн-скрипт <head> по
-// ?hero=2|3|4 → sessionStorage['eleads-hero'] → mockup) или на секции. Инициализируется только активный вариант;
-// «plane» (3, интро с самолётиком) — hero-plane.js, «blue» (4, синий по макету reference/hero-v4) — hero-blue.js.
-// Вариант 2 «mockup» (по умолчанию) — по макету пользователя (G18): слева наклонный H1 по строкам из маски, абзац с чертой,
-// пилюля в Telegram и три цифры брифа; справа Володимир без фона на тёмной планете, горящее кольцо перед ним и
-// за ним, вокруг — присланные PNG-карточки. Кольцо и плавание карточек — CSS (@keyframes, только transform);
-// здесь — появление после заставки, параллакс слоёв за курсором (десктоп с мышью), видео, «Мені довіряють»,
-// докрутка цифр. При reduced-motion всё стоит на месте и видно сразу.
+// 01 Hero — один первый экран (сборка 3, reference/run3/hero-keep.png) в палитре канала: огромное «eLeads» за
+// Володимиром без фона, слева заголовок и акцентная пилюля, справа цифры брифа и строка рекламы Telegram текстом,
+// ниже — «Мені довіряють». Здесь: появление после заставки-поиска, параллакс слоёв [data-depth] (слово, фигура) за
+// курсором и бегущая строка. Появление: .hero--entering снимается, когда заставка ушла; упала или вышел срок — сразу
+// коротким переходом (.hero--fast). Страховка — HERO_SAFETY_MS: позже первый экран виден при любом сбое.
+// При reduced-motion всё стоит на месте и видно сразу. Двигаются только transform и opacity.
 import { $, $$, el } from '../core/dom.js';
 import { t } from '../core/i18n.js';
 import { reduced, marquee } from '../core/motion.js';
-import { countTo } from '../core/format.js';
-import { whenIntroDone } from '../core/intro.js';
-import { initPlane } from './hero-plane.js';
-import { initBlue } from './hero-blue.js';
+import { whenIntroDone, INTRO_DEADLINE_MS } from '../core/intro.js';
 
 const DESKTOP = '(min-width: 900px)';
 const FINE_POINTER = '(hover: hover) and (pointer: fine)';
-const MOBILE_VIDEO = '(max-width: 767px)';
-// "7+" → ["", "7", "+"], "$2M+" → ["$", "2", "M+"]; слово ("десятки") не совпадает — не докручивается
-const COUNTABLE = /^(\D*?)(\d+)(\D*)$/;
 /** Сдвиг слоя с глубиной 1 при курсоре у края экрана, px. */
 const PARALLAX_X = 26;
 const PARALLAX_Y = 18;
 
-export const HERO_VARIANTS = ['mockup', 'plane', 'blue'];
-
-/** Активный вариант: data-hero на секции или <html>; иначе — mockup. */
-export function heroVariant(root, html = document.documentElement) {
-  const v = root?.dataset?.hero || html?.dataset?.hero;
-  return HERO_VARIANTS.includes(v) ? v : 'mockup';
-}
+/** Позже этого срока (от старта страницы) первый экран виден в любом случае. */
+export const HERO_SAFETY_MS = INTRO_DEADLINE_MS + 600;
 
 export function init(root) {
-  const variant = heroVariant(root);
-  const stage = $(`[data-hero-variant="${variant}"]`, root) || root;
-  root.setAttribute('aria-labelledby', variant === 'mockup' ? 'hero-title' : `hero-title-${variant}`);
-  if (variant === 'plane') {
-    initPlane(stage);
-    return;
-  }
   initTrusted(root);
-  pauseOffscreen(root);
-  if (variant === 'blue') {
-    initBlue(stage, root);
-    initParallax(stage);
-    return;
-  }
-  initVideo($('.hero__video', stage), root);
-  initRingStretch(stage);
   initParallax(root);
-  if (reduced) return; // всё видно, цифры стоят итоговые
+  if (reduced) return;
   root.classList.add('hero--entering');
+  const show = (fast) => {
+    if (fast) root.classList.add('hero--fast');
+    root.classList.remove('hero--entering');
+  };
   if (document.documentElement.classList.contains('js-preload')) {
-    intro(root).then(() => whenVisible(root, () => startCounters($$('[data-count]', stage))));
+    whenIntroDone().then((how) => show(how !== 'done'));
+    const left = Math.max(0, HERO_SAFETY_MS - performance.now());
+    setTimeout(() => root.classList.contains('hero--entering') && show(true), left);
   } else {
-    // без заставки — лёгкое появление строк и сразу цифры
-    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('hero--entering')));
-    whenVisible(root, () => startCounters($$('[data-count]', stage)));
+    // без заставки — лёгкое появление сразу
+    requestAnimationFrame(() => requestAnimationFrame(() => show(false)));
   }
-}
-
-/* ——— десктоп: сцена шире макета (16:9) — кольцо растягивается вбок вместе со сценой (--sx); планета и фигура — нет ——— */
-const MOCKUP_RATIO = 1672 / 941;
-const MAX_STRETCH = 1.3;
-
-/** Растяжение кольца по ширине для сцены w×h: 1 — пропорции макета или уже, не больше MAX_STRETCH. */
-function ringStretch(w, h) {
-  if (!(w > 0 && h > 0)) return 1;
-  return Math.min(MAX_STRETCH, Math.max(1, w / h / MOCKUP_RATIO));
-}
-
-function initRingStretch(stage) {
-  const canvas = $('.hero__canvas', stage);
-  if (!canvas || typeof ResizeObserver === 'undefined') return;
-  const desktop = window.matchMedia(DESKTOP);
-  new ResizeObserver(([entry]) => {
-    const { width, height } = entry.contentRect;
-    const sx = desktop.matches ? ringStretch(width, height) : 1;
-    canvas.style.setProperty('--sx', sx.toFixed(3));
-  }).observe(canvas);
-}
-
-/* ——— вне экрана плавание и кометы на паузе (.hero--offscreen → animation-play-state) ——— */
-function pauseOffscreen(root) {
-  new IntersectionObserver(([entry]) => root.classList.toggle('hero--offscreen', !entry.isIntersecting)).observe(root);
-}
-
-/* ——— появление после заставки ——— */
-// Заставка упала ('failed') или сработал крайний срок ('timeout') — первый экран проявляется сразу коротким
-// переходом (.hero--fast, 250 мс): он не может остаться невидимым дольше INTRO_DEADLINE_MS + 250 мс.
-async function intro(root) {
-  const how = await whenIntroDone();
-  if (how !== 'done') root.classList.add('hero--fast');
-  root.classList.remove('hero--entering');
-}
-
-function whenVisible(root, fn) {
-  const io = new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) return;
-    io.disconnect();
-    fn();
-  });
-  io.observe($('.hero__stats', root) || root);
 }
 
 /* ——— параллакс: слои [data-depth] смещаются за курсором с инерцией (десктоп, мышь) ——— */
@@ -149,38 +82,6 @@ function initParallax(root) {
   desktop.addEventListener?.('change', reset);
 }
 
-/* ——— видео: грузится только если можно; без файла остаётся свечение темы ——— */
-function initVideo(video, root) {
-  if (!video) return;
-  const conn = navigator.connection || {};
-  const slow = conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || '');
-  if (reduced || slow) return;
-
-  const src = window.matchMedia(MOBILE_VIDEO).matches ? video.dataset.srcMobile : video.dataset.srcDesktop;
-  if (!src) return;
-
-  video.addEventListener(
-    'loadedmetadata',
-    () => {
-      if (video.dataset.poster) video.poster = video.dataset.poster;
-    },
-    { once: true },
-  );
-  video.addEventListener('loadeddata', () => video.classList.add('is-ready'), { once: true });
-  video.addEventListener('error', () => video.classList.remove('is-ready'), { once: true });
-  video.src = src;
-  video.play?.()?.catch?.(() => {
-    /* автоплей запрещён — остаётся свечение */
-  });
-
-  // вне экрана видео не крутится
-  new IntersectionObserver(([entry]) => {
-    if (!video.classList.contains('is-ready')) return;
-    if (entry.isIntersecting) video.play?.()?.catch?.(() => {});
-    else video.pause();
-  }).observe(root);
-}
-
 /* ——— «Мені довіряють»: список из JSON, бесконечная строка, пауза при наведении ——— */
 function initTrusted(root) {
   const track = $('.marquee__track', root);
@@ -194,17 +95,4 @@ function initTrusted(root) {
     );
   }
   marquee(track, { speed: 36 });
-}
-
-function startCounters(nodes) {
-  for (const node of nodes) {
-    const text = node.textContent.trim();
-    const match = text.match(COUNTABLE);
-    if (!match) continue;
-    const [, prefix, digits, suffix] = match;
-    countTo(node, 0, Number(digits), {
-      duration: 1400,
-      format: (n) => `${prefix}${Math.round(n)}${suffix}`,
-    });
-  }
 }

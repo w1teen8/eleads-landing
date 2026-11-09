@@ -14,46 +14,40 @@ function cssFiles(dir = 'src/styles') {
 const files = cssFiles();
 const strip = (css) => css.replace(/\/\*[\s\S]*?\*\//g, '');
 
-// Палитра брифа, дословно (2026-11-06-brief.md → «Бренд»).
-const BRIEF = {
-  '--ink': '#070C18',
-  '--navy': '#0D1528',
-  '--card': '#131D36',
-  '--line': 'rgba(255,255,255,.08)',
-  '--fg': '#F4F2EC',
-  '--muted': '#93A0BB',
-  '--sun': '#FFD23F',
-  '--ember': '#FF8A1F',
-  '--tg': '#3B8CFF',
-};
+// Палитра канала от пользователя (сборка 3, T18), дословно: «Тёмно-синий фон: #070C18 · Жёлтый: #FFD23F ·
+// Оранжевый: #FF8A1F · Белый (текст): #F4F2EC». Остальные цвета канала — производные от этих четырёх.
+const CHANNEL = { '--ink': '#070C18', '--sun': '#FFD23F', '--ember': '#FF8A1F', '--fg': '#F4F2EC' };
+// первый экран «Синий» держит свои цвета (по просьбе пользователя палитра канала к нему не применяется): белый и --v4-*
+const SCREEN = ['#FFFFFF', '#0647E6', '#0A4FF2', '#1F62F6', '#7FB2FF', '#0337CB', '#0128A8', '#A3D2FF', '#1463FF', '#0A1430', 'rgba(0,22,96,.3)'];
 
-// --paper и палитра Aether (reference.md → «Aether»): почти чёрный фон, поверхность, тёплый белый, серый,
-// красный акцент и его тень
-const EXTRA = ['#FFFFFF', '#0B0B0D', '#141417', '#F2EEE8', '#8C8A87', '#FF3B2F', '#C4201A'];
-// вариант 4 первого экрана (?hero=4, G26/G27): синий Telegram по макету пользователя reference/hero-v4 — палитра --v4-*
-const V4 = ['#0647E6', '#0A4FF2', '#1F62F6', '#7FB2FF', '#0337CB', '#0128A8', '#A3D2FF', '#1463FF', '#0A1430', '#5B6480', '#E9F0FF', '#E3E8F2', 'rgba(0,22,96,.3)'];
-
-test('tokens.css: цвета брифа как есть и --grad = --sun → --ember', () => {
+test('tokens.css: четыре цвета канала как есть, производные — смеси от них, --grad = --sun → --ember', () => {
   const css = strip(read('src/styles/tokens.css'));
-  for (const [name, value] of Object.entries(BRIEF)) {
+  const norm = (v) => v.replace(/\s/g, '').toLowerCase();
+  for (const [name, value] of Object.entries(CHANNEL)) {
     const m = css.match(new RegExp(`${name}:\\s*([^;]+);`));
     assert.ok(m, `нет ${name}`);
-    assert.equal(m[1].replace(/\s/g, '').toLowerCase(), value.replace(/\s/g, '').toLowerCase(), name);
+    assert.equal(norm(m[1]), norm(value), name);
+  }
+  for (const name of ['--navy', '--card', '--muted']) {
+    assert.match(css, new RegExp(`${name}:\\s*color-mix\\(in srgb, var\\(--fg\\) \\d+%, var\\(--ink\\)\\);`), `${name} — производная`);
   }
   assert.match(css, /--grad:\s*linear-gradient\(100deg,\s*var\(--sun\),\s*var\(--ember\)\)/);
-  // сборка 2 — Aether: кроме палитры канала — один нейтральный белый и палитра образца (версия «Aether · оригинал»)
-  const norm = (v) => v.replace(/\s/g, '').toLowerCase();
-  const allowed = new Set([...Object.values(BRIEF), ...EXTRA, ...V4].map(norm));
+  assert.doesNotMatch(css, /--tg:|--ae-/, 'второго синего акцента и палитры Aether нет');
+  const allowed = new Set([...Object.values(CHANNEL), ...SCREEN].map(norm));
   const literals = css.match(/#[0-9a-f]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\)/gi) || [];
   const extra = literals.filter((l) => !allowed.has(norm(l)));
   assert.deepEqual(extra, [], `лишние цвета: ${extra.join(' ')}`);
-  assert.equal(literals.length, Object.keys(BRIEF).length + EXTRA.length + V4.length, 'каждый цвет объявлен один раз');
+  assert.equal(literals.length, Object.keys(CHANNEL).length + SCREEN.length, 'каждый цвет объявлен один раз');
+  // семантический слой будущих блоков — на палитре канала, без синих цветов первого экрана
+  const semantic = css.slice(css.indexOf('color-scheme'));
+  assert.doesNotMatch(semantic, /--v4-|--paper/, 'синие цвета первого экрана');
+  assert.match(semantic, /--bg:\s*var\(--ink\);/);
+  assert.match(semantic, /--accent:\s*var\(--sun\);/);
 });
 
 test('вне tokens.css нет ни одного литерала цвета', () => {
   for (const f of files.filter((f) => !f.endsWith('tokens.css'))) {
-    // имя варианта 4 «blue» (класс .hero-blue, [data-hero='blue']) — не цвет
-    const css = strip(read(f)).replace(/hero-blue[\w-]*|'blue'/g, '');
+    const css = strip(read(f));
     const found = css.match(/#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(|\b(purple|violet|blue|indigo)\b/gi);
     assert.equal(found, null, `${f}: ${found}`);
   }

@@ -83,11 +83,3 @@ test('SEO: lang, title, description, OG-картинка, favicon', () => {
   assert.match(html, /<meta\b[^>]*property="og:image"[^>]*content="[^"]*\/og\.jpg"/);
   assert.match(html, /<link\b[^>]*rel="icon"[^>]*href="\/favicon\.svg"/);
 });
-
-test('видео первого экрана: autoplay muted loop playsinline, источники по брифу', () => {
-  const video = html.match(/<video\b[^>]*>/)[0];
-  for (const attr of ['autoplay', 'muted', 'loop', 'playsinline']) assert.match(video, new RegExp(`\\s${attr}\\b`));
-  assert.match(video, /data-src-desktop="\/video\/hero-1080\.mp4"/);
-  assert.match(video, /data-src-mobile="\/video\/hero-720\.mp4"/);
-  assert.match(video, /data-poster="\/video\/poster\.jpg"/);
-});

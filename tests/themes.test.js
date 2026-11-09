@@ -1,5 +1,5 @@
-// Сборка 2 — Aether (G10, G11, G13): две версии оформления на семантических переменных, шрифты облика
-// с кириллицей, общие компоненты, шапка / загрузка / подвал / ленты только на семантических переменных.
+// Оформление: один семантический слой на палитре канала (сборка 3, T18 — тем, переключателя и Aether больше нет),
+// шрифты облика с кириллицей, общие компоненты, шапка / загрузка / подвал / ленты на переменных.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync } from 'node:fs';
@@ -18,49 +18,27 @@ const SEMANTIC = [
 const PALETTE_NAMES = /var\(--(ink|navy|card|fg|muted|sun|ember|tg|fg-soft|ember-glow|sun-glow|ink-veil|ae-[\w-]+)\)/;
 const LITERAL = /#[0-9a-f]{3,8}\b|rgba?\([^)]*\)|hsla?\([^)]*\)/gi;
 
-/** Тело правила, у которого селектор содержит sel (первое совпадение). */
-function block(css, sel) {
-  for (const [, s, body] of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
-    if (s.split(',').some((part) => part.trim() === sel)) return body;
-  }
-  return null;
-}
+/** Тело правила :root, где объявлен семантический слой. */
+const semantic = [...tokens.matchAll(/:root\s*\{([^{}]*)\}/g)].map((m) => m[1]).find((body) => /--bg:/.test(body));
 
-const THEMES = {
-  brand: block(tokens, "[data-theme='brand']"),
-  aether: block(tokens, "[data-theme='aether']"),
-};
-
-test('две версии оформления — brand (она же :root) и aether; наборов overtake больше нет', () => {
-  for (const [name, body] of Object.entries(THEMES)) assert.ok(body, `нет набора ${name}`);
-  assert.match(tokens, /:root,\s*\[data-theme='brand'\]\s*\{/);
-  assert.doesNotMatch(tokens, /brand-light|brand-dark|'overtake'|--ot-/);
+test('одна версия оформления: семантический слой на :root, тем и их переключения нет нигде', () => {
+  assert.ok(semantic, 'нет семантического слоя');
+  assert.doesNotMatch(tokens, /data-theme|--ae-|brand-light|brand-dark|'overtake'|--ot-/);
+  const all = cssFiles().map((f) => read(f)).join('\n') + read('index.html') + read('src/main.js');
+  assert.doesNotMatch(all, /data-theme|eleads-theme|theme-switcher/);
 });
 
-test('каждая версия задаёт весь семантический слой', () => {
-  for (const [name, body] of Object.entries(THEMES)) {
-    for (const v of SEMANTIC) assert.match(body, new RegExp(`${v}:\\s*[^;]+;`), `${name}: нет ${v}`);
-  }
+test('семантический слой задан целиком', () => {
+  for (const v of SEMANTIC) assert.match(semantic, new RegExp(`${v}:\\s*[^;]+;`), `нет ${v}`);
 });
 
-test('brand: только палитра канала, фон --ink, акцент жёлтый→оранжевый, красного нет', () => {
-  const body = THEMES.brand;
-  assert.deepEqual(body.match(LITERAL), null, 'литерал цвета');
-  assert.doesNotMatch(body, /--ae-/, 'цвет образца Aether');
-  assert.match(body, /--bg:\s*var\(--ink\);/);
-  assert.match(body, /--text:\s*var\(--fg\);/);
-  assert.match(body, /--grad:\s*linear-gradient\(100deg,\s*var\(--sun\),\s*var\(--ember\)\)/);
-});
-
-test('aether: палитра образца через --ae-*, акцент красный', () => {
-  const body = THEMES.aether;
-  assert.deepEqual(body.match(LITERAL), null, 'литералы — только в палитре --ae-*');
-  assert.match(body, /--accent:\s*var\(--ae-red\);/);
-  assert.match(body, /--bg:\s*var\(--ae-bg\);/);
-  // красный образца — действительно красный: R высокий, G и B низкие
-  const hex = tokens.match(/--ae-red:\s*#([0-9a-f]{6})/i)[1];
-  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
-  assert.ok(r > 220 && g < 90 && b < 90, `--ae-red не красный: #${hex}`);
+test('семантика — только палитра канала: фон --ink, текст --fg, акцент жёлтый→оранжевый', () => {
+  assert.deepEqual(semantic.match(LITERAL), null, 'литерал цвета');
+  assert.match(semantic, /--bg:\s*var\(--ink\);/);
+  assert.match(semantic, /--text:\s*var\(--fg\);/);
+  assert.match(semantic, /--accent:\s*var\(--sun\);/);
+  assert.match(semantic, /--accent-2:\s*var\(--ember\);/);
+  assert.match(semantic, /--grad:\s*linear-gradient\(100deg,\s*var\(--sun\),\s*var\(--ember\)\)/);
 });
 
 test('шрифты: Unbounded (заголовки), Onest (текст), JetBrains Mono (подписи); Inter и Oswald не грузятся', () => {
@@ -111,15 +89,6 @@ test('шапка, загрузка с полосой, подвал и ленты
     const hit = css.match(PALETTE_NAMES);
     assert.equal(hit, null, `${f}.css: ${hit}`);
   }
-});
-
-test('панель версий подключается только под import.meta.env.DEV и знает ровно brand и aether', () => {
-  const main = read('src/main.js');
-  assert.match(main, /if\s*\(\s*import\.meta\.env\.DEV\s*\)[^]*?import\(\s*'\.\/dev\/theme-switcher\.js'\s*\)/);
-  assert.doesNotMatch(main, /^import[^\n]*theme-switcher/m);
-  const dev = read('src/dev/theme-switcher.js');
-  const ids = [...dev.matchAll(/\[\s*'([\w-]+)'\s*,\s*'[^']+'\s*\]/g)].map((m) => m[1]);
-  assert.deepEqual(ids, ['brand', 'aether']);
 });
 
 test('шапка как у Aether: ссылки слева, логотип по центру, справа UA/EN и пилюля «Написати» в Telegram', () => {

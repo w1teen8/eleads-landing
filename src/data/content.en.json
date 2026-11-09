@@ -49,10 +49,35 @@
   },
   "hero": {
     "eyebrow": "TELEGRAM PERFORMANCE MARKETING",
-    "titleLine1": "Growth",
-    "titleLine2": "through",
-    "titleAccent": "Telegram Ads",
+    "word": "eLeads",
+    "titleLine1": "Promotion via",
+    "titleLine2": "Telegram",
+    "titleAccent": "Ads",
     "subtitle": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide",
+    "cta": "Discuss a project",
+    "facts": {
+      "budgets": {
+        "label": "Ad budgets under management",
+        "value": "$2M+"
+      },
+      "years": {
+        "label": "Years in digital",
+        "value": "7+"
+      },
+      "projects": {
+        "label": "Projects",
+        "value": "Dozens"
+      }
+    },
+    "ad": {
+      "tag": "Ad",
+      "title": "Your project — in the Telegram feed",
+      "text": "Ads are shown to audiences of channels, bots and media content.",
+      "button": "View"
+    },
+    "photo": {
+      "alt": "Volodymyr Kucher, founder of eLeads"
+    },
     "stats": {
       "years": {
         "value": "7+",
@@ -67,39 +92,6 @@
         "label": "of projects"
       }
     },
-    "cta": {
-      "label": "Discuss your project on Telegram",
-      "arrow": "→",
-      "secondary": "See case studies"
-    },
-    "photo": {
-      "alt": "Volodymyr Kucher, founder of eLeads",
-      "caption": "PHOTO OF VOLODYMYR"
-    },
-    "cards": {
-      "views": { "alt": "Views: +1,280,000" },
-      "subscribers": { "alt": "Subscribers: +32,400" },
-      "campaigns": { "alt": "Ad campaigns in Telegram — Telegram Ads" },
-      "growth": { "alt": "Results growth: +245%" },
-      "telegram": { "alt": "Telegram logo" },
-      "audience": { "label": "Target audience" }
-    },
-    "word": "ELEADS",
-    "v3": { "skip": "Skip", "skipLabel": "Skip intro", "heading": "ELEADS — promotion via Telegram Ads" },
-    "v4": {
-      "word": "eLeads",
-      "titleLine1": "Promotion via",
-      "titleLine2": "Telegram",
-      "titleAccent": "Ads",
-      "cta": "Discuss a project",
-      "cards": {
-        "budgets": { "label": "Ad budgets under management", "value": "$2M+" },
-        "years": { "label": "Years in digital", "value": "7+" },
-        "projects": { "label": "Projects", "value": "Dozens" }
-      },
-      "ad": { "tag": "Ad", "title": "Your project — in the Telegram feed", "text": "Ads are shown to audiences of channels, bots and media content.", "button": "View" }
-    },
-    "scroll": "Scroll",
     "trusted": {
       "title": "Trusted by",
       "items": [

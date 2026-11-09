@@ -1,35 +1,23 @@
 /* Токены eLeads. Литералы цветов — только в этом файле.
-   Слой 1 — палитры: канал клиента (9 цветов брифа), один нейтральный белый и палитра образца Aether
-   (--ae-*, только для версии «Aether · оригинал»). Слой 2 — семантические переменные: секции используют только их.
-   Версию ставит инлайн-скрипт в <head>: <html data-theme="brand | aether">; без атрибута — brand. */
+   Слой 1 — палитра канала от пользователя (четыре цвета: тёмно-синий фон, жёлтый, оранжевый, тёплый белый) и её
+   производные — основа для блоков страницы; отдельно — палитра первого экрана «Синий» (--v4-*), её читают только
+   hero.css и шапка. Слой 2 — семантические переменные на палитре канала: секции используют только их.
+   Одна версия оформления — тем и переключателя нет. */
 :root {
-  /* — палитра канала (бриф) — */
-  --ink: #070C18;   /* основной тёмный */
-  --navy: #0D1528;  /* второй тёмный */
-  --card: #131D36;  /* карточки на тёмном */
-  --line: rgba(255,255,255,.08); /* обводки на тёмном */
-  --fg: #F4F2EC;    /* тёплый светлый */
-  --muted: #93A0BB; /* вторичный текст на тёмном */
-  --sun: #FFD23F;   /* фирменный градиент, начало */
-  --ember: #FF8A1F; /* фирменный градиент, конец */
-  --tg: #3B8CFF;    /* редкий второй акцент: иконка Telegram */
+  /* — палитра канала (пользователь, сборка 3) — */
+  --ink: #070C18;   /* тёмно-синий фон */
+  --sun: #FFD23F;   /* жёлтый — начало акцентного градиента */
+  --ember: #FF8A1F; /* оранжевый — конец акцентного градиента */
+  --fg: #F4F2EC;    /* тёплый белый — текст */
 
-  /* — фирменный градиент канала — */
-  --grad: linear-gradient(100deg, var(--sun), var(--ember));
+  /* — производные: поверхности чуть светлее фона, приглушённый текст, линии — */
+  --navy: color-mix(in srgb, var(--fg) 4%, var(--ink));  /* второй тёмный */
+  --card: color-mix(in srgb, var(--fg) 8%, var(--ink));  /* карточки на тёмном */
+  --muted: color-mix(in srgb, var(--fg) 62%, var(--ink)); /* вторичный текст */
 
-  /* — нейтральный белый: звёзды и блики — */
-  --paper: #FFFFFF;
-
-  /* — палитра Aether (reference.md → «Aether»), только для версии «Aether · оригинал» — */
-  --ae-bg: #0B0B0D;     /* почти чёрный */
-  --ae-panel: #141417;  /* поверхность на чёрном */
-  --ae-white: #F2EEE8;  /* тёплый белый текста */
-  --ae-grey: #8C8A87;   /* приглушённый текст */
-  --ae-red: #FF3B2F;    /* единственный акцент */
-  --ae-red-deep: #C4201A; /* тень акцента: полосы планеты, градиент */
-
-  /* — палитра варианта 4 первого экрана (?hero=4, макет reference/hero-v4): синий Telegram. Читают только
-       .hero-blue (hero-blue.css) и шапка при data-hero="blue"; темы brand/aether её не используют — */
+  /* — палитра первого экрана «Синий» (макет reference/hero-v4, reference/run3/hero-keep.png): синий Telegram.
+       Читают только hero.css и шапка; палитра канала к первому экрану не применяется — */
+  --paper: #FFFFFF;       /* белый: «eLeads», текст, пилюли */
   --v4-bg: #0647E6;       /* основной синий фона */
   --v4-bg-edge: #0A4FF2;  /* левый край фона */
   --v4-bg-light: #1F62F6; /* пятно за головой */
@@ -37,12 +25,12 @@
   --v4-bg-mid: #0337CB;   /* правая половина */
   --v4-bg-deep: #0128A8;  /* правый край */
   --v4-sky: #A3D2FF;      /* «Ads» в заголовке */
-  --v4-accent: #1463FF;   /* кружки, иконки, «Ad», «Переглянути» */
-  --v4-ink: #0A1430;      /* текст на белых карточках */
-  --v4-muted: #5B6480;    /* подписи на карточках */
-  --v4-icon-bg: #E9F0FF;  /* подложка иконок */
-  --v4-line: #E3E8F2;     /* разделитель в карточке рекламы */
-  --v4-shadow: rgba(0,22,96,.3); /* тень карточек */
+  --v4-accent: #1463FF;   /* кружки-стрелки */
+  --v4-ink: #0A1430;      /* текст на белых пилюлях */
+  --v4-shadow: rgba(0,22,96,.3); /* тень пилюли */
+
+  /* — фирменный градиент канала: жёлтый → оранжевый — */
+  --grad: linear-gradient(100deg, var(--sun), var(--ember));
 
   /* — шрифты: заголовки — широкий капс, текст — гротеск, подписи и цифры — моно; все с кириллицей — */
   --font-display: 'Unbounded', 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -90,9 +78,8 @@
   --z-preloader: 100;
 }
 
-/* ——— «Бренд · Aether» (по умолчанию): облик Aether на тёмной основе канала, акцент — жёлтый→оранжевый, без красного ——— */
-:root,
-[data-theme='brand'] {
+/* ——— семантический слой: фон --ink, текст --fg, акцент жёлтый → оранжевый ——— */
+:root {
   color-scheme: dark;
   --bg: var(--ink);
   --surface: var(--card);
@@ -107,43 +94,15 @@
   --accent-2: var(--ember);
   --accent-ink: var(--ink);
   --tag-1: color-mix(in srgb, var(--sun) 22%, var(--navy));
-  --tag-2: color-mix(in srgb, var(--tg) 26%, var(--navy));
+  --tag-2: color-mix(in srgb, var(--ember) 18%, var(--navy));
   --line: color-mix(in srgb, var(--fg) 10%, transparent);
   --line-strong: color-mix(in srgb, var(--fg) 20%, transparent);
   --grad: linear-gradient(100deg, var(--sun), var(--ember));
-  /* производные облика: свечение, полосы планеты, вторая лента, звёзды */
+  /* производные облика: тёплое свечение, планета, вторая лента, звёзды */
   --glow: color-mix(in srgb, var(--ember) 42%, transparent);
   --planet-light: var(--sun);
   --planet-mid: var(--ember);
   --planet-dark: color-mix(in srgb, var(--ember) 30%, var(--ink));
   --ribbon-2: color-mix(in srgb, var(--fg) 26%, transparent);
-  --star: color-mix(in srgb, var(--paper) 70%, transparent);
-}
-
-/* ——— «Aether · оригинал»: палитра образца целиком, для сравнения ——— */
-[data-theme='aether'] {
-  color-scheme: dark;
-  --bg: var(--ae-bg);
-  --surface: var(--ae-panel);
-  --surface-2: color-mix(in srgb, var(--ae-panel) 60%, var(--ae-bg));
-  --block: var(--ae-panel);
-  --block-2: color-mix(in srgb, var(--ae-panel) 80%, var(--ae-white));
-  --text: var(--ae-white);
-  --text-muted: var(--ae-grey);
-  --text-on-block: var(--ae-white);
-  --text-on-block-muted: var(--ae-grey);
-  --accent: var(--ae-red);
-  --accent-2: var(--ae-red-deep);
-  --accent-ink: var(--ae-bg);
-  --tag-1: color-mix(in srgb, var(--ae-red) 24%, var(--ae-panel));
-  --tag-2: color-mix(in srgb, var(--ae-white) 12%, var(--ae-panel));
-  --line: color-mix(in srgb, var(--ae-white) 10%, transparent);
-  --line-strong: color-mix(in srgb, var(--ae-white) 20%, transparent);
-  --grad: linear-gradient(100deg, var(--ae-red), var(--ae-red));
-  --glow: color-mix(in srgb, var(--ae-red) 40%, transparent);
-  --planet-light: var(--ae-red);
-  --planet-mid: var(--ae-red-deep);
-  --planet-dark: color-mix(in srgb, var(--ae-red-deep) 28%, var(--ae-bg));
-  --ribbon-2: color-mix(in srgb, var(--ae-white) 24%, transparent);
-  --star: color-mix(in srgb, var(--paper) 70%, transparent);
+  --star: color-mix(in srgb, var(--fg) 70%, transparent);
 }
