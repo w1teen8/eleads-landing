@@ -277,3 +277,13 @@ export function forecast(input, rates): Forecast
 - `stagger` (лесенка появления) — **не используется**: содержимое блока видно сразу.
 - `flipSwap` — только как реакция на действие (переключатель вкладок, смена значения), не как появление.
 - Единственный переход по прокрутке — лента карточек showcase на блоках 12 «Екосистема» и 13 «Матеріали» (H07).
+
+### T23 — шапка, палитра, формат экрана, ленты, первый экран B, шрифт канала (H12–H20)
+
+- Токены: `--header-h: 60px` (шапка во всех размерах), `--screen-pad`, `--font-head` — Sofia Sans Extra Condensed 800/900 (заглавные: заголовок и цифры первого экрана, H2 и крупные цифры блоков, ленты); обычный текст — Onest. `--v4-*`, `--paper` и звёзды удалены — палитра канала на всём сайте, hex только в `tokens.css`.
+- `layout.css`: `.section{scroll-margin-top:var(--header-h)}`; на ≥900px в альбомной ориентации `.section{display:grid;align-content:center;min-height:calc(100svh - var(--header-h))}` — каждый блок ровно один экран (06–14 получат правило при включении).
+- `config.sections.enabled = ['hero','ribbons','stats','niches','formats','calculator']`.
+- Ленты: `data-ribbon="accent|muted"`, `.ribbons__item--title` («МЕНІ ДОВІРЯЮТЬ» в акцентной), разделитель — значок Telegram `.ribbons__icon`; бегут навстречу (−70 / +55 px/s); полоса ≈50px на десктопе, ≈33px на 390.
+- Первый экран: карточка рекламы — `hero.ad.channel` / `hero.ad.label` (ключ `hero.ad.tag` удалён), цифра проектов «50+» (3 места, UA/EN); `ribbons.bottom` удалён.
+- Шапка: нет `.header__nav` / `.header__link` (и `initActiveLink`), есть `.header__cta-arrow`; полный список разделов — только в бургере.
+

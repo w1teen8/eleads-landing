@@ -1,12 +1,15 @@
-/* Ленты крест-накрест (G16, как у Aether): две полосы шире экрана под углом ±3.5°.
-   Верхняя по слоям — акцентная с тёмным текстом, нижняя — без фона, полупрозрачный светлый текст.
-   Секция обрезает выступы полос (overflow: clip) — горизонтального скролла страницы нет. */
+/* Ленты крест-накрест (G16 → T23, H13): «Помнишь … у нас шли эти полоски крест накрест» — на стыке первого экрана
+   и блока 02, вместо плоской полосы «Мені довіряють». Две тонкие полосы шире экрана под углом ±3.5°, бегут в разные
+   стороны («сделаем сами линии тоньше»: полоса ≈ 50px на десктопе, ≈ 32px на телефоне). Текст — шрифт канала
+   заглавными (H18), разделитель — значок Telegram цветом текста своей ленты. Верхняя по слоям — акцентная (жёлтый →
+   оранжевый, тёмный текст): метка «Мені довіряють» и имена; под ней — тёмная полоса со светлым текстом: коротко
+   о eLeads. Фон секции — фон страницы. Секция обрезает выступы полос (overflow: clip) — горизонтального скролла нет;
+   полосы живут в своей секции и не заходят на первый экран. */
 .ribbons {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: clamp(12rem, 8rem + 16vw, 26rem);
-  padding-block: clamp(2.5rem, 5vw, 5rem);
+  min-height: clamp(6.25rem, 3rem + 10vw, 14rem);
   overflow: clip;
   isolation: isolate;
 }
@@ -15,28 +18,30 @@
   grid-area: 1 / 1;
   width: 124vw;
   max-width: none;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 0.7rem + 3.6vw, 4.5rem);
-  font-weight: 800;
+  padding-block: max(7px, 0.29em) max(7px, 0.27em);
+  font-family: var(--font-head);
+  font-size: clamp(1.15rem, 0.75rem + 1.25vw, 2rem);
+  font-weight: 900;
   line-height: 1;
-  letter-spacing: var(--tracking-display);
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 .ribbons__band--accent {
   z-index: 2;
-  padding-block: 0.32em 0.28em;
   background: var(--grad);
   color: var(--accent-ink);
-  transform: rotate(-3.5deg);
+  box-shadow: 0 0.3em 1.1em color-mix(in srgb, var(--bg) 60%, transparent);
+  transform: translate3d(0, -0.45em, 0) rotate(-3.5deg);
 }
 
 .ribbons__band--muted {
   z-index: 1;
-  padding-block: 0.32em 0.28em;
-  color: var(--ribbon-2);
-  transform: translate3d(0, 1.05em, 0) rotate(3.5deg);
+  border-block: 1px solid var(--line);
+  background: var(--surface);
+  color: color-mix(in srgb, var(--text) 80%, transparent);
+  transform: translate3d(0, 0.45em, 0) rotate(3.5deg);
 }
 
 .ribbons__viewport {
@@ -61,16 +66,43 @@
 .ribbons__item {
   display: inline-flex;
   align-items: center;
-  gap: 0.5em;
-  padding-right: 0.5em;
+  gap: 0.55em;
+  padding-right: 0.55em;
 }
 
+/* значок Telegram (круг с вырезанным самолётиком) — около высоты заглавных, по центру строки, цветом текста ленты */
 .ribbons__icon {
-  width: 1.15em;
-  height: auto;
   flex: none;
+  width: 0.74em;
+  height: 0.74em;
 }
 
-.ribbons__band--muted .ribbons__icon {
-  opacity: 0.8;
+/* телефон: ширины мало, чтобы тонкие ленты под малым углом разошлись, — разводим их сильнее (±4°), перекрестье —
+   у левого края, обе ленты читаются */
+@media (max-width: 599px) {
+  .ribbons {
+    min-height: 7rem;
+  }
+
+  .ribbons__band--accent {
+    transform: translate3d(0, -0.7em, 0) rotate(-4deg);
+  }
+
+  .ribbons__band--muted {
+    transform: translate3d(0, 0.7em, 0) rotate(4deg);
+  }
+}
+
+/* метка «Мені довіряють» — тёмная плашка моно-капсом на акцентной ленте */
+.ribbons__item--title {
+  align-self: center;
+  margin-right: 0.45em;
+  padding: 0.45em 0.95em 0.4em;
+  border-radius: var(--r-pill);
+  background: var(--accent-ink);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: max(10.5px, 0.4em);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
 }

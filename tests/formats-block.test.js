@@ -56,10 +56,11 @@ test('H11: у блока нет переходов по прокрутке — �
   assert.match(js, /showModal/);
 });
 
-test('облик: синий фон первого экрана, белые карточки, бот — тёмно-синяя акцентная', () => {
+// T23 (H14): рамки — в палитре канала (тёмные с тонкой границей), сами макеты остаются похожими на Telegram
+test('облик: рамки — тёмные поверхности с тонкой границей, бот — самая тёмная; макеты похожи на Telegram', () => {
   const css = read('src/styles/sections/formats.css');
-  assert.match(css, /var\(--v4-bg/);
-  assert.match(css, /var\(--paper\)/);
+  assert.match(css, /\.formats__shot\s*\{[^}]*background:\s*var\(--surface\);[^}]*border:\s*1px solid var\(--line\)/);
   assert.match(css, /\.formats__shot--dark\s*\{[^}]*background:\s*var\(--bg\)/);
   assert.match(formats, /class="formats__shot formats__shot--dark"/);
+  for (const part of ['tg-ad__card', 'tg-ad__ad', 'tg-ad__title', 'tg-ad__btn']) assert.match(css, new RegExp(`\\.${part}\\b`), part);
 });

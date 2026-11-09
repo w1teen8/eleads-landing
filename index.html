@@ -24,12 +24,12 @@
     <!-- Шрифты не блокируют отрисовку: стилевой файл подключается как print и переключается на all после загрузки -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Sofia+Sans+Extra+Condensed:wght@800;900&display=swap"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Sofia+Sans+Extra+Condensed:wght@800;900&display=swap" />
     </noscript>
 
     <!-- Начальные состояния анимаций ставит только этот скрипт: без JS и при reduced-motion классов нет, всё видно. -->
@@ -114,21 +114,14 @@
       </div>
     </div>
 
-    <!-- Шапка -->
+    <!-- Шапка (T23): узкая строка — логотип слева, UA/EN и «Написати» справа; ссылок-разделов нет (H16),
+         все разделы — в меню-бургере -->
     <header class="header" data-section="header">
       <div class="header__bar">
         <div class="header__inner container">
-          <nav class="header__nav" data-i18n-attr="aria-label:nav.label">
-            <ul class="header__links">
-              <li><a class="header__link" href="#cases" data-i18n="nav.sections.cases"></a></li>
-              <li><a class="header__link" href="#calculator" data-i18n="nav.sections.calculator"></a></li>
-              <li><a class="header__link" href="#process" data-i18n="nav.sections.process"></a></li>
-            </ul>
-          </nav>
-
           <a class="logo header__logo" href="#hero" data-i18n-attr="aria-label:common.home">
             <span class="logo__mark" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.9 5.1 3.7 11.3c-1 .4-1 1.4 0 1.7l4 1.3 1.6 4.8c.2.6.9.8 1.4.4l2.3-1.9 4.3 3.1c.6.4 1.4.1 1.6-.6l2.6-12.7c.2-.9-.7-1.6-1.6-1.3ZM9.6 14l7-5.4-5.6 6-.3 2.7L9.6 14Z" /></svg>
             </span>
             <span class="logo__word" data-i18n="common.brand"></span>
           </a>
@@ -141,6 +134,7 @@
             </div>
             <a class="btn btn--pill btn--sm header__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="header">
               <span data-i18n="nav.write"></span>
+              <span class="header__cta-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
             </a>
             <button class="burger" type="button" aria-expanded="false" aria-controls="menu" data-i18n-attr="aria-label:nav.menuOpen">
               <span class="burger__line"></span>
@@ -188,9 +182,9 @@
     <main id="main" tabindex="-1">
       <!-- 01 Hero -->
       <section id="hero" class="hero" data-section="hero" aria-labelledby="hero-title">
-        <!-- Первый экран «Синий» (reference/run3/hero-keep.png): синий фон Telegram, огромное «eLeads» за Володимиром
-             без фона, слева заголовок и белая пилюля, справа цифры брифа и строка рекламы Telegram простым текстом,
-             ниже — «Мені довіряють» -->
+        <!-- Первый экран (композиция «Синего», reference/run3/hero-keep.png; с T23 — в палитре канала): огромное «eLeads»
+             за Володимиром без фона, слева заголовок и акцентная пилюля, справа цифры брифа и строка рекламы Telegram
+             простым текстом. «Мені довіряють» — в ленте крест-накрест сразу после экрана (секция ribbons) -->
         <div class="hero__screen">
         <div class="hero__stage" data-hero-visual>
           <div class="hero__bg" aria-hidden="true"></div>
@@ -233,65 +227,54 @@
                 <span class="hero__fact-label" data-i18n="hero.facts.projects.label"></span>
               </li>
             </ul>
+            <!-- реклама — сообщением Telegram в тёмной теме (H17): шапка «знак канала · Ваш канал · Реклама», текст, кнопка снизу -->
             <div class="hero__ad">
-              <p class="hero__ad-title"><span class="hero__ad-tag" data-i18n="hero.ad.tag"></span> <span data-i18n="hero.ad.title"></span></p>
+              <div class="hero__ad-head">
+                <span class="hero__ad-ava" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5" /></svg></span>
+                <span class="hero__ad-channel" data-i18n="hero.ad.channel"></span>
+                <span class="hero__ad-label" data-i18n="hero.ad.label"></span>
+              </div>
+              <p class="hero__ad-title" data-i18n="hero.ad.title"></p>
               <p class="hero__ad-text" data-i18n="hero.ad.text"></p>
               <a class="hero__ad-btn" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="hero_ad"><span data-i18n="hero.ad.button"></span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>
             </div>
           </div>
         </div>
         </div>
-
-        <div class="hero__trust">
-          <div class="hero__trust-inner container">
-            <p class="hero__trust-title mono-label mono-label--muted" id="hero-trusted" data-i18n="hero.trusted.title"></p>
-            <div class="marquee" data-marquee>
-              <div class="marquee__track">
-                <ul class="marquee__group" aria-labelledby="hero-trusted">
-                  <li class="marquee__item" data-i18n="hero.trusted.items.0"></li>
-                  <li class="marquee__item" data-i18n="hero.trusted.items.1"></li>
-                  <li class="marquee__item" data-i18n="hero.trusted.items.2"></li>
-                  <li class="marquee__item" data-i18n="hero.trusted.items.3"></li>
-                  <li class="marquee__item" data-i18n="hero.trusted.items.4"></li>
-                  <li class="marquee__item" data-i18n="hero.trusted.items.5"></li>
-                  <li class="marquee__item" data-i18n="hero.trusted.items.6"></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
-      <!-- Ленты крест-накрест (G16): без id — не сдвигает номера секций -->
+      <!-- Ленты крест-накрест (G16 → T23, H13) на стыке первого экрана и блока 02, вместо плоской полосы «Мені довіряють»:
+           акцентная — «Мені довіряють» и имена, тёмная — коротко о eLeads; бегут в разные стороны (ribbons.js).
+           Без id — не сдвигает номера секций -->
       <section class="ribbons" data-section="ribbons" data-i18n-attr="aria-label:ribbons.label">
-      <div class="ribbons__band ribbons__band--muted" data-ribbon="bottom">
+      <div class="ribbons__band ribbons__band--accent" data-ribbon="accent">
         <div class="ribbons__viewport">
           <div class="ribbons__track">
             <ul class="ribbons__group">
-              <li class="ribbons__item"><span data-i18n="ribbons.bottom.0"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item"><span data-i18n="ribbons.bottom.1"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item"><span data-i18n="ribbons.bottom.2"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item"><span data-i18n="ribbons.bottom.3"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.bottom.0"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.bottom.1"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.bottom.2"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.bottom.3"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item ribbons__item--title"><span data-i18n="hero.trusted.title"></span></li>
+              <li class="ribbons__item"><span data-i18n="hero.trusted.items.0"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="hero.trusted.items.1"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="hero.trusted.items.2"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="hero.trusted.items.3"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="hero.trusted.items.4"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="hero.trusted.items.5"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="hero.trusted.items.6"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="ribbons__band ribbons__band--accent" data-ribbon="top">
+      <div class="ribbons__band ribbons__band--muted" data-ribbon="muted">
         <div class="ribbons__viewport">
           <div class="ribbons__track">
             <ul class="ribbons__group">
-              <li class="ribbons__item"><span data-i18n="ribbons.top.0"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item"><span data-i18n="ribbons.top.1"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item"><span data-i18n="ribbons.top.2"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item"><span data-i18n="ribbons.top.3"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.0"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.1"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.2"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
-              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.3"></span><svg class="ribbons__icon" viewBox="0 0 40 24" fill="none" aria-hidden="true"><circle cx="20" cy="12" r="7" fill="currentColor" /><ellipse cx="20" cy="12" rx="18" ry="5.2" transform="rotate(-18 20 12)" stroke="currentColor" stroke-width="2.2" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.top.0"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.top.1"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.top.2"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item"><span data-i18n="ribbons.top.3"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.0"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.1"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.2"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
+              <li class="ribbons__item" aria-hidden="true"><span data-i18n="ribbons.top.3"></span><svg class="ribbons__icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm4.96 7.22c.1 0 .32.02.47.14.12.1.15.23.17.32.02.1.04.31.02.47-.18 1.9-.96 6.5-1.36 8.63-.17.9-.5 1.2-.82 1.23-.7.07-1.22-.46-1.9-.9-1.05-.7-1.65-1.13-2.67-1.8-1.19-.78-.42-1.21.26-1.91.17-.19 3.25-2.98 3.3-3.23 0-.03.02-.15-.05-.21-.07-.06-.17-.04-.25-.03-.1.03-1.8 1.14-5.06 3.35-.48.33-.91.49-1.3.48-.43-.01-1.25-.24-1.87-.44-.75-.25-1.35-.37-1.3-.79.03-.22.33-.44.9-.66 3.5-1.53 5.83-2.53 7-3.02 3.33-1.38 4.02-1.63 4.47-1.63Z" /></svg></li>
             </ul>
           </div>
         </div>

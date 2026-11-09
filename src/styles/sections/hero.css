@@ -1,10 +1,12 @@
-/* 01 Hero — один первый экран: бывший вариант «Синий» (G26/G27; макет reference/hero-v4/mockup.png,
-   reference/run3/hero-keep.png). Насыщенный синий фон Telegram со светлым пятном за головой; огромное белое «eLeads»
-   на всю ширину за Володимиром (фото без фона); слева метка, заголовок («Ads» голубым), абзац и белая пилюля; справа
-   цифры брифа и строка рекламы Telegram простым текстом; ниже — «Мені довіряють». Цвета экрана — свои (--v4-* в
-   tokens.css), палитра канала к нему не применяется. Десктоп (≥900px): сцена на весь экран; доли — от сцены, размеры —
-   в «пикселях макета» (--u, масштаб по меньшей стороне). Телефон: фото с буквами, затем текст, затем цифры.
-   Двигаются только transform и opacity; фильтров нет. */
+/* 01 Hero — один первый экран: композиция бывшего варианта «Синий» (reference/run3/hero-keep.png) в палитре канала
+   (T23, H14) и в оформлении, выбранном пользователем, — вариант B «Пост у Telegram» со шрифтом канала (H17/H18,
+   reference/run3/hero-B-font-chosen.png). Фон — фон страницы (#070C18) одним слоем, за головой мягкое тёплое свечение;
+   огромное «eLeads» (#F4F2EC, Onest) на всю ширину за Володимиром (фото без фона); слева метка с жёлто-оранжевым
+   штрихом, заголовок шрифтом канала заглавными (вторая строка «TELEGRAM ADS» — жёлтый → оранжевый), абзац и акцентная
+   пилюля; справа цифры строкой с тонкими разделителями и реклама — сообщением Telegram в тёмной теме. «Мені довіряють» —
+   в лентах крест-накрест сразу после экрана (секция ribbons). Десктоп (≥900px): сцена на всё окно (шапка поверх); доли —
+   от сцены, размеры — в «пикселях макета» (--u, масштаб по меньшей стороне). Телефон: фото с буквами, затем текст, затем
+   цифры и карточка. Двигаются только transform и opacity; фильтров нет. */
 .hero {
   position: relative;
   isolation: isolate;
@@ -15,20 +17,18 @@
 .hero__screen {
   position: relative;
   overflow: hidden;
-  background: var(--v4-bg);
-  color: var(--paper);
+  color: var(--text);
 }
 
-/* ——— фон: синий слева → глубокий справа, светлое пятно за головой ——— */
+/* ——— тёплое свечение за головой; к краям прозрачное — со следующим блоком шва нет ——— */
 .hero__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(19% 30% at 50% 27%, color-mix(in srgb, var(--v4-glow) 80%, transparent), transparent 72%),
-    radial-gradient(42% 58% at 48% 26%, color-mix(in srgb, var(--v4-bg-light) 85%, transparent), transparent 75%),
-    linear-gradient(100deg, var(--v4-bg-edge) 0%, var(--v4-bg) 38%, var(--v4-bg-mid) 70%, var(--v4-bg-deep) 100%);
+    radial-gradient(18% 28% at 50% 30%, color-mix(in srgb, color-mix(in srgb, var(--accent) 67%, var(--accent-2)) 20%, transparent), transparent 70%),
+    radial-gradient(44% 58% at 50% 34%, color-mix(in srgb, var(--accent-2) 10%, transparent), transparent 76%);
 }
 
 .hero__stage {
@@ -64,7 +64,7 @@
   letter-spacing: -0.055em;
   text-align: center;
   white-space: nowrap;
-  color: var(--paper);
+  color: var(--text);
 }
 
 /* ——— Володимир без фона: перекрывает буквы ——— */
@@ -81,7 +81,7 @@
   margin-top: 2vw;
 }
 
-/* у PNG жёсткий горизонтальный срез снизу: на телефоне и планшете он гаснет градиентом (на десктопе уходит за край сцены) */
+/* у PNG жёсткий горизонтальный срез снизу: он гаснет градиентом в фон страницы */
 .hero__person-img {
   display: block;
   width: 100%;
@@ -100,40 +100,64 @@
   align-items: flex-start;
 }
 
+/* метка: жёлто-оранжевый штрих слева и жёлтый текст */
 .hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 1rem;
   font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.19em;
-  color: var(--paper);
+  color: var(--accent);
 }
 
+.hero__eyebrow::before {
+  content: '';
+  flex: none;
+  width: 26px;
+  height: 2px;
+  background: var(--grad);
+}
+
+/* заголовок — шрифт канала заглавными; вторая строка «TELEGRAM ADS» целиком жёлтый → оранжевый */
 .hero__title {
+  display: flex;
+  flex-direction: column;
   margin: 0;
-  text-transform: none;
+  font-family: var(--font-head);
+  font-weight: 900;
+  font-size: clamp(2.75rem, 13vw, 3.75rem);
+  line-height: 0.9;
+  letter-spacing: -0.002em;
+  text-transform: uppercase;
   text-wrap: wrap;
   hyphens: manual;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: clamp(2rem, 8.6vw, 2.6rem);
-  line-height: 1.08;
-  letter-spacing: -0.012em;
-  color: var(--paper);
+  color: var(--text);
 }
 
+/* маска строки для появления: запас сверху и снизу (поля компенсированы отрицательными; заголовок — flex-колонка,
+   поэтому поля строк не схлопываются) — хвосты Д, Ц, Щ, У и выносные элементы латиницы маска не режет,
+   строки стоят там же */
 .hero__line {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.06em;
+  padding-block: 0.16em 0.16em;
+  margin-block: -0.16em -0.16em;
 }
 
 .hero__line-inner {
   display: block;
 }
 
-.hero__accent {
-  color: var(--v4-sky);
+.hero__line:nth-child(2) .hero__line-inner {
+  width: fit-content;
+  max-width: 100%;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .hero__subtitle {
@@ -141,10 +165,10 @@
   margin: 1rem 0 0;
   font-size: 1rem;
   line-height: 1.45;
-  color: color-mix(in srgb, var(--paper) 94%, transparent);
+  color: color-mix(in srgb, var(--text) 72%, transparent);
 }
 
-/* белая пилюля с синим кружком-стрелкой */
+/* акцентная пилюля с тёмным текстом и тёмным кружком с жёлтой стрелкой */
 .hero__cta {
   --cta-h: 56px;
   display: inline-flex;
@@ -154,13 +178,13 @@
   margin-top: 1.5rem;
   padding: 0 7px 0 26px;
   border-radius: var(--r-pill);
-  background: var(--paper);
-  color: var(--v4-ink);
+  background: var(--grad);
+  color: var(--accent-ink);
   font-family: var(--font-body);
   font-size: 1.0625rem;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 14px 34px -14px var(--v4-shadow);
+  box-shadow: 0 18px 44px -18px color-mix(in srgb, var(--accent-2) 60%, transparent);
 }
 
 .hero__cta-arrow {
@@ -170,8 +194,8 @@
   width: calc(var(--cta-h) - 14px);
   height: calc(var(--cta-h) - 14px);
   border-radius: 50%;
-  background: var(--v4-accent);
-  color: var(--paper);
+  background: var(--accent-ink);
+  color: var(--accent);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
@@ -187,11 +211,11 @@
 
 .hero__cta:focus-visible,
 .hero__ad-btn:focus-visible {
-  outline: 3px solid var(--v4-sky);
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
 
-/* ——— цифры брифа и строка рекламы: простой текст под буквами, без плашек и теней ——— */
+/* ——— цифры строкой с тонкими разделителями и реклама — сообщением Telegram ——— */
 .hero__side {
   grid-area: side;
   position: relative;
@@ -202,33 +226,107 @@
 }
 
 .hero__facts {
+  --facts-gap: 24px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: var(--facts-gap);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .hero__fact {
+  position: relative;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 4px;
+  min-width: 0;
 }
 
+.hero__fact + .hero__fact::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--facts-gap) / -2);
+  top: 8%;
+  bottom: 8%;
+  width: 1px;
+  background: color-mix(in srgb, var(--text) 16%, transparent);
+}
+
+/* крупные цифры — шрифт канала, жёлтый → оранжевый по ширине самой цифры */
 .hero__fact-value {
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-size: 1.6rem;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  color: var(--paper);
+  width: fit-content;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-head);
+  font-weight: 900;
+  font-size: 2.5rem;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 .hero__fact-label {
+  max-width: 11em;
   font-size: 0.8125rem;
   line-height: 1.3;
-  color: color-mix(in srgb, var(--paper) 90%, transparent);
+  color: color-mix(in srgb, var(--text) 66%, transparent);
+}
+
+/* карточка сообщения Telegram (тёмная тема): шапка канала, заголовок, текст, кнопка во всю ширину снизу */
+.hero__ad {
+  --ad-pad-x: 18px;
+  --ad-pad-y: 14px;
+  padding: var(--ad-pad-y) var(--ad-pad-x) 0;
+  border: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--text) 6%, var(--bg));
+  box-shadow: 0 34px 70px -34px color-mix(in srgb, var(--bg) 85%, transparent);
+  overflow: hidden;
+}
+
+.hero__ad-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.hero__ad-ava {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--grad);
+  color: var(--accent-ink);
+}
+
+.hero__ad-ava svg {
+  width: 20px;
+  height: 20px;
+}
+
+.hero__ad-channel {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--accent);
+}
+
+.hero__ad-label {
+  margin-left: auto;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--text) 64%, transparent);
 }
 
 .hero__ad-title {
@@ -236,40 +334,31 @@
   font-size: 1.0625rem;
   font-weight: 700;
   line-height: 1.3;
-  color: var(--paper);
-}
-
-.hero__ad-tag {
-  margin-right: 0.35em;
-  padding: 1px 6px;
-  border: 1px solid color-mix(in srgb, var(--paper) 70%, transparent);
-  border-radius: 4px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  vertical-align: 0.08em;
-  color: var(--paper);
+  color: var(--text);
 }
 
 .hero__ad-text {
   margin: 4px 0 0;
   font-size: 0.875rem;
   line-height: 1.45;
-  color: color-mix(in srgb, var(--paper) 90%, transparent);
+  color: color-mix(in srgb, var(--text) 66%, transparent);
 }
 
 .hero__ad-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  min-height: 44px;
+  min-height: 48px;
+  margin: 14px calc(-1 * var(--ad-pad-x)) 0;
+  border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
   font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  color: var(--paper);
+  text-decoration: none;
+  color: var(--accent);
 }
 
 .hero__ad-btn svg {
@@ -310,7 +399,7 @@
 
 .js-anim .hero--entering .hero__line-inner,
 .js-anim.js-preload .hero__line-inner {
-  transform: translateY(112%);
+  transform: translateY(135%);
 }
 
 .js-anim .hero--entering [data-hero-item],
@@ -351,12 +440,13 @@
   }
 
   .hero__side {
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
     align-items: start;
+    column-gap: 2rem;
   }
 }
 
-/* ——— десктоп: сцена на весь экран (100vw × 100svh, шапка поверх), композиция макета 1672×941 ——— */
+/* ——— десктоп: сцена на всё окно (100vw × 100svh, шапка поверх), композиция макета 1672×941 ——— */
 @media (min-width: 900px) {
   .hero__screen {
     container-type: size;
@@ -407,29 +497,34 @@
     margin: 0;
   }
 
+  /* низ свитера к краю сцены гаснет в фон страницы — жёсткого среза над лентами нет */
   .hero__person-img {
     width: auto;
     height: 100%;
-    -webkit-mask-image: none;
-    mask-image: none;
+    -webkit-mask-image: linear-gradient(to bottom, black 88%, transparent 97%);
+    mask-image: linear-gradient(to bottom, black 88%, transparent 97%);
   }
 
-  /* левая колонка: целиком под буквами; метка — над ними */
+  /* левая колонка: целиком под буквами; заголовок шрифтом канала выше прежнего — колонка поднята до 56% */
   .hero__copy {
     position: absolute;
     left: 5.68%;
-    top: 58%;
-    width: calc(520 * var(--u));
+    top: 56%;
+    width: calc(560 * var(--u));
   }
 
   .hero__eyebrow {
+    gap: calc(14 * var(--u));
     margin-bottom: calc(14 * var(--u));
     font-size: max(11px, calc(15.5 * var(--u)));
   }
 
+  .hero__eyebrow::before {
+    width: calc(30 * var(--u));
+  }
+
   .hero__title {
-    font-size: calc(44 * var(--u));
-    line-height: 1.1;
+    font-size: calc(74 * var(--u));
   }
 
   .hero__subtitle {
@@ -452,7 +547,7 @@
     height: calc(42 * var(--u));
   }
 
-  /* правая колонка: цифры и строка рекламы текстом, от правого края, верх — на уровне заголовка */
+  /* правая колонка: цифры строкой и карточка рекламы, от правого края, верх — на уровне метки */
   .hero__side {
     position: absolute;
     right: 5.5%;
@@ -463,17 +558,24 @@
   }
 
   .hero__facts {
-    grid-template-columns: repeat(3, auto);
-    justify-content: space-between;
-    gap: calc(18 * var(--u));
+    --facts-gap: calc(30 * var(--u));
   }
 
   .hero__fact-value {
-    font-size: calc(38 * var(--u));
+    font-size: calc(54 * var(--u));
   }
 
   .hero__fact-label {
     font-size: max(12px, calc(14.5 * var(--u)));
+  }
+
+  .hero__ad {
+    --ad-pad-x: calc(18 * var(--u));
+    --ad-pad-y: calc(14 * var(--u));
+  }
+
+  .hero__ad-head {
+    margin-bottom: calc(10 * var(--u));
   }
 
   .hero__ad-title {
@@ -485,100 +587,7 @@
   }
 
   .hero__ad-btn {
+    margin-top: calc(14 * var(--u));
     font-size: max(12px, calc(15 * var(--u)));
-  }
-}
-
-/* ——— «Мені довіряють» ——— */
-.hero__trust {
-  position: relative;
-  z-index: 3;
-  border-top: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 70%, transparent);
-}
-
-.hero__trust-inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.75rem;
-  padding-block: 1rem 1.25rem;
-}
-
-.hero__trust-title {
-  white-space: nowrap;
-}
-
-/* бегущая строка: без JS / при reduced-motion — статичный перенос по строкам */
-.marquee {
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  min-width: 0;
-}
-
-.marquee.is-running {
-  -webkit-mask-image: linear-gradient(90deg, transparent, var(--text) 8%, var(--text) 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, var(--text) 8%, var(--text) 92%, transparent);
-}
-
-.marquee__track {
-  display: flex;
-  flex-wrap: wrap;
-  will-change: transform;
-}
-
-.marquee.is-running .marquee__track {
-  flex-wrap: nowrap;
-}
-
-.marquee__group {
-  display: flex;
-  flex-wrap: wrap;
-  flex: none;
-  row-gap: 0.4rem;
-}
-
-.marquee.is-running .marquee__group {
-  flex-wrap: nowrap;
-}
-
-.marquee__item {
-  display: inline-flex;
-  align-items: center;
-  gap: clamp(1.25rem, 2.5vw, 2.5rem);
-  padding-right: clamp(1.25rem, 2.5vw, 2.5rem);
-  font-family: var(--font-display);
-  font-size: clamp(1rem, 0.85rem + 0.7vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: var(--tracking-display);
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--text);
-  opacity: 0.72;
-  transition: opacity var(--dur-fast) var(--ease-out);
-}
-
-.marquee__item::after {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex: none;
-}
-
-.marquee:hover .marquee__item {
-  opacity: 0.45;
-}
-
-.marquee:hover .marquee__item:hover {
-  opacity: 1;
-}
-
-@media (min-width: 900px) {
-  .hero__trust-inner {
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    gap: 2.5rem;
   }
 }

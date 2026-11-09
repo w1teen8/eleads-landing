@@ -1,7 +1,7 @@
-// Первый экран — один, бывший вариант «Синий» (reference/run3/hero-keep.png; макет reference/hero-v4/mockup.png):
-// синий фон Telegram, огромное белое «eLeads» за Володимиром без фона, слева заголовок и белая пилюля, справа цифры
-// брифа и строка рекламы Telegram простым текстом. Варианты «Кольцо» и «Самолётик», переключатель и dev-панель удалены
-// (сборка 3, T18). Проверяется разметка, тексты из JSON, файлы, цвета экрана и правила движения.
+// Первый экран — один, композиция бывшего варианта «Синий» (reference/run3/hero-keep.png): огромное «eLeads» за
+// Володимиром без фона, слева заголовок и акцентная пилюля, справа цифры брифа и строка рекламы Telegram простым
+// текстом. С T23 (H14) — в палитре канала, как весь сайт. Варианты «Кольцо» и «Самолётик», переключатель и dev-панель
+// удалены (сборка 3, T18). Проверяется разметка, тексты из JSON, файлы, цвета экрана и правила движения.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -46,7 +46,7 @@ test('разметка: H1, огромное «eLeads» из JSON, пилюля 
   const keys = [
     'eyebrow', 'subtitle', 'titleLine1', 'titleLine2', 'titleAccent', 'cta', 'photo.alt',
     'facts.budgets.label', 'facts.budgets.value', 'facts.years.label', 'facts.years.value', 'facts.projects.label', 'facts.projects.value',
-    'ad.tag', 'ad.title', 'ad.text', 'ad.button',
+    'ad.channel', 'ad.label', 'ad.title', 'ad.text', 'ad.button',
   ];
   for (const key of keys) {
     const k = key.replace(/\./g, '\\.');
@@ -75,18 +75,21 @@ test('фото без фона — одна LCP-картинка: AVIF/WebP/PNG 
   assert.match(section, /<source type="image\/avif" srcset="[^"]*volodymyr-blue-720\.avif/);
 });
 
-test('цвета экрана — синие, свои (--v4-* в tokens.css); палитра канала к экрану и шапке не применяется', () => {
-  assert.match(css, /\.hero__screen\s*\{[^}]*background:\s*var\(--v4-bg\)/);
-  assert.match(css, /\.hero__word\s*\{[^}]*color:\s*var\(--paper\)/, '«eLeads» белым');
-  assert.match(css, /\.hero__accent\s*\{[^}]*color:\s*var\(--v4-sky\)/, '«Ads» голубым');
-  assert.match(css, /\.hero__cta\s*\{[^}]*background:\s*var\(--paper\)/, 'белая пилюля');
-  assert.match(css, /\.hero__fact-value\s*\{[^}]*color:\s*var\(--paper\)/);
+// T23 (H14): «Перекрась весь сайт сразу в его палитру» — первый экран и шапка тоже: фон страницы #070C18 одним слоем,
+// «eLeads» и текст #F4F2EC, «Ads», цифры и пилюли — жёлтый → оранжевый с тёмным текстом
+test('цвета экрана — палитра канала: свой фон экран не рисует, «eLeads» светлым, «Ads», цифры и пилюли — акцентом', () => {
+  for (const [, body] of css.matchAll(/\.hero__screen\s*\{([^}]*)\}/g)) assert.doesNotMatch(body, /background/, 'фон экрана — фон страницы');
+  assert.match(css, /\.hero__word\s*\{[^}]*color:\s*var\(--text\)/, '«eLeads» — #F4F2EC');
+  // H17: вся вторая строка «TELEGRAM ADS» — жёлтый → оранжевый
+  assert.match(css, /\.hero__line:nth-child\(2\) \.hero__line-inner\s*\{[^}]*background:\s*var\(--grad\)/, '«TELEGRAM ADS» — жёлтый → оранжевый');
+  assert.match(css, /\.hero__cta\s*\{[^}]*background:\s*var\(--grad\);[^}]*color:\s*var\(--accent-ink\)/, 'акцентная пилюля с тёмным текстом');
+  assert.match(css, /\.hero__fact-value\s*\{[^}]*background:\s*var\(--grad\)/, 'цифры — акцентом');
   const header = strip(read('src/styles/sections/header.css'));
-  assert.match(header, /\.header__cta\s*\{[^}]*background:\s*var\(--paper\)/, '«Написати» — белая пилюля');
-  const screen = css.split('.hero__trust')[0];
-  const headerScreen = header.slice(header.indexOf('--hu:'));
-  assert.ok(headerScreen.length > 100, 'облик шапки первого экрана');
-  for (const f of [screen, headerScreen]) assert.doesNotMatch(f, /var\(--(sun|ember|grad|ink|fg)\)/, 'палитра канала на первом экране');
+  assert.match(header, /\.header__cta\s*\{[^}]*background:\s*var\(--grad\);[^}]*color:\s*var\(--accent-ink\)/, '«Написати» — акцентная пилюля');
+  // в CSS секций — только семантические переменные (имена палитры живут в tokens.css)
+  for (const f of [css, header]) {
+    assert.doesNotMatch(f, /var\(--(v4-[\w-]+|paper|ink|navy|card|fg|muted|sun|ember)\)/, 'не семантическая переменная');
+  }
   assert.doesNotMatch(header, /data-hero/);
 });
 
@@ -109,6 +112,7 @@ test('слово крупное и за фигурой; текст — под с
   assert.match(css, /--word-fs:\s*2[4-9](\.\d+)?cqw/, 'слово почти на всю ширину сцены');
   assert.match(css, /\.hero__depth--word\s*\{[^}]*z-index:\s*1/);
   assert.match(css, /\.hero__depth--person\s*\{[^}]*z-index:\s*2/);
-  assert.match(css, /\.hero__copy\s*\{[^}]*top:\s*58%/, 'левый блок под буквами');
+  // T23 (H17): заголовок шрифтом канала выше прежнего — колонка поднята до 56%, всё так же под буквами
+  assert.match(css, /\.hero__copy\s*\{[^}]*top:\s*5[5-8]%/, 'левый блок под буквами');
   assert.match(css, /\.hero__side\s*\{[^}]*top:\s*58%/, 'цифры и реклама под буквами');
 });

@@ -9,8 +9,8 @@ const config = readJson('src/data/config.json');
 const stats = html.split(/<section\b[^>]*\sid="stats"/)[1].split('</section>')[0];
 const count = (s, re) => (s.match(re) || []).length;
 
-test('блок 02 включён сразу после первого экрана; пункт меню #stats виден после сборки', () => {
-  assert.deepEqual(config.sections.enabled.slice(0, 2), ['hero', 'stats']);
+test('блок 02 включён сразу после первого экрана и лент на стыке (T23, H13); пункт меню #stats виден после сборки', () => {
+  assert.deepEqual(config.sections.enabled.slice(0, 3), ['hero', 'ribbons', 'stats']);
   const out = disableSections(html, config);
   assert.doesNotMatch(out.match(/<section\b[^>]*\sid="stats"[^>]*>/)[0], /\shidden/);
   const item = out.match(/<li\b([^>]*)>\s*<a\b[^>]*href="#stats"/);
@@ -40,9 +40,11 @@ test('движение блока: табло на вкладках; без на
   assert.doesNotMatch(js, /gsap|ScrollTrigger/);
 });
 
-test('палитра: синий фон первого экрана, белые карточки, акцентная — тёмно-синяя палитры канала', () => {
+// T23 (H14): палитра канала — тёмные карточки с тонкой светлой границей, цифры жёлтый → оранжевый,
+// одна акцентная карточка — жёлто-оранжевая с тёмным текстом
+test('палитра канала: тёмные карточки с тонкой границей, цифры — акцентом, акцентная карточка с тёмным текстом', () => {
   const css = read('src/styles/sections/stats.css');
-  assert.match(css, /var\(--v4-bg/);
-  assert.match(css, /var\(--paper\)/);
-  assert.match(css, /\.stats__card--accent\s*\{[^}]*background:\s*var\(--bg\)/, '#070C18 — --bg = --ink палитры канала');
+  assert.match(css, /\.stats__card\s*\{[^}]*background:\s*var\(--surface\);[^}]*border:\s*1px solid var\(--line\)/);
+  assert.match(css, /\.stats__value\s*\{[^}]*background:\s*var\(--grad\)/);
+  assert.match(css, /\.stats__card--accent\s*\{[^}]*background:\s*var\(--grad\);[^}]*color:\s*var\(--accent-ink\)/);
 });

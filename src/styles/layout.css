@@ -43,7 +43,22 @@ main {
   position: relative;
   padding-block: var(--section-y);
   color: var(--text);
-  scroll-margin-top: 0;
+  /* якорь и scrollIntoView ставят начало блока под шапку, а не за неё (Lenis читает это же свойство) */
+  scroll-margin-top: var(--header-h);
+}
+
+/* T23 (H15): «Сделай сайт в формате 1920 на 1080» — на широком экране каждый блок ровно в один экран под шапкой:
+   высота = окно минус шапка, содержимое по центру по вертикали; размеры внутри блоков — от высоты окна (svh).
+   Фон у блоков свой не рисуется — фон страницы одним слоем (H14). Без scroll-snap: прокрутка обычная (H11).
+   Портретный экран (планшет стоя) — обычный поток без растяжения. */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    min-height: calc(100svh - var(--header-h));
+    padding-block: var(--screen-pad);
+  }
 }
 
 /* «альтернативная» секция — лишь тонкая линия сверху: фон у всех экранов общий, космос */

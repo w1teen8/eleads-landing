@@ -66,11 +66,12 @@
       },
       "projects": {
         "label": "Projects",
-        "value": "Dozens"
+        "value": "50+"
       }
     },
     "ad": {
-      "tag": "Ad",
+      "channel": "Your channel",
+      "label": "Sponsored",
       "title": "Your project — in the Telegram feed",
       "text": "Ads are shown to audiences of channels, bots and media content.",
       "button": "View"
@@ -88,7 +89,7 @@
         "label": "in ad budgets"
       },
       "projects": {
-        "value": "dozens",
+        "value": "50+",
         "label": "of projects"
       }
     },
@@ -539,7 +540,7 @@
   "founder": {
     "badge": "eLeads FOUNDER",
     "title": "Personal expertise stands behind eLeads.",
-    "text": "Hi, I am Volodymyr, founder of eLeads. 7+ years in digital marketing, $2M+ in ad budgets and dozens of projects in different niches and GEOs. I personally take part in strategy and in running clients’ ad campaigns.",
+    "text": "Hi, I am Volodymyr, founder of eLeads. 7+ years in digital marketing, $2M+ in ad budgets and 50+ projects in different niches and GEOs. I personally take part in strategy and in running clients’ ad campaigns.",
     "photoCaption": "PHOTO OF VOLODYMYR",
     "photoAlt": "Volodymyr Kucher, founder of eLeads"
   },
@@ -550,12 +551,6 @@
       "200+ GEO",
       "$2M+ BUDGETS",
       "7+ YEARS"
-    ],
-    "bottom": [
-      "LEADS",
-      "SUBSCRIBERS",
-      "CUSTOMERS",
-      "OFFICIAL ADS"
     ]
   }
 }

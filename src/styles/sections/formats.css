@@ -1,24 +1,16 @@
-/* 04 Як виглядає реклама (T21, reference/wireframe-04-ad-formats.png) — синее продолжение первого экрана, как блок 02
-   (--v4-* из tokens.css). Переходов по прокрутке нет (H11): блок идёт за предыдущим обычной прокруткой, всё видно
-   сразу. Три формата: белая «рамка-скриншот» с примером рекламы MONOLIT
-   (.tg-ad — сообщение Telegram, собранное в HTML/CSS) и подпись под ней; бот — тёмно-синяя акцентная рамка
-   (--bg = #070C18). Пример масштабируется целиком через font-size (все размеры .tg-ad — в em): в лайтбоксе — крупнее.
+/* 04 Як виглядає реклама (T21; T23 — палитра канала и формат «один экран»). Переходов по прокрутке нет (H11): блок
+   идёт за предыдущим обычной прокруткой, всё видно сразу. Три формата: «рамка-скриншот» с примером рекламы MONOLIT
+   (.tg-ad — сообщение Telegram, собранное в HTML/CSS) и подпись под ней. Рамки — в палитре канала: тёмные поверхности
+   с тонкой светлой границей, средняя (медиа) — жёлто-оранжевая акцентная, бот — самая тёмная. Сами примеры остаются
+   похожими на Telegram (ночная тема с тёплым акцентом: пузырь, «Ad», кнопка). Пример масштабируется целиком через
+   font-size (все размеры .tg-ad — в em): в лайтбоксе — крупнее, на широком экране — от высоты окна.
    Двигаются только transform и opacity. */
 
 .section--formats {
   --formats-gap: clamp(0.75rem, 1.1vw, 1.25rem);
-  --formats-ink: color-mix(in srgb, var(--v4-ink) 74%, var(--paper));
-  isolation: isolate;
-  overflow: clip;
-  /* сверху — место под фиксированную шапку: по якорю #formats верх блока стоит у верха экрана */
-  padding-block: clamp(6.5rem, 4rem + 5vw, 9.5rem) clamp(3rem, 2rem + 2.5vw, 4.5rem);
-  background:
-    radial-gradient(50% 45% at 88% 0%, color-mix(in srgb, var(--v4-bg-light) 90%, transparent), transparent 72%),
-    radial-gradient(45% 40% at 6% 100%, color-mix(in srgb, var(--v4-bg-deep) 80%, transparent), transparent 70%),
-    linear-gradient(188deg, var(--v4-bg-edge) 0%, var(--v4-bg) 40%, var(--v4-bg-mid) 80%, var(--v4-bg-deep) 100%);
-  /* тонкая светлая кромка сверху — граница с предыдущим синим блоком */
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 22%, transparent);
-  color: var(--paper);
+  overflow-x: clip;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 2.5vw, 4.5rem);
+  color: var(--text);
 }
 
 /* — шапка: метка-пилюля и заголовок слева, подзаголовок справа — */
@@ -36,36 +28,40 @@
 .formats__eyebrow {
   justify-self: start;
   padding: 0.6em 1.15em;
-  border: 1px solid color-mix(in srgb, var(--paper) 34%, transparent);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--paper) 12%, transparent);
+  background: color-mix(in srgb, var(--text) 4%, transparent);
   font-weight: 500;
-  color: var(--paper);
+  color: var(--text);
+}
+
+.formats__eyebrow::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .section--formats .display.section__title {
-  max-width: 20ch;
-  font-family: var(--font-body);
-  font-size: clamp(2rem, 1.1rem + 3vw, 4.75rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.025em;
-  text-transform: none;
-  color: var(--paper);
+  max-width: none;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
-/* хвост заголовка — голубым, как «Ads» первого экрана */
-.section--formats .display__accent {
-  display: inline;
-  background: none;
-  color: var(--v4-sky);
-}
+/* хвост заголовка — второй строкой, жёлтый → оранжевый (градиент и строка — из components.css .display__accent) */
 
 .formats__lead {
   max-width: 46ch;
   font-size: clamp(1rem, 0.9rem + 0.4vw, 1.3125rem);
   line-height: 1.45;
-  color: color-mix(in srgb, var(--paper) 90%, var(--v4-bg));
+  color: color-mix(in srgb, var(--text) 82%, transparent);
 }
 
 /* — три формата — */
@@ -82,7 +78,7 @@
   min-width: 0;
 }
 
-/* рамка-скриншот: белая карточка, пример по центру; клик — лайтбокс */
+/* рамка-скриншот: тёмная поверхность с тонкой границей, пример по центру; клик — лайтбокс */
 .formats__shot {
   position: relative;
   display: grid;
@@ -91,17 +87,17 @@
   min-height: clamp(17rem, 12rem + 9vw, 23rem);
   padding: clamp(0.9rem, 1.4vw, 1.5rem);
   border-radius: var(--r-card-lg);
-  background: var(--paper);
-  box-shadow: 0 18px 50px var(--v4-shadow);
+  background: var(--surface);
+  border: 1px solid var(--line);
   text-align: left;
   cursor: zoom-in;
   overflow: hidden;
   transition: transform var(--dur) var(--ease-out);
 }
 
+/* бот — самая тёмная рамка, с тёплым отсветом по углам */
 .formats__shot--dark {
   background: var(--bg);
-  box-shadow: 0 18px 50px color-mix(in srgb, var(--bg) 40%, transparent);
 }
 
 .formats__shot:hover,
@@ -110,7 +106,7 @@
 }
 
 .formats__shot:focus-visible {
-  outline: 2px solid var(--paper);
+  outline: 2px solid var(--accent);
   outline-offset: 4px;
 }
 
@@ -124,9 +120,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--v4-accent);
-  color: var(--paper);
-  box-shadow: 0 6px 18px var(--v4-shadow);
+  background: var(--grad);
+  color: var(--accent-ink);
   opacity: 0;
   transform: scale(0.85);
   transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
@@ -154,6 +149,7 @@
 .formats__info {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
+  align-content: start; /* подписи трёх форматов начинаются на одной линии, даже если текст разной длины */
   align-items: center;
   gap: 0.6rem 0.9rem;
 }
@@ -164,14 +160,14 @@
   min-width: 3.25em;
   min-height: 2.1em;
   padding: 0 0.8em;
-  border: 1px solid color-mix(in srgb, var(--paper) 34%, transparent);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--paper) 12%, transparent);
+  background: color-mix(in srgb, var(--text) 4%, transparent);
   font-family: var(--font-mono);
   font-size: var(--fs-sm);
   font-weight: 600;
   line-height: 1;
-  color: var(--paper);
+  color: var(--accent);
 }
 
 .formats__title {
@@ -181,7 +177,7 @@
   line-height: 1.1;
   letter-spacing: -0.02em;
   text-transform: none;
-  color: var(--paper);
+  color: var(--text);
 }
 
 .formats__text {
@@ -189,7 +185,7 @@
   max-width: 44ch;
   font-size: clamp(0.9375rem, 0.85rem + 0.25vw, 1.0625rem);
   line-height: 1.5;
-  color: color-mix(in srgb, var(--paper) 86%, var(--v4-bg));
+  color: color-mix(in srgb, var(--text) 82%, transparent);
 }
 
 .formats__foot {
@@ -199,7 +195,7 @@
   align-items: baseline;
   gap: 0.5rem 1.5rem;
   font-size: var(--fs-sm);
-  color: color-mix(in srgb, var(--paper) 88%, transparent);
+  color: color-mix(in srgb, var(--text) 82%, transparent);
 }
 
 .formats__caption {
@@ -207,14 +203,15 @@
   font-size: var(--fs-xs);
   letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--paper) 84%, transparent);
+  color: var(--text-muted);
 }
 
-/* ——— пример рекламы: сообщение Telegram (размеры — в em, масштаб задаёт font-size) ——— */
+/* ——— пример рекламы: сообщение Telegram, ночная тема с тёплым акцентом (размеры — в em, масштаб задаёт font-size) ——— */
 .tg-ad {
-  --tg-link: var(--v4-accent);
-  --tg-text: var(--v4-ink);
-  --tg-muted: var(--formats-ink, var(--v4-ink));
+  --tg-link: var(--accent);
+  --tg-text: var(--text);
+  --tg-muted: color-mix(in srgb, var(--text) 80%, transparent);
+  --tg-bubble: color-mix(in srgb, var(--text) 10%, var(--bg));
   position: relative;
   display: grid;
   width: 100%;
@@ -230,9 +227,10 @@
   display: grid;
   gap: 0.55em;
   padding: 1em 1.15em 1.05em;
+  border: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
   border-radius: 1.15em;
-  background: var(--paper);
-  box-shadow: 0 0.35em 1.4em color-mix(in srgb, var(--v4-ink) 16%, transparent);
+  background: var(--tg-bubble);
+  box-shadow: 0 0.5em 1.6em color-mix(in srgb, var(--bg) 55%, transparent);
 }
 
 .tg-ad__head {
@@ -260,18 +258,19 @@
   line-height: 1.3;
 }
 
-/* логотип-заглушка MONOLIT: тёмный скруглённый квадрат со словом */
+/* логотип-заглушка MONOLIT: тёмный скруглённый квадрат со словом и тёплым бликом */
 .tg-ad__logo {
   display: grid;
   place-items: center;
   /* размеры — в em самого логотипа (font-size 0.5em): 6.2em = 3.1em текста примера */
   width: 6.2em;
   height: 6.2em;
+  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
   border-radius: 1.6em;
   background:
-    radial-gradient(60% 60% at 50% 30%, color-mix(in srgb, var(--v4-sky) 45%, transparent), transparent 70%),
+    radial-gradient(60% 60% at 50% 30%, color-mix(in srgb, var(--accent-2) 40%, transparent), transparent 70%),
     var(--bg);
-  color: var(--paper);
+  color: var(--text);
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 0.5em;
@@ -297,35 +296,43 @@
   min-height: 2.6em;
   margin-top: 0.2em;
   border-radius: 0.7em;
-  background: color-mix(in srgb, var(--tg-link) 10%, var(--paper));
+  background: color-mix(in srgb, var(--tg-link) 14%, transparent);
   font-weight: 700;
   font-size: 0.92em;
   letter-spacing: 0.06em;
   color: var(--tg-link);
 }
 
-/* 01 канал: пузырь на фоне чата (голубые обои с узором) */
+/* 01 канал: пузырь на фоне чата — тёмные обои с узором из точек */
 .formats__shot:has(.tg-ad--channel) {
   background:
-    radial-gradient(circle at 20% 25%, color-mix(in srgb, var(--paper) 55%, transparent) 0 0.35rem, transparent 0.4rem) 0 0 / 3.5rem 3.5rem,
-    radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--paper) 40%, transparent) 0 0.25rem, transparent 0.3rem) 0 0 / 2.75rem 2.75rem,
-    linear-gradient(160deg, color-mix(in srgb, var(--v4-sky) 70%, var(--paper)), color-mix(in srgb, var(--v4-sky) 95%, var(--v4-accent)));
+    radial-gradient(circle at 20% 25%, color-mix(in srgb, var(--text) 10%, transparent) 0 0.3rem, transparent 0.35rem) 0 0 / 3.5rem 3.5rem,
+    radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--accent) 12%, transparent) 0 0.2rem, transparent 0.25rem) 0 0 / 2.75rem 2.75rem,
+    var(--surface);
 }
 
-/* 02 медиа: вертикальный «экран» — обложка креатива и карточка с кнопкой под ней */
+/* 02 медиа: акцентная рамка; в ней вертикальный «экран» — обложка креатива и карточка с кнопкой под ней */
+.formats__shot:has(.tg-ad--video) {
+  background: var(--grad);
+  border-color: transparent;
+}
+
+.formats__shot:has(.tg-ad--video) .formats__zoom {
+  background: var(--accent-ink);
+  color: var(--accent);
+}
+
+.formats__shot:has(.tg-ad--video):focus-visible {
+  outline-color: var(--text);
+}
+
 .tg-ad--video {
   max-width: 19em;
   gap: 0.5em;
   padding: 0.55em;
   border-radius: 1.4em;
-  background: var(--paper);
-  box-shadow: 0 0.6em 2em color-mix(in srgb, var(--v4-ink) 22%, transparent);
-}
-
-.formats__shot:has(.tg-ad--video) {
-  background:
-    radial-gradient(70% 60% at 50% 40%, color-mix(in srgb, var(--paper) 70%, transparent), transparent 75%),
-    linear-gradient(200deg, color-mix(in srgb, var(--v4-sky) 70%, var(--paper)), color-mix(in srgb, var(--v4-sky) 95%, var(--v4-accent)));
+  background: var(--tg-bubble);
+  box-shadow: 0 0.8em 2.2em color-mix(in srgb, var(--accent-ink) 40%, transparent);
 }
 
 .tg-ad__cover {
@@ -338,9 +345,9 @@
   padding: 0.6em 0.8em 0.8em;
   border-radius: 1em;
   background:
-    radial-gradient(70% 60% at 50% 110%, color-mix(in srgb, var(--v4-accent) 70%, transparent), transparent 70%),
-    linear-gradient(170deg, var(--v4-bg-deep), var(--bg));
-  color: var(--paper);
+    radial-gradient(70% 60% at 50% 110%, color-mix(in srgb, var(--accent-2) 55%, transparent), transparent 70%),
+    linear-gradient(170deg, color-mix(in srgb, var(--accent-2) 22%, var(--bg)), var(--bg));
+  color: var(--text);
   overflow: hidden;
 }
 
@@ -370,7 +377,7 @@
 }
 
 .tg-ad__cover-accent {
-  color: var(--v4-sky);
+  color: var(--accent);
 }
 
 .tg-ad__coins {
@@ -385,7 +392,7 @@
   width: 2.3em;
   height: 2.3em;
   border-radius: 50%;
-  background: var(--paper);
+  background: var(--text);
   color: var(--bg);
   font-style: normal;
   font-weight: 800;
@@ -400,23 +407,17 @@
 .tg-ad--video .tg-ad__card {
   gap: 0.35em;
   padding: 0.65em 0.8em 0.7em;
+  border: 0;
   border-left: 0.2em solid var(--tg-link);
   border-radius: 0.6em;
-  background: color-mix(in srgb, var(--v4-sky) 14%, var(--paper));
+  background: color-mix(in srgb, var(--text) 6%, var(--bg));
   box-shadow: none;
   font-size: 0.86em;
 }
 
-/* 03 бот: тёмная тема Telegram — тёмный пузырь на тёмно-синей акцентной рамке */
-.formats__shot--dark .formats__zoom {
-  background: var(--paper);
-  color: var(--v4-bg);
-}
-
+/* 03 бот: самая тёмная рамка — тёмный пузырь чата с ботом */
 .tg-ad--bot {
-  --tg-text: var(--paper);
-  --tg-muted: color-mix(in srgb, var(--paper) 90%, var(--bg));
-  --tg-link: var(--v4-sky);
+  --tg-bubble: color-mix(in srgb, var(--text) 8%, var(--bg));
   max-width: 26em;
 }
 
@@ -425,17 +426,14 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(55% 45% at 20% 0%, color-mix(in srgb, var(--v4-bg) 55%, transparent), transparent 70%),
-    radial-gradient(50% 45% at 100% 100%, color-mix(in srgb, var(--v4-bg-deep) 60%, transparent), transparent 70%);
+    radial-gradient(55% 45% at 20% 0%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 100% 100%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%);
   pointer-events: none;
 }
 
 .tg-ad--bot .tg-ad__card {
   gap: 0.75em;
   padding: 1.1em 1.25em 1.25em;
-  background: color-mix(in srgb, var(--paper) 10%, var(--bg));
-  border: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
-  box-shadow: 0 0.6em 2em color-mix(in srgb, var(--bg) 60%, transparent);
 }
 
 .tg-ad--bot .tg-ad__head {
@@ -453,7 +451,7 @@
   align-self: start;
   padding: 0.05em 0.5em;
   border-radius: 0.4em;
-  background: color-mix(in srgb, var(--v4-sky) 18%, transparent);
+  background: color-mix(in srgb, var(--tg-link) 16%, transparent);
   font-size: 0.85em;
 }
 
@@ -472,7 +470,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--paper);
+  color: var(--text);
   overflow: hidden;
 }
 
@@ -484,7 +482,7 @@
 .lightbox[open] {
   display: grid;
   place-items: center;
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
   opacity: 0;
   transition: opacity var(--dur) var(--ease-out);
 }
@@ -500,11 +498,17 @@
   max-height: 90vh;
   overflow: auto;
   padding: clamp(1rem, 3vw, 2.5rem);
+  border: 1px solid var(--line);
   border-radius: var(--r-card-lg);
-  background: linear-gradient(160deg, color-mix(in srgb, var(--v4-sky) 70%, var(--paper)), color-mix(in srgb, var(--v4-sky) 95%, var(--v4-accent)));
-  box-shadow: 0 30px 80px color-mix(in srgb, var(--bg) 60%, transparent);
+  background: var(--surface);
+  box-shadow: 0 30px 80px color-mix(in srgb, var(--bg) 70%, transparent);
   transform: scale(0.94);
   transition: transform var(--dur) var(--ease-out);
+}
+
+.lightbox__stage:has(.tg-ad--video) {
+  background: var(--grad);
+  border-color: transparent;
 }
 
 .lightbox__stage:has(.tg-ad--bot) {
@@ -531,8 +535,8 @@
   height: 48px;
   border-radius: 50%;
   border: 0;
-  background: var(--paper);
-  color: var(--v4-ink);
+  background: var(--text);
+  color: var(--bg);
 }
 
 .lightbox__close svg {
@@ -541,7 +545,7 @@
 }
 
 .lightbox__close:focus-visible {
-  outline: 2px solid var(--v4-sky);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -569,6 +573,46 @@
 
   .formats__lead {
     justify-self: end;
+  }
+}
+
+/* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна — рамки и примеры по высоте окна — */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--formats {
+    padding-block: var(--screen-pad);
+  }
+
+  .formats__top {
+    margin-bottom: clamp(1rem, 3.2svh, 3rem);
+  }
+
+  .formats__head {
+    gap: clamp(0.75rem, 1.6svh, 1.5rem);
+  }
+
+  .section--formats .display.section__title {
+    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
+  }
+
+  .formats__item {
+    gap: clamp(0.6rem, 1.6svh, 1.4rem);
+  }
+
+  .formats__shot {
+    min-height: clamp(12rem, 36svh, 23rem);
+    padding: clamp(0.75rem, 1.6svh, 1.5rem);
+  }
+
+  .formats__shot .tg-ad {
+    font-size: clamp(10.5px, 1.5svh, 14.5px);
+  }
+
+  .formats__title {
+    font-size: clamp(1.125rem, min(1rem + 0.7vw, 3svh), 1.75rem);
+  }
+
+  .formats__foot {
+    margin-top: clamp(0.75rem, 2.2svh, 2.25rem);
   }
 }
 

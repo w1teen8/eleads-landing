@@ -1,4 +1,4 @@
-// Блок 03 «Ніші» (T20): восемь карточек на синем продолжении первого экрана. Движение (H11): переходов по
+// Блок 03 «Ніші» (T20, с T23 — в палитре канала): восемь карточек. Движение (H11): переходов по
 // прокрутке нет — только hover-наклон карточки к курсору.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -42,11 +42,11 @@ test('движение: ни наезда, ни лесенки, ни табло 
   assert.match(read('src/styles/sections/niches.css'), /transform:\s*rotateX\(var\(--tilt-x\)\)/);
 });
 
-test('облик: синий фон первого экрана, белые карточки, акцентная — #070C18; переходы только transform/opacity', () => {
+// T23 (H14): палитра канала — тёмные карточки с тонкой границей, «Інша ніша?» — акцентная с тёмным текстом
+test('облик: тёмные карточки с тонкой границей, «Інша ніша?» — жёлто-оранжевая; переходы только transform/opacity', () => {
   const css = read('src/styles/sections/niches.css');
-  assert.match(css, /var\(--v4-bg/);
-  assert.match(css, /\.niches__card\s*\{[^}]*background:\s*var\(--paper\)/);
-  assert.match(css, /\.niches__card--other\s*\{[^}]*background:\s*var\(--bg\)/);
+  assert.match(css, /\.niches__card\s*\{[^}]*background:\s*var\(--surface\);[^}]*border:\s*1px solid var\(--line\)/);
+  assert.match(css, /\.niches__card--other\s*\{[^}]*background:\s*var\(--grad\);[^}]*color:\s*var\(--accent-ink\)/);
   for (const [, value] of css.matchAll(/transition:\s*([^;]+);/g)) {
     for (const part of value.split(',')) assert.match(part.trim(), /^(transform|opacity)\b/, `transition: ${value}`);
   }

@@ -1,5 +1,5 @@
-// Шапка: липнет и проявляет подложку при скролле (не прячется никогда),
-// подсвечивает текущую секцию, переключает язык, на < 900px — бургер с полноэкранным меню.
+// Шапка: липнет и проявляет подложку при скролле (не прячется никогда), переключает язык,
+// на < 900px — бургер с полноэкранным меню. Ссылок-разделов в самой шапке нет (T23, H16) — подсвечивать нечего.
 import { $, $$, focusables, trapFocus } from '../core/dom.js';
 import { t, onLangChange } from '../core/i18n.js';
 import { lockScroll } from '../core/motion.js';
@@ -15,7 +15,6 @@ export function init(root) {
   for (const sw of $$('[data-lang-switch]', root)) bindLangSwitch(sw);
 
   initScrollState(root);
-  initActiveLink(root);
   if (burger && menu) initMenu(root, burger, menu);
   // якоря шапки и мобильного меню — фирменной полосой (меню успевает закрыться своим обработчиком раньше)
   bindSweepLinks(root);
@@ -40,29 +39,6 @@ function initScrollState(root) {
     { passive: true },
   );
   update();
-}
-
-function initActiveLink(root) {
-  const links = $$('.header__link', root);
-  const byId = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));
-  const targets = [...byId.keys()].map((id) => document.getElementById(id)).filter(Boolean);
-  if (!targets.length || !('IntersectionObserver' in window)) return;
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        const link = byId.get(entry.target.id);
-        if (entry.isIntersecting) {
-          for (const a of links) a.removeAttribute('aria-current');
-          link.setAttribute('aria-current', 'true');
-        } else if (link.hasAttribute('aria-current')) {
-          link.removeAttribute('aria-current');
-        }
-      }
-    },
-    { rootMargin: '-45% 0px -50% 0px' },
-  );
-  for (const node of targets) io.observe(node);
 }
 
 function initMenu(root, burger, menu) {

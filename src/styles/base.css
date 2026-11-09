@@ -29,29 +29,9 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Космос облика Aether: редкие звёзды (статичный слой под контентом) и мелкое зерно поверх всего.
-   Зерно — статичная SVG-текстура, «живёт» только transform-ом слоя ступенями (без filter); при reduced-motion стоит. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    radial-gradient(1px 1px at 7% 12%, var(--star), transparent),
-    radial-gradient(1px 1px at 23% 64%, var(--star), transparent),
-    radial-gradient(1.5px 1.5px at 38% 27%, var(--star), transparent),
-    radial-gradient(1px 1px at 51% 83%, var(--star), transparent),
-    radial-gradient(1px 1px at 64% 9%, var(--star), transparent),
-    radial-gradient(1.5px 1.5px at 77% 46%, var(--star), transparent),
-    radial-gradient(1px 1px at 88% 74%, var(--star), transparent),
-    radial-gradient(1px 1px at 95% 21%, var(--star), transparent),
-    radial-gradient(1px 1px at 14% 92%, var(--star), transparent),
-    radial-gradient(1px 1px at 46% 51%, var(--star), transparent);
-  background-size: 620px 540px;
-  opacity: 0.55;
-}
-
+/* Фон страницы — #070C18 одним слоем (T23, H14; звёзды облика Aether убраны — как на выбранном первом экране B)
+   и мелкое зерно поверх всего. Зерно — статичная SVG-текстура, «живёт» только transform-ом слоя ступенями
+   (без filter); при reduced-motion стоит. */
 body::after {
   content: '';
   position: fixed;

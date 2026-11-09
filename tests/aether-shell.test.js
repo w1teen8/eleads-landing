@@ -20,14 +20,15 @@ test('ленты: секция без id сразу после #hero, две п�
   assert.match(ribbons, /<svg\b/, 'значок между словами — SVG');
 });
 
-test('ленты: тексты из content.*.json → ribbons, UA и EN одной длины', () => {
+// T23 (H13): акцентная лента — «Мені довіряють» (hero.trusted), тёмная — факты (ribbons.top)
+test('ленты: тексты из content.*.json — ribbons.top и hero.trusted, UA и EN одной длины', () => {
   for (const dict of [ua, en]) {
-    for (const row of ['top', 'bottom']) {
-      assert.ok(Array.isArray(dict.ribbons?.[row]) && dict.ribbons[row].length >= 3, `ribbons.${row}`);
-    }
+    assert.ok(Array.isArray(dict.ribbons?.top) && dict.ribbons.top.length >= 3, 'ribbons.top');
+    assert.ok(Array.isArray(dict.hero?.trusted?.items) && dict.hero.trusted.items.length >= 3, 'hero.trusted.items');
+    assert.ok(String(dict.hero.trusted.title || '').trim(), 'hero.trusted.title');
   }
   assert.equal(ua.ribbons.top.length, en.ribbons.top.length);
-  assert.equal(ua.ribbons.bottom.length, en.ribbons.bottom.length);
+  assert.equal(ua.hero.trusted.items.length, en.hero.trusted.items.length);
   assert.ok(ua.ribbons.top.includes('TELEGRAM ADS'));
 });
 

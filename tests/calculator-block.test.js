@@ -1,5 +1,5 @@
-// Блок 05 «Калькулятор» (T22): синее продолжение первого экрана, белая панель параметров, тёмно-синяя панель
-// прогноза. Расчёт, аналитика и доступность — прежние (T02); переходов по прокрутке нет (H11), на ввод — табло.
+// Блок 05 «Калькулятор» (T22, с T23 — в палитре канала): панель параметров и панель прогноза — тёмные поверхности.
+// Расчёт, аналитика и доступность — прежние (T02); переходов по прокрутке нет (H11), на ввод — табло.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
@@ -59,8 +59,10 @@ test('расчёт и аналитика прежние: forecast() из мод�
   assert.match(js, /TRACK_MS = 600/);
 });
 
-test('палитра: синий фон первого экрана, белая панель параметров, прогноз — тёмно-синий #070C18 (--bg)', () => {
-  assert.match(css, /\.section--calculator\s*\{[^}]*var\(--v4-bg/);
-  assert.match(css, /\.calc__params\s*\{[^}]*background:\s*var\(--paper\)/);
-  assert.match(css, /\.calc__forecast\s*\{[^}]*background:\s*var\(--bg\)/);
+// T23 (H14): палитра канала — обе панели тёмные с тонкой границей; выбранные пилюли и CTA — жёлтый → оранжевый
+test('палитра канала: панели — тёмные поверхности с тонкой границей, выбранная пилюля — акцентом с тёмным текстом', () => {
+  assert.match(css, /\.calc__params\s*\{[^}]*background:\s*var\(--surface\);[^}]*border:\s*1px solid var\(--line\)/);
+  assert.match(css, /\.calc__forecast\s*\{[^}]*background:\s*var\(--surface\);[^}]*border:\s*1px solid var\(--line\)/);
+  assert.match(css, /\.calc__pill-face::before\s*\{[^}]*background:\s*var\(--grad\)/);
+  assert.match(css, /\.calc__pill-input:checked \+ \.calc__pill-face\s*\{[^}]*color:\s*var\(--accent-ink\)/);
 });

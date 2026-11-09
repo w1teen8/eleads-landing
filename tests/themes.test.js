@@ -64,9 +64,11 @@ test('заголовки — широкий капс Unbounded', () => {
   assert.match(h, /text-transform:\s*uppercase/);
 });
 
-test('фон: звёзды и зерно; зерно движется только transform-ом статичной текстуры', () => {
+// T23 (H14): «фон всей страницы #070C18 одним слоем» — звёзды облика Aether убраны, как на выбранном первом экране B
+test('фон: один слой --bg и зерно; звёзд нет; зерно движется только transform-ом статичной текстуры', () => {
   const base = strip(read('src/styles/base.css'));
-  assert.match(base, /var\(--star\)/, 'нет звёзд');
+  assert.doesNotMatch(base, /var\(--star\)/, 'звёзды');
+  assert.match(base, /body\s*\{[^}]*background:\s*var\(--bg\)/);
   const grain = [...base.matchAll(/@keyframes\s+([\w-]+)\s*\{((?:[^{}]*\{[^{}]*\})*[^{}]*)\}/g)].find(([, name]) => /grain/.test(name));
   assert.ok(grain, 'нет анимации зерна');
   for (const [, prop] of grain[2].matchAll(/([a-z-]+)\s*:/g)) assert.equal(prop, 'transform');
@@ -91,13 +93,15 @@ test('шапка, загрузка с полосой, подвал и ленты
   }
 });
 
-test('шапка как у Aether: ссылки слева, логотип по центру, справа UA/EN и пилюля «Написати» в Telegram', () => {
+// T23 (H16): «И не надо подписывать это все» — ссылок-разделов в шапке нет, разделы — в меню-бургере
+test('шапка: слева логотип, справа UA/EN и пилюля «Написати» в Telegram; ссылок-разделов нет', () => {
   const html = read('index.html');
   const header = html.match(/<header\b[\s\S]*?<\/header>/)[0];
   const bar = header.split(/<div class="menu"/)[0];
-  const order = ['header__nav', 'logo', 'lang-switch', 'header__cta'].map((cls) => bar.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
+  const order = ['logo', 'lang-switch', 'header__cta'].map((cls) => bar.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
   for (const i of order) assert.ok(i > -1);
-  assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок: ссылки → логотип → язык → кнопка');
+  assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок: логотип → язык → кнопка');
+  assert.doesNotMatch(bar, /header__nav|header__link/);
   assert.match(bar, /class="btn btn--pill[^"]*header__cta"[^>]*href="\{\{config\.telegramUrl\}\}"/);
 });
 

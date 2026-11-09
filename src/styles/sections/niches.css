@@ -1,21 +1,14 @@
-/* 03 Ніші (T20, reference/wireframe-03-nishi.png) — синее продолжение первого экрана и блока 02 (--v4-* из tokens.css).
-   Обычная прокрутка, без переходов (H11). Восемь карточек 4×2: белые с синей точкой, восьмая «Інша ніша?» — тёмно-синяя
-   (--bg = --ink палитры канала, #070C18), ссылка в Telegram. Наведение — лёгкий наклон к курсору (transform).
-   Двигаются только transform и opacity. */
+/* 03 Ніші (T20; T23 — палитра канала и формат «один экран»). Обычная прокрутка, без переходов (H11). Восемь карточек
+   4×2: тёмные поверхности с тонкой светлой границей и жёлтой точкой, восьмая «Інша ніша?» — жёлто-оранжевая с тёмным
+   текстом, ссылка в Telegram. Фон — фон страницы. Наведение — лёгкий наклон к курсору (transform). На широком экране
+   блок — ровно экран под шапкой: высота карточек и кегль — от высоты окна (svh). Двигаются только transform и opacity. */
 
 .section--niches {
   --niches-gap: clamp(0.75rem, 1.1vw, 1.25rem);
   --niches-pad: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
-  --niches-card-ink: color-mix(in srgb, var(--v4-ink) 70%, var(--paper));
-  isolation: isolate;
-  overflow: clip;
-  padding-block: clamp(6.5rem, 4rem + 6vw, 11rem) clamp(3rem, 2rem + 3vw, 5.5rem);
-  /* зеркально блоку 02: светлое пятно справа сверху */
-  background:
-    radial-gradient(55% 45% at 88% 0%, color-mix(in srgb, var(--v4-bg-light) 90%, transparent), transparent 72%),
-    radial-gradient(40% 40% at 6% 100%, color-mix(in srgb, var(--v4-bg-deep) 80%, transparent), transparent 70%),
-    linear-gradient(188deg, var(--v4-bg-edge) 0%, var(--v4-bg) 38%, var(--v4-bg-mid) 78%, var(--v4-bg-deep) 100%);
-  color: var(--paper);
+  overflow-x: clip;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
+  color: var(--text);
 }
 
 /* — шапка: метка-пилюля и заголовок, подзаголовок — */
@@ -33,40 +26,44 @@
 .niches__eyebrow {
   justify-self: start;
   padding: 0.6em 1.15em;
-  border: 1px solid color-mix(in srgb, var(--paper) 34%, transparent);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--paper) 12%, transparent);
+  background: color-mix(in srgb, var(--text) 4%, transparent);
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
   font-weight: 500;
   letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
-  color: var(--paper);
+  color: var(--text);
+}
+
+.niches__eyebrow::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .section--niches .display.section__title {
-  max-width: 22ch;
-  font-family: var(--font-body);
-  font-size: clamp(2rem, 1.1rem + 3vw, 4.75rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.025em;
-  text-transform: none;
-  color: var(--paper);
+  max-width: none;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
-/* хвост заголовка — голубым, как «Ads» первого экрана */
-.section--niches .display__accent {
-  display: inline;
-  background: none;
-  color: var(--v4-sky);
-}
+/* хвост заголовка — второй строкой, жёлтый → оранжевый (градиент и строка — из components.css .display__accent) */
 
 .niches__lead {
   max-width: 62ch;
   font-size: clamp(1rem, 0.9rem + 0.4vw, 1.3125rem);
   line-height: 1.5;
-  color: color-mix(in srgb, var(--paper) 88%, transparent);
+  color: color-mix(in srgb, var(--text) 82%, transparent);
 }
 
 /* — карточки — */
@@ -90,14 +87,13 @@
   align-content: start;
   gap: 0.6rem;
   width: 100%;
-  /* ниже на невысоком экране: на 1366×768 блок целиком помещается в экран */
   min-height: min(clamp(8.5rem, 6rem + 6vw, 13rem), 17svh);
   padding: var(--niches-pad);
   padding-right: calc(var(--niches-pad) + 1.25rem);
   border-radius: var(--r-card-lg);
-  background: var(--paper);
-  color: var(--v4-ink);
-  box-shadow: 0 18px 50px var(--v4-shadow);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
   transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
   transition: transform var(--dur) var(--ease-out);
 }
@@ -109,7 +105,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--v4-accent);
+  background: var(--accent);
 }
 
 /* название ниши: перенос только по пробелам — «Investments» не рвётся посреди слова */
@@ -122,33 +118,33 @@
   text-transform: none;
   overflow-wrap: normal;
   hyphens: manual;
-  color: var(--v4-ink);
+  color: var(--text);
 }
 
 .niches__examples {
   font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1.0625rem);
   line-height: 1.45;
-  color: var(--niches-card-ink);
+  color: var(--text-muted);
 }
 
-/* «Інша ніша?» — тёмно-синяя карточка-ссылка; жёлтая точка — единственный тёплый акцент блока */
+/* «Інша ніша?» — жёлто-оранжевая карточка-ссылка с тёмным текстом; тёмная точка и тёмный кружок-стрелка */
 .niches__card--other {
   gap: 0.75rem;
-  background: var(--bg);
-  color: var(--paper);
-  box-shadow: 0 18px 50px color-mix(in srgb, var(--bg) 40%, transparent);
+  background: var(--grad);
+  border-color: transparent;
+  color: var(--accent-ink);
 }
 
 .niches__card--other .niches__dot {
-  background: var(--accent);
+  background: var(--accent-ink);
 }
 
 .niches__card--other .niches__name {
-  color: var(--paper);
+  color: var(--accent-ink);
 }
 
 .niches__card--other .niches__examples {
-  color: color-mix(in srgb, var(--paper) 86%, var(--bg));
+  color: color-mix(in srgb, var(--accent-ink) 82%, transparent);
 }
 
 .niches__cta {
@@ -160,7 +156,7 @@
   font-weight: 700;
   font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.125rem);
   white-space: nowrap;
-  color: var(--paper);
+  color: var(--accent-ink);
 }
 
 .niches__arrow {
@@ -170,7 +166,8 @@
   width: 2.1em;
   height: 2.1em;
   border-radius: 50%;
-  background: var(--v4-accent);
+  background: var(--accent-ink);
+  color: var(--accent);
   transition: transform var(--dur) var(--ease-out);
 }
 
@@ -185,7 +182,7 @@
 }
 
 .niches__card--other:focus-visible {
-  outline: 2px solid var(--paper);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -237,17 +234,30 @@
   }
 }
 
-/* невысокий широкий экран (1366×768): плотнее по вертикали, блок целиком помещается в экран */
-@media (min-width: 900px) and (max-height: 820px) {
+/* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна — всё по высоте окна — */
+@media (min-width: 900px) and (orientation: landscape) {
   .section--niches {
-    padding-block: 6.25rem 2.5rem;
+    --niches-pad: clamp(1rem, 3.4svh, 2.25rem);
+    padding-block: var(--screen-pad);
   }
 
   .niches__top {
-    margin-bottom: 1.5rem;
+    margin-bottom: clamp(1rem, 3.2svh, 3rem);
+  }
+
+  .niches__head {
+    gap: clamp(0.75rem, 1.6svh, 1.5rem);
   }
 
   .section--niches .display.section__title {
-    font-size: clamp(2rem, 1rem + 2.6vw, 3.5rem);
+    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
+  }
+
+  .niches__card {
+    min-height: clamp(7.5rem, 24svh, 15rem);
+  }
+
+  .niches__name {
+    font-size: clamp(1.125rem, min(0.85rem + 1vw, 3.6svh), 2rem);
   }
 }

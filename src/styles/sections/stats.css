@@ -1,20 +1,15 @@
-/* 02 Telegram у цифрах (T19, reference/wireframe-02-telegram-v-cifrah.png) — синее продолжение первого экрана
-   (--v4-* из tokens.css). Обычная прокрутка под первым экраном, без наезда (H11). Bento: главная цифра
-   крупно на две строки, две белые карточки с синими цифрами, тёмно-синяя акцентная (--bg = --ink палитры канала, #070C18) — последней.
-   Шрифт заголовка и цифр — как у первого экрана (Onest 700/800, без капса). Двигаются только transform и opacity. */
+/* 02 Telegram у цифрах (T19; T23 — палитра канала и формат «один экран»). Bento: главная цифра крупно на две строки,
+   две карточки с цифрами, акцентная жёлто-оранжевая карточка с тёмным текстом — последней. Карточки — тёмные
+   поверхности с тонкой светлой границей, цифры — жёлтый → оранжевый; фон — фон страницы (свой блок не рисует).
+   На широком экране блок — ровно экран под шапкой (layout.css): размеры цифр, карточек и отступов — от высоты окна
+   (svh), так что от метки до сноски всё видно на 1920×1080 и 1903×937. Двигаются только transform и opacity. */
 
 .section--stats {
   --stats-gap: clamp(0.75rem, 1.1vw, 1.25rem);
-  --stats-card-ink: color-mix(in srgb, var(--v4-ink) 74%, var(--paper));
-  isolation: isolate;
-  overflow: clip;
-  /* сверху — место под фиксированную шапку */
-  padding-block: clamp(6.5rem, 4rem + 6vw, 11rem) clamp(3rem, 2rem + 3vw, 5.5rem);
-  background:
-    radial-gradient(55% 45% at 12% 0%, color-mix(in srgb, var(--v4-bg-light) 90%, transparent), transparent 72%),
-    radial-gradient(40% 40% at 92% 100%, color-mix(in srgb, var(--v4-bg-deep) 80%, transparent), transparent 70%),
-    linear-gradient(172deg, var(--v4-bg-edge) 0%, var(--v4-bg) 38%, var(--v4-bg-mid) 78%, var(--v4-bg-deep) 100%);
-  color: var(--paper);
+  --stats-pad: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+  overflow-x: clip;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
+  color: var(--text);
 }
 
 /* — шапка блока: метка-пилюля и заголовок слева, вкладки справа — */
@@ -32,36 +27,40 @@
 .stats__eyebrow {
   justify-self: start;
   padding: 0.6em 1.15em;
-  border: 1px solid color-mix(in srgb, var(--paper) 34%, transparent);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--paper) 12%, transparent);
+  background: color-mix(in srgb, var(--text) 4%, transparent);
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
   font-weight: 500;
   letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
-  color: var(--paper);
+  color: var(--text);
+}
+
+.stats__eyebrow::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .section--stats .display.section__title {
-  max-width: 22ch;
-  font-family: var(--font-body);
-  font-size: clamp(2rem, 1.1rem + 3vw, 4.75rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.025em;
-  text-transform: none;
-  color: var(--paper);
+  max-width: none;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
-/* хвост заголовка — голубым, как «Ads» первого экрана (крупный текст: контраст ≥ 3) */
-.section--stats .display__accent {
-  display: inline;
-  background: none;
-  color: var(--v4-sky);
-}
+/* хвост заголовка — второй строкой, жёлтый → оранжевый (градиент и строка — из components.css .display__accent) */
 
-/* — вкладки: белая «каретка» уезжает transform-ом под активную — */
+/* — вкладки: акцентная «каретка» уезжает transform-ом под активную — */
 .stats__tabs {
   --tab: 0;
   position: relative;
@@ -69,9 +68,9 @@
   display: inline-grid;
   grid-template-columns: 1fr 1fr;
   padding: 5px;
-  border: 1px solid color-mix(in srgb, var(--paper) 38%, transparent);
+  border: 1px solid var(--line-strong);
   border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--v4-bg-deep) 35%, transparent);
+  background: var(--surface);
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   letter-spacing: var(--tracking-mono);
@@ -85,8 +84,7 @@
   left: 5px;
   width: calc(50% - 5px);
   border-radius: var(--r-pill);
-  background: var(--paper);
-  box-shadow: 0 6px 18px var(--v4-shadow);
+  background: var(--grad);
   transform: translateX(calc(var(--tab) * 100%));
   transition: transform var(--dur) var(--ease-out);
 }
@@ -99,15 +97,15 @@
   padding: 0 1.4rem;
   border-radius: var(--r-pill);
   font-weight: 600;
-  color: var(--paper);
+  color: var(--text);
 }
 
 .stats__tab[aria-selected='true'] {
-  color: var(--v4-bg);
+  color: var(--accent-ink);
 }
 
 .stats__tab:focus-visible {
-  outline: 2px solid var(--paper);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -124,11 +122,11 @@
   align-content: start;
   gap: 0.85rem;
   min-width: 0;
-  padding: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+  padding: var(--stats-pad);
   border-radius: var(--r-card-lg);
-  background: var(--paper);
-  color: var(--v4-ink);
-  box-shadow: 0 18px 50px var(--v4-shadow);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
 }
 
 .stats__card--main,
@@ -136,22 +134,42 @@
   grid-column: 1 / -1;
 }
 
+/* цифры — жёлтый → оранжевый по ширине самой цифры. Пока идёт табло (flipSwap: внутри две строки-span под маской),
+   градиент несут сами строки — у узла его снимаем, иначе текст в движущихся слоях пропадает */
 .stats__value {
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-size: clamp(2rem, 1.3rem + 2.6vw, 4.25rem);
-  line-height: 0.95;
-  letter-spacing: -0.035em;
+  width: fit-content;
+  max-width: 100%;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-head);
+  font-weight: 900;
+  font-size: clamp(2.75rem, 1.6rem + 3.4vw, 5.5rem);
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: uppercase;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  color: var(--v4-bg);
+}
+
+.stats__value:has(> span) {
+  background: none;
+}
+
+.stats__value > span {
+  width: fit-content;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .stats__label {
   max-width: 34ch;
   font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1.0625rem);
   line-height: 1.45;
-  color: var(--stats-card-ink);
+  color: var(--text-muted);
 }
 
 /* главная цифра — крупно, подпись прижата к низу карточки */
@@ -161,63 +179,62 @@
 }
 
 .stats__card--main .stats__value {
-  font-size: clamp(4.5rem, 2rem + 11vw, 13rem);
-  letter-spacing: -0.055em;
+  font-size: clamp(5.5rem, 2.5rem + 12vw, 16rem);
   line-height: 0.85;
 }
 
 .stats__card--main .stats__label {
   max-width: 30ch;
   font-size: clamp(1rem, 0.85rem + 0.5vw, 1.375rem);
-  color: var(--v4-ink);
+  color: color-mix(in srgb, var(--text) 86%, transparent);
 }
 
-/* тёмная акцентная: «UA» / «Що рекламуємо»; жёлтая точка — единственный тёплый акцент блока */
+/* акцентная: «UA» / «Що рекламуємо» — жёлто-оранжевая с тёмным текстом; тёмная точка — метка карточки */
 .stats__card--accent {
   align-content: space-between;
-  background: var(--bg);
-  color: var(--paper);
-  box-shadow: 0 18px 50px color-mix(in srgb, var(--bg) 40%, transparent);
+  background: var(--grad);
+  border-color: transparent;
+  color: var(--accent-ink);
 }
 
 .stats__card--accent::after {
   content: '';
   position: absolute;
-  top: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
-  right: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+  top: var(--stats-pad);
+  right: var(--stats-pad);
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--accent-ink);
 }
 
 .stats__tag {
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-size: clamp(3rem, 2rem + 4vw, 6.5rem);
+  font-family: var(--font-head);
+  font-weight: 900;
+  font-size: clamp(3.5rem, 2rem + 5vw, 8rem);
   line-height: 0.9;
-  letter-spacing: -0.04em;
-  color: var(--paper);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--accent-ink);
 }
 
 .stats__tag--sm {
-  font-size: clamp(1.375rem, 1.1rem + 1vw, 2.25rem);
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 3rem);
+  line-height: 1;
 }
 
 .stats__text {
   max-width: 40ch;
   font-size: clamp(1rem, 0.9rem + 0.4vw, 1.3125rem);
   line-height: 1.45;
-  color: color-mix(in srgb, var(--paper) 88%, var(--bg));
+  color: color-mix(in srgb, var(--accent-ink) 84%, transparent);
 }
 
 .stats__text--list {
   font-weight: 700;
   font-size: clamp(1.125rem, 0.95rem + 0.7vw, 1.75rem);
   line-height: 1.3;
-  color: var(--v4-sky);
+  color: var(--accent-ink);
 }
 
 .stats__footnote {
@@ -225,7 +242,7 @@
   margin-top: clamp(1.25rem, 2.5vw, 2.25rem);
   font-size: var(--fs-xs);
   line-height: 1.6;
-  color: color-mix(in srgb, var(--paper) 84%, transparent);
+  color: var(--text-muted);
 }
 
 /* — широкий экран: bento 12 колонок — */
@@ -269,6 +286,60 @@
 
   .stats__tabs {
     justify-self: end;
+  }
+}
+
+/* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна — всё по высоте окна — */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--stats {
+    --stats-pad: clamp(1rem, 3.4svh, 2.25rem);
+    padding-block: var(--screen-pad);
+  }
+
+  .stats__top {
+    margin-bottom: clamp(1rem, 3.2svh, 3rem);
+  }
+
+  .stats__head {
+    gap: clamp(0.75rem, 1.6svh, 1.5rem);
+  }
+
+  .section--stats .display.section__title {
+    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
+  }
+
+  .stats__tab {
+    min-height: clamp(38px, 4.8svh, 46px);
+  }
+
+  .stats__card {
+    gap: clamp(0.5rem, 1.4svh, 0.85rem);
+  }
+
+  .stats__card--a,
+  .stats__card--b,
+  .stats__card--accent {
+    min-height: clamp(8.5rem, 25svh, 17rem);
+  }
+
+  .stats__value {
+    font-size: clamp(2.75rem, min(1.6rem + 3.4vw, 9svh), 5.5rem);
+  }
+
+  .stats__card--main .stats__value {
+    font-size: clamp(5.5rem, min(2.5rem + 12vw, 27svh), 16rem);
+  }
+
+  .stats__tag {
+    font-size: clamp(3.5rem, min(2rem + 5vw, 11svh), 8rem);
+  }
+
+  .stats__tag--sm {
+    font-size: clamp(1.75rem, min(1.3rem + 1.6vw, 4.4svh), 3rem);
+  }
+
+  .stats__footnote {
+    margin-top: clamp(0.75rem, 2.2svh, 2.25rem);
   }
 }
 
