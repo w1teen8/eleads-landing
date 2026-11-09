@@ -315,7 +315,7 @@
   min-width: 0;
   margin: 0;
   padding: var(--calc-bubble-pad) var(--calc-bubble-pad) calc(var(--calc-bubble-pad) + 0.5rem);
-  border-radius: 26px 26px 26px 6px;
+  border-radius: 26px;
   background: var(--surface-2);
   border: 1px solid var(--line);
   color: var(--text);
@@ -323,50 +323,28 @@
   isolation: isolate;
 }
 
-.calc__from {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: clamp(0.75rem, 1.2vw, 1.125rem);
-}
 
-.calc__avatar {
-  display: grid;
-  flex: none;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--grad);
-  color: var(--accent-ink);
-  font-family: var(--font-body);
-  font-size: 1.125rem;
-  font-weight: 800;
-}
 
-.calc__from-text {
-  display: grid;
-  gap: 0.1rem;
-  min-width: 0;
-}
 
-.calc__bot-name {
-  font-size: var(--fs-base);
-  font-weight: 700;
-  color: var(--accent);
-}
 
-.calc__bot-tag {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35em;
-  font-size: var(--fs-xs);
-  color: var(--calc-soft);
-}
 
 /* плашка демо-коэффициентов — часть подписи бота */
-.calc__demo::before {
-  content: '· ';
+
+.calc__forecast-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: clamp(0.75rem, 1.6svh, 1.25rem);
+}
+
+.calc__panel-title {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(1.5rem, 3.2svh, 2rem);
+  line-height: 0.95;
 }
 
 .calc__intro {
@@ -509,13 +487,6 @@
   transform: translate(2px, -2px);
 }
 
-.calc__time {
-  position: absolute;
-  right: 1.25rem;
-  bottom: 0.75rem;
-  font-size: var(--fs-xs);
-  color: color-mix(in srgb, var(--text) 45%, transparent);
-}
 
 
 
@@ -566,14 +537,7 @@
     --calc-bubble-pad: clamp(1rem, 3.2svh, 2.125rem);
   }
 
-  .calc__from {
-    margin-bottom: clamp(0.5rem, 1.9svh, 1.125rem);
-  }
 
-  .calc__avatar {
-    width: clamp(34px, 4.5svh, 42px);
-    height: clamp(34px, 4.5svh, 42px);
-  }
 
   .calc__intro {
     margin-bottom: clamp(0.5rem, 1.9svh, 1.125rem);

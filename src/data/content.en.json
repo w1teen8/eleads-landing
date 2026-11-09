@@ -261,8 +261,7 @@
     "geo": "GEO",
     "goal": "Goal",
     "budget": "Budget",
-    "forecastTitle": "eLeads Forecast",
-    "demoBadge": "demo coefficients",
+    "forecastTitle": "Estimated forecast",
     "funnelLabel": "Campaign funnel",
     "steps": {
       "impressions": "Impressions",
@@ -281,11 +280,6 @@
       "arrow": "→"
     },
     "live": "Forecast for {budget}: impressions {impressions}, clicks {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}.",
-    "bot": {
-      "avatar": "e",
-      "tag": "bot",
-      "time": "9:41"
-    },
     "intro": "With a {budget} budget for the {niche} niche {geo}, roughly:",
     "introGeo": {
       "ua": "in Ukraine",

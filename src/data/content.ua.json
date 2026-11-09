@@ -260,8 +260,7 @@
     "geo": "GEO",
     "goal": "Ціль",
     "budget": "Бюджет",
-    "forecastTitle": "eLeads Forecast",
-    "demoBadge": "демо-коефіцієнти",
+    "forecastTitle": "Орієнтовний прогноз",
     "funnelLabel": "Воронка кампанії",
     "steps": {
       "impressions": "Покази",
@@ -280,11 +279,6 @@
       "arrow": "→"
     },
     "live": "Прогноз на {budget}: покази {impressions}, кліки {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}.",
-    "bot": {
-      "avatar": "e",
-      "tag": "бот",
-      "time": "9:41"
-    },
     "intro": "За бюджету {budget} для ніші {niche} {geo} орієнтовно:",
     "introGeo": {
       "ua": "в Україні",

@@ -86,12 +86,10 @@ export function init(root) {
     intro: $('[data-calc-intro]', root),
     goalStep: $('[data-calc-goal-step]', root),
     live: $('[data-calc-live]', root),
-    demo: $('[data-calc-demo]', root),
     cta: $('[data-calc-cta]', root),
     lo: Object.fromEntries(METRICS.map((k) => [k, $(`[data-calc-lo="${k}"]`, root)])),
     hi: Object.fromEntries(METRICS.map((k) => [k, $(`[data-calc-hi="${k}"]`, root)])),
   };
-  if (nodes.demo) nodes.demo.hidden = rates.demo !== true;
 
   buildPills(form, options, state);
   range.min = '0';

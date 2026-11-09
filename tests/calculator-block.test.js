@@ -62,7 +62,7 @@ test('H11: переходов по прокрутке нет — без наез
 test('T28: клавиатура бота слева, пузырь сообщения справа; фраза из параметров — шаблон в обоих словарях', () => {
   const flat = css.replace(/\/\*[\s\S]*?\*\//g, '');
   assert.match(flat, /\.calc__keys\s*\{[^}]*grid-template-columns:\s*repeat\(2,/, 'клавиши — в два столбца');
-  assert.match(flat, /\.calc__bubble\s*\{[^}]*border-radius:\s*26px 26px 26px 6px/, 'пузырь сообщения с «хвостом»');
+  assert.match(flat, /\.calc__bubble\s*\{[^}]*border-radius:\s*26px/, 'панель прогноза');
   assert.match(flat, /\.calc__cell--big\s*\{[^}]*grid-column:\s*1 \/ -1/, 'строка цели — во всю ширину');
   assert.match(flat, /\.calc__cell--big \.calc__cell-value\s*\{[^}]*background:\s*var\(--grad\)/, 'строка цели — акцентом');
   assert.match(flat, /\.calc__cta\s*\{[^}]*color:\s*var\(--accent\)/, 'inline-кнопка Telegram');
@@ -77,14 +77,15 @@ test('T28: клавиатура бота слева, пузырь сообщен
   const odoAll = flat.match(/\.calc \.odo__char,\s*\.calc \.odo__strip\s*\{([^}]*)\}/)?.[1] || '';
   assert.match(odoAll, /background:\s*none/);
   assert.match(odoAll, /color:\s*inherit/, 'обычные цифры — цветом текста');
-  // разметка: клавиши, строка бюджета, пузырь — аватар, имя, подпись бота, фраза, сетка, кнопка, время
+  // разметка: клавиши, строка бюджета, панель прогноза — заголовок, демо-плашка, фраза, сетка, кнопка (без аватара/подписи бота/времени — «это сайт, а не сообщение бота», 2026-11-10)
   assert.equal(count(calc, /<div class="calc__keys" data-calc-options>/g), 3);
   assert.match(calc, /<div class="calc__budget">[\s\S]*calc__budget-label[\s\S]*calc__range[\s\S]*data-calc-budget-value/);
   assert.match(calc, /<div class="calc__bubble" role="group" aria-labelledby="calc-forecast-title">/);
-  for (const key of ['bot.avatar', 'forecastTitle', 'bot.tag', 'demoBadge', 'cta.label', 'bot.time']) {
+  for (const key of ['forecastTitle', 'cta.label']) {
     assert.match(calc, new RegExp(`data-i18n="calculator\.${key.replace('.', '\.')}"`), key);
   }
   assert.match(calc, /<p class="calc__intro" data-calc-intro><\/p>/);
+  assert.doesNotMatch(calc, /calc__avatar|calc__from|calc__bot-|calc__time|calculator\.bot\.|calc__demo|demoBadge/);
   assert.match(calc, /<dl class="calc__grid">[\s\S]*calc__cell--big[^>]*data-calc-step="conversions"[\s\S]*data-calc-goal-step/);
   assert.match(calc, /class="calc__cta"[^>]*data-place="calculator" data-calc-cta/);
   assert.doesNotMatch(calc, /calc__step|calc__funnel|calc__money/);
@@ -94,8 +95,7 @@ test('T28: клавиатура бота слева, пузырь сообщен
   for (const dict of [readJson('src/data/content.ua.json'), readJson('src/data/content.en.json')]) {
     for (const ph of ['{budget}', '{niche}', '{geo}']) assert.ok(dict.calculator.intro.includes(ph), `intro без ${ph}`);
     assert.deepEqual(Object.keys(dict.calculator.introGeo).sort(), ['ua', 'worldwide']);
-    assert.equal(dict.calculator.forecastTitle, 'eLeads Forecast');
-    assert.equal(dict.calculator.bot.time, '9:41');
+    assert.ok(!dict.calculator.bot, 'ключей бота больше нет');
   }
 });
 
