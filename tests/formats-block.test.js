@@ -22,13 +22,13 @@ test('блок 04 включён и стоит в списке по порядк
   assert.doesNotMatch(out.match(/<section\b[^>]*\sid="formats"[^>]*>/)[0], /\shidden/);
 });
 
-// T27: три формата — вкладки, примеры — на экране одного телефона, лайтбокс — одна кнопка на экране (tests/formats-phone.test.js)
-test('три формата 01–03 с подписями из вайрфрейма; примеры канал / медиа / бот и кнопка лайтбокса', () => {
+// T27: три формата — вкладки, примеры — на экране одного телефона; лайтбокса нет (tests/formats-phone.test.js)
+test('три формата 01–03 с подписями из вайрфрейма; примеры канал / медиа / бот на экране телефона', () => {
   assert.deepEqual(ua.formats.items.map((i) => i.title), ['У Telegram-каналах', 'У відео / медіаконтенті', 'У ботах']);
   assert.equal(ua.formats.eyebrow, undefined, 'метки-номера блока нет (правка клиента, T25)');
   assert.equal(ua.formats.title, 'Як ваша реклама виглядатиме в Telegram');
   assert.equal(count(formats, /class="formats__item"/g), 3);
-  assert.equal(count(formats, /data-lightbox-open/g), 1);
+  assert.equal(count(formats, /data-lightbox-open/g), 0);
   for (const kind of ['channel', 'video', 'bot']) assert.match(formats, new RegExp(`class="tg-ad tg-ad--${kind}[ "]`), kind);
   assert.doesNotMatch(formats, /formats\.placeholder/, 'пример собран, плашки «placeholder» нет');
 });
@@ -48,21 +48,20 @@ test('реклама MONOLIT — тексты вайрфрейма в слова
   }
 });
 
-test('H11: у блока нет переходов по прокрутке — ни наезда, ни лесенки, ни ревилов; лайтбокс по клику остаётся', () => {
+test('H11: у блока нет переходов по прокрутке — ни наезда, ни лесенки, ни ревилов', () => {
   const js = read('src/sections/formats.js');
   for (const fn of ['stackReveal', 'stagger']) assert.doesNotMatch(js, new RegExp(`\\b${fn}\\(`), fn);
   assert.equal(count(formats, /data-reveal/g), 0, 'содержимое видно сразу');
   assert.doesNotMatch(js, /gsap|ScrollTrigger/);
   assert.doesNotMatch(read('src/styles/sections/formats.css'), /\.section--formats\s*\{[^}]*border-radius/, 'скругление «карточки стопки» снято');
-  assert.match(js, /showModal/);
 });
 
-// T23 (H14), T27: телефон и экран — в палитре канала (тёмный экран, поверхности чуть светлее, акценты вместо синего),
+// T23 (H14), T27: телефон — в палитре канала (металлический бортик — смеси палитры, обои экрана — производные --bg),
 // сами макеты остаются похожими на Telegram
-test('облик: рамка и экран телефона — тёмные поверхности палитры; макеты похожи на Telegram', () => {
+test('облик: рамка телефона — градиент из палитры, экран — обои; макеты похожи на Telegram', () => {
   const css = read('src/styles/sections/formats.css');
-  assert.match(css, /\.phone\s*\{[^}]*background:\s*var\(--surface/);
-  assert.match(css, /\.phone__screen\s*\{[^}]*background:\s*var\(--bg\)/);
+  assert.match(css, /\.phone\s*\{[^}]*background:\s*linear-gradient\(/, 'металлический бортик');
+  assert.match(css, /\.phone__screen\s*\{[^}]*background-color:\s*var\(--phone-wall-2\)/, 'обои экрана');
   assert.doesNotMatch(css, /\.formats__shot\b/, 'прежних рамок-скриншотов нет');
   for (const part of ['tg-ad__card', 'tg-ad__ad', 'tg-ad__title', 'tg-ad__btn']) assert.match(css, new RegExp(`\\.${part}\\b`), part);
 });

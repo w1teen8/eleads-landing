@@ -107,15 +107,7 @@ test('нет выдуманных фактов: отзывы и посты бе�
   assert.equal(ua.reviews.items[2].name, 'Відгук 3');
 });
 
-test('лайтбокс форматов закрывается по Esc, клику вне и кнопке, возвращает фокус и блокирует скролл', () => {
-  const src = read('src/sections/formats.js');
-  assert.match(src, /'cancel'/);
-  assert.match(src, /e\.target === dialog/);
-  assert.match(src, /data-lightbox-close/);
-  assert.match(src, /lockScroll\(true\)/);
-  assert.match(src, /lockScroll\(false\)/);
-  assert.match(src, /opener\?\.focus/);
-});
+// T27: лайтбокс форматов убран по правке пользователя — телефон не кликабелен (tests/formats-phone.test.js)
 
 test('процесс: секция закрепляется через gsap.matchMedia (пин пересоздаётся при resize), линия прорисовки есть в разметке', () => {
   const src = read('src/sections/process.js');

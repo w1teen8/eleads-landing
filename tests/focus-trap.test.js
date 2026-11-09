@@ -39,8 +39,9 @@ test('trapFocus: Tab с последнего — на первый, Shift+Tab с
   assert.equal(press().defaultPrevented, false, 'после отписки ловушки нет');
 });
 
-test('шапка, кейсы и форматы используют trapFocus, своего кода Tab-ловушки в секциях нет', () => {
-  for (const name of ['header', 'cases', 'formats']) {
+// T27: у форматов лайтбокса больше нет (телефон не кликабелен) — trapFocus там не нужен
+test('шапка и кейсы используют trapFocus, своего кода Tab-ловушки в секциях нет', () => {
+  for (const name of ['header', 'cases']) {
     const src = read(`src/sections/${name}.js`);
     assert.match(src, /trapFocus\(/, `${name}.js не зовёт trapFocus`);
     assert.doesNotMatch(src, /['"]Tab['"]/, `${name}.js сам ловит Tab`);

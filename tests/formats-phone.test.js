@@ -54,18 +54,28 @@ test('вкладки: role=tablist, три role=tab 01–03 с aria-controls/ari
   assert.doesNotMatch(formats, /<h3\b/, 'внутри кнопки-вкладки заголовков нет (phrasing content)');
 });
 
-test('переключение: наведение мыши, клик, стрелки и Home/End; смена экрана ≈350 мс только transform/opacity, при reduced — сразу', () => {
+test('переключение: наведение мыши, клик, стрелки и Home/End; смена экрана 600–700 мс, кроссфейд, только transform/opacity, при reduced — сразу', () => {
   assert.match(js, /pointerenter/, 'наведение переключает вкладку');
   assert.match(js, /pointerType\s*===\s*'mouse'/, 'наведение — только мышь, не тач');
   assert.match(js, /ArrowDown|ArrowRight/);
   assert.match(js, /'Home'/);
   assert.match(js, /aria-selected/);
-  assert.match(js, /SWAP_MS\s*=\s*350/);
+  const ms = Number(js.match(/SWAP_MS\s*=\s*(\d+)/)[1]);
+  assert.ok(ms >= 600 && ms <= 700, `SWAP_MS = ${ms}`);
+  assert.match(js, /cubic-bezier\(0\.22, 1, 0\.36, 1\)/, 'кривая easing-out');
   assert.match(js, /\breduced\b/);
-  // кадры смены экрана — только transform и opacity
-  for (const [, frames] of js.matchAll(/\.animate\(\s*\[([\s\S]*?)\]/g)) {
-    for (const [, prop] of frames.matchAll(/\b([a-zA-Z]+)\s*:/g)) assert.ok(['transform', 'opacity'].includes(prop), `кадр: ${prop}`);
+  assert.match(js, /translateX\(/, 'лента уезжает в сторону порядка вкладок');
+  assert.match(js, /\.reverse\(\)/, 'быстрое переключение разворачивает текущую анимацию, а не стартует новую');
+  assert.match(js, /fill:\s*'both'/, 'панели перекрываются на время смены — без чёрного кадра');
+  // кадры смены экрана — только transform и opacity; двигаются лента и низ, шапка чата только проявляется
+  const framesFn = js.slice(js.indexOf('function frames('), js.indexOf('return anims;'));
+  const keyframes = [...framesFn.matchAll(/\[\{[\s\S]*?\}\]/g)];
+  assert.ok(keyframes.length >= 3, 'кадры заданы в frames()');
+  for (const [block] of keyframes) {
+    for (const [, prop] of block.matchAll(/\b([a-zA-Z]+)\s*:/g)) assert.ok(['transform', 'opacity'].includes(prop), `кадр: ${prop}`);
   }
+  for (const part of ['phone__feed', 'phone__bottom', 'phone__chat']) assert.match(framesFn, new RegExp(part), part);
+  assert.doesNotMatch(framesFn, /phone__status|phone__panel\b/, 'строка состояния и панель целиком не двигаются');
   // появлений по прокрутке и других эффектов нет
   for (const fn of ['stackReveal', 'stagger', 'flipSwap']) assert.doesNotMatch(js, new RegExp(`\\b${fn}\\(`), fn);
   assert.doesNotMatch(js, /gsap|ScrollTrigger|IntersectionObserver/);
@@ -124,26 +134,37 @@ test('ключи интерфейса телефона в обоих слова�
   assert.equal(ua.formats.phone.message, 'Повідомлення');
   assert.equal(ua.formats.phone.time, '9:41');
   assert.equal(en.formats.phone.sponsored, 'Sponsored');
-  // строки под блоком не тронуты
-  assert.equal(ua.formats.hint, 'Натисніть на скриншот, щоб збільшити приклад.');
-  assert.equal(ua.formats.caption, 'Реальні приклади розміщень клієнта MONOLIT');
-  assert.match(formats, /data-i18n="formats\.hint"/);
-  assert.match(formats, /data-i18n="formats\.caption"/);
+  // строк под блоком нет (правка пользователя): ни ключей, ни разметки
+  for (const dict of [ua, en]) for (const key of ['hint', 'caption', 'open', 'close']) assert.equal(dict.formats[key], undefined, key);
+  assert.doesNotMatch(formats, /formats__foot|formats\.hint|formats\.caption/);
 });
 
-test('лайтбокс: одна кнопка на экране телефона, открывает макет текущей вкладки; остальное как раньше', () => {
-  assert.equal(count(formats, /data-lightbox-open/g), 1);
-  const phone = formats.slice(formats.indexOf('class="phone'), formats.indexOf('<dialog'));
-  assert.match(phone, /data-lightbox-open/, 'кнопка — внутри телефона');
-  assert.match(js, /:not\(\[hidden\]\)/, 'берётся макет открытой панели');
-  assert.match(js, /showModal/);
-  assert.match(js, /trapFocus\(/);
-  assert.match(formats, /<dialog class="lightbox"[^>]*data-lenis-prevent/);
+test('телефон не кликабелен: лайтбокса, лупы и <dialog> в блоке нет (правка пользователя)', () => {
+  assert.doesNotMatch(formats, /data-lightbox|<dialog|phone__zoom|formats__zoom|aria-haspopup/);
+  assert.doesNotMatch(js, /lightbox|showModal|lockScroll|trapFocus/);
+  assert.doesNotMatch(css, /lightbox|zoom|cursor:\s*zoom/);
 });
 
 test('оформление: телефон в палитре (без своих цветов), размер от высоты окна, экран масштабируется контейнерными единицами; на телефоне — пилюли', () => {
   assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b|rgba?\(/i, 'цвета — только переменные');
   assert.match(css, /\.phone\s*\{[^}]*aspect-ratio/, 'рамка держит пропорции экрана');
+  // корпус как у мокапов: металлический бортик градиентом, чёрная кромка, кнопки на торцах, блик на стекле, свет палитры снизу
+  assert.match(css, /\.phone\s*\{[^}]*background:\s*linear-gradient\(/, 'металлический бортик');
+  assert.match(css, /\.phone\s*\{[^}]*inset 0 -1px 1px color-mix\(in srgb, var\(--accent-2\)/, 'отражённый свет палитры на нижней грани');
+  assert.match(css, /\.phone__screen\s*\{[^}]*box-shadow:\s*0 0 0 [\d.]+cqw var\(--phone-rim\)/, 'чёрная кромка под бортиком');
+  for (const key of ['mute', 'up', 'down', 'power']) assert.match(formats, new RegExp(`class="phone__key phone__key--${key}"`), key);
+  assert.match(formats, /class="phone__glare"/);
+  assert.match(css, /\.phone__glare\s*\{[^}]*pointer-events:\s*none/);
+  // обои экрана как в Telegram: градиент сине-серых тонов от --bg (oklch) и свой узор-дудлы одним SVG, без анимации
+  assert.match(css, /\.phone__screen\s*\{[^}]*background-image:\s*url\("data:image\/svg\+xml,/, 'узор — одна SVG-картинка');
+  assert.equal(count(css, /url\("data:image\/svg\+xml/g), 1, 'узор один');
+  assert.match(css, /oklch\(from var\(--bg\)/, 'тона обоев — производные палитры');
+  const svg = css.match(/url\("(data:image\/svg\+xml,[^"]+)"\)/)[1];
+  assert.doesNotMatch(svg, /%23|#/, 'в узоре нет литералов цвета');
+  assert.ok(count(svg, /%3Cpath/g) >= 6, 'несколько разных значков');
+  assert.match(svg, /rotate\(/, 'значки с поворотами');
+  assert.doesNotMatch(css, /\.phone__feed\s*\{[^}]*background/, 'лента прозрачна поверх обоев');
+  for (const part of ['phone__status', 'phone__chat', 'phone__bottom']) assert.match(css, new RegExp(`\\.${part}\\s*\\{[^}]*background:\\s*var\\(--phone-bar\\)`), `${part}: подложка`);
   assert.match(css, /\d(?:\.\d+)?cqw/, 'содержимое экрана — от ширины телефона');
   assert.match(css, /container-type:\s*(size|inline-size)/);
   assert.match(css, /\d(?:\.\d+)?svh/, 'высота — от окна');

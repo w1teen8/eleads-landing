@@ -3,18 +3,16 @@
 // Вкладки (role=tablist): наведение мышью, клик/тап, стрелки, Home/End — выбирают формат; экран телефона меняет
 // панель коротким сдвигом с проявлением (SWAP_MS, только transform/opacity — реакция на действие, в духе «табло»
 // motion-kit → flipSwap). При reduced-motion / ?nomotion=1 — мгновенно.
-// Клик по экрану открывает макет открытой панели крупно в лайтбоксе (нативный <dialog>): Esc, клик вне, кнопка;
-// фокус возвращается на открывавшую кнопку; фон не скроллится (lockScroll — Lenis на паузе).
-import { $, $$, on, trapFocus } from '../core/dom.js';
+// Телефон не кликабелен: лайтбокса нет (правка пользователя).
+import { $, $$, on } from '../core/dom.js';
 import { onLangChange } from '../core/i18n.js';
 import { accentTitles } from '../core/title-accent.js';
-import { lockScroll, reduced } from '../core/motion.js';
+import { reduced } from '../core/motion.js';
 
-const CLOSE_MS = 240;
-/** Смена экрана телефона: короче «табло» (600 мс) — экран отвечает на наведение сразу. */
-export const SWAP_MS = 350;
+/** Смена экрана телефона — как смена экрана в Telegram/iOS: мягко, с перекрытием панелей (кроссфейд). */
+export const SWAP_MS = 650;
 const SWAP_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'; // = --ease-out
-const SWAP_SHIFT = '6%';
+const SWAP_SHIFT = 9; // % ширины: лента уезжает в сторону порядка вкладок, новая въезжает с противоположной
 
 /* ——— вкладки форматов и панели экрана ——— */
 function initTabs(root) {
@@ -23,46 +21,79 @@ function initTabs(root) {
   const panels = $$('[data-formats-panel]', root);
   const note = $('[data-formats-note]', root);
   if (!bar || !tabs.length || !panels.length) return;
-  const leaving = new Map(); // панель → анимация ухода (чтобы быстрый пробег мышью не оставлял полуспрятанных панелей)
+  const canAnimate = !reduced && typeof Element.prototype.animate === 'function';
+  // панель → { dir: 'in' | 'out', anims } — текущая смена; при быстром переключении анимация разворачивается
+  // назад (reverse), а не стартует заново — без хвостов и чёрных кадров
+  const moving = new Map();
+  const index = (panel) => panels.indexOf(panel);
+  let shownIndex = Math.max(0, index(panels.find((p) => !p.hidden)));
 
-  function hideLater(panel) {
-    if (panel.hidden || leaving.has(panel)) return;
-    if (reduced || typeof panel.animate !== 'function') {
-      panel.hidden = true;
-      return;
-    }
-    const out = panel.animate(
-      [{ transform: 'none', opacity: 1 }, { transform: `translateY(-${SWAP_SHIFT})`, opacity: 0 }],
-      { duration: SWAP_MS, easing: SWAP_EASE, fill: 'both' },
-    );
-    leaving.set(panel, out);
-    out.finished.then(
-      () => {
-        if (leaving.get(panel) !== out) return;
-        leaving.delete(panel);
-        panel.hidden = true;
-        out.cancel();
-      },
-      () => {},
-    );
+  function settle(panel) {
+    const state = moving.get(panel);
+    if (!state) return;
+    moving.delete(panel);
+    if (state.dir === 'out') panel.hidden = true;
+    for (const anim of state.anims) anim.cancel();
+    panel.style.zIndex = '';
+  }
+
+  function watch(panel, state) {
+    moving.set(panel, state);
+    Promise.all(state.anims.map((anim) => anim.finished)).then(() => settle(panel), () => {});
+  }
+
+  /** Шапка чата и строка состояния на месте: двигается только лента, низ и подпись шапки меняются кроссфейдом. */
+  function frames(panel, dir, sign) {
+    const timing = { duration: SWAP_MS, easing: SWAP_EASE, fill: 'both' };
+    const feed = $('.phone__feed', panel);
+    const bottom = $('.phone__bottom', panel);
+    const chat = $('.phone__chat', panel);
+    const fade = dir === 'in' ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 1 }, { opacity: 0 }];
+    const slide =
+      dir === 'in'
+        ? [{ transform: `translateX(${-sign * SWAP_SHIFT}%)`, opacity: 0 }, { transform: 'translateX(0)', opacity: 1 }]
+        : [{ transform: 'translateX(0)', opacity: 1 }, { transform: `translateX(${sign * SWAP_SHIFT}%)`, opacity: 0 }];
+    const anims = [];
+    if (feed) anims.push(feed.animate(slide, timing));
+    if (bottom) anims.push(bottom.animate(fade, timing));
+    // уходящая шапка остаётся непрозрачной под въезжающей — название не мигает, меняется только подпись
+    if (chat && dir === 'in') anims.push(chat.animate(fade, timing));
+    return anims;
   }
 
   function show(next) {
-    for (const panel of panels) if (panel !== next) hideLater(panel);
-    const back = leaving.get(next);
-    if (back) {
-      // панель ещё уходила — возвращаем её на место без повторного въезда
-      leaving.delete(next);
-      back.cancel();
+    const to = index(next);
+    const sign = to >= shownIndex ? -1 : 1; // 01→03 — влево, 03→01 — вправо
+    shownIndex = to;
+    for (const panel of panels) {
+      if (panel === next || panel.hidden) continue;
+      if (!canAnimate) {
+        panel.hidden = true;
+        continue;
+      }
+      const state = moving.get(panel);
+      if (state?.dir === 'out') continue;
+      if (state) {
+        // ещё въезжала — разворачиваем обратно
+        state.dir = 'out';
+        for (const anim of state.anims) anim.reverse();
+        continue;
+      }
+      watch(panel, { dir: 'out', anims: frames(panel, 'out', sign) });
+    }
+    const state = moving.get(next);
+    if (state) {
+      if (state.dir === 'out') {
+        state.dir = 'in';
+        for (const anim of state.anims) anim.reverse();
+      }
       return;
     }
     if (!next.hidden) return;
     next.hidden = false;
-    if (reduced || typeof next.animate !== 'function') return;
-    next.animate(
-      [{ transform: `translateY(${SWAP_SHIFT})`, opacity: 0 }, { transform: 'none', opacity: 1 }],
-      { duration: SWAP_MS, easing: SWAP_EASE },
-    );
+    if (!canAnimate) return;
+    next.style.zIndex = '1'; // въезжающая — поверх уходящей: кроссфейд низа и подписи шапки
+    watch(next, { dir: 'in', anims: frames(next, 'in', sign) });
   }
 
   const tabOf = (id) => tabs.find((tab) => tab.dataset.formatsTab === id);
@@ -107,55 +138,7 @@ function initTabs(root) {
   onLangChange(describe);
 }
 
-/* ——— лайтбокс ——— */
-function initLightbox(root) {
-  const dialog = $('[data-lightbox]', root);
-  const stage = $('[data-lightbox-stage]', root);
-  if (!dialog || !stage) return;
-  let opener = null;
-  let timer = 0;
-
-  function open(button) {
-    clearTimeout(timer);
-    opener = button;
-    // макет открытой панели телефона; без панелей — макет внутри самой кнопки
-    const example = $('[data-formats-panel]:not([hidden]) .tg-ad', root) || $('.tg-ad', button);
-    if (!example) return;
-    stage.replaceChildren(example.cloneNode(true));
-    if (typeof dialog.showModal === 'function') dialog.showModal();
-    else dialog.setAttribute('open', '');
-    lockScroll(true);
-    requestAnimationFrame(() => dialog.classList.add('is-open'));
-    $('[data-lightbox-close]', dialog).focus({ preventScroll: true });
-  }
-
-  function close() {
-    if (!dialog.open) return;
-    dialog.classList.remove('is-open');
-    const finish = () => {
-      if (typeof dialog.close === 'function') dialog.close();
-      else dialog.removeAttribute('open');
-      lockScroll(false);
-      opener?.focus({ preventScroll: true });
-    };
-    if (reduced) finish();
-    else timer = setTimeout(finish, CLOSE_MS);
-  }
-
-  for (const button of $$('[data-lightbox-open]', root)) on(button, 'click', () => open(button));
-  on($('[data-lightbox-close]', dialog), 'click', close);
-  on(dialog, 'cancel', (e) => {
-    e.preventDefault();
-    close();
-  });
-  on(dialog, 'click', (e) => {
-    if (e.target === dialog || e.target === stage) close();
-  });
-  trapFocus(dialog);
-}
-
 export function init(root) {
   accentTitles(root);
   initTabs(root);
-  initLightbox(root);
 }
