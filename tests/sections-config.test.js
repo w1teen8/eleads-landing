@@ -11,13 +11,16 @@ const config = readJson('src/data/config.json');
 const names = [...html.matchAll(/\sdata-section="([\w-]+)"/g)].map((m) => m[1]);
 const tagOf = (out, name) => out.match(new RegExp(`<[a-z]+\\b[^>]*\\sdata-section="${name}"[^>]*>`))[0];
 
-// T19: вернулся блок 02 «Telegram у цифрах»
-const ON = ['hero', 'stats'];
+// T19: вернулся блок 02 «Telegram у цифрах»; задача 3 — блоки 03… возвращаются по одному, по порядку страницы
+const ON = config.sections.enabled;
+const order = names.filter((n) => ON.includes(n));
 
 test('config.json: включены первый экран и блок 02; шапка и заставка — всегда; без списка включено всё', () => {
-  assert.deepEqual(config.sections, { enabled: ON });
+  assert.deepEqual(Object.keys(config.sections), ['enabled']);
+  assert.deepEqual(ON.slice(0, 2), ['hero', 'stats']);
+  assert.deepEqual(ON, order, 'список — по порядку секций в index.html, без лишних имён');
   assert.deepEqual(ALWAYS_ON, ['header', 'preloader']);
-  for (const name of ['niches', 'ribbons', 'calculator', 'footer']) assert.equal(isSectionEnabled(name, config), false, name);
+  for (const name of ['ribbons', 'footer']) assert.equal(isSectionEnabled(name, config), false, name);
   for (const name of ['hero', 'header', 'preloader']) assert.equal(isSectionEnabled(name, config), true, name);
   assert.equal(isSectionEnabled('stats', {}), true, 'без списка включено всё');
   assert.equal(isSectionEnabled('stats', { sections: { enabled: ['hero', 'stats'] } }), true);
@@ -33,9 +36,11 @@ test('сборка: выключенные секции и ссылки шапк
   const links = [...out.matchAll(/<li\b([^>]*)>\s*<a\b[^>]*\shref="#([\w-]+)"/g)];
   assert.ok(links.length > 10);
   for (const [, attrs, id] of links) assert.equal(/\shidden/.test(attrs), !ON.includes(id), `пункт #${id}`);
-  // в шапке нет видимых ссылок на выключенные секции — только Telegram
+  // в шапке нет видимых ссылок на выключенные секции
   const bar = out.match(/<header\b[\s\S]*?<div class="menu"/)[0];
-  for (const [, attrs] of bar.matchAll(/<li\b([^>]*)>\s*<a\b[^>]*class="header__link"/g)) assert.match(attrs, /\shidden/);
+  for (const [, attrs, id] of bar.matchAll(/<li\b([^>]*)>\s*<a\b[^>]*class="header__link"[^>]*href="#([\w-]+)"/g)) {
+    assert.equal(/\shidden/.test(attrs), !ON.includes(id), `шапка #${id}`);
+  }
   assert.doesNotMatch(out, /data-hero-on|data-hero-sections/);
   // включить обратно — одна строка
   assert.equal(disableSections(html, { sections: { enabled: names } }), html);

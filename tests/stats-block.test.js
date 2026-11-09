@@ -10,7 +10,7 @@ const stats = html.split(/<section\b[^>]*\sid="stats"/)[1].split('</section>')[0
 const count = (s, re) => (s.match(re) || []).length;
 
 test('блок 02 включён сразу после первого экрана; пункт меню #stats виден после сборки', () => {
-  assert.deepEqual(config.sections.enabled, ['hero', 'stats']);
+  assert.deepEqual(config.sections.enabled.slice(0, 2), ['hero', 'stats']);
   const out = disableSections(html, config);
   assert.doesNotMatch(out.match(/<section\b[^>]*\sid="stats"[^>]*>/)[0], /\shidden/);
   const item = out.match(/<li\b([^>]*)>\s*<a\b[^>]*href="#stats"/);
@@ -30,11 +30,13 @@ test('bento: в каждой вкладке главная цифра, две к
   assert.match(stats, /data-i18n="stats\.footnote"/);
 });
 
-test('движение блока — только из motion-kit: наезд, табло, лесенка; без собственных ревилов', () => {
+// H11: «убери все переходы которые сейчас есть» — без наезда на первый экран и без лесенки; табло — только на вкладках
+test('движение блока: табло на вкладках; без наезда, лесенки, докрутки и ревилов — карточки видны сразу', () => {
   const js = read('src/sections/stats.js');
   assert.match(js, /from '\.\.\/core\/motion-kit\.js'/);
-  for (const fn of ['stackReveal', 'flipSwap', 'stagger']) assert.match(js, new RegExp(`\\b${fn}\\(`), fn);
-  assert.equal(count(stats, /data-reveal/g), 0, 'ревил блока — stagger(), не [data-reveal]');
+  assert.match(js, /\bflipSwap\(/);
+  for (const fn of ['stackReveal', 'stagger', 'countTo']) assert.doesNotMatch(js, new RegExp(`\\b${fn}\\(`), fn);
+  assert.equal(count(stats, /data-reveal|data-stats-step|data-count/g), 0);
   assert.doesNotMatch(js, /gsap|ScrollTrigger/);
 });
 

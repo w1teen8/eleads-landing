@@ -1,26 +1,19 @@
 /* 02 Telegram у цифрах (T19, reference/wireframe-02-telegram-v-cifrah.png) — синее продолжение первого экрана
-   (--v4-* из tokens.css). Блок — следующая карточка стопки: скругление сверху и мягкая тень; на ≥900px наезжает на
-   первый экран (core/motion-kit.js → stackReveal; z-index над предыдущим ставит помощник). Bento: главная цифра
+   (--v4-* из tokens.css). Обычная прокрутка под первым экраном, без наезда (H11). Bento: главная цифра
    крупно на две строки, две белые карточки с синими цифрами, тёмно-синяя акцентная (--bg = --ink палитры канала, #070C18) — последней.
    Шрифт заголовка и цифр — как у первого экрана (Onest 700/800, без капса). Двигаются только transform и opacity. */
 
 .section--stats {
-  --stats-radius: clamp(24px, 2.8vw, 56px);
   --stats-gap: clamp(0.75rem, 1.1vw, 1.25rem);
   --stats-card-ink: color-mix(in srgb, var(--v4-ink) 74%, var(--paper));
   isolation: isolate;
   overflow: clip;
-  /* сверху — место под фиксированную шапку: после наезда верх блока стоит у верха экрана */
+  /* сверху — место под фиксированную шапку */
   padding-block: clamp(6.5rem, 4rem + 6vw, 11rem) clamp(3rem, 2rem + 3vw, 5.5rem);
-  border-radius: var(--stats-radius) var(--stats-radius) 0 0;
   background:
     radial-gradient(55% 45% at 12% 0%, color-mix(in srgb, var(--v4-bg-light) 90%, transparent), transparent 72%),
     radial-gradient(40% 40% at 92% 100%, color-mix(in srgb, var(--v4-bg-deep) 80%, transparent), transparent 70%),
     linear-gradient(172deg, var(--v4-bg-edge) 0%, var(--v4-bg) 38%, var(--v4-bg-mid) 78%, var(--v4-bg-deep) 100%);
-  /* мягкая тень над первым экраном и светлая кромка по скруглённому верху — край карточки читается на синем */
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--paper) 38%, transparent),
-    0 -28px 80px color-mix(in srgb, var(--bg) 55%, transparent);
   color: var(--paper);
 }
 
@@ -235,12 +228,8 @@
   color: color-mix(in srgb, var(--paper) 84%, transparent);
 }
 
-/* — широкий экран: блок не короче экрана (наезд накрывает первый экран целиком), bento 12 колонок — */
+/* — широкий экран: bento 12 колонок — */
 @media (min-width: 900px) {
-  .section--stats {
-    min-height: 100svh;
-  }
-
   .stats__panel {
     grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-template-rows: auto auto;

@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-09T13:25:30+02:00",
+  "updatedAt": "2026-11-09T13:25:31+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -940,9 +940,10 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "pending",
+      "status": "in-progress",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "startedAt": "2026-11-09T13:25:31+02:00"
     },
     {
       "id": "21",
@@ -971,9 +972,10 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "pending",
+      "status": "in-progress",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "startedAt": "2026-11-09T13:25:31+02:00"
     },
     {
       "id": "22",
@@ -1010,9 +1012,10 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "pending",
+      "status": "in-progress",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "startedAt": "2026-11-09T13:25:31+02:00"
     },
     {
       "id": "F1",
@@ -1233,9 +1236,10 @@ window.STATE =
     "2026-11-09T13:11:56+02:00",
     "2026-11-09T13:11:57+02:00",
     "2026-11-09T13:22:37+02:00",
-    "2026-11-09T13:25:30+02:00"
+    "2026-11-09T13:25:30+02:00",
+    "2026-11-09T13:25:31+02:00"
   ],
-  "rev": 125,
+  "rev": 126,
   "waiting": null,
   "waits": [
     {
@@ -2179,6 +2183,16 @@ window.STATE =
         "passed": 120,
         "failed": 0
       }
+    },
+    {
+      "t": "2026-11-09T13:25:31+02:00",
+      "k": "ticket",
+      "ids": [
+        "20",
+        "21",
+        "22"
+      ],
+      "act": "start"
     }
   ],
   "reqList": [

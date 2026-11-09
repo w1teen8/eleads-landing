@@ -242,10 +242,15 @@
     "mock": {
       "ad": "Ad",
       "title": "Currency exchange MONOLIT Sofia-Kyiv",
-      "body": "Planning an exchange? Then MONOLIT is for you. Sofia and Sofia Residence complexes. Addresses: Zhytnia 12 and Molodizhna 8. Anonymous and fast. Current rate in the channel",
-      "button": "VIEW"
+      "body": "Planning an exchange? 💱 Then",
+      "brand": "MONOLIT",
+      "bodyEnd": " is for you. Sofia and Sofia Residence complexes. Addresses: Zhytnia 12 and Molodizhna 8. Anonymous and fast. Current rate in the channel 👇",
+      "button": "VIEW",
+      "coverTop": "Sofia & Residence complexes",
+      "cover": "MONOLIT — CURRENCY",
+      "coverAccent": "EXCHANGE",
+      "coverEnd": "NEAR HOME"
     },
-    "placeholder": "screenshot — placeholder",
     "hint": "Click a screenshot to enlarge the example.",
     "open": "Enlarge screenshot",
     "close": "Close",

@@ -1,45 +1,20 @@
-// 02 Telegram у цифрах (T19) — синее продолжение первого экрана. Движение — только общий язык (core/motion-kit.js):
-//   глава   — stackReveal: блок наезжает на первый экран снизу, как следующая карточка стопки (≥900px);
-//   лесенка — stagger: шапка и вкладки, затем карточки по одной (тёмная акцентная — последней), при появлении
-//             цифры докручиваются (countTo);
-//   табло   — flipSwap: вкладки Україна / Worldwide (role=tablist, стрелки, Home/End) меняют тексты карточек —
-//             старое уезжает вверх, новое въезжает снизу под маской.
+// 02 Telegram у цифрах (T19) — синее продолжение первого экрана. Движение (H11): переходов по прокрутке нет —
+//   блок идёт обычной прокруткой под первым экраном, карточки и цифры видны сразу;
+//   табло — flipSwap (core/motion-kit.js) только как ответ на действие: вкладки Україна / Worldwide (role=tablist,
+//             стрелки, Home/End) меняют тексты карточек — старое уезжает вверх, новое въезжает снизу под маской.
 import { $, $$, on } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
-import { t, getLang } from '../core/i18n.js';
-import { countTo, formatInt } from '../core/format.js';
-import { stackReveal, flipSwap, stagger } from '../core/motion-kit.js';
+import { t } from '../core/i18n.js';
+import { flipSwap } from '../core/motion-kit.js';
 
-// «81%», «4 500», «1B+», «200+ GEO»: докручивается первое целое число, остальное — как в тексте
-const NUMBER = /\d[\d\s  ,]*/;
 /** Задержка табло между соседними строками карточек, мс — волна слева направо. */
 const FLIP_STEP_MS = 35;
 
-// Итоговая строка — всегда из словаря текущего языка: язык могли сменить посреди докрутки или табло.
+// Итоговая строка — всегда из словаря текущего языка: язык могли сменить посреди табло.
 function finalText(node) {
   const key = node.dataset.i18n;
   const value = key ? t(key) : null;
   return typeof value === 'string' && value !== key ? value : node.textContent;
-}
-
-function roll(node) {
-  const start = finalText(node);
-  node.textContent = start;
-  const match = start.match(NUMBER);
-  if (!match) return;
-  const target = Number(match[0].replace(/\D/g, ''));
-  if (!target) return;
-  const grouped = /[\s  ,]/.test(match[0].trim());
-  countTo(node, 0, target, {
-    duration: 1100,
-    format: (v) => {
-      const text = finalText(node);
-      const n = Math.round(v);
-      const m = text.match(NUMBER);
-      if (n >= target || !m) return text;
-      return text.replace(m[0], grouped ? formatInt(n, getLang()) : String(n));
-    },
-  });
 }
 
 export function init(root) {
@@ -94,16 +69,4 @@ export function init(root) {
   });
 
   select('ua', { animate: false });
-
-  // глава: наезд на первый экран
-  stackReveal(root);
-
-  // лесенка: шапка и вкладки; затем карточки открытой вкладки и сноска — цифры докручиваются при появлении
-  stagger($$('[data-stats-step]', $('.stats__top', root) || root), { trigger: root, start: 'top 70%' });
-  const first = panels.find((p) => !p.hidden);
-  const cards = first ? $$('.stats__card', first) : [];
-  stagger([...cards, $('.stats__footnote', host)], {
-    trigger: host,
-    onEach: (node) => $$('[data-count]', node).forEach(roll),
-  });
 }

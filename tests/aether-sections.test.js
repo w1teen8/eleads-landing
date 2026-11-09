@@ -34,40 +34,7 @@ test('splitTitle: делит заголовок на начало и акцен�
   assert.equal(splitTitle('Часті питання', ''), null);
 });
 
-test('ніші: планета и восемь круглых карточек орбиты (декор), «Інша ніша?» остаётся ссылкой в Telegram', () => {
-  const s = section('niches');
-  const orbit = s.match(/<div class="niches__orbit"[^>]*>/)?.[0];
-  assert.ok(orbit, 'нет .niches__orbit');
-  assert.match(orbit, /aria-hidden="true"/);
-  assert.match(s, /class="planet"/);
-  assert.equal(count(s, /class="niches__sat[ "]/g), 8);
-  assert.equal(count(s, /class="niches__sat niches__sat--other"/g), 1);
-  assert.match(s, /<a class="niches__card niches__card--other"[^>]*data-place="niches_other"/);
-});
-
-test('orbitPoint: эллипс, передняя половина крупнее и над планетой', async () => {
-  const { orbitPoint } = await import('../src/sections/niches.js');
-  const front = orbitPoint(Math.PI / 2, 300, 80);
-  const back = orbitPoint(-Math.PI / 2, 300, 80);
-  const side = orbitPoint(0, 300, 80);
-  assert.equal(Math.round(side.x), 300);
-  assert.equal(Math.round(side.y), 0);
-  assert.equal(Math.round(front.y), 80);
-  assert.equal(Math.round(back.y), -80);
-  assert.equal(front.front, true);
-  assert.equal(back.front, false);
-  assert.ok(front.scale > side.scale && side.scale > back.scale);
-  assert.ok(front.opacity === 1 && back.opacity < 1 && back.opacity > 0.3);
-});
-
-test('орбита вращается transform-ом в rAF, стоит вне экрана и при reduced-motion', () => {
-  const js = read('src/sections/niches.js');
-  assert.match(js, /requestAnimationFrame/);
-  assert.match(js, /IntersectionObserver/);
-  assert.match(js, /reduced/);
-  assert.match(js, /\.style\.transform\s*=/);
-  assert.doesNotMatch(js, /\.style\.(left|top|width|height)\s*=/);
-});
+// T20: орбита ниш заменена карточками-табло из общего языка движения — см. tests/niches-block.test.js
 
 // T19: «таймер» статистики заменён табло из общего языка движения (core/motion-kit.js → flipSwap) —
 // см. tests/stats-block.test.js и tests/stats-motion-kit.test.js

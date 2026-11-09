@@ -1,63 +1,112 @@
-/* 05 Калькулятор (overtake): секция без внешнего контейнера, на основе страницы; слева светлая панель
-   «Параметри кампанії», справа тёмный блок «Орієнтовний прогноз».
-   Цвета параметров — светлая поверхность темы, прогноза — тёмный блок (--block, --text-on-block).
-   Воронка — три ступени, ширина через transform: scaleX (её ставит calculator.js), числа — моно. */
+/* 05 Калькулятор (T22, reference/wireframe-05-calculator.png) — синее продолжение первого экрана, как блок 02
+   (--v4-* из tokens.css). Переходов по прокрутке нет (H11): блок идёт за предыдущим обычной прокруткой, всё видно сразу.
+   Слева белая панель «Параметри кампанії» (пилюли Ніша / GEO / Ціль, ползунок бюджета), справа тёмно-синяя
+   «Орієнтовний прогноз» (--bg = --ink палитры канала, #070C18): живая воронка «Покази → Кліки → Підписники»,
+   CTR между ступенями, CPC и CPA, CTA, дисклеймер. Ширина ступеней — transform: scaleX (ставит calculator.js).
+   Жёлтый — только плашка «демо-коефіцієнти». Двигаются только transform и opacity. */
 
 .section--calculator {
+  --calc-gap: clamp(0.75rem, 1.1vw, 1.25rem);
+  --calc-pad: clamp(1.25rem, 1rem + 1.4vw, 2.5rem);
+  --calc-ink-soft: color-mix(in srgb, var(--v4-ink) 70%, var(--paper));
+  --calc-on-dark-soft: color-mix(in srgb, var(--paper) 72%, var(--bg));
+  --calc-line-dark: color-mix(in srgb, var(--paper) 12%, transparent);
+  isolation: isolate;
   overflow: clip;
+  padding-block: clamp(3.5rem, 2rem + 4vw, 6.5rem) clamp(3rem, 2rem + 3vw, 5.5rem);
+  background:
+    radial-gradient(50% 45% at 88% 0%, color-mix(in srgb, var(--v4-bg-light) 90%, transparent), transparent 72%),
+    radial-gradient(45% 40% at 6% 100%, color-mix(in srgb, var(--v4-bg-deep) 80%, transparent), transparent 70%),
+    linear-gradient(176deg, var(--v4-bg-edge) 0%, var(--v4-bg) 40%, var(--v4-bg-mid) 80%, var(--v4-bg-deep) 100%);
+  color: var(--paper);
 }
 
+/* — шапка: метка-пилюля и заголовок (как у блока 02) — */
+.calc__head {
+  gap: clamp(0.9rem, 1.5vw, 1.5rem);
+  margin-bottom: clamp(1.5rem, 2.2vw, 2.5rem);
+}
+
+.calc__eyebrow {
+  justify-self: start;
+  padding: 0.6em 1.15em;
+  border: 1px solid color-mix(in srgb, var(--paper) 34%, transparent);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--paper) 12%, transparent);
+  font-weight: 500;
+  color: var(--paper);
+}
+
+.section--calculator .display.section__title {
+  max-width: 24ch;
+  font-family: var(--font-body);
+  font-size: clamp(2rem, 1.1rem + 2.7vw, 4.25rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  text-transform: none;
+  color: var(--paper);
+}
+
+.section--calculator .display__accent {
+  display: inline;
+  background: none;
+  color: var(--v4-sky);
+}
+
+/* — две панели — */
 .calc {
   display: grid;
-  gap: clamp(1rem, 2vw, 1.5rem);
+  gap: var(--calc-gap);
   align-items: stretch;
 }
 
 @media (min-width: 1000px) {
   .calc {
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
   }
 }
 
 .calc__panel-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.9rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
+  font-family: var(--font-body);
+  font-size: clamp(1.3rem, 1.05rem + 0.8vw, 1.875rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   text-transform: none;
-  line-height: 1.05;
 }
 
-/* ——— левая панель: параметры ——— */
+/* ——— левая панель: параметры (белая) ——— */
 .calc__params {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.5rem, 2.4vw, 2.1rem);
-  padding: clamp(1.25rem, 3vw, 2.75rem);
+  gap: clamp(1.25rem, 2vw, 1.9rem);
+  min-width: 0;
   margin: 0;
-  border: 1px solid var(--line);
+  padding: var(--calc-pad);
   border-radius: var(--r-card-lg);
-  background: var(--surface);
-  color: var(--text);
+  background: var(--paper);
+  color: var(--v4-ink);
+  box-shadow: 0 18px 50px var(--v4-shadow);
 }
 
 .calc__group {
+  min-width: 0;
   margin: 0;
   padding: 0;
   border: 0;
-  min-width: 0;
 }
 
 .calc__legend {
   display: block;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.75rem;
   padding: 0;
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--calc-ink-soft);
 }
 
 .calc__pills {
@@ -88,29 +137,28 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0 1.15rem;
-  border: 1px solid var(--line-strong);
+  min-height: 46px;
+  padding: 0 1.3rem;
   border-radius: var(--r-pill);
-  background: var(--surface-2);
-  color: var(--text);
-  font-weight: 500;
-  font-size: var(--fs-sm);
+  background: color-mix(in srgb, var(--v4-bg) 7%, var(--paper));
+  color: var(--v4-ink);
+  font-size: clamp(0.9375rem, 0.88rem + 0.2vw, 1.0625rem);
+  font-weight: 600;
   isolation: isolate;
   overflow: hidden;
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
-/* фирменный градиент выбранной пилюли — отдельный слой, меняется только opacity */
+/* выбранная — синяя заливка отдельным слоем: меняются только opacity и transform */
 .calc__pill-face::before {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: var(--block);
+  background: var(--v4-bg);
   opacity: 0;
-  transform: scale(0.92);
+  transform: scale(0.9);
   transition:
     opacity var(--dur) var(--ease-out),
     transform var(--dur) var(--ease-out);
@@ -122,13 +170,12 @@
 }
 
 .calc__pill:hover .calc__pill-face {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .calc__pill-input:checked + .calc__pill-face {
-  border-color: transparent;
-  color: var(--text-on-block);
-  font-weight: 600;
+  color: var(--paper);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--v4-bg) 30%, transparent);
 }
 
 .calc__pill-input:checked + .calc__pill-face::before {
@@ -137,7 +184,7 @@
 }
 
 .calc__pill-input:focus-visible + .calc__pill-face {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--v4-bg);
   outline-offset: 3px;
 }
 
@@ -145,7 +192,7 @@
 .calc__budget {
   margin-top: auto;
   padding-top: clamp(1.25rem, 2vw, 1.75rem);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid color-mix(in srgb, var(--v4-ink) 10%, transparent);
 }
 
 .calc__budget-head {
@@ -161,20 +208,20 @@
 }
 
 .calc__budget-value {
-  font-family: var(--font-mono);
-  font-size: clamp(1.9rem, 1.4rem + 2vw, 2.9rem);
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: clamp(2rem, 1.4rem + 2.2vw, 3.25rem);
+  font-weight: 800;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
-  color: var(--text);
+  color: var(--v4-bg);
 }
 
 .calc__range {
-  --thumb: 26px;
+  --thumb: 28px;
   position: relative;
   height: 44px;
-  margin-top: 1rem;
+  margin-top: 0.85rem;
 }
 
 .calc__range-track {
@@ -182,17 +229,17 @@
   top: 50%;
   left: calc(var(--thumb) / 2);
   right: calc(var(--thumb) / 2);
-  height: 4px;
-  margin-top: -2px;
+  height: 6px;
+  margin-top: -3px;
   border-radius: var(--r-pill);
-  background: var(--line-strong);
+  background: color-mix(in srgb, var(--v4-ink) 10%, var(--paper));
   overflow: hidden;
 }
 
 .calc__range-fill {
   position: absolute;
   inset: 0;
-  background: var(--grad);
+  background: linear-gradient(90deg, var(--v4-bg), var(--v4-accent));
   transform-origin: 0 50%;
   transform: scaleX(0.1);
 }
@@ -234,10 +281,10 @@
   width: var(--thumb);
   height: var(--thumb);
   margin-top: calc((44px - var(--thumb)) / 2);
-  border: 6px solid var(--accent);
+  border: 7px solid var(--v4-bg);
   border-radius: 50%;
-  background: var(--surface);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 28%, transparent);
+  background: var(--paper);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--v4-bg) 18%, transparent);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
@@ -245,10 +292,10 @@
   width: var(--thumb);
   height: var(--thumb);
   box-sizing: border-box;
-  border: 6px solid var(--accent);
+  border: 7px solid var(--v4-bg);
   border-radius: 50%;
-  background: var(--surface);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 28%, transparent);
+  background: var(--paper);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--v4-bg) 18%, transparent);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
@@ -263,12 +310,12 @@
 }
 
 .calc__range-input:focus-visible::-webkit-slider-thumb {
-  outline: 2px solid var(--text);
+  outline: 2px solid var(--v4-ink);
   outline-offset: 6px;
 }
 
 .calc__range-input:focus-visible::-moz-range-thumb {
-  outline: 2px solid var(--text);
+  outline: 2px solid var(--v4-ink);
   outline-offset: 6px;
 }
 
@@ -276,55 +323,43 @@
   display: flex;
   justify-content: space-between;
   margin-top: 0.35rem;
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--calc-ink-soft);
 }
 
-/* ——— правая панель: прогноз (тёмный блок) ——— */
+/* ——— правая панель: прогноз (тёмно-синяя) ——— */
 .calc__forecast {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: clamp(1.25rem, 2.2vw, 1.75rem);
-  padding: clamp(1.25rem, 3vw, 2.75rem);
+  gap: clamp(1rem, 1.4vw, 1.35rem);
+  min-width: 0;
   margin: 0;
+  padding: var(--calc-pad);
   border: 0;
   border-radius: var(--r-card-lg);
-  background: var(--block);
-  color: var(--text-on-block);
+  background: var(--bg);
+  color: var(--paper);
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--bg) 40%, transparent);
   isolation: isolate;
   overflow: hidden;
 }
 
-/* тёплое свечение: сила растёт с бюджетом (opacity ставит calculator.js) */
+/* синее свечение снизу справа: сила растёт с бюджетом (opacity ставит calculator.js) */
 .calc__glow {
   position: absolute;
   z-index: -1;
-  right: -20%;
-  bottom: -35%;
-  width: 80%;
+  right: -25%;
+  bottom: -40%;
+  width: 85%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent-2) 55%, transparent), color-mix(in srgb, var(--accent) 10%, transparent) 55%, transparent);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--v4-accent) 55%, transparent), color-mix(in srgb, var(--v4-bg) 12%, transparent) 60%, transparent);
   opacity: 0.45;
   pointer-events: none;
   transition: opacity var(--dur-slow) var(--ease-out);
-}
-
-.calc__forecast::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--text-on-block) 7%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--text-on-block) 7%, transparent) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(90% 70% at 70% 0%, var(--block), transparent 75%);
-  -webkit-mask-image: radial-gradient(90% 70% at 70% 0%, var(--block), transparent 75%);
-  opacity: 0.55;
-  pointer-events: none;
 }
 
 .calc__forecast-head {
@@ -335,19 +370,19 @@
   gap: 0.75rem 1rem;
 }
 
+/* плашка демо-коэффициентов — единственный тёплый акцент блока */
 .calc__demo {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
   padding: 0.35rem 0.75rem;
-  border: 1px dashed color-mix(in srgb, var(--accent) 60%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
   border-radius: var(--r-pill);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .calc__demo::before {
@@ -361,7 +396,7 @@
 /* воронка */
 .calc__funnel {
   display: grid;
-  gap: 0.35rem;
+  gap: 0.25rem;
   counter-reset: step;
 }
 
@@ -374,8 +409,8 @@
     'label value'
     'bar bar';
   align-items: baseline;
-  gap: 0.35rem 1rem;
-  padding-block: 0.4rem;
+  gap: 0.4rem 1rem;
+  padding-block: 0.25rem;
 }
 
 .calc__step-label {
@@ -384,11 +419,9 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.25rem 0.6rem;
-  font-family: var(--font-display);
-  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: -0.02em;
+  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.25rem);
+  font-weight: 600;
+  color: var(--paper);
 }
 
 .calc__step-label::before {
@@ -396,25 +429,23 @@
   content: '0' counter(step);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  font-weight: 400;
-  color: var(--text-on-block-muted);
+  font-weight: 500;
   letter-spacing: 0.08em;
+  color: var(--v4-sky);
 }
 
 .calc__step-meta {
-  font-family: var(--font-mono);
   font-size: var(--fs-xs);
-  font-weight: 400;
-  text-transform: none;
-  letter-spacing: 0.04em;
-  color: var(--text-on-block-muted);
+  font-weight: 500;
+  color: var(--calc-on-dark-soft);
 }
 
 .calc__step-value {
   grid-area: value;
-  font-family: var(--font-mono);
-  font-size: clamp(0.95rem, 0.85rem + 0.45vw, 1.2rem);
-  font-weight: 500;
+  font-size: clamp(1.25rem, 1rem + 0.9vw, 1.875rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   text-align: right;
@@ -423,7 +454,7 @@
 .calc__step-bar {
   grid-area: bar;
   display: block;
-  height: clamp(30px, 3.4vw, 42px);
+  height: clamp(24px, 2.2vw, 32px);
   border-radius: 10px;
   transform-origin: 50% 50%;
   transform: scaleX(1);
@@ -431,40 +462,42 @@
   will-change: transform;
 }
 
-/* три ступени одного фирменного градиента: чем ниже, тем плотнее */
-.calc__step--1 .calc__step-bar,
-.calc__step--2 .calc__step-bar,
-.calc__step--3 .calc__step-bar {
-  background: var(--grad);
-}
-
+/* три ступени синего первого экрана: чем ниже, тем ярче */
 .calc__step--1 .calc__step-bar {
-  opacity: 0.2;
+  background: linear-gradient(90deg, var(--v4-bg-deep), var(--v4-bg-mid));
 }
 
 .calc__step--2 .calc__step-bar {
-  opacity: 0.5;
+  background: linear-gradient(90deg, var(--v4-bg), var(--v4-accent));
 }
 
+.calc__step--3 .calc__step-bar {
+  background: linear-gradient(90deg, var(--v4-accent), var(--v4-sky));
+}
+
+/* CTR — пилюля между показами и кликами */
 .calc__rate {
   grid-area: rate;
   justify-self: center;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  margin-block: 0.1rem 0.25rem;
-  padding: 0.3rem 0.8rem;
-  border: 1px solid color-mix(in srgb, var(--text-on-block) 18%, transparent);
+  margin-block: 0.15rem 0.2rem;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--v4-sky) 35%, transparent);
   border-radius: var(--r-pill);
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  color: var(--text-on-block);
-  background: var(--block-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--paper);
+  background: color-mix(in srgb, var(--v4-bg) 22%, var(--bg));
 }
 
 .calc__rate-label {
-  color: var(--text-on-block-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
   letter-spacing: 0.1em;
+  color: var(--v4-sky);
 }
 
 .calc__rate-value {
@@ -477,95 +510,127 @@
   display: none;
 }
 
-/* табло денег */
+/* CPC и CPA */
 .calc__money {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 0;
-  border-top: 1px solid color-mix(in srgb, var(--text-on-block) 12%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--text-on-block) 12%, transparent);
+  border-top: 1px solid var(--calc-line-dark);
+  border-bottom: 1px solid var(--calc-line-dark);
 }
 
 .calc__money-item {
   display: grid;
-  gap: 0.5rem;
-  padding: 1.1rem 0;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.85rem 0;
 }
 
 .calc__money-item + .calc__money-item {
   padding-left: clamp(1rem, 2vw, 1.75rem);
-  border-left: 1px solid color-mix(in srgb, var(--text-on-block) 12%, transparent);
+  border-left: 1px solid var(--calc-line-dark);
 }
 
 .calc__money-label {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-on-block-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--calc-on-dark-soft);
 }
 
 .calc__money-value {
   margin: 0;
-  font-family: var(--font-mono);
-  font-size: clamp(1.3rem, 0.9rem + 1.6vw, 2.3rem);
-  font-weight: 500;
+  font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
+  font-weight: 800;
   line-height: 1.05;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .calc__money-item--accent .calc__money-value {
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--v4-sky);
 }
 
-.calc__cta {
+/* CTA — белая пилюля с синим кружком-стрелкой, как «Обговорити проєкт» первого экрана */
+.calc__cta.btn {
   align-self: flex-start;
+  background: var(--paper);
+  color: var(--v4-ink);
+  font-weight: 700;
+}
+
+.calc__cta.btn > .btn__arrow {
+  background: var(--v4-accent);
+  color: var(--paper);
+}
+
+.calc__cta.btn:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 3px;
 }
 
 .calc__disclaimer {
   max-width: 62ch;
   font-size: var(--fs-xs);
   line-height: 1.6;
-  color: var(--text-on-block-muted);
+  color: var(--calc-on-dark-soft);
 }
 
-/* строка «Не знайшли свою нішу?» */
+/* строка «Не знайшли свою нішу?» — на синем */
 .calc__note {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.3em;
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  display: block;
   max-width: 62rem;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
   font-size: var(--fs-lg);
-  color: var(--text-muted);
+  color: color-mix(in srgb, var(--paper) 86%, transparent);
 }
 
-/* ссылка на светлой основе: градиентный текст здесь не читался бы — сплошной текст с акцентным подчёркиванием */
 .calc__note-link {
-  color: var(--text);
-  font-weight: 600;
+  color: var(--paper);
+  font-weight: 700;
   text-decoration: underline;
-  text-decoration-color: var(--accent);
+  text-decoration-color: var(--v4-sky);
   text-decoration-thickness: 2px;
   text-underline-offset: 0.2em;
 }
 
 .calc__note-icon {
-  align-self: center;
+  display: inline-block;
+  vertical-align: -0.15em;
+  margin-left: 0.2em;
   width: 1.1em;
   height: 1.1em;
-  color: var(--text);
+  color: var(--paper);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .calc__note:hover .calc__note-icon,
 .calc__note:focus-visible .calc__note-icon {
   transform: translate(3px, -3px);
+}
+
+.calc__note:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+@media (min-width: 1100px) {
+  .section--calculator .display.section__title {
+    max-width: none;
+  }
+}
+
+@media (max-width: 599px) {
+  .calc__params,
+  .calc__forecast {
+    border-radius: var(--r-card);
+  }
+
+  .calc__pill-face {
+    min-height: 44px;
+    padding: 0 1rem;
+  }
 }
 
 @media (max-width: 519px) {
@@ -576,7 +641,7 @@
   .calc__money-item + .calc__money-item {
     padding-left: 0;
     border-left: 0;
-    border-top: 1px solid color-mix(in srgb, var(--text-on-block) 12%, transparent);
+    border-top: 1px solid var(--calc-line-dark);
   }
 
   .calc__step {
@@ -592,12 +657,8 @@
     text-align: left;
   }
 
-  .calc__cta {
+  .calc__cta.btn {
     align-self: stretch;
     white-space: normal;
-  }
-
-  .calc__pill-face {
-    padding: 0 0.95rem;
   }
 }

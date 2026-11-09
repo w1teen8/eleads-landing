@@ -1,16 +1,19 @@
-// 05 Калькулятор: пилюли ниши/GEO/цели и ползунок бюджета → живая воронка и табло денег.
-// Расчёт — чистая функция в calculator-model.js; здесь только DOM, докрутка и события.
+// 05 Калькулятор (T22): пилюли ниши/GEO/цели и ползунок бюджета → живая воронка и шесть показателей.
+// Расчёт — чистая функция в calculator-model.js; здесь только DOM, движение и события.
 // Ниши, GEO, цели, коэффициенты и шкала бюджета — только в src/data/calculator.json.
+// Движение (H11): переходов по прокрутке нет — блок и все числа видны сразу, без наезда и лесенки.
+// Двигается только ответ на ввод: смена любого показателя (и названия третьей ступени) — табло (flipSwap из
+// core/motion-kit.js): старое уезжает вверх, новое въезжает снизу; пока табло идёт, новое значение ждёт очереди —
+// при протяжке ползунка табло перещёлкивается раз в 600 мс и встаёт на последнее значение. Воронка — scaleX.
 import { $, $$, el, on } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
 import { t, getLang, onLangChange } from '../core/i18n.js';
-import { countTo, formatInt, formatMoney, formatRange } from '../core/format.js';
+import { formatInt, formatMoney, formatRange } from '../core/format.js';
 import { track } from '../core/analytics.js';
+import { flipSwap } from '../core/motion-kit.js';
 import rates from '../data/calculator.json';
 import { forecast, budgetScale, funnelWidths } from './calculator-model.js';
 
-const ROLL_MS = 350; // докрутка при изменении
-const ENTER_MS = 1100; // докрутка при первом входе в экран
 const LIVE_MS = 500; // aria-live — одной фразой после остановки
 const TRACK_MS = 600; // дебаунс calculator_change
 const GROUPS = { niche: 'niches', geo: 'geos', goal: 'goals' };
@@ -18,6 +21,30 @@ const METRICS = ['impressions', 'ctr', 'clicks', 'conversions', 'cpc', 'cpa'];
 
 const label = (opt, lang) => opt?.label?.[lang] ?? opt?.label?.ua ?? opt?.id ?? '';
 const pick = (options, id) => (options.some((o) => o.id === id) ? id : options[0]?.id);
+
+// табло с очередью: узел → { busy, pending }
+const boards = new WeakMap();
+
+/** Ставит text в node: animate — табло (flipSwap), иначе сразу; пока идёт табло, значение ждёт очереди. */
+function board(node, text, animate) {
+  let slot = boards.get(node);
+  if (!slot) boards.set(node, (slot = { busy: false, pending: null }));
+  if (slot.busy) {
+    slot.pending = text;
+    return;
+  }
+  if (!animate || node.textContent === text) {
+    node.textContent = text;
+    return;
+  }
+  slot.busy = true;
+  flipSwap(node, text).then(() => {
+    slot.busy = false;
+    const next = slot.pending;
+    slot.pending = null;
+    if (next != null && next !== node.textContent) board(node, next, true);
+  });
+}
 
 function nearestIndex(scale, value) {
   let best = 0;
@@ -65,12 +92,12 @@ export function init(root) {
   range.step = '1';
   range.value = String(state.index);
 
-  const shown = new WeakMap(); // узел → число, которое в нём сейчас стоит (для докрутки)
+  const shown = new WeakMap(); // узел → число, которое в нём сейчас стоит
   let lastIssues = '';
   let frame = 0;
   let liveTimer = 0;
   let trackTimer = 0;
-  let entered = false;
+  let touched = false; // пользователь уже менял параметры — aria-live говорит и после смены языка
 
   const budget = () => scale[state.index];
   const payload = () => ({ niche: state.niche, geo: state.geo, goal: state.goal, budget: budget() });
@@ -95,20 +122,21 @@ export function init(root) {
     };
   }
 
-  function paint(node, value, format, duration) {
+  /** mode: 'flip' — табло (ответ на ввод), 'set' — сразу (первый показ, смена языка). */
+  function paint(node, value, format, mode) {
     if (!node) return;
+    const from = shown.get(node);
     if (value == null) {
       shown.delete(node);
-      node.textContent = '—';
+      board(node, '—', mode === 'flip');
       return;
     }
-    const from = shown.get(node);
     shown.set(node, value);
-    countTo(node, from ?? value, value, { duration: from == null ? 0 : duration, format });
+    board(node, format(value), mode === 'flip' && from != null);
   }
 
-  /** Пересчитывает и перерисовывает всё; duration — длительность докрутки чисел. */
-  function render(duration = ROLL_MS) {
+  /** Пересчитывает и перерисовывает всё; mode — как меняются числа (см. paint). */
+  function render(mode = 'flip') {
     frame = 0;
     const lang = getLang();
     const fc = forecast({ ...payload() }, rates);
@@ -117,7 +145,7 @@ export function init(root) {
     if (issues && issues !== lastIssues) console.warn(`[calculator] src/data/calculator.json: ${issues}`);
     lastIssues = issues;
 
-    // бюджет и ползунок
+    // бюджет и ползунок — сразу: это ввод, а не показатель
     const text = budgetText(lang);
     if (nodes.budgetValue) nodes.budgetValue.textContent = text;
     range.setAttribute('aria-valuetext', text);
@@ -130,15 +158,15 @@ export function init(root) {
       const bar = nodes.bars[i];
       if (bar) bar.style.transform = `scaleX(${w.toFixed(4)})`;
     });
-    if (nodes.goalStep) nodes.goalStep.textContent = goalOption()?.step?.[lang] ?? label(goalOption(), lang);
+    if (nodes.goalStep) board(nodes.goalStep, goalOption()?.step?.[lang] ?? label(goalOption(), lang), mode === 'flip');
 
     // шесть показателей диапазонами
     const fmt = formatters(lang);
     for (const key of METRICS) {
       const value = fc[key];
       const [fLo, fHi] = fmt[key];
-      paint(nodes.lo[key], value?.lo, fLo, duration);
-      paint(nodes.hi[key], value?.hi ?? null, fHi, duration);
+      paint(nodes.lo[key], value?.lo, fLo, mode);
+      paint(nodes.hi[key], value?.hi ?? null, fHi, mode);
       nodes.lo[key]?.parentElement.classList.toggle('is-empty', value == null);
     }
     return fc;
@@ -164,8 +192,8 @@ export function init(root) {
   }
 
   function changed() {
-    entered = true;
-    if (!frame) frame = requestAnimationFrame(() => render(ROLL_MS));
+    touched = true;
+    if (!frame) frame = requestAnimationFrame(() => render('flip'));
     clearTimeout(liveTimer);
     liveTimer = setTimeout(speak, LIVE_MS);
     clearTimeout(trackTimer);
@@ -195,40 +223,8 @@ export function init(root) {
   };
   paintScale();
 
-  // первый показ: воронка и числа «набегают» от нуля, когда блок входит в экран
-  const enter = () => {
-    if (entered) return;
-    entered = true;
-    render(ENTER_MS);
-    speak();
-  };
-  const startFromZero = () => {
-    const fmt = formatters(getLang());
-    for (const key of METRICS) {
-      [nodes.lo[key], nodes.hi[key]].forEach((node, i) => {
-        if (!node || !shown.has(node)) return; // «—» остаётся «—»
-        shown.set(node, 0);
-        node.textContent = fmt[key][i](0);
-      });
-    }
-    for (const bar of nodes.bars) if (bar) bar.style.transform = 'scaleX(0.14)';
-  };
-  render(0);
-  if ('IntersectionObserver' in window) {
-    startFromZero();
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((e) => e.isIntersecting)) return;
-        io.disconnect();
-        // кадр, чтобы стартовая ширина ступеней успела примениться до перехода
-        requestAnimationFrame(() => requestAnimationFrame(enter));
-      },
-      { threshold: 0.25 },
-    );
-    io.observe($('.calc__forecast', root) || root);
-  } else {
-    enter();
-  }
+  // первый показ — сразу итоговые числа и ширина воронки: переходов по прокрутке нет (H11)
+  render('set');
 
   onLangChange((lang) => {
     for (const input of $$('.calc__pill-input', form)) {
@@ -237,8 +233,8 @@ export function init(root) {
       if (textNode) textNode.textContent = label(opt, lang);
     }
     paintScale();
-    render(0);
-    if (entered) speak();
+    render('set');
+    if (touched) speak();
   });
 }
 

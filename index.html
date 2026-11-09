@@ -299,16 +299,16 @@
       </section>
 
       <!-- 02 Telegram у цифрах (T19, reference/wireframe-02-telegram-v-cifrah.png): синее продолжение первого экрана,
-           наезжает на него снизу как следующая карточка стопки (core/motion-kit.js → stackReveal). Bento: главная цифра
+           обычная прокрутка (H11). Bento: главная цифра
            крупно, две карточки, тёмная акцентная последней; вкладки Україна / Worldwide меняют цифры «табло». -->
       <section id="stats" class="section section--stats" data-section="stats" aria-labelledby="stats-title">
         <div class="container">
           <div class="stats__top">
-            <div class="section__head stats__head" data-stats-step>
+            <div class="section__head stats__head">
               <p class="eyebrow stats__eyebrow" data-i18n="stats.eyebrow"></p>
               <h2 id="stats-title" class="display section__title" data-i18n="stats.title" data-title-accent="stats.titleAccent"></h2>
             </div>
-            <div class="stats__tabs" role="tablist" data-i18n-attr="aria-label:stats.tabsLabel" data-stats-step>
+            <div class="stats__tabs" role="tablist" data-i18n-attr="aria-label:stats.tabsLabel">
               <span class="stats__thumb" aria-hidden="true"></span>
               <button type="button" class="stats__tab" role="tab" id="stats-tab-ua" aria-controls="stats-panel-ua" aria-selected="true" tabindex="0" data-stats-tab="ua" data-i18n="stats.tabs.ua"></button>
               <button type="button" class="stats__tab" role="tab" id="stats-tab-ww" aria-controls="stats-panel-ww" aria-selected="false" tabindex="-1" data-stats-tab="ww" data-i18n="stats.tabs.ww"></button>
@@ -317,7 +317,7 @@
           <div class="stats" data-stats>
             <div class="stats__panel" role="tabpanel" id="stats-panel-ua" aria-labelledby="stats-tab-ua" data-stats-panel="ua">
               <article class="stats__card stats__card--main">
-                <p class="stats__value" data-count data-flip="0" data-i18n="stats.ua.main.value"></p>
+                <p class="stats__value" data-flip="0" data-i18n="stats.ua.main.value"></p>
                 <p class="stats__label" data-flip="1" data-i18n="stats.ua.main.label"></p>
               </article>
               <article class="stats__card stats__card--a">
@@ -325,7 +325,7 @@
                 <p class="stats__label" data-flip="3" data-i18n="stats.ua.age.label"></p>
               </article>
               <article class="stats__card stats__card--b">
-                <p class="stats__value" data-count data-flip="4" data-i18n="stats.ua.sample.value"></p>
+                <p class="stats__value" data-flip="4" data-i18n="stats.ua.sample.value"></p>
                 <p class="stats__label" data-flip="5" data-i18n="stats.ua.sample.label"></p>
               </article>
               <article class="stats__card stats__card--accent">
@@ -335,7 +335,7 @@
             </div>
             <div class="stats__panel" role="tabpanel" id="stats-panel-ww" aria-labelledby="stats-tab-ww" data-stats-panel="ww" hidden>
               <article class="stats__card stats__card--main">
-                <p class="stats__value" data-count data-flip="0" data-i18n="stats.ww.main.value"></p>
+                <p class="stats__value" data-flip="0" data-i18n="stats.ww.main.value"></p>
                 <p class="stats__label" data-flip="1" data-i18n="stats.ww.main.label"></p>
               </article>
               <article class="stats__card stats__card--a">
@@ -343,7 +343,7 @@
                 <p class="stats__label" data-flip="3" data-i18n="stats.ww.top.label"></p>
               </article>
               <article class="stats__card stats__card--b">
-                <p class="stats__value" data-count data-flip="4" data-i18n="stats.ww.geo.value"></p>
+                <p class="stats__value" data-flip="4" data-i18n="stats.ww.geo.value"></p>
                 <p class="stats__label" data-flip="5" data-i18n="stats.ww.geo.label"></p>
               </article>
               <article class="stats__card stats__card--accent">
@@ -351,123 +351,147 @@
                 <p class="stats__text stats__text--list" data-flip="7" data-i18n="stats.ww.what.text"></p>
               </article>
             </div>
-            <p class="stats__footnote" data-stats-step data-i18n="stats.footnote"></p>
+            <p class="stats__footnote" data-i18n="stats.footnote"></p>
           </div>
         </div>
       </section>
 
+      <!-- 03 Ніші (T20, reference/wireframe-03-nishi.png): синее продолжение блока 02, обычная прокрутка (H11).
+           Восемь карточек; восьмая — тёмная «Інша ніша?», ссылка в Telegram. -->
       <section id="niches" class="section section--niches" data-section="niches" aria-labelledby="niches-title">
         <div class="container">
-          <div class="section__head niches__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="niches.eyebrow"></p>
-            <h2 id="niches-title" class="display section__title" data-i18n="niches.title" data-title-accent="niches.titleAccent"></h2>
-          </div>
-          <p class="section__lead niches__lead" data-reveal data-i18n="niches.lead"></p>
-          <div class="niches__stage">
-          <div class="niches__orbit" aria-hidden="true" data-niches-orbit>
-            <span class="niches__path"></span>
-            <div class="planet">
-              <span class="planet__glow"></span>
-              <span class="planet__ring planet__ring--back"></span>
-              <span class="planet__body"></span>
-              <span class="planet__ring planet__ring--front"></span>
+          <div class="niches__top">
+            <div class="section__head niches__head">
+              <p class="eyebrow niches__eyebrow" data-i18n="niches.eyebrow"></p>
+              <h2 id="niches-title" class="display section__title" data-i18n="niches.title" data-title-accent="niches.titleAccent"></h2>
             </div>
-            <span class="niches__sat" style="--i: 0" data-niches-sat><span class="niches__sat-num">01</span></span>
-            <span class="niches__sat" style="--i: 1" data-niches-sat><span class="niches__sat-num">02</span></span>
-            <span class="niches__sat" style="--i: 2" data-niches-sat><span class="niches__sat-num">03</span></span>
-            <span class="niches__sat" style="--i: 3" data-niches-sat><span class="niches__sat-num">04</span></span>
-            <span class="niches__sat" style="--i: 4" data-niches-sat><span class="niches__sat-num">05</span></span>
-            <span class="niches__sat" style="--i: 5" data-niches-sat><span class="niches__sat-num">06</span></span>
-            <span class="niches__sat" style="--i: 6" data-niches-sat><span class="niches__sat-num">07</span></span>
-            <span class="niches__sat niches__sat--other" style="--i: 7" data-niches-sat><svg class="niches__sat-tg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg></span>
+            <p class="niches__lead" data-i18n="niches.lead"></p>
           </div>
-          <ul class="niches__grid" data-reveal="stagger">
-            <li class="niches__item"><article class="niches__card" data-niches-item="0">
-              <span class="niches__idx">01</span>
+          <ul class="niches__grid">
+            <li class="niches__item"><article class="niches__card" data-niches-card>
+              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.0.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.0.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-item="1">
-              <span class="niches__idx">02</span>
+            <li class="niches__item"><article class="niches__card" data-niches-card>
+              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.1.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.1.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-item="2">
-              <span class="niches__idx">03</span>
+            <li class="niches__item"><article class="niches__card" data-niches-card>
+              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.2.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.2.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-item="3">
-              <span class="niches__idx">04</span>
+            <li class="niches__item"><article class="niches__card" data-niches-card>
+              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.3.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.3.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-item="4">
-              <span class="niches__idx">05</span>
+            <li class="niches__item"><article class="niches__card" data-niches-card>
+              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.4.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.4.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-item="5">
-              <span class="niches__idx">06</span>
+            <li class="niches__item"><article class="niches__card" data-niches-card>
+              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.5.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.5.examples"></p>
             </article></li>
-            <li class="niches__item"><article class="niches__card" data-niches-item="6">
-              <span class="niches__idx">07</span>
+            <li class="niches__item"><article class="niches__card" data-niches-card>
+              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.items.6.name"></h3>
               <p class="niches__examples" data-i18n="niches.items.6.examples"></p>
             </article></li>
-            <li class="niches__item"><a class="niches__card niches__card--other" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="niches_other" data-niches-item="7">
-              <svg class="niches__tg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+            <li class="niches__item"><a class="niches__card niches__card--other" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="niches_other" data-niches-card>
+              <span class="niches__dot" aria-hidden="true"></span>
               <h3 class="niches__name" data-i18n="niches.other.name"></h3>
               <p class="niches__examples" data-i18n="niches.other.text"></p>
-              <span class="niches__cta"><span data-i18n="niches.other.cta"></span><span class="btn__arrow" aria-hidden="true" data-i18n="niches.other.arrow"></span></span>
+              <span class="niches__cta"><span data-i18n="niches.other.cta"></span><span class="niches__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></span>
             </a></li>
           </ul>
-          </div>
         </div>
       </section>
 
-      <section id="formats" class="section section--formats section--alt" data-section="formats" aria-labelledby="formats-title">
+      <!-- 04 Як виглядає реклама (T21, reference/wireframe-04-ad-formats.png): синий блок, три формата, без переходов
+           по прокрутке (H11). Примеры — реклама MONOLIT, собранная
+           в HTML/CSS по вайрфрейму (тексты — formats.mock.*); клик открывает пример крупно в лайтбоксе. -->
+      <section id="formats" class="section section--formats" data-section="formats" aria-labelledby="formats-title">
         <div class="container">
-          <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="formats.eyebrow"></p>
-            <h2 id="formats-title" class="display section__title" data-i18n="formats.title" data-title-accent="formats.titleAccent"></h2>
+          <div class="formats__top">
+            <div class="section__head formats__head">
+              <p class="eyebrow formats__eyebrow" data-i18n="formats.eyebrow"></p>
+              <h2 id="formats-title" class="display section__title" data-i18n="formats.title" data-title-accent="formats.titleAccent"></h2>
+            </div>
+            <p class="formats__lead" data-i18n="formats.lead"></p>
           </div>
-          <p class="section__lead formats__lead" data-reveal data-i18n="formats.lead"></p>
-          <ul class="formats__grid" data-reveal="stagger">
+          <ul class="formats__grid">
             <li class="formats__item">
-              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open"><span class="mock mock--channel"><span class="mock__bar" aria-hidden="true"><i></i><i></i><i></i></span><span class="mock__msg"><span class="mock__ad" data-i18n="formats.mock.ad"></span><strong class="mock__title" data-i18n="formats.mock.title"></strong><span class="mock__body" data-i18n="formats.mock.body"></span></span><span class="mock__lines" aria-hidden="true"><i></i><i></i></span><span class="mock__tag" data-i18n="formats.placeholder"></span></span>
+              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open">
+                <span class="tg-ad tg-ad--channel">
+                  <span class="tg-ad__card">
+                    <span class="tg-ad__head">
+                      <span class="tg-ad__meta"><span class="tg-ad__ad" data-i18n="formats.mock.ad"></span><strong class="tg-ad__title" data-i18n="formats.mock.title"></strong></span>
+                      <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
+                    </span>
+                    <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
+                    <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
+                  </span>
+                </span>
                 <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
               </button>
               <div class="formats__info">
-                <span class="formats__num text-grad" data-i18n="formats.items.0.num"></span>
+                <span class="formats__num" data-i18n="formats.items.0.num"></span>
                 <h3 class="formats__title" data-i18n="formats.items.0.title"></h3>
                 <p class="formats__text" data-i18n="formats.items.0.text"></p>
               </div>
             </li>
             <li class="formats__item">
-              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open"><span class="mock mock--video"><span class="mock__bar" aria-hidden="true"><i></i><i></i><i></i></span><span class="mock__media" aria-hidden="true"><span class="mock__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z" /></svg></span></span><span class="mock__msg"><span class="mock__ad" data-i18n="formats.mock.ad"></span><strong class="mock__title" data-i18n="formats.mock.title"></strong><span class="mock__btn" data-i18n="formats.mock.button"></span></span><span class="mock__tag" data-i18n="formats.placeholder"></span></span>
+              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open">
+                <span class="tg-ad tg-ad--video">
+                  <span class="tg-ad__cover" aria-hidden="true">
+                    <span class="tg-ad__time">0:00</span>
+                    <span class="tg-ad__cover-top" data-i18n="formats.mock.coverTop"></span>
+                    <span class="tg-ad__cover-title"><span data-i18n="formats.mock.cover"></span> <span class="tg-ad__cover-accent" data-i18n="formats.mock.coverAccent"></span> <span data-i18n="formats.mock.coverEnd"></span></span>
+                    <span class="tg-ad__coins"><i>$</i><i>€</i></span>
+                  </span>
+                  <span class="tg-ad__card">
+                    <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
+                    <strong class="tg-ad__title" data-i18n="formats.mock.title"></strong>
+                    <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
+                    <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
+                  </span>
+                </span>
                 <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
               </button>
               <div class="formats__info">
-                <span class="formats__num text-grad" data-i18n="formats.items.1.num"></span>
+                <span class="formats__num" data-i18n="formats.items.1.num"></span>
                 <h3 class="formats__title" data-i18n="formats.items.1.title"></h3>
                 <p class="formats__text" data-i18n="formats.items.1.text"></p>
               </div>
             </li>
             <li class="formats__item">
-              <button type="button" class="formats__shot" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open"><span class="mock mock--bot"><span class="mock__bar" aria-hidden="true"><i></i><i></i><i></i></span><span class="mock__bubble mock__bubble--in" aria-hidden="true"><i></i><i></i></span><span class="mock__bubble mock__bubble--out" aria-hidden="true"><i></i></span><span class="mock__msg"><span class="mock__ad" data-i18n="formats.mock.ad"></span><strong class="mock__title" data-i18n="formats.mock.title"></strong><span class="mock__body" data-i18n="formats.mock.body"></span></span><span class="mock__tag" data-i18n="formats.placeholder"></span></span>
+              <button type="button" class="formats__shot formats__shot--dark" aria-haspopup="dialog" data-lightbox-open data-i18n-attr="aria-label:formats.open">
+                <span class="tg-ad tg-ad--bot">
+                  <span class="tg-ad__card">
+                    <span class="tg-ad__head">
+                      <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
+                      <strong class="tg-ad__title" data-i18n="formats.mock.title"></strong>
+                      <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
+                    </span>
+                    <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
+                  </span>
+                </span>
                 <span class="formats__zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM20 20l-4.8-4.8M10.5 7.5v6M7.5 10.5h6" /></svg></span>
               </button>
               <div class="formats__info">
-                <span class="formats__num text-grad" data-i18n="formats.items.2.num"></span>
+                <span class="formats__num" data-i18n="formats.items.2.num"></span>
                 <h3 class="formats__title" data-i18n="formats.items.2.title"></h3>
                 <p class="formats__text" data-i18n="formats.items.2.text"></p>
               </div>
             </li>
           </ul>
-          <p class="formats__foot" data-reveal><span data-i18n="formats.hint"></span> <span class="formats__caption" data-i18n="formats.caption"></span></p>
+          <p class="formats__foot"><span data-i18n="formats.hint"></span> <span class="formats__caption" data-i18n="formats.caption"></span></p>
           <dialog class="lightbox" aria-label="" data-lightbox data-lenis-prevent data-i18n-attr="aria-label:formats.open">
             <button type="button" class="lightbox__close" data-lightbox-close data-i18n-attr="aria-label:formats.close">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
@@ -477,14 +501,17 @@
         </div>
       </section>
 
+      <!-- 05 Калькулятор (T22, reference/wireframe-05-calculator.png): синее продолжение первого экрана, без переходов по
+           прокрутке (H11). Слева белая панель параметров, справа тёмно-синяя панель прогноза: живая воронка и шесть
+           показателей; смена показателя на ввод — «табло» (core/motion-kit.js → flipSwap). -->
       <section id="calculator" class="section section--calculator" data-section="calculator" aria-labelledby="calculator-title">
         <div class="container">
-          <div class="section__head" data-reveal="stagger">
-            <p class="eyebrow" data-i18n="calculator.eyebrow"></p>
+          <div class="section__head calc__head">
+            <p class="eyebrow calc__eyebrow" data-i18n="calculator.eyebrow"></p>
             <h2 id="calculator-title" class="display section__title" data-i18n="calculator.title" data-title-accent="calculator.titleAccent"></h2>
           </div>
           <div class="calc" data-calc>
-            <form class="calc__params" data-calc-form aria-labelledby="calc-params-title" data-reveal>
+            <form class="calc__params" data-calc-form aria-labelledby="calc-params-title">
               <h3 id="calc-params-title" class="calc__panel-title" data-i18n="calculator.paramsTitle"></h3>
 
               <fieldset class="calc__group" data-calc-group="niche">
@@ -518,7 +545,7 @@
               </div>
             </form>
 
-            <div class="calc__forecast" role="group" aria-labelledby="calc-forecast-title" data-reveal>
+            <div class="calc__forecast" role="group" aria-labelledby="calc-forecast-title">
               <span class="calc__glow" aria-hidden="true"></span>
               <div class="calc__forecast-head">
                 <h3 id="calc-forecast-title" class="calc__panel-title" data-i18n="calculator.forecastTitle"></h3>
@@ -570,7 +597,7 @@
             </div>
           </div>
 
-          <a class="calc__note" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="calculator_note" data-reveal>
+          <a class="calc__note" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="calculator_note">
             <span class="calc__note-lead" data-i18n="calculator.note.lead"></span>
             <span class="calc__note-link" data-i18n="calculator.note.link"></span>
             <span class="calc__note-tail" data-i18n="calculator.note.tail"></span>
