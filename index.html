@@ -778,50 +778,38 @@
             <h2 id="geo-title" class="display section__title" data-i18n="geo.title" data-title-accent="geo.titleAccent"></h2>
           </div>
           <div class="geo">
-            <div class="geo__card">
-              <!-- карта мира из точек: кружки ставит stats-dots.js (createDotMap) по сетке src/data/geo-dots.json, первый <g> — точки, второй — метки регионов -->
-              <div class="geo__map" role="img" data-geo-map data-i18n-attr="aria-label:geo.mapAlt">
-                <svg viewBox="0 0 72.5 27" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><g class="geo__dots"></g><g class="geo__pins" data-geo-pins></g></svg>
-                <div class="geo__tip" data-geo-tip role="status" aria-live="polite">
-                  <p class="geo__tip-name" data-geo-name></p>
-                  <p class="geo__tip-figure" data-geo-figure hidden></p>
-                  <p class="geo__tip-text" data-geo-text></p>
-                </div>
-              </div>
+            <!-- список регионов (раскладка L4): строка — кнопка, выбранная раскрыта в карточку; цифра — только где она
+                 есть в словаре (Європа), у остальных её нет. Без JS раскрыта Європа -->
+            <ul class="geo__list" data-geo-list data-i18n-attr="aria-label:geo.listTitle">
+              <li class="geo__item"><button type="button" class="geo__row" data-region="ukraine" aria-pressed="false">
+                <span class="geo__row-name" data-i18n="geo.regions.ukraine.name"></span>
+              </button></li>
+              <li class="geo__item"><button type="button" class="geo__row" data-region="europe" aria-pressed="true">
+                <span class="geo__row-name" data-i18n="geo.regions.europe.name"></span>
+                <span class="geo__row-info" data-i18n="geo.regions.europe.figureText"></span>
+                <span class="geo__row-figure" data-geo-figure data-i18n="geo.regions.europe.figure"></span>
+              </button></li>
+              <li class="geo__item"><button type="button" class="geo__row" data-region="uk" aria-pressed="false">
+                <span class="geo__row-name" data-i18n="geo.regions.uk.name"></span>
+              </button></li>
+              <li class="geo__item"><button type="button" class="geo__row" data-region="usa" aria-pressed="false">
+                <span class="geo__row-name" data-i18n="geo.regions.usa.name"></span>
+              </button></li>
+              <li class="geo__item"><button type="button" class="geo__row" data-region="canada" aria-pressed="false">
+                <span class="geo__row-name" data-i18n="geo.regions.canada.name"></span>
+              </button></li>
+              <li class="geo__item"><button type="button" class="geo__row" data-region="australia" aria-pressed="false">
+                <span class="geo__row-name" data-i18n="geo.regions.australia.name"></span>
+              </button></li>
+              <li class="geo__item"><button type="button" class="geo__row" data-region="asia" aria-pressed="false">
+                <span class="geo__row-name" data-i18n="geo.regions.asia.name"></span>
+              </button></li>
+            </ul>
+            <!-- точечный 3D-глобус (T33): рисует geo.js на единственном холсте страницы, математика — geo-globe.js;
+                 холст заполняет контейнер, шар вписан по меньшей стороне -->
+            <div class="geo__globe" data-geo-globe>
+              <canvas class="geo__canvas" data-geo-canvas role="img" data-i18n-attr="aria-label:geo.mapAlt"></canvas>
             </div>
-            <aside class="geo__list">
-              <h3 class="geo__list-title" data-i18n="geo.listTitle"></h3>
-              <ul class="geo__regions">
-                <li><button type="button" class="geo__region" data-region="ukraine" aria-pressed="false">
-                  <span class="geo__region-name" data-i18n="geo.regions.ukraine.name"></span>
-                  <span class="geo__region-text" data-i18n="geo.regions.ukraine.text"></span>
-                </button></li>
-                <li><button type="button" class="geo__region" data-region="europe" aria-pressed="false">
-                  <span class="geo__region-name" data-i18n="geo.regions.europe.name"></span>
-                  <span class="geo__region-text" data-i18n="geo.regions.europe.text"></span>
-                </button></li>
-                <li><button type="button" class="geo__region" data-region="uk" aria-pressed="false">
-                  <span class="geo__region-name" data-i18n="geo.regions.uk.name"></span>
-                  <span class="geo__region-text" data-i18n="geo.regions.uk.text"></span>
-                </button></li>
-                <li><button type="button" class="geo__region" data-region="usa" aria-pressed="false">
-                  <span class="geo__region-name" data-i18n="geo.regions.usa.name"></span>
-                  <span class="geo__region-text" data-i18n="geo.regions.usa.text"></span>
-                </button></li>
-                <li><button type="button" class="geo__region" data-region="canada" aria-pressed="false">
-                  <span class="geo__region-name" data-i18n="geo.regions.canada.name"></span>
-                  <span class="geo__region-text" data-i18n="geo.regions.canada.text"></span>
-                </button></li>
-                <li><button type="button" class="geo__region" data-region="australia" aria-pressed="false">
-                  <span class="geo__region-name" data-i18n="geo.regions.australia.name"></span>
-                  <span class="geo__region-text" data-i18n="geo.regions.australia.text"></span>
-                </button></li>
-                <li><button type="button" class="geo__region" data-region="asia" aria-pressed="false">
-                  <span class="geo__region-name" data-i18n="geo.regions.asia.name"></span>
-                  <span class="geo__region-text" data-i18n="geo.regions.asia.text"></span>
-                </button></li>
-              </ul>
-            </aside>
           </div>
         </div>
       </section>

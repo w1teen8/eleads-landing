@@ -323,38 +323,31 @@
   "geo": {
     "title": "Audiences in Ukraine and all over the world",
     "titleAccent": "and all over the world",
-    "mapAlt": "Dot map of the world with ad delivery regions",
+    "mapAlt": "Dot globe with ad delivery regions: Ukraine, Europe, United Kingdom, USA, Canada, Australia, Asia",
     "listTitle": "Main directions",
     "regions": {
       "ukraine": {
-        "name": "Ukraine",
-        "text": "local audience"
+        "name": "Ukraine"
       },
       "europe": {
         "name": "Europe",
-        "text": "Ukrainians + international segments",
         "figure": "4.43M",
         "figureText": "people who left Ukraine under temporary protection in the EU"
       },
       "uk": {
-        "name": "United Kingdom",
-        "text": "Tier-1"
+        "name": "United Kingdom"
       },
       "usa": {
-        "name": "USA",
-        "text": "Tier-1"
+        "name": "USA"
       },
       "canada": {
-        "name": "Canada",
-        "text": "Tier-1"
+        "name": "Canada"
       },
       "australia": {
-        "name": "Australia",
-        "text": "Tier-1"
+        "name": "Australia"
       },
       "asia": {
-        "name": "Asia",
-        "text": "separate GEOs depending on the task"
+        "name": "Asia"
       }
     }
   },

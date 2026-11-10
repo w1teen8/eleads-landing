@@ -322,38 +322,31 @@
   "geo": {
     "title": "Аудиторія в Україні та по всьому світу",
     "titleAccent": "та по всьому світу",
-    "mapAlt": "Точкова карта світу з регіонами показу реклами",
+    "mapAlt": "Точковий глобус з регіонами показу реклами: Україна, Європа, United Kingdom, USA, Canada, Australia, Asia",
     "listTitle": "Основні напрямки",
     "regions": {
       "ukraine": {
-        "name": "Україна",
-        "text": "локальна аудиторія"
+        "name": "Україна"
       },
       "europe": {
         "name": "Європа",
-        "text": "українці + міжнародні сегменти",
         "figure": "4.43M",
         "figureText": "людей, які виїхали з України, під temporary protection у ЄС"
       },
       "uk": {
-        "name": "United Kingdom",
-        "text": "Tier-1"
+        "name": "United Kingdom"
       },
       "usa": {
-        "name": "USA",
-        "text": "Tier-1"
+        "name": "USA"
       },
       "canada": {
-        "name": "Canada",
-        "text": "Tier-1"
+        "name": "Canada"
       },
       "australia": {
-        "name": "Australia",
-        "text": "Tier-1"
+        "name": "Australia"
       },
       "asia": {
-        "name": "Asia",
-        "text": "окремі GEO за задачею"
+        "name": "Asia"
       }
     }
   },

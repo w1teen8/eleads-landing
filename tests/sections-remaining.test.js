@@ -43,12 +43,12 @@ test('geo-dots.json: сетка суши согласована с размер�
   }
 });
 
-// T29: карта GEO — точки SVG из общего модуля блока 02 (tests/blocks-06-08.test.js), <canvas> на странице больше нет.
-// T30: бегущего импульса в блоке 11 больше нет (лента showcase — tests/blocks-09-11.test.js).
-test('на странице нет <canvas>: карта GEO — SVG из stats-dots.js, который сам останавливается вне экрана', () => {
-  assert.equal(count(html, /<canvas\b/g), 0);
-  assert.match(read('src/sections/geo.js'), /createDotMap\(/);
-  assert.match(read('src/sections/stats-dots.js'), /IntersectionObserver/);
+// T33: единственный <canvas> на странице — точечный глобус GEO (правило 5 interfaces.md); останавливается вне экрана
+// (подробно — tests/geo-globe.test.js). T30: бегущего импульса в блоке 11 больше нет (tests/blocks-09-11.test.js).
+test('на странице один <canvas> — глобус GEO, который сам останавливается вне экрана', () => {
+  assert.equal(count(html, /<canvas\b/g), 1);
+  assert.equal(count(section('geo'), /<canvas\b/g), 1);
+  assert.match(read('src/sections/geo.js'), /IntersectionObserver/);
 });
 
 test('раскладка секций: 8 ниш, 3 формата, 7 шагов, 7 регионов, 6 таргетингов, 6 этапов и 9 услуг', () => {

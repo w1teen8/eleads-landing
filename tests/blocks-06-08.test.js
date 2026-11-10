@@ -68,47 +68,4 @@ test('07 Процес: семь шагов списком <ol>, крупный �
   assert.doesNotMatch(js('process'), /stagger|reveal|stackReveal|ScrollTrigger|gsap/, 'без появления и своего закрепления');
 });
 
-test('08 GEO: карта — createDotMap из stats-dots.js на сетке geo-dots.json, своей копии рисования нет', () => {
-  const src = js('geo');
-  assert.match(src, /import \{ createDotMap \} from '\.\/stats-dots\.js'/);
-  assert.match(src, /createDotMap\(box, geo, \{ stride: WORLD_STRIDE \}\)/);
-  assert.doesNotMatch(src, /getContext|canvas|requestAnimationFrame|stagger|ScrollTrigger/);
-  const block = section('geo');
-  assert.doesNotMatch(block, /<canvas/);
-  const svg = block.match(/<svg viewBox="0 0 ([\d.]+) ([\d.]+)"[^>]*>\s*<g class="geo__dots"><\/g><g class="geo__pins" data-geo-pins><\/g>/);
-  assert.ok(svg, 'первый <g> — точки, второй — метки');
-  // рамка совпадает с тем, что даёт gridDots при WORLD_STRIDE = 2
-  assert.equal(Number(svg[1]), Math.ceil(geo.cols / 2) + 0.5);
-  assert.equal(Number(svg[2]), Math.ceil(geo.rows / 2));
-  assert.match(block, /class="geo__map" role="img" data-geo-map data-i18n-attr="aria-label:geo\.mapAlt"/);
-});
-
-test('08 GEO: метки и строки списка — по geo.regions; метки внутри рамки карты', async () => {
-  const block = section('geo');
-  const ids = geo.regions.map((r) => r.id);
-  assert.deepEqual([...block.matchAll(/class="geo__region" data-region="([a-z]+)" aria-pressed="false"/g)].map((m) => m[1]), ids);
-  for (const id of ids) {
-    for (const dict of [ua, en]) assert.ok(dict.geo.regions[id].name && dict.geo.regions[id].text, id);
-    assert.match(block, new RegExp(`data-i18n="geo\\.regions\\.${id}\\.name"`));
-  }
-  // pinPoint — чистая функция; берём её из исходника, чтобы не тянуть DOM-модуль
-  const src = read('src/sections/geo.js');
-  const body = src.match(/export function pinPoint\(grid, lon, lat, stride = WORLD_STRIDE\) \{\s*(return [^\n]+)\s*\}/)[1];
-  const pinPoint = new Function('grid', 'lon', 'lat', 'stride', body);
-  const w = Math.ceil(geo.cols / 2) + 0.5;
-  const h = Math.ceil(geo.rows / 2);
-  for (const r of geo.regions) {
-    const p = pinPoint(geo, r.lon, r.lat, 2);
-    assert.ok(p.x > 1 && p.x < w - 1 && p.y > 1 && p.y < h - 1, `${r.id}: ${p.x}, ${p.y}`);
-  }
-  assert.deepEqual(pinPoint(geo, geo.lon0, geo.lat0, 2), { x: 0, y: 0 });
-  assert.match(src, /setAttribute\('aria-pressed'/);
-});
-
-test('08 GEO: пульс меток — только transform и opacity и только при живых анимациях', () => {
-  const c = css('geo');
-  const frames = c.match(/@keyframes geo-pulse\s*\{((?:[^{}]*\{[^{}]*\})*)[^{}]*\}/)[1];
-  for (const [, prop] of frames.matchAll(/([a-z-]+)\s*:/g)) assert.ok(['transform', 'opacity'].includes(prop), prop);
-  assert.match(c, /\.js-anim \.geo__pin-ring\s*\{[^}]*animation:\s*geo-pulse/);
-  assert.doesNotMatch(c.replace(/\.js-anim \.geo__pin-ring\s*\{[^}]*\}/, ''), /animation:/, 'без .js-anim (reduced-motion, ?nomotion=1) кольцо стоит');
-});
+// T33 сменил облик 08 на точечный 3D-глобус на <canvas> со списком регионов — проверки в tests/geo-globe.test.js

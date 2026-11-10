@@ -335,3 +335,9 @@ export function forecast(input, rates): Forecast
 - `process-model.js`: `PIN { step: 0.35, grow: 0.7, tail: 0.2 }` (длина закрепления ≈ 2.65 окна), `stepProgress`, `stepPose`.
 - Разметка: `.process__stairs[data-process]` > `ol.process__steps` (ступень со слоем `.process__bg`) + `.process__base`. На узком/портретном экране — вертикальные полосы без движения.
 
+### T33 — блок 08: точечный глобус (H45, H46)
+
+- `geo-globe.js` — математика без DOM: `landDots`, `project`, `isVisible`, `focusView(region)`, `tweenView`, `swayView`, `dragView`, `decay`, `swell`, `regionAt`. Отрисовка — единственный `<canvas>` на странице (`.geo__globe[data-geo-globe] > canvas[data-geo-canvas]`), цвета из CSS-переменных; rAF только пока блок в окне.
+- Раскладка «Л 4»: `ul.geo__list[data-geo-list]` → `button.geo__row[data-region][aria-pressed]`; раскрытая строка Європи — `.geo__row-info` + `[data-geo-figure]` (rollTo). Выбор: клик, наведение мышью (140 мс), фокус, стрелки, клик по метке. Глобус всегда лицом к выбранному региону, бездействие — покачивание ±18°.
+- Словари: у регионов только `name`; у Європи `figure`, `figureText`. `stats-dots`/`stats-model` блок 08 больше не использует.
+
