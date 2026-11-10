@@ -227,16 +227,16 @@
       "screenshot": ""
     },
     {
-      "id": "prosales",
+      "id": "mukhin",
       "avatar": true,
       "accent": "#7B4DFF",
       "niche": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Expert · ПроSales",
+        "en": "Expert · ProSales"
       },
       "name": {
-        "ua": "ПроSales",
-        "en": "ProSales"
+        "ua": "Олександр Мухін",
+        "en": "Oleksandr Mukhin"
       },
       "budget": {
         "ua": "уточнити",
@@ -281,6 +281,62 @@
         "en": "TBD"
       },
       "screenshot": ""
+    },
+    {
+      "id": "dombovetskyi",
+      "avatar": true,
+      "niche": {
+        "ua": "Expert",
+        "en": "Expert"
+      },
+      "name": {
+        "ua": "Віктор Домбовецький",
+        "en": "Viktor Dombovetskyi"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": "",
+      "accent": "#5BE84A"
     },
     {
       "id": "finmap",
@@ -350,116 +406,6 @@
       "name": {
         "ua": "Князєв",
         "en": "Kniaziev"
-      },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "done": [
-        {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
-        },
-        {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
-        },
-        {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
-        },
-        {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
-        }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
-    },
-    {
-      "id": "mukhin",
-      "avatar": false,
-      "niche": {
-        "ua": "Expert",
-        "en": "Expert"
-      },
-      "name": {
-        "ua": "Олександр Мухін",
-        "en": "Oleksandr Mukhin"
-      },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "done": [
-        {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
-        },
-        {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
-        },
-        {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
-        },
-        {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
-        }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
-    },
-    {
-      "id": "dombovetskyi",
-      "avatar": false,
-      "niche": {
-        "ua": "Expert",
-        "en": "Expert"
-      },
-      "name": {
-        "ua": "Віктор Домбовецький",
-        "en": "Viktor Dombovetskyi"
       },
       "budget": {
         "ua": "уточнити",

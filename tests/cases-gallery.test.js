@@ -66,7 +66,7 @@ test('аватар: фото только при avatar: true (лишних за
   const accentOf = pick('accentOf');
   assert.equal(avatarPath('finmap'), '/img/cases/finmap.webp');
   assert.equal(avatarPath('finmap', true), '/img/cases/finmap@2x.webp');
-  assert.deepEqual(cases.map((c) => initial(c.name.ua)), ['C', 'M', 'G', 'T', 'П', 'F', 'К', 'О', 'В']);
+  assert.deepEqual(cases.map((c) => initial(c.name.ua)), ['C', 'M', 'G', 'T', 'О', 'В', 'F', 'К']);
   assert.equal(initial('  «Monolit»'), 'M');
   assert.equal(initial(''), '');
   assert.equal(accentOf({ accent: '#12B76A' }), '#12B76A');

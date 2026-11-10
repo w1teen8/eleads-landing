@@ -8,19 +8,22 @@ import { readJson, root } from './helpers.js';
 
 const { cases } = readJson('src/data/cases.json');
 // имена — из брифа (таск 02) и с аватаров от пользователя (T29); порядок: с аватарами, потом остальные
-const ORDER = ['Cryptonite', 'Monolit', 'Global Auto Logistic', 'Trackdesk', 'ПроSales', 'Finmap', 'Князєв', 'Олександр Мухін', 'Віктор Домбовецький'];
-const ACCENTS = { cryptonite: '#F2596B', monolit: '#19B5E0', 'global-auto-logistic': '#DCE21C', trackdesk: '#12B76A', prosales: '#7B4DFF', finmap: '#74E3A8', kniaziev: '#4F6BFF' };
+// 2026-11-10: «Это и есть Олександр» — аватар ПроSales принадлежит Олександру Мухіну, его отдельная карточка с буквой удалена;
+// фото Віктора Домбовецького пользователь добавил в Photos/
+const ORDER = ['Cryptonite', 'Monolit', 'Global Auto Logistic', 'Trackdesk', 'Олександр Мухін', 'Віктор Домбовецький', 'Finmap', 'Князєв'];
+const ACCENTS = { cryptonite: '#F2596B', monolit: '#19B5E0', 'global-auto-logistic': '#DCE21C', trackdesk: '#12B76A', mukhin: '#7B4DFF', dombovetskyi: '#5BE84A', finmap: '#74E3A8', kniaziev: '#4F6BFF' };
 const FIELDS = ['niche', 'name', 'budget', 'result', 'cpa', 'task', 'geo', 'review'];
 const bilingual = (v) => v && typeof v.ua === 'string' && v.ua.trim() && typeof v.en === 'string' && v.en.trim();
 
-test('9 кейсов: сначала с аватарами, потом остальные; id уникальны', () => {
+test('8 кейсов: сначала с аватарами, потом остальные; id уникальны', () => {
   assert.deepEqual(cases.map((c) => c.name.ua), ORDER);
   assert.equal(new Set(cases.map((c) => c.id)).size, cases.length);
   const flags = cases.map((c) => c.avatar);
-  assert.deepEqual(flags, [true, true, true, true, true, true, true, false, false]);
-  assert.equal(cases.find((c) => c.id === 'prosales').name.en, 'ProSales');
+  assert.deepEqual(flags, [true, true, true, true, true, true, true, true]);
+  assert.equal(cases.find((c) => c.id === 'mukhin').name.en, 'Oleksandr Mukhin');
+  assert.ok(!cases.some((c) => c.id === 'prosales'), 'ПроSales — это Мухін, отдельной карточки нет');
   assert.equal(cases.find((c) => c.id === 'monolit').niche.ua, 'Finance / Investments');
-  assert.equal(cases.find((c) => c.id === 'prosales').niche.ua, 'уточнити', 'ниши ПроSales клиент не называл');
+  assert.equal(cases.find((c) => c.id === 'mukhin').niche.ua, 'Expert · ПроSales');
 });
 
 test('аватар и цвет бренда: accent только у кейсов с аватаром, файлы 256 и 512 лежат в public/img/cases', () => {
