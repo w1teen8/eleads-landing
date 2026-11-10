@@ -48,6 +48,7 @@ test('облик и формат: шрифт канала у H2, размеры 
   }
 });
 
+// T32 сменил облик 07 на ступени с ростом по прокрутке — подробные проверки в tests/process-stairs.test.js
 test('07 Процес: семь шагов списком <ol>, крупный номер 01–07, последний — акцентный; текст о подходе рядом с заголовком', () => {
   const block = section('process');
   assert.match(block, /<ol class="process__steps"/);
@@ -61,8 +62,10 @@ test('07 Процес: семь шагов списком <ol>, крупный �
   const c = css('process');
   assert.match(c, /\.process__num\s*\{[^}]*font-family:\s*var\(--font-head\)/);
   assert.match(c, /grid-template-columns:\s*repeat\(7,\s*minmax\(0,\s*1fr\)\)/, 'на широком экране — один ряд');
-  assert.match(c, /\.process__step--accent\s*\{[^}]*background:\s*var\(--grad\)[^}]*color:\s*var\(--accent-ink\)/);
-  assert.doesNotMatch(js('process'), /pin|scrub|ScrollTrigger|stagger|reveal/, 'движения по прокрутке нет');
+  assert.match(c, /\.process__step--accent\s*\{[^}]*color:\s*var\(--accent-ink\)/);
+  assert.match(c, /\.process__step--accent \.process__bg\s*\{[^}]*background:\s*var\(--grad\)/);
+  // T32: закрепление — только общим помощником pinScrub из motion-kit, своей копии ScrollTrigger нет
+  assert.doesNotMatch(js('process'), /stagger|reveal|stackReveal|ScrollTrigger|gsap/, 'без появления и своего закрепления');
 });
 
 test('08 GEO: карта — createDotMap из stats-dots.js на сетке geo-dots.json, своей копии рисования нет', () => {

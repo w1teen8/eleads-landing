@@ -3,6 +3,8 @@
 //                          (Stack Reveal Scroll); предыдущий закреплён, чуть уменьшается и темнеет. Только ≥900px.
 //   flipSwap(node, next) — «табло»: старый текст уезжает вверх, новый въезжает снизу под маской.
 //   stagger(items)       — «лесенка»: появление по одному, шаг 80 мс, power3.out 0.6 с, сдвиг 24px.
+//   showcaseScroll(…)    — лента карточек едет вбок, пока блок закреплён под шапкой (блоки 06, 11, 12).
+//   pinScrub(…)          — блок закреплён под шапкой, прокрутка отдаёт ему прогресс 0…1 (блок 07, рост ступеней).
 // Всё — transform и opacity. При reduced-motion (и без GSAP) — статично: всё видно, тексты стоят сразу.
 import { reduced, motionReady } from './motion.js';
 
@@ -285,6 +287,81 @@ export function showcaseScroll(section, track, { viewport, media = SHOWCASE_MEDI
         tween.kill();
         gsap.set(track, { clearProps: 'transform' });
         section.classList.remove('is-pinned');
+        handle.refresh = () => {};
+      };
+    });
+  });
+  handle.destroy = () => {
+    handle.dead = true;
+    mm?.revert();
+  };
+  return handle;
+}
+
+/* ——— закреплённый экран «шаг за шагом» (T32, блок 07: «застыть на экране и ждать, пока появятся все 7») ——— */
+
+/**
+ * Экран застывает под шапкой, пока прокрутка проходит путь length(); прогресс 0..1 привязан к позиции прокрутки
+ * (scrub) и отдаётся блоку — что расти и проявляться, решает сам блок. Тот же механизм, что у showcaseScroll:
+ * ScrollTrigger pin + pinSpacing (следующий блок приходит ровно, без скачка), отступ --header-h, только на media.
+ * Помощник о разметке блока ничего не знает. При reduced-motion, ?nomotion=1 и без GSAP — no-op: ready → false,
+ * блок остаётся в конечном виде.
+ *
+ *   pinScrub(section, { length, media, offset, onProgress, onRefresh, onRevert }) → { ready, refresh(), destroy() }
+ *
+ *   section    — узел, который закрепляется; его высота должна быть ≤ окна минус offset;
+ *   length     — () => px: сколько прокрутки страница стоит на месте (считается заново на каждый refresh);
+ *   media      — где закреплять (по умолчанию SHOWCASE_MEDIA — там, где блок ровно один экран);
+ *   offset     — отступ закрепления от верха окна, px (по умолчанию --header-h из tokens.css);
+ *   onProgress — (p: 0..1) сразу после включения и на каждое обновление прокрутки; до закрепления p = 0, после — 1;
+ *   onRefresh  — перемерить раскладку блока (смена окна, языка, шрифтов) — до следующего onProgress;
+ *   onRevert   — вышли из media или destroy(): блок снимает свои инлайн-стили и встаёт в конечный вид.
+ * Пока экран закреплён, на section стоит класс `is-pinned`.
+ */
+export function pinScrub(section, { length, media = SHOWCASE_MEDIA, offset, onProgress, onRefresh, onRevert } = {}) {
+  let setReady;
+  const handle = { refresh() {}, destroy() {}, ready: new Promise((resolve) => (setReady = resolve)) };
+  if (reduced || !section || typeof length !== 'function') {
+    setReady(false);
+    return handle;
+  }
+  let mm = null;
+  motionReady().then((api) => {
+    setReady(Boolean(api) && !handle.dead);
+    if (!api || handle.dead) return;
+    const { gsap, ScrollTrigger } = api;
+    mm = gsap.matchMedia();
+    mm.add(media, () => {
+      const top = () => offset ?? cssPx('--header-h', 0);
+      const state = { p: 0 };
+      const tween = gsap.to(state, {
+        p: 1,
+        ease: 'none',
+        onUpdate: () => onProgress?.(state.p),
+        scrollTrigger: {
+          trigger: section,
+          start: () => `top ${top()}px`,
+          end: () => `+=${Math.max(1, Math.round(length()))}`,
+          pin: true,
+          pinSpacing: true,
+          scrub: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onToggle: (self) => section.classList.toggle('is-pinned', self.isActive),
+          onRefresh: (self) => {
+            onRefresh?.();
+            onProgress?.(self.progress);
+          },
+        },
+      });
+      onRefresh?.();
+      onProgress?.(tween.scrollTrigger ? tween.scrollTrigger.progress : 0);
+      handle.refresh = () => ScrollTrigger.refresh();
+      return () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        section.classList.remove('is-pinned');
+        onRevert?.();
         handle.refresh = () => {};
       };
     });

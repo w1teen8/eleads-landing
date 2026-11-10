@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-10T10:12:25+02:00",
+  "updatedAt": "2026-11-10T11:05:12+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1292,15 +1292,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
+      "startedAt": "2026-11-10T01:01:55+02:00",
+      "finishedAt": "2026-11-10T10:39:08+02:00",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-10T01:01:55+02:00",
       "tests": {
-        "passed": 193,
+        "passed": 197,
         "failed": 0
       },
-      "commit": "b311df2"
+      "commit": "c5879ca"
     },
     {
       "id": "30",
@@ -1336,10 +1337,10 @@ window.STATE =
       "review": "нет",
       "model": "сильная",
       "status": "done",
-      "retries": 0,
-      "repairs": 0,
       "startedAt": "2026-11-10T01:01:56+02:00",
       "finishedAt": "2026-11-10T09:30:02+02:00",
+      "retries": 0,
+      "repairs": 0,
       "tests": {
         "passed": 193,
         "failed": 0
@@ -1382,15 +1383,76 @@ window.STATE =
       "review": "нет",
       "model": "сильная",
       "status": "done",
-      "retries": 0,
-      "repairs": 0,
       "startedAt": "2026-11-10T01:01:57+02:00",
       "finishedAt": "2026-11-10T09:30:02+02:00",
+      "retries": 0,
+      "repairs": 0,
       "tests": {
         "passed": 193,
         "failed": 0
       },
       "commit": "b311df2"
+    },
+    {
+      "id": "32",
+      "title": "Блок 07 «Процес»: ступени вверх с ростом по прокрутке",
+      "requirements": [
+        "H44",
+        "H15",
+        "H14",
+        "H18",
+        "H24"
+      ],
+      "blockedBy": [
+        "29"
+      ],
+      "wave": 25,
+      "zone": [
+        "src/sections/process.js",
+        "src/styles/sections/process.css",
+        "#process",
+        "index.html",
+        "process",
+        "content.*.json",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "startedAt": "2026-11-10T10:51:37+02:00",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "33",
+      "title": "Блок 08 «GEO»: точечный 3D-глобус",
+      "requirements": [
+        "H45",
+        "H15",
+        "H14",
+        "H18",
+        "H24"
+      ],
+      "blockedBy": [
+        "29"
+      ],
+      "wave": 25,
+      "zone": [
+        "src/sections/geo.js",
+        "src/sections/geo-globe.js",
+        "src/styles/sections/geo.css",
+        "#geo",
+        "index.html",
+        "geo",
+        "content.*.json",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "retries": 0,
+      "repairs": 0,
+      "startedAt": "2026-11-10T11:05:12+02:00"
     },
     {
       "id": "F1",
@@ -1437,7 +1499,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 193,
+    "passed": 197,
     "failed": 0
   },
   "debt": {
@@ -1655,9 +1717,13 @@ window.STATE =
     "2026-11-10T01:01:57+02:00",
     "2026-11-10T09:29:59+02:00",
     "2026-11-10T09:30:02+02:00",
-    "2026-11-10T10:12:25+02:00"
+    "2026-11-10T10:12:25+02:00",
+    "2026-11-10T10:39:08+02:00",
+    "2026-11-10T10:51:37+02:00",
+    "2026-11-10T11:05:11+02:00",
+    "2026-11-10T11:05:12+02:00"
   ],
-  "rev": 170,
+  "rev": 175,
   "waiting": null,
   "waits": [
     {
@@ -2957,6 +3023,44 @@ window.STATE =
       "k": "ticket",
       "ids": [
         "29"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-10T10:39:08+02:00",
+      "k": "ticket",
+      "ids": [
+        "29"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 197,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-10T10:51:37+02:00",
+      "k": "tickets",
+      "n": 33
+    },
+    {
+      "t": "2026-11-10T10:51:37+02:00",
+      "k": "ticket",
+      "ids": [
+        "32"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-10T11:05:11+02:00",
+      "k": "tickets",
+      "n": 34
+    },
+    {
+      "t": "2026-11-10T11:05:12+02:00",
+      "k": "ticket",
+      "ids": [
+        "33"
       ],
       "act": "start"
     }

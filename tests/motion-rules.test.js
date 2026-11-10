@@ -12,12 +12,14 @@ test('меню: Lenis не гасит в нём колесо и тач (data-len
   assert.match(menu, /\sdata-lenis-prevent(\s|>|=)/);
 });
 
-// T29: линии прорисовки в процессе больше нет (H11) — блок статичен; stroke-dash не возвращается
-test('процесс: без прорисовки линии по прокрутке — ни stroke-dash, ни ScrollTrigger', () => {
+// T29: линии прорисовки в процессе больше нет; T32: рост ступеней по прокрутке — только transform и opacity
+test('процесс: без stroke-dash; рост ступеней пишет только transform и opacity', () => {
   const js = strip(read('src/sections/process.js'));
   const css = strip(read('src/styles/sections/process.css'));
-  assert.doesNotMatch(js, /strokeDashoffset|stroke-dashoffset|strokeDasharray|ScrollTrigger|motionReady/);
+  assert.doesNotMatch(js, /strokeDashoffset|stroke-dashoffset|strokeDasharray/);
   assert.doesNotMatch(css, /stroke-dash/);
+  for (const [, prop] of js.matchAll(/\.style\.(\w+)\s*=/g)) assert.ok(['transform', 'opacity'].includes(prop), `style.${prop}`);
+  for (const [, prop] of js.matchAll(/set\(\w+, '(\w+)'/g)) assert.ok(['transform', 'opacity'].includes(prop), `set ${prop}`);
 });
 
 // T13: у ниш курсорной подсветки больше нет — там орбита (tests/aether-sections.test.js)

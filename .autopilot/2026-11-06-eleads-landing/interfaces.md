@@ -329,3 +329,9 @@ export function forecast(input, rates): Forecast
 - Карточка: `[data-case-avatar]` + `.cases__who` (имя, ниша), фон `[data-case-chart]` — «линия роста» (`chartSvg(index)`, 3 формы), `--case-accent` / `--case-tone` инлайн из данных; большой буквы и иконок ниш нет.
 - `src/core/icons.js` (`ICONS`, `iconSvg`, `inlineIcons`) — иконки блока 03 вписываются сборкой по `data-icon`.
 
+### T32 — блок 07: ступени с закреплением (H44)
+
+- `motion-kit.js`: `pinScrub(section, { length, media = SHOWCASE_MEDIA, offset, onProgress, onRefresh, onRevert }) → { ready, refresh(), destroy() }` — закрепляет секцию под шапкой на `length()` px и отдаёт прогресс 0…1; вне media / reduced-motion — конечный вид.
+- `process-model.js`: `PIN { step: 0.35, grow: 0.7, tail: 0.2 }` (длина закрепления ≈ 2.65 окна), `stepProgress`, `stepPose`.
+- Разметка: `.process__stairs[data-process]` > `ol.process__steps` (ступень со слоем `.process__bg`) + `.process__base`. На узком/портретном экране — вертикальные полосы без движения.
+
