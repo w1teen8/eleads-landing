@@ -20,7 +20,9 @@ test('блоки 12–14 и подвал включены, по порядку �
 test('правила клиента: без нижних надписей, меток блоков и появления по прокрутке', () => {
   for (const id of BLOCKS) {
     assert.doesNotMatch(section(id), /data-reveal|eyebrow|pill-label|__note|__sign|__caption|__hint/, id);
-    assert.doesNotMatch(js(id), /\b(reveal|stagger|stackReveal|parallax|pinSection|IntersectionObserver)\b/, `${id}.js`);
+    // T37: в 13 и 14 IntersectionObserver нужен чату в телефоне (автолистание вопросов, приход сообщения), не появлению блока
+    const observer = ['faq', 'cta'].includes(id) ? '' : '|IntersectionObserver';
+    assert.doesNotMatch(js(id), new RegExp(`\\b(reveal|stagger|stackReveal|parallax|pinSection${observer})\\b`), `${id}.js`);
   }
   for (const dict of [ua, en]) {
     assert.equal(dict.faq.note, undefined, 'faq.note убрана');
@@ -53,23 +55,4 @@ test('12 «Матеріали»: лента showcase — общий помощн
   assert.match(c, /\.mat__title\.is-tbd/, 'заглушка «уточнити» видима');
 });
 
-test('13 FAQ: две колонки из faq.json, один открытый ответ, ссылка в Telegram с местом клика', async () => {
-  const s = section('faq');
-  assert.equal((s.match(/data-faq-list="/g) || []).length, 2);
-  assert.match(s, /<a class="faq__ask"[^>]*href="\{\{config\.telegramUrl\}\}"[^>]*data-place="faq"/);
-  for (const dict of [ua, en]) assert.ok(dict.faq.ask.title && dict.faq.ask.text);
-  const { splitColumns } = await import('../src/sections/faq-model.js');
-  const nine = Array.from({ length: 9 }, (_, i) => i);
-  assert.deepEqual(splitColumns(nine, 2), [[0, 1, 2, 3, 4], [5, 6, 7, 8]]);
-  assert.deepEqual(splitColumns([1, 2], 2), [[1], [2]]);
-  assert.deepEqual(splitColumns([], 2), [[], []]);
-  assert.match(js('faq'), /if \(other !== row\) setOpen\(other, false\)/);
-});
-
-test('14 CTA: кнопка в Telegram, @handle и фото Володимира из public/img/photo', () => {
-  const s = section('cta');
-  assert.match(s, /class="btn btn--primary[^"]*cta__btn"[^>]*data-place="final_cta"/);
-  assert.match(s, /\/img\/photo\/volodymyr-cta-480\.jpg/);
-  assert.match(s, /data-i18n-attr="alt:founder\.photoAlt"/);
-  assert.doesNotMatch(s, /cta__glow/);
-});
+// 13 FAQ и 14 CTA с T37 — чаты в общем телефоне: tests/phone-chat.test.js

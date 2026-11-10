@@ -1,6 +1,6 @@
 // T30 (H41, H07, H11, H15, H18): блоки 09 «Таргетинг», 10 «Відгуки + засновник», 11 «Екосистема» в облике блоков 02–05.
-// Без «нижних надписей» и появления по прокрутке; единственный переход по прокрутке — лента карточек блока 11
-// (showcaseScroll из motion-kit); aria-expanded карточек отражает только открытое тапом состояние.
+// Без «нижних надписей» и появления по прокрутке. Блок 11 с T36 — шлях клієнта с бегущим импульсом
+// (tests/ecosystem-materials.test.js), ленты showcaseScroll в нём больше нет.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
@@ -43,10 +43,8 @@ test('H11: появления по прокрутке нет — в размет
     assert.doesNotMatch(section(id), /data-reveal|class="[^"]*\breveal\b/, `${id}: data-reveal`);
     assert.doesNotMatch(js(id), /\b(reveal|stagger|stackReveal|parallax)\(/, `${id}.js`);
   }
-  // закрепление — только у ленты блока 11, и только через общий помощник
-  for (const id of ['targeting', 'reviews']) assert.doesNotMatch(js(id), /pin|ScrollTrigger|showcaseScroll/, `${id}.js: pin`);
-  assert.match(js('ecosystem'), /import \{ showcaseScroll \} from '\.\.\/core\/motion-kit\.js'/);
-  assert.doesNotMatch(js('ecosystem'), /ScrollTrigger|pinSection|pin:\s*true/, 'pin — только внутри showcaseScroll');
+  // T36: лента showcase-scroll в блоке 11 убрана (шлях клієнта с бегущим импульсом) — закрепления нет ни в одном из трёх
+  for (const id of IDS) assert.doesNotMatch(js(id), /pin|ScrollTrigger|showcaseScroll/, `${id}.js: pin`);
 });
 
 test('H18/H15: заголовки — шрифт канала заглавными; размеры от высоты окна; своего фона и hex нет', () => {
@@ -66,39 +64,18 @@ test('H18/H15: заголовки — шрифт канала заглавным
 
 // T34: сетка 3×2 блока 09 заменена диском, который сам листает способы, — tests/targeting-dial.test.js
 
-test('10: карточка засновника с фото и «50+ проєктів», отзывы — карусель с кнопками и точками, без выдуманного', () => {
+// T35: слайдер отзывов блока 10 заменён кружками, как видео-сообщения Telegram, — tests/reviews-circles.test.js
+test('10: засновник с фото и «50+ проєктів», цифры блока — из первого экрана', () => {
   const s = section('reviews');
-  assert.ok(s.indexOf('class="founder"') < s.indexOf('data-slider'), 'засновник — первым (слева)');
   assert.match(s, /\/img\/photo\/volodymyr-founder-480\.jpg/);
-  assert.match(s, /data-i18n-attr="alt:founder\.photoAlt"/);
   assert.match(ua.founder.text, /50\+ проєктів/);
   assert.match(en.founder.text, /50\+ projects/);
   assert.match(s, /data-i18n="hero\.stats\.projects\.value"/);
-  assert.equal(count(s, /class="reviews__slide"/g), ua.reviews.items.length);
-  for (const attr of ['data-slider-prev', 'data-slider-next', 'data-slider-dots', 'data-slider-viewport']) assert.match(s, new RegExp(attr));
-  assert.match(s, /aria-roledescription="carousel"/);
-  // текстов отзывов у клиента нет — в словаре заглушки, в разметке ни одного текста мимо словаря
-  for (const item of ua.reviews.items) assert.equal(item.quote, 'уточнити');
-  for (const item of en.reviews.items) assert.equal(item.quote, 'TBD');
-  assert.doesNotMatch(s.replace(/<svg[\s\S]*?<\/svg>/g, ''), />\s*[^\s<{][^<]*</, 'текст в разметке мимо словаря');
-  assert.match(css('reviews'), /scroll-snap-type:\s*x mandatory/, 'свайп на тач — scroll-snap по горизонтали');
+  assert.equal(count(s, /class="reviews__tab"/g), ua.reviews.items.length);
 });
 
-test('11: шлях клієнта и лента из девяти карточек услуг; лента едет через showcaseScroll, без движения — прокрутка пальцем', () => {
-  const s = section('ecosystem');
-  assert.equal(count(s, /class="eco__tile /g), 6);
-  assert.equal(count(s, /class="eco__service"/g), 9);
-  assert.equal(count(s, /class="eco__row" aria-expanded="false"/g), 9);
-  assert.match(s, /data-eco-track/);
-  const src = js('ecosystem');
-  assert.match(src, /showcaseScroll\(root, track/);
-  assert.match(src, /classList\.toggle\('is-static', !ok\)/, 'запасной режим, когда лента не едет');
-  assert.doesNotMatch(src, /mouseenter|mouseleave|'focus'|'blur'/, 'aria-expanded от наведения');
-  const c = css('ecosystem');
-  assert.match(c, /\.eco__window\s*\{[^}]*overflow-x:\s*auto/, 'узкий экран: горизонтальная прокрутка');
-  assert.match(c, /\.section--ecosystem\.is-static \.eco__window\s*\{[^}]*overflow-x:\s*auto/);
-  assert.doesNotMatch(c, /@keyframes/, 'бегущего импульса больше нет');
-});
+// T36: лента карточек услуг блока 11 заменена шляхом клієнта с услугами под шагами и бегущим импульсом —
+// tests/ecosystem-materials.test.js
 
 test('motion-kit: showcaseScroll — общий помощник (секция, дорожка, опции), pin + scrub, только transform', () => {
   const kit = read('src/core/motion-kit.js');

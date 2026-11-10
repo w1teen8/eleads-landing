@@ -1,7 +1,8 @@
-/* 14 Фінальний CTA (T31): облик блоков 02–05 — фон страницы, слева крупный заголовок шрифтом канала с акцентным
-   хвостом, текст Onest, акцентная кнопка-пилюля и @handle; справа фото Володимира в скруглённой карточке
-   с тёплым свечением (палитра канала). Без нижней подписи и метки блока. На широком экране — ровно один экран (H15);
-   на телефоне фото под текстом. Двигаются только transform и opacity (наклон фото за курсором). */
+/* 14 Фінальний CTA (T37 — вариант B «чат з Володимиром», reference/run3/cta-B-chosen.png): слева огромный заголовок
+   шрифтом канала с акцентным хвостом, текст Onest и акцентная кнопка-пилюля в Telegram; справа общий телефон
+   (src/styles/phone.css) с чатом Володимира — одно входящее сообщение, внизу поле ввода и круглая кнопка отправки;
+   весь экран телефона — ссылка. Без нижней подписи и метки блока. На широком экране — ровно один экран (H15),
+   телефон на всю высоту; на телефоне — под текстом. Двигаются только transform и opacity. */
 
 .section--cta {
   --cta-gap: clamp(1.5rem, 3vw, 4rem);
@@ -62,55 +63,41 @@
   padding-block: 0.6rem;
 }
 
-.cta__handle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em;
-  min-height: 40px;
-  padding: 0 1rem;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-pill);
-  font-family: var(--font-body);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  color: var(--text);
-}
-
-.cta__handle-icon {
-  width: 1.1em;
-  height: 1.1em;
-  color: var(--accent);
-}
-
-/* — фото: скруглённая карточка, тёплое свечение позади, лёгкий наклон за курсором — */
-.cta__photo {
-  --tilt-x: 0deg;
-  --tilt-y: 0deg;
+/* — телефон с чатом: тёплое свечение позади, лёгкий подъём при наведении (весь экран — ссылка) — */
+.cta__stage {
   position: relative;
-  width: min(100%, 420px);
-  aspect-ratio: 3 / 4;
-  margin: 0 auto;
-  border-radius: var(--r-card-lg);
-  border: 1px solid var(--line);
-  background: var(--surface);
-  overflow: hidden;
-  transform: perspective(1200px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
-  transition: transform var(--dur) var(--ease-out);
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
 }
 
-.cta__photo::before {
+.cta__stage::before {
   content: '';
   position: absolute;
-  inset: -40%;
+  inset: 10% 0;
   z-index: -1;
   background: radial-gradient(closest-side, var(--glow), transparent);
-  opacity: 0.9;
+  opacity: 0.55;
   pointer-events: none;
 }
 
-/* растяжение <picture>, кадрирование и растворение низа фото — в photos.css (общее с блоком засновника) */
+.cta__stage .phone {
+  transition: transform var(--dur) var(--ease-out);
+}
 
-/* — широкий экран: текст слева, фото справа; блок — ровно один экран, размеры от высоты окна (H15) — */
+.cta__stage .phone:hover {
+  transform: translateY(-6px);
+}
+
+/* приглашение крупнее обычного пузыря: на экране оно одно */
+.cta__stage .phone__msg {
+  max-width: 86%;
+  font-size: 4.4cqw;
+}
+
+/* — широкий экран: текст слева, телефон справа на всю высоту; блок — ровно один экран (H15) — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--cta {
     padding-block: var(--screen-pad);
@@ -121,25 +108,22 @@
     min-height: calc(100svh - var(--header-h) - 2 * var(--screen-pad));
   }
 
+  .cta__stage {
+    align-self: stretch;
+  }
+
+  .cta__stage .phone {
+    width: auto;
+    height: 100%;
+    max-height: 46rem;
+    min-height: 22rem;
+  }
+
   .section--cta .display.section__title {
     font-size: clamp(3rem, min(2rem + 5vw, 15svh), 8.5rem);
   }
 
   .cta__text {
     font-size: clamp(1rem, min(1.3125rem, 2.6svh), 1.3125rem);
-  }
-
-  .cta__photo {
-    width: min(100%, 34vw, 480px);
-    max-height: calc(100svh - var(--header-h) - 2 * var(--screen-pad));
-    aspect-ratio: 3 / 4;
-    margin: 0 0 0 auto;
-  }
-}
-
-/* невысокий ландшафтный экран (1366×768): фото по высоте окна */
-@media (min-width: 900px) and (max-height: 820px) and (orientation: landscape) {
-  .cta__photo {
-    width: min(100%, calc((100svh - var(--header-h) - 2 * var(--screen-pad)) * 0.75));
   }
 }

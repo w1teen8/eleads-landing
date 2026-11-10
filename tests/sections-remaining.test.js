@@ -57,7 +57,7 @@ test('раскладка секций: 8 ниш, 3 формата, 7 шагов,
   assert.equal(count(section('process'), /class="process__step[ "]/g), 7);
   assert.equal(count(section('geo'), /data-region="/g), 7);
   assert.equal(count(section('targeting'), /class="tg__item"/g), 6);
-  assert.equal(count(section('ecosystem'), /class="eco__tile /g), 6);
+  assert.equal(count(section('ecosystem'), /class="eco__step[ "]/g), 6);
   assert.equal(count(section('ecosystem'), /class="eco__service"/g), 9);
   assert.equal(count(section('materials'), /class="mat__item"/g), 4);
 });
@@ -74,7 +74,8 @@ test('ссылки в Telegram этих секций размечены мест
   const places = (id) => [...section(id).matchAll(/data-place="([a-z_]+)"/g)].map((m) => m[1]);
   assert.deepEqual(places('niches'), ['niches_other']);
   assert.deepEqual(places('materials'), ['materials', 'materials', 'materials', 'materials']);
-  assert.deepEqual(places('cta'), ['final_cta']);
+  // T37: кнопка и экран телефона с чатом — обе ссылки в Telegram, место клика у каждой своё
+  assert.deepEqual(places('cta'), ['final_cta', 'final_cta_chat']);
   assert.match(section('cta'), /\{\{config\.telegramHandle\}\}/);
 });
 

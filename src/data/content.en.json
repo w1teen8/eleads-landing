@@ -111,7 +111,7 @@
     "telegram": "Telegram",
     "copyright": "© 2026 eLeads",
     "creditLabel": "Design & development —",
-    "creditName": "[NAME]",
+    "creditName": "zabolotnyistudio.com",
     "toTop": "Back to top"
   },
   "common": {
@@ -398,24 +398,25 @@
   "reviews": {
     "title": "What clients say",
     "titleAccent": "clients say",
-    "sliderLabel": "Client reviews",
-    "prev": "Previous review",
-    "next": "Next review",
+    "kicker": "Client reviews",
     "items": [
       {
         "name": "Oleksandr Mukhin",
         "role": "Expert",
-        "quote": "TBD"
+        "quote": "TBD",
+        "case": "mukhin"
       },
       {
         "name": "Viktor Dombovetskyi",
         "role": "Expert",
-        "quote": "TBD"
+        "quote": "TBD",
+        "case": "dombovetskyi"
       },
       {
         "name": "Review 3",
         "role": "TBD",
-        "quote": "TBD"
+        "quote": "TBD",
+        "case": ""
       }
     ]
   },
@@ -431,7 +432,6 @@
       "Lead",
       "Sale"
     ],
-    "servicesLabel": "Services",
     "services": [
       {
         "name": "Telegram Ads",
@@ -475,10 +475,12 @@
     "title": "Useful materials on Telegram",
     "titleAccent": "on Telegram",
     "post": "POST",
+    "channel": "eLeads",
     "read": "Read on Telegram",
     "items": [
       {
-        "title": "8 ways to promote a business via Telegram"
+        "title": "8 ways to promote a business via Telegram",
+        "cover": "8 ways"
       },
       {
         "title": "TBD"
@@ -497,6 +499,13 @@
     "ask": {
       "title": "Didn't find an answer?",
       "text": "Write to me on Telegram — I will reply personally."
+    },
+    "listLabel": "Questions",
+    "chat": {
+      "name": "Volodymyr Kucher",
+      "short": "Volodymyr",
+      "status": "online",
+      "typing": "typing…"
     }
   },
   "cta": {
@@ -504,13 +513,24 @@
     "titleAccent": "your project?",
     "text": "Write to me on Telegram. I will review your project, task and GEO and suggest which promotion format on Telegram will be the best.",
     "button": "Write to Volodymyr on Telegram",
-    "arrow": "→"
+    "arrow": "→",
+    "chatHello": "Hi! Tell me briefly about your project, task and GEO — I will suggest the best format.",
+    "chat": {
+      "name": "Volodymyr Kucher",
+      "status": "online",
+      "typing": "typing…"
+    }
   },
   "founder": {
     "badge": "eLeads FOUNDER",
     "title": "Personal expertise stands behind eLeads.",
     "text": "Hi, I am Volodymyr, founder of eLeads. 7+ years in digital marketing, $2M+ in ad budgets and 50+ projects in different niches and GEOs. I personally take part in strategy and in running clients’ ad campaigns.",
-    "photoAlt": "Volodymyr Kucher, founder of eLeads"
+    "photoAlt": "Volodymyr Kucher, founder of eLeads",
+    "name": "Volodymyr Kucher",
+    "video": "",
+    "play": "Play video",
+    "sound": "Turn sound on",
+    "pause": "Pause"
   },
   "ribbons": {
     "label": "eLeads in short",

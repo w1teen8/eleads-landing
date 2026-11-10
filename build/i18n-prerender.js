@@ -6,10 +6,12 @@
 //   <h2 data-i18n="stats.title"></h2>                      → текст узла
 //   <button data-i18n-attr="aria-label:nav.menuOpen">       → атрибуты, пары через «;»
 //   href="{{config.telegramUrl}}"                            → значение из config.json
+//   <phone-frame class="x">экран</phone-frame>               → общий телефон (src/core/phone.js)
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve as resolvePath } from 'node:path';
 import { disableSections } from '../src/core/sections.js';
 import { inlineIcons } from '../src/core/icons.js';
+import { expandPhones } from '../src/core/phone.js';
 
 const TEXT_NODE = /<([a-zA-Z][\w-]*)((?:\s[^>]*?)?)(\sdata-i18n=")([^"]+)("[^>]*)>([^<]*)<\/\1>/g;
 const ATTR_TAG = /<[a-zA-Z][^>]*\sdata-i18n-attr="([^"]+)"[^>]*>/g;
@@ -38,6 +40,8 @@ export function prerender(html, dict, config = {}, { strict = false, warn = cons
   };
 
   // иконки ниш: пустой <svg data-icon="ключ"></svg> получает содержимое из src/core/icons.js
+  // телефоны: короткий шаблон <phone-frame> → рамка, строка состояния, блик (src/core/phone.js) — до текстов
+  html = expandPhones(html);
   let out = inlineIcons(html).replace(CONFIG_TOKEN, (token, path) => {
     const value = lookup(config, path);
     if (typeof value === 'string') return escapeAttr(value);

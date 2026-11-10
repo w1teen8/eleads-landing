@@ -1,13 +1,12 @@
-/* 10 Відгуки + засновник (T30). Облик блоков 02–05: фон страницы, заголовок шрифтом канала с акцентным хвостом.
-   Слева — карточка засновника (тёмная поверхность, фото во всю высоту карточки, заголовок шрифтом канала, текст
-   Onest, три цифры); справа — отзывы: один слайд на экран, scroll-snap по горизонтали (свайп на тач), кнопки и
-   точки. Отзывов у клиента пока нет — текст «уточнити» из словаря виден как заглушка. Переходов по прокрутке нет
-   (H11). На широком экране блок — ровно экран под шапкой: размеры — от высоты окна (svh). Двигаются только
-   transform и opacity. */
+/* 10 Відгуки + засновник (T35, H48): кружки, как видео-сообщения Telegram — выбор пользователя «Рев С»
+   (reference/run3/reviews-C-chosen.png). Слева Володимир в большом круге с жёлто-оранжевым кольцом (и кнопкой ▶, когда
+   есть видео), рядом метка, имя и текст; справа — метка, ряд круглых аватаров клиентов (выбранный — с кольцом прогресса
+   до следующего отзыва), карточка отзыва выбранного и три цифры. На широком экране блок — ровно экран под шапкой:
+   размеры — от высоты окна (svh). На телефоне круг засновника сверху (220px), кружки клиентов прокручиваются внутри ряда.
+   Двигаются только transform и opacity. */
 
 .section--reviews {
-  --rv-gap: clamp(0.75rem, 1.2vw, 1.5rem);
-  --rv-pad: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+  --rv-gap: clamp(1rem, 2.4svh, 1.375rem);
   overflow-x: clip;
   padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
   color: var(--text);
@@ -32,63 +31,131 @@
 .reviews__body {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--rv-gap);
-  align-items: stretch;
+  gap: clamp(2rem, 2.6vw, 3rem);
+  align-items: center;
 }
 
-/* ——— засновник ——— */
+/* ——— засновник: видео-кружок ——— */
 .founder {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 1.6vw, 1.75rem);
+  min-width: 0;
+}
+
+/* кольцо: градиент жёлтый → оранжевый снаружи, полоса фона между кольцом и фото */
+.founder__circle {
+  --fd-d: clamp(13.75rem, 10rem + 8vw, 18.75rem);
+  --fd-ring: 3px;
+  --fd-gap: 6px;
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: var(--r-card-lg);
-  background: var(--surface);
-  color: var(--text);
+  flex: none;
+  width: var(--fd-d);
+  aspect-ratio: 1;
+  padding: var(--fd-ring);
+  border-radius: 50%;
+  background: var(--grad);
 }
 
 .founder__photo {
   position: relative;
+  width: 100%;
+  height: 100%;
   margin: 0;
-  aspect-ratio: 4 / 3;
-  min-height: 0;
+  overflow: hidden;
+  border: var(--fd-gap) solid var(--bg);
+  border-radius: 50%;
   background: var(--surface-2);
 }
 
-/* photos.css кладёт picture абсолютно и затемняет низ под --block: здесь фото — отдельная колонка, без затемнения */
+/* photos.css затемняет низ фото под --block: в круге затемнения нет */
 .founder__photo::after {
   display: none;
 }
 
 .founder__photo .photo-img {
-  object-position: 50% 20%;
+  object-position: 50% 18%;
+}
+
+.founder__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.founder__circle.is-playing .founder__video {
+  opacity: 1;
+}
+
+.founder__circle.has-video .founder__photo {
+  cursor: pointer;
+}
+
+.founder__play {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  display: grid;
+  place-items: center;
+  width: calc(var(--fd-d) * 0.19);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--grad);
+  color: var(--accent-ink);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.founder__icon {
+  display: none;
+  width: 38%;
+  height: 38%;
+}
+
+.founder__icon--play {
+  transform: translateX(8%);
+}
+
+/* иконка по состоянию видео (reviews.js → data-video): ▶ · включить звук · пауза */
+.founder__circle:not([data-video='muted']):not([data-video='sound']) .founder__icon--play,
+.founder__circle[data-video='muted'] .founder__icon--sound,
+.founder__circle[data-video='sound'] .founder__icon--pause {
+  display: block;
+}
+
+.founder__play:hover {
+  transform: scale(1.08);
+}
+
+.founder__play:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .founder__body {
   display: grid;
-  align-content: center;
-  gap: clamp(0.75rem, 1.2vw, 1.25rem);
-  padding: var(--rv-pad);
+  gap: 0.75rem;
+  min-width: 0;
 }
 
 .founder__badge {
-  width: fit-content;
-  padding: 0.4em 0.9em;
-  border-radius: var(--r-pill);
-  background: var(--grad);
-  color: var(--accent-ink);
-  font-family: var(--font-head);
-  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.125rem);
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono);
+  line-height: 1.3;
   text-transform: uppercase;
+  color: var(--accent);
 }
 
-.founder__title {
+.founder__name {
   font-family: var(--font-head);
-  font-size: clamp(2rem, 1.4rem + 2vw, 3.5rem);
+  font-size: clamp(2rem, 1.6rem + 0.8vw, 2.5rem);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
@@ -97,296 +164,314 @@
 }
 
 .founder__text {
-  max-width: 48ch;
-  font-size: clamp(0.9375rem, 0.85rem + 0.35vw, 1.1875rem);
+  max-width: 46ch;
+  font-size: clamp(0.875rem, 0.82rem + 0.2vw, 0.9375rem);
   line-height: 1.5;
-  color: color-mix(in srgb, var(--text) 80%, transparent);
-}
-
-.founder__stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem clamp(1.25rem, 2vw, 2.5rem);
-  margin: 0.25rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.founder__stats li {
-  display: grid;
-  gap: 0.2rem;
-}
-
-.founder__value {
-  font-family: var(--font-head);
-  font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.75rem);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.founder__label {
-  font-size: var(--fs-sm);
-  color: color-mix(in srgb, var(--text) 70%, transparent);
+  color: color-mix(in srgb, var(--text) 75%, transparent);
 }
 
 /* ——— отзывы ——— */
 .reviews {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  display: flex;
+  flex-direction: column;
   gap: var(--rv-gap);
   min-width: 0;
 }
 
-.reviews__viewport {
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  border-radius: var(--r-card-lg);
+.reviews__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono);
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--text) 50%, transparent);
 }
 
-.reviews__viewport::-webkit-scrollbar {
+/* ряд кружков; поля под кольцо и обводку фокуса — внутри ряда, ряд прокручивается сам (телефон), не страница */
+.reviews__row {
+  --rv-pad: 0.75rem;
+  position: relative;
+  display: flex;
+  gap: clamp(0.875rem, 1vw, 1.125rem);
+  margin: calc(-1 * var(--rv-pad));
+  padding: var(--rv-pad);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.reviews__row::-webkit-scrollbar {
   display: none;
 }
 
-.reviews__viewport:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+.reviews__tab {
+  --rv-c: 7.5rem;
+  --rv-arc: 3px;
+  --rv-out: 7px;
+  position: relative;
+  flex: none;
+  width: var(--rv-c);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
-.reviews__track {
-  display: flex;
-  gap: var(--rv-gap);
+.reviews__tab:hover {
+  transform: scale(1.04);
+}
+
+.reviews__tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: calc(var(--rv-out) + 3px);
+}
+
+.reviews__avatar {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 0 0 var(--rv-arc) var(--line-strong);
+}
+
+.reviews__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.reviews__avatar.has-image .reviews__img {
+  opacity: 1;
+}
+
+.reviews__letter {
+  font-family: var(--font-head);
+  font-size: calc(var(--rv-c) * 0.42);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.reviews__avatar.has-image .reviews__letter {
+  opacity: 0;
+}
+
+.reviews__tab[aria-selected='true'] .reviews__avatar {
+  box-shadow: none;
+}
+
+/* кольцо выбранного: дорожка и две половины дуги, крутятся transform-ом (reviews.js), как у диска блока 09 */
+.reviews__prog,
+.reviews__half,
+.reviews__arc {
+  position: absolute;
+  pointer-events: none;
+}
+
+.reviews__prog {
+  inset: calc(-1 * var(--rv-out));
+  border-radius: 50%;
+  /* дорожка — в цвет бренда клиента (cases.json → accent, инлайн --rv-accent), поверх неё бежит жёлто-оранжевая дуга */
+  box-shadow: inset 0 0 0 var(--rv-arc) color-mix(in srgb, var(--rv-accent, var(--text)) 30%, transparent);
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.reviews__tab[aria-selected='true'] .reviews__prog {
+  opacity: 1;
+}
+
+.reviews__half {
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+.reviews__half--r {
+  right: 0;
+}
+
+.reviews__half--l {
+  left: 0;
+}
+
+.reviews__arc {
+  top: 0;
+  width: 200%;
+  height: 100%;
+  border: var(--rv-arc) solid transparent;
+  border-radius: 50%;
+  transform: rotate(-45deg);
+}
+
+.reviews__arc--r {
+  right: 0;
+  border-top-color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.reviews__arc--l {
+  left: 0;
+  border-right-color: var(--accent-2);
+  border-bottom-color: var(--accent-2);
+}
+
+/* без автолистания (и без JS) кольцо выбранного — целое */
+.section--reviews.is-static .reviews__arc,
+html:not(.js-anim) .reviews__arc {
+  transform: rotate(135deg);
+}
+
+/* карточка отзыва выбранного */
+.reviews__card {
+  display: grid;
+  gap: 0.75rem;
+  padding: clamp(1.1rem, 2.6svh, 1.5rem) clamp(1.25rem, 1.6vw, 1.75rem);
+  border-radius: var(--r-card);
+  background: var(--surface);
+}
+
+.reviews__who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.4em;
+}
+
+.reviews__name {
+  font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.reviews__sep::before {
+  content: '·';
+  color: color-mix(in srgb, var(--text) 50%, transparent);
+}
+
+.reviews__role {
+  font-size: clamp(1rem, 0.94rem + 0.25vw, 1.125rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--text) 50%, transparent);
+}
+
+.reviews__text {
+  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--text) 80%, transparent);
+}
+
+/* «уточнити» — текста от клиента ещё нет: курсивом, приглушённо */
+.reviews__text.is-tbd,
+.reviews__role.is-tbd {
+  font-style: italic;
+  color: color-mix(in srgb, var(--text) 45%, transparent);
+}
+
+/* цифры */
+.reviews__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem clamp(1.5rem, 2vw, 2.25rem);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.reviews__slide {
-  flex: 0 0 100%;
-  display: flex;
-  min-width: 0;
-  scroll-snap-align: start;
-}
-
-.reviews__card {
-  position: relative;
+.reviews__stats li {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: clamp(1rem, 1.6vw, 1.75rem);
-  width: 100%;
-  min-height: clamp(14rem, 10rem + 10vw, 22rem);
-  padding: var(--rv-pad);
-  border: 1px solid var(--line);
-  border-radius: var(--r-card-lg);
-  background: var(--surface);
-  color: var(--text);
+  gap: 0.3rem;
 }
 
-.reviews__quote {
-  width: clamp(1.75rem, 1.4rem + 1vw, 2.5rem);
-  height: auto;
-  color: var(--accent);
-}
-
-/* текст отзыва; «уточнити» — заглушка, видна как есть */
-.reviews__text {
-  font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.4375rem);
-  line-height: 1.4;
-}
-
-.reviews__text.is-tbd {
-  align-self: center;
+.reviews__value {
   width: fit-content;
-  padding: 0.35em 0.9em;
-  border: 1px dashed var(--line-strong);
-  border-radius: var(--r-pill);
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.reviews__who {
-  display: grid;
-  gap: 0.25rem;
-}
-
-.reviews__name {
   font-family: var(--font-head);
-  font-size: clamp(1.625rem, 1.3rem + 1.2vw, 2.5rem);
+  font-size: clamp(2.25rem, 1.9rem + 1vw, 2.875rem);
   font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: 0;
-  text-transform: uppercase;
+  line-height: 0.9;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.reviews__role {
+.reviews__label {
   font-size: var(--fs-sm);
-  color: color-mix(in srgb, var(--text) 70%, transparent);
-}
-
-.reviews__role.is-tbd {
-  font-family: var(--font-mono);
-}
-
-.reviews__controls {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.reviews__btn {
-  display: grid;
-  place-items: center;
-  width: 3rem;
-  height: 3rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
-}
-
-.reviews__btn svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.reviews__btn:hover:not(:disabled) {
-  transform: scale(1.08);
-}
-
-.reviews__btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-.reviews__btn:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
-
-.reviews__dots {
-  display: flex;
-  gap: 0.5rem;
-  margin-inline: auto;
-}
-
-.reviews__dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--line-strong);
-  cursor: pointer;
-  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
-}
-
-.reviews__dot.is-active {
-  background: var(--accent);
-  transform: scale(1.5);
-}
-
-.reviews.is-static .reviews__controls {
-  display: none;
-}
-
-/* — планшет и шире: фото слева в карточке засновника — */
-@media (min-width: 600px) {
-  .founder {
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
-  }
-
-  .founder__photo {
-    aspect-ratio: auto;
-    height: 100%;
-  }
+  color: color-mix(in srgb, var(--text) 60%, transparent);
 }
 
 /* — широкий экран: засновник слева, отзывы справа — */
 @media (min-width: 1000px) {
   .reviews__body {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   }
 }
 
-/* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна — */
+/* — экран-блок (H15): целиком между шапкой и низом окна; размеры — от высоты окна — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--reviews {
-    --rv-pad: clamp(1.1rem, 3svh, 2.25rem);
     padding-block: var(--screen-pad);
   }
 
   .reviews__head {
-    margin-bottom: clamp(1rem, 3.2svh, 3rem);
+    margin-bottom: clamp(1.25rem, 8svh, 6rem);
   }
 
   .section--reviews .display.section__title {
     font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
   }
 
-  .reviews__body {
-    min-height: clamp(18rem, 52svh, 34rem);
+  .founder__circle {
+    --fd-d: clamp(12rem, min(17vw, 32svh), 18.75rem);
   }
 
-  .founder__title {
-    font-size: clamp(1.75rem, min(1.4rem + 2vw, 5.4svh), 3.5rem);
+  .reviews__tab {
+    --rv-c: clamp(5.25rem, 12.8svh, 7.5rem);
   }
 
-  .founder__text {
-    font-size: clamp(0.9375rem, min(0.85rem + 0.35vw, 2.2svh), 1.1875rem);
-  }
-
-  .founder__value {
-    font-size: clamp(1.5rem, min(1.3rem + 1.4vw, 4.4svh), 2.75rem);
-  }
-
-  .reviews__card {
-    min-height: 0;
-  }
-
-  .reviews__name {
-    font-size: clamp(1.5rem, min(1.3rem + 1.2vw, 4svh), 2.5rem);
+  .reviews__value {
+    font-size: clamp(2rem, min(1.9rem + 1vw, 4.9svh), 2.875rem);
   }
 }
 
-/* — телефон — */
+/* — телефон: круг засновника сверху, текст под ним — */
 @media (max-width: 599px) {
-  .founder,
-  .reviews__card,
-  .reviews__viewport {
-    border-radius: var(--r-card);
+  .founder {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .founder__photo {
-    aspect-ratio: 3 / 2;
+  .founder__circle {
+    --fd-d: 13.75rem;
+    align-self: center;
   }
 
-  .founder__body {
-    padding: 1.1rem;
+  .reviews__tab {
+    --rv-c: 6.5rem;
   }
 
-  .founder__stats {
+  .reviews__stats {
     display: grid;
     grid-template-columns: repeat(3, auto);
     justify-content: space-between;
-    gap: 0.75rem;
   }
 
-  .founder__label {
+  .reviews__label {
     font-size: var(--fs-xs);
-  }
-
-  .reviews__card {
-    min-height: 13rem;
-    padding: 1.1rem;
   }
 }

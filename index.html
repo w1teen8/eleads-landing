@@ -452,120 +452,104 @@
             </div>
 
             <div class="formats__stage">
-              <div class="phone" data-formats-phone>
-                <div class="phone__screen">
-                  <span class="phone__island" aria-hidden="true"></span>
-                  <div class="phone__status" aria-hidden="true">
-                    <span class="phone__time" data-i18n="formats.phone.time"></span>
-                    <span class="phone__icons">
-                      <svg class="phone__icon" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8" /><rect x="5" y="5.5" width="3" height="6.5" rx="0.8" /><rect x="10" y="3" width="3" height="9" rx="0.8" /><rect x="15" y="0" width="3" height="12" rx="0.8" /></svg>
-                      <svg class="phone__icon" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0L8 11.5Zm-4.1-4.2L2.2 5.6a8.2 8.2 0 0 1 11.6 0l-1.7 1.7a5.8 5.8 0 0 0-8.2 0ZM.5 3.9 0 3.4a11.3 11.3 0 0 1 16 0l-1.7 1.7a8.9 8.9 0 0 0-12.6 0L.5 3.9Z" /></svg>
-                      <svg class="phone__icon phone__icon--battery" viewBox="0 0 27 12" fill="none" stroke="currentColor" aria-hidden="true"><rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke-opacity="0.45" /><rect x="2" y="2" width="19" height="8" rx="1.8" fill="currentColor" stroke="none" /><path d="M25 4v4" stroke-opacity="0.45" stroke-width="1.6" stroke-linecap="round" /></svg>
-                    </span>
-                  </div>
-                  <div class="phone__panels">
-                    <!-- 01 канал: лента канала, внизу — спонсорское сообщение с меткой «Спонсороване», снизу «Приєднатися» -->
-                    <div class="phone__panel" role="tabpanel" id="formats-panel-channel" aria-labelledby="formats-tab-channel" data-formats-panel="channel">
-                      <div class="phone__chat">
-                        <span class="phone__back" aria-hidden="true"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
-                        <span class="phone__who">
-                          <span class="phone__name" data-i18n="formats.mock.brand"></span>
-                          <span class="phone__sub" data-i18n="formats.phone.channel"></span>
-                        </span>
-                        <span class="phone__avatar" aria-hidden="true" data-i18n="formats.phone.avatar"></span>
-                      </div>
-                      <div class="phone__feed">
-                        <span class="phone__skel phone__skel--media" aria-hidden="true"><i></i><i></i><i></i></span>
-                        <span class="phone__skel" aria-hidden="true"><i></i><i></i></span>
-                        <span class="phone__skel phone__skel--short" aria-hidden="true"><i></i></span>
-                        <span class="phone__sponsored" data-i18n="formats.phone.sponsored"></span>
-                        <span class="tg-ad tg-ad--channel">
-                          <span class="tg-ad__card">
-                            <span class="tg-ad__head">
-                              <span class="tg-ad__meta"><span class="tg-ad__ad" data-i18n="formats.mock.ad"></span><strong class="tg-ad__title" data-i18n="formats.mock.title"></strong></span>
-                              <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
-                            </span>
-                            <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
-                            <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
-                          </span>
-                        </span>
-                      </div>
-                      <div class="phone__bottom"><span class="phone__join" data-i18n="formats.phone.join"></span></div>
+              <phone-frame data-formats-phone>
+                <div class="phone__panels">
+                  <!-- 01 канал: лента канала, внизу — спонсорское сообщение с меткой «Спонсороване», снизу «Приєднатися» -->
+                  <div class="phone__panel" role="tabpanel" id="formats-panel-channel" aria-labelledby="formats-tab-channel" data-formats-panel="channel">
+                    <div class="phone__chat">
+                      <span class="phone__back" aria-hidden="true"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
+                      <span class="phone__who">
+                        <span class="phone__name" data-i18n="formats.mock.brand"></span>
+                        <span class="phone__sub" data-i18n="formats.phone.channel"></span>
+                      </span>
+                      <span class="phone__avatar" aria-hidden="true" data-i18n="formats.phone.avatar"></span>
                     </div>
-                    <!-- 02 відео / медіа: пост с обложкой креатива и карточкой под ней -->
-                    <div class="phone__panel" role="tabpanel" id="formats-panel-video" aria-labelledby="formats-tab-video" data-formats-panel="video" hidden>
-                      <div class="phone__chat">
-                        <span class="phone__back" aria-hidden="true"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
-                        <span class="phone__who">
-                          <span class="phone__name" data-i18n="formats.mock.brand"></span>
-                          <span class="phone__sub" data-i18n="formats.phone.channel"></span>
-                        </span>
-                        <span class="phone__avatar" aria-hidden="true" data-i18n="formats.phone.avatar"></span>
-                      </div>
-                      <div class="phone__feed">
-                        <span class="phone__skel phone__skel--media" aria-hidden="true"><i></i><i></i></span>
-                        <span class="phone__skel" aria-hidden="true"><i></i><i></i><i></i></span>
-                        <span class="phone__skel phone__skel--short" aria-hidden="true"><i></i></span>
-                        <span class="tg-ad tg-ad--video">
-                          <span class="tg-ad__cover" aria-hidden="true">
-                            <span class="tg-ad__time">0:00</span>
-                            <span class="tg-ad__cover-top" data-i18n="formats.mock.coverTop"></span>
-                            <span class="tg-ad__cover-title"><span data-i18n="formats.mock.cover"></span> <span class="tg-ad__cover-accent" data-i18n="formats.mock.coverAccent"></span> <span data-i18n="formats.mock.coverEnd"></span></span>
-                            <span class="tg-ad__coins"><i>$</i><i>€</i></span>
+                    <div class="phone__feed">
+                      <span class="phone__skel phone__skel--media" aria-hidden="true"><i></i><i></i><i></i></span>
+                      <span class="phone__skel" aria-hidden="true"><i></i><i></i></span>
+                      <span class="phone__skel phone__skel--short" aria-hidden="true"><i></i></span>
+                      <span class="phone__sponsored" data-i18n="formats.phone.sponsored"></span>
+                      <span class="tg-ad tg-ad--channel">
+                        <span class="tg-ad__card">
+                          <span class="tg-ad__head">
+                            <span class="tg-ad__meta"><span class="tg-ad__ad" data-i18n="formats.mock.ad"></span><strong class="tg-ad__title" data-i18n="formats.mock.title"></strong></span>
+                            <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
                           </span>
-                          <span class="tg-ad__card">
-                            <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
+                          <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
+                          <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
+                        </span>
+                      </span>
+                    </div>
+                    <div class="phone__bottom"><span class="phone__join" data-i18n="formats.phone.join"></span></div>
+                  </div>
+                  <!-- 02 відео / медіа: пост с обложкой креатива и карточкой под ней -->
+                  <div class="phone__panel" role="tabpanel" id="formats-panel-video" aria-labelledby="formats-tab-video" data-formats-panel="video" hidden>
+                    <div class="phone__chat">
+                      <span class="phone__back" aria-hidden="true"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
+                      <span class="phone__who">
+                        <span class="phone__name" data-i18n="formats.mock.brand"></span>
+                        <span class="phone__sub" data-i18n="formats.phone.channel"></span>
+                      </span>
+                      <span class="phone__avatar" aria-hidden="true" data-i18n="formats.phone.avatar"></span>
+                    </div>
+                    <div class="phone__feed">
+                      <span class="phone__skel phone__skel--media" aria-hidden="true"><i></i><i></i></span>
+                      <span class="phone__skel" aria-hidden="true"><i></i><i></i><i></i></span>
+                      <span class="phone__skel phone__skel--short" aria-hidden="true"><i></i></span>
+                      <span class="tg-ad tg-ad--video">
+                        <span class="tg-ad__cover" aria-hidden="true">
+                          <span class="tg-ad__time">0:00</span>
+                          <span class="tg-ad__cover-top" data-i18n="formats.mock.coverTop"></span>
+                          <span class="tg-ad__cover-title"><span data-i18n="formats.mock.cover"></span> <span class="tg-ad__cover-accent" data-i18n="formats.mock.coverAccent"></span> <span data-i18n="formats.mock.coverEnd"></span></span>
+                          <span class="tg-ad__coins"><i>$</i><i>€</i></span>
+                        </span>
+                        <span class="tg-ad__card">
+                          <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
+                          <strong class="tg-ad__title" data-i18n="formats.mock.title"></strong>
+                          <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
+                          <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
+                        </span>
+                      </span>
+                    </div>
+                    <div class="phone__bottom"><span class="phone__join" data-i18n="formats.phone.join"></span></div>
+                  </div>
+                  <!-- 03 бот: чат с ботом — сообщение бота, ответ пользователя, реклама; снизу поле ввода -->
+                  <div class="phone__panel" role="tabpanel" id="formats-panel-bot" aria-labelledby="formats-tab-bot" data-formats-panel="bot" hidden>
+                    <div class="phone__chat">
+                      <span class="phone__back" aria-hidden="true"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
+                      <span class="phone__who">
+                        <span class="phone__name" data-i18n="formats.mock.brand"></span>
+                        <span class="phone__sub" data-i18n="formats.phone.bot"></span>
+                      </span>
+                      <span class="phone__avatar" aria-hidden="true" data-i18n="formats.phone.avatar"></span>
+                    </div>
+                    <div class="phone__feed">
+                      <span class="phone__skel" aria-hidden="true"><i></i><i></i><i></i></span>
+                      <span class="phone__skel phone__skel--out" aria-hidden="true"><i></i></span>
+                      <span class="phone__skel" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                      <span class="phone__skel phone__skel--out phone__skel--short" aria-hidden="true"><i></i></span>
+                      <span class="phone__skel phone__skel--short" aria-hidden="true"><i></i><i></i></span>
+                      <span class="tg-ad tg-ad--bot">
+                        <span class="tg-ad__card">
+                          <span class="tg-ad__head">
+                            <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
                             <strong class="tg-ad__title" data-i18n="formats.mock.title"></strong>
-                            <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
-                            <span class="tg-ad__btn" data-i18n="formats.mock.button"></span>
+                            <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
                           </span>
+                          <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
                         </span>
-                      </div>
-                      <div class="phone__bottom"><span class="phone__join" data-i18n="formats.phone.join"></span></div>
+                      </span>
                     </div>
-                    <!-- 03 бот: чат с ботом — сообщение бота, ответ пользователя, реклама; снизу поле ввода -->
-                    <div class="phone__panel" role="tabpanel" id="formats-panel-bot" aria-labelledby="formats-tab-bot" data-formats-panel="bot" hidden>
-                      <div class="phone__chat">
-                        <span class="phone__back" aria-hidden="true"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
-                        <span class="phone__who">
-                          <span class="phone__name" data-i18n="formats.mock.brand"></span>
-                          <span class="phone__sub" data-i18n="formats.phone.bot"></span>
-                        </span>
-                        <span class="phone__avatar" aria-hidden="true" data-i18n="formats.phone.avatar"></span>
-                      </div>
-                      <div class="phone__feed">
-                        <span class="phone__skel" aria-hidden="true"><i></i><i></i><i></i></span>
-                        <span class="phone__skel phone__skel--out" aria-hidden="true"><i></i></span>
-                        <span class="phone__skel" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-                        <span class="phone__skel phone__skel--out phone__skel--short" aria-hidden="true"><i></i></span>
-                        <span class="phone__skel phone__skel--short" aria-hidden="true"><i></i><i></i></span>
-                        <span class="tg-ad tg-ad--bot">
-                          <span class="tg-ad__card">
-                            <span class="tg-ad__head">
-                              <span class="tg-ad__logo" aria-hidden="true" data-i18n="formats.mock.brand"></span>
-                              <strong class="tg-ad__title" data-i18n="formats.mock.title"></strong>
-                              <span class="tg-ad__ad" data-i18n="formats.mock.ad"></span>
-                            </span>
-                            <span class="tg-ad__body"><span data-i18n="formats.mock.body"></span> <b class="tg-ad__brand" data-i18n="formats.mock.brand"></b><span data-i18n="formats.mock.bodyEnd"></span></span>
-                          </span>
-                        </span>
-                      </div>
-                      <div class="phone__bottom phone__bottom--input">
-                        <span class="phone__input">
-                          <svg class="phone__clip" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m14.5 8.5-5.8 5.8a2.5 2.5 0 0 1-3.5-3.5l6.4-6.4a1.6 1.6 0 0 1 2.3 2.3l-6.4 6.4a.7.7 0 0 1-1-1l5.8-5.8" /></svg>
-                          <span class="phone__placeholder" data-i18n="formats.phone.message"></span>
-                          <svg class="phone__mic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="7" y="2" width="6" height="10" rx="3" /><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v3" /></svg>
-                        </span>
-                      </div>
+                    <div class="phone__bottom phone__bottom--input">
+                      <span class="phone__input">
+                        <svg class="phone__clip" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m14.5 8.5-5.8 5.8a2.5 2.5 0 0 1-3.5-3.5l6.4-6.4a1.6 1.6 0 0 1 2.3 2.3l-6.4 6.4a.7.7 0 0 1-1-1l5.8-5.8" /></svg>
+                        <span class="phone__placeholder" data-i18n="formats.phone.message"></span>
+                        <svg class="phone__mic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="7" y="2" width="6" height="10" rx="3" /><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v3" /></svg>
+                      </span>
                     </div>
                   </div>
-                  <span class="phone__glare" aria-hidden="true"></span>
                 </div>
-                <span class="phone__key phone__key--mute" aria-hidden="true"></span>
-                <span class="phone__key phone__key--up" aria-hidden="true"></span>
-                <span class="phone__key phone__key--down" aria-hidden="true"></span>
-                <span class="phone__key phone__key--power" aria-hidden="true"></span>
-              </div>
+              </phone-frame>
             </div>
           </div>
         </div>
@@ -892,140 +876,122 @@
             <h2 id="reviews-title" class="display section__title" data-i18n="reviews.title" data-title-accent="reviews.titleAccent"></h2>
           </div>
           <div class="reviews__body">
+            <!-- засновник (T35): круг, как видео-кружок Telegram; кнопка ▶ появляется, когда в founder.video есть файл -->
             <article class="founder">
-              <figure class="founder__photo">
-                <picture>
-                  <source type="image/avif" srcset="/img/photo/volodymyr-founder-480.avif 480w, /img/photo/volodymyr-founder-800.avif 800w" sizes="(min-width: 1000px) 24vw, 90vw" />
-                  <source type="image/webp" srcset="/img/photo/volodymyr-founder-480.webp 480w, /img/photo/volodymyr-founder-800.webp 800w" sizes="(min-width: 1000px) 24vw, 90vw" />
-                  <img class="photo-img" src="/img/photo/volodymyr-founder-480.jpg" srcset="/img/photo/volodymyr-founder-480.jpg 480w, /img/photo/volodymyr-founder-800.jpg 800w" sizes="(min-width: 1000px) 24vw, 90vw" width="480" height="600" alt="" data-i18n-attr="alt:founder.photoAlt" loading="lazy" decoding="async" />
-                </picture>
-              </figure>
+              <div class="founder__circle" data-founder-circle>
+                <figure class="founder__photo">
+                  <picture>
+                    <source type="image/avif" srcset="/img/photo/volodymyr-founder-480.avif 480w, /img/photo/volodymyr-founder-800.avif 800w" sizes="(min-width: 900px) 300px, 220px" />
+                    <source type="image/webp" srcset="/img/photo/volodymyr-founder-480.webp 480w, /img/photo/volodymyr-founder-800.webp 800w" sizes="(min-width: 900px) 300px, 220px" />
+                    <img class="photo-img" src="/img/photo/volodymyr-founder-480.jpg" srcset="/img/photo/volodymyr-founder-480.jpg 480w, /img/photo/volodymyr-founder-800.jpg 800w" sizes="(min-width: 900px) 300px, 220px" width="480" height="600" alt="" data-i18n-attr="alt:founder.photoAlt" loading="lazy" decoding="async" />
+                  </picture>
+                </figure>
+                <button type="button" class="founder__play" data-founder-play hidden data-i18n-attr="aria-label:founder.play"><svg class="founder__icon founder__icon--play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z" /></svg><svg class="founder__icon founder__icon--sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" /><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" /></svg><svg class="founder__icon founder__icon--pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg></button>
+              </div>
               <div class="founder__body">
                 <p class="founder__badge" data-i18n="founder.badge"></p>
-                <h3 class="founder__title" data-i18n="founder.title"></h3>
+                <h3 class="founder__name" data-i18n="founder.name"></h3>
                 <p class="founder__text" data-i18n="founder.text"></p>
-                <ul class="founder__stats">
-                  <li><span class="founder__value" data-i18n="hero.stats.years.value"></span><span class="founder__label" data-i18n="hero.stats.years.label"></span></li>
-                  <li><span class="founder__value" data-i18n="hero.stats.budgets.value"></span><span class="founder__label" data-i18n="hero.stats.budgets.label"></span></li>
-                  <li><span class="founder__value" data-i18n="hero.stats.projects.value"></span><span class="founder__label" data-i18n="hero.stats.projects.label"></span></li>
-                </ul>
               </div>
             </article>
-            <div class="reviews" data-slider>
-              <div class="reviews__viewport" data-slider-viewport tabindex="0" role="region" aria-roledescription="carousel" data-i18n-attr="aria-label:reviews.sliderLabel">
-                <ul class="reviews__track">
-                <li class="reviews__slide"><article class="reviews__card">
-                  <svg class="reviews__quote" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M0 24V12.5C0 5 4 .7 11 0l1 3.2C8.5 4 7 6 6.8 8.8H12V24H0Zm20 0V12.5C20 5 24 .7 31 0l1 3.2C28.500 4 27 6 26.800 8.800H32V24H20Z" /></svg>
-                  <p class="reviews__text is-tbd" data-i18n="reviews.items.0.quote"></p>
-                  <div class="reviews__who">
-                    <p class="reviews__name" data-i18n="reviews.items.0.name"></p>
-                    <p class="reviews__role" data-i18n="reviews.items.0.role"></p>
-                  </div>
-                </article></li>
-                <li class="reviews__slide"><article class="reviews__card">
-                  <svg class="reviews__quote" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M0 24V12.5C0 5 4 .7 11 0l1 3.2C8.5 4 7 6 6.8 8.8H12V24H0Zm20 0V12.5C20 5 24 .7 31 0l1 3.2C28.500 4 27 6 26.800 8.800H32V24H20Z" /></svg>
-                  <p class="reviews__text is-tbd" data-i18n="reviews.items.1.quote"></p>
-                  <div class="reviews__who">
-                    <p class="reviews__name" data-i18n="reviews.items.1.name"></p>
-                    <p class="reviews__role" data-i18n="reviews.items.1.role"></p>
-                  </div>
-                </article></li>
-                <li class="reviews__slide"><article class="reviews__card">
-                  <svg class="reviews__quote" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M0 24V12.5C0 5 4 .7 11 0l1 3.2C8.5 4 7 6 6.8 8.8H12V24H0Zm20 0V12.5C20 5 24 .7 31 0l1 3.2C28.500 4 27 6 26.800 8.800H32V24H20Z" /></svg>
-                  <p class="reviews__text is-tbd" data-i18n="reviews.items.2.quote"></p>
-                  <div class="reviews__who">
-                    <p class="reviews__name" data-i18n="reviews.items.2.name"></p>
-                    <p class="reviews__role" data-i18n="reviews.items.2.role"></p>
-                  </div>
-                </article></li>
-                </ul>
+            <!-- отзывы (T35): кружки клиентов — вкладки; карточка — отзыв выбранного; листаются сами раз в 10 с -->
+            <div class="reviews" data-rv>
+              <p class="reviews__kicker" id="rv-kicker" data-i18n="reviews.kicker"></p>
+              <div class="reviews__row" role="tablist" aria-labelledby="rv-kicker" data-rv-list>
+              <button type="button" class="reviews__tab" role="tab" id="rv-tab-0" aria-selected="true" tabindex="0" aria-controls="rv-panel" data-rv-tab="0">
+                <span class="reviews__prog" aria-hidden="true"><span class="reviews__half reviews__half--r"><span class="reviews__arc reviews__arc--r"></span></span><span class="reviews__half reviews__half--l"><span class="reviews__arc reviews__arc--l"></span></span></span>
+                <span class="reviews__avatar" data-rv-avatar aria-hidden="true"><span class="reviews__letter" data-rv-letter></span></span>
+                <span class="visually-hidden" data-i18n="reviews.items.0.name"></span>
+              </button>
+              <button type="button" class="reviews__tab" role="tab" id="rv-tab-1" aria-selected="false" tabindex="-1" aria-controls="rv-panel" data-rv-tab="1">
+                <span class="reviews__prog" aria-hidden="true"><span class="reviews__half reviews__half--r"><span class="reviews__arc reviews__arc--r"></span></span><span class="reviews__half reviews__half--l"><span class="reviews__arc reviews__arc--l"></span></span></span>
+                <span class="reviews__avatar" data-rv-avatar aria-hidden="true"><span class="reviews__letter" data-rv-letter></span></span>
+                <span class="visually-hidden" data-i18n="reviews.items.1.name"></span>
+              </button>
+              <button type="button" class="reviews__tab" role="tab" id="rv-tab-2" aria-selected="false" tabindex="-1" aria-controls="rv-panel" data-rv-tab="2">
+                <span class="reviews__prog" aria-hidden="true"><span class="reviews__half reviews__half--r"><span class="reviews__arc reviews__arc--r"></span></span><span class="reviews__half reviews__half--l"><span class="reviews__arc reviews__arc--l"></span></span></span>
+                <span class="reviews__avatar" data-rv-avatar aria-hidden="true"><span class="reviews__letter" data-rv-letter></span></span>
+                <span class="visually-hidden" data-i18n="reviews.items.2.name"></span>
+              </button>
               </div>
-              <div class="reviews__controls">
-                <button type="button" class="reviews__btn" data-slider-prev data-i18n-attr="aria-label:reviews.prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
-                <span class="reviews__dots" data-slider-dots aria-hidden="true"></span>
-                <button type="button" class="reviews__btn" data-slider-next data-i18n-attr="aria-label:reviews.next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
+              <div class="reviews__card" id="rv-panel" role="tabpanel" aria-live="off" aria-labelledby="rv-tab-0">
+                <p class="reviews__who"><span class="reviews__name" data-rv-name data-i18n="reviews.items.0.name"></span><span class="reviews__sep" aria-hidden="true"></span><span class="reviews__role" data-rv-role data-i18n="reviews.items.0.role"></span></p>
+                <p class="reviews__text is-tbd" data-rv-quote data-i18n="reviews.items.0.quote"></p>
               </div>
+              <ul class="reviews__stats">
+                <li><span class="reviews__value" data-i18n="hero.stats.years.value"></span><span class="reviews__label" data-i18n="hero.stats.years.label"></span></li>
+                <li><span class="reviews__value" data-i18n="hero.stats.budgets.value"></span><span class="reviews__label" data-i18n="hero.stats.budgets.label"></span></li>
+                <li><span class="reviews__value" data-i18n="hero.stats.projects.value"></span><span class="reviews__label" data-i18n="hero.stats.projects.label"></span></li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
       <section id="ecosystem" class="section section--ecosystem" data-section="ecosystem" aria-labelledby="ecosystem-title">
-        <div class="container eco__top">
+        <div class="container eco__wrap">
           <div class="section__head eco__head">
             <h2 id="ecosystem-title" class="display section__title" data-i18n="ecosystem.title" data-title-accent="ecosystem.titleAccent"></h2>
           </div>
-          <div class="eco__flowwrap">
-            <ol class="eco__flow" data-i18n-attr="aria-label:ecosystem.flowLabel">
-              <li class="eco__tile eco__tile--hot"><span class="eco__tile-name" data-i18n="ecosystem.flow.0"></span></li>
-              <li class="eco__tile eco__tile--hot"><span class="eco__tile-name" data-i18n="ecosystem.flow.1"></span></li>
-              <li class="eco__tile eco__tile--cool"><span class="eco__tile-name" data-i18n="ecosystem.flow.2"></span></li>
-              <li class="eco__tile eco__tile--cool"><span class="eco__tile-name" data-i18n="ecosystem.flow.3"></span></li>
-              <li class="eco__tile eco__tile--hot"><span class="eco__tile-name" data-i18n="ecosystem.flow.4"></span></li>
-              <li class="eco__tile eco__tile--hot"><span class="eco__tile-name" data-i18n="ecosystem.flow.5"></span></li>
-            </ol>
-            <span class="eco__progress" aria-hidden="true"><span class="eco__progress-fill" data-eco-progress></span></span>
-          </div>
-        </div>
-        <div class="container">
-          <div class="eco__window" data-eco-window>
-            <ol class="eco__services" data-eco-track data-i18n-attr="aria-label:ecosystem.servicesLabel">
-              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-                <span class="eco__row-num">01</span>
-                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                <span class="eco__row-name" data-i18n="ecosystem.services.0.name"></span>
-                <span class="eco__row-text" data-i18n="ecosystem.services.0.text"></span>
-              </button></li>
-              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-                <span class="eco__row-num">02</span>
-                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                <span class="eco__row-name" data-i18n="ecosystem.services.1.name"></span>
-                <span class="eco__row-text" data-i18n="ecosystem.services.1.text"></span>
-              </button></li>
-              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-                <span class="eco__row-num">03</span>
-                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                <span class="eco__row-name" data-i18n="ecosystem.services.2.name"></span>
-                <span class="eco__row-text" data-i18n="ecosystem.services.2.text"></span>
-              </button></li>
-              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-                <span class="eco__row-num">04</span>
-                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                <span class="eco__row-name" data-i18n="ecosystem.services.3.name"></span>
-                <span class="eco__row-text" data-i18n="ecosystem.services.3.text"></span>
-              </button></li>
-              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-                <span class="eco__row-num">05</span>
-                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                <span class="eco__row-name" data-i18n="ecosystem.services.4.name"></span>
-                <span class="eco__row-text" data-i18n="ecosystem.services.4.text"></span>
-              </button></li>
-              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-                <span class="eco__row-num">06</span>
-                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                <span class="eco__row-name" data-i18n="ecosystem.services.5.name"></span>
-                <span class="eco__row-text" data-i18n="ecosystem.services.5.text"></span>
-              </button></li>
-              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-                <span class="eco__row-num">07</span>
-                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                <span class="eco__row-name" data-i18n="ecosystem.services.6.name"></span>
-                <span class="eco__row-text" data-i18n="ecosystem.services.6.text"></span>
-              </button></li>
-              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-                <span class="eco__row-num">08</span>
-                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                <span class="eco__row-name" data-i18n="ecosystem.services.7.name"></span>
-                <span class="eco__row-text" data-i18n="ecosystem.services.7.text"></span>
-              </button></li>
-              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-                <span class="eco__row-num">09</span>
-                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-                <span class="eco__row-name" data-i18n="ecosystem.services.8.name"></span>
-                <span class="eco__row-text" data-i18n="ecosystem.services.8.text"></span>
-              </button></li>
-            </ol>
-          </div>
+          <ol class="eco__path" data-eco-path data-i18n-attr="aria-label:ecosystem.flowLabel">
+            <li class="eco__step is-on" data-eco-step="0">
+              <div class="eco__card">
+                <h3 class="eco__face"><span class="eco__num">01</span> <span class="eco__name" data-i18n="ecosystem.flow.0"></span></h3>
+                <span class="eco__face eco__face--on" aria-hidden="true"><span class="eco__num">01</span> <span class="eco__name" data-i18n="ecosystem.flow.0"></span></span>
+              </div>
+              <ul class="eco__services">
+                <li class="eco__service"><span class="eco__service-name" data-i18n="ecosystem.services.0.name"></span> <span class="eco__service-text" data-i18n="ecosystem.services.0.text"></span></li>
+                <li class="eco__service"><span class="eco__service-name" data-i18n="ecosystem.services.1.name"></span> <span class="eco__service-text" data-i18n="ecosystem.services.1.text"></span></li>
+                <li class="eco__service"><span class="eco__service-name" data-i18n="ecosystem.services.2.name"></span> <span class="eco__service-text" data-i18n="ecosystem.services.2.text"></span></li>
+              </ul>
+            </li>
+            <li class="eco__step" data-eco-step="1">
+              <div class="eco__card">
+                <h3 class="eco__face"><span class="eco__num">02</span> <span class="eco__name" data-i18n="ecosystem.flow.1"></span></h3>
+                <span class="eco__face eco__face--on" aria-hidden="true"><span class="eco__num">02</span> <span class="eco__name" data-i18n="ecosystem.flow.1"></span></span>
+              </div>
+              <ul class="eco__services">
+                <li class="eco__service"><span class="eco__service-name" data-i18n="ecosystem.services.3.name"></span> <span class="eco__service-text" data-i18n="ecosystem.services.3.text"></span></li>
+              </ul>
+            </li>
+            <li class="eco__step" data-eco-step="2">
+              <div class="eco__card">
+                <h3 class="eco__face"><span class="eco__num">03</span> <span class="eco__name" data-i18n="ecosystem.flow.2"></span></h3>
+                <span class="eco__face eco__face--on" aria-hidden="true"><span class="eco__num">03</span> <span class="eco__name" data-i18n="ecosystem.flow.2"></span></span>
+              </div>
+              <ul class="eco__services">
+                <li class="eco__service"><span class="eco__service-name" data-i18n="ecosystem.services.4.name"></span> <span class="eco__service-text" data-i18n="ecosystem.services.4.text"></span></li>
+              </ul>
+            </li>
+            <li class="eco__step" data-eco-step="3">
+              <div class="eco__card">
+                <h3 class="eco__face"><span class="eco__num">04</span> <span class="eco__name" data-i18n="ecosystem.flow.3"></span></h3>
+                <span class="eco__face eco__face--on" aria-hidden="true"><span class="eco__num">04</span> <span class="eco__name" data-i18n="ecosystem.flow.3"></span></span>
+              </div>
+              <ul class="eco__services">
+                <li class="eco__service"><span class="eco__service-name" data-i18n="ecosystem.services.5.name"></span> <span class="eco__service-text" data-i18n="ecosystem.services.5.text"></span></li>
+                <li class="eco__service"><span class="eco__service-name" data-i18n="ecosystem.services.6.name"></span> <span class="eco__service-text" data-i18n="ecosystem.services.6.text"></span></li>
+              </ul>
+            </li>
+            <li class="eco__step" data-eco-step="4">
+              <div class="eco__card">
+                <h3 class="eco__face"><span class="eco__num">05</span> <span class="eco__name" data-i18n="ecosystem.flow.4"></span></h3>
+                <span class="eco__face eco__face--on" aria-hidden="true"><span class="eco__num">05</span> <span class="eco__name" data-i18n="ecosystem.flow.4"></span></span>
+              </div>
+              <ul class="eco__services">
+                <li class="eco__service"><span class="eco__service-name" data-i18n="ecosystem.services.7.name"></span> <span class="eco__service-text" data-i18n="ecosystem.services.7.text"></span></li>
+              </ul>
+            </li>
+            <li class="eco__step" data-eco-step="5">
+              <div class="eco__card">
+                <h3 class="eco__face"><span class="eco__num">06</span> <span class="eco__name" data-i18n="ecosystem.flow.5"></span></h3>
+                <span class="eco__face eco__face--on" aria-hidden="true"><span class="eco__num">06</span> <span class="eco__name" data-i18n="ecosystem.flow.5"></span></span>
+              </div>
+              <ul class="eco__services">
+                <li class="eco__service"><span class="eco__service-name" data-i18n="ecosystem.services.8.name"></span> <span class="eco__service-text" data-i18n="ecosystem.services.8.text"></span></li>
+              </ul>
+            </li>
+          </ol>
         </div>
       </section>
 
@@ -1040,38 +1006,46 @@
           <div class="mat__window">
             <ul class="mat__grid" data-mat-track>
               <li class="mat__item"><article class="mat__card mat__card--accent">
-                <span class="mat__glow" aria-hidden="true"></span>
-                <svg class="mat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
-                <span class="mat__badge"><span data-i18n="materials.post"></span> 1</span>
-                <h3 class="mat__title" data-i18n="materials.items.0.title"></h3>
-                <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="mat__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></a>
+                <div class="mat__cover" aria-hidden="true"><span class="mat__cover-title" data-i18n="materials.items.0.cover"></span></div>
+                <div class="mat__body">
+                  <p class="mat__channel"><span class="mat__avatar" aria-hidden="true"></span><span class="mat__channel-name" data-i18n="materials.channel"></span><span class="mat__kind" data-i18n="materials.post"></span></p>
+                  <h3 class="mat__title" data-i18n="materials.items.0.title"></h3>
+                  <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>
+                </div>
               </article></li>
               <li class="mat__item"><article class="mat__card mat__card--dark">
-                <span class="mat__glow" aria-hidden="true"></span>
-                <svg class="mat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
-                <span class="mat__badge"><span data-i18n="materials.post"></span> 2</span>
-                <h3 class="mat__title is-tbd" data-i18n="materials.items.1.title"></h3>
-                <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="mat__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></a>
-              </article></li>
-              <li class="mat__item"><article class="mat__card mat__card--light">
-                <span class="mat__glow" aria-hidden="true"></span>
-                <svg class="mat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
-                <span class="mat__badge"><span data-i18n="materials.post"></span> 3</span>
-                <h3 class="mat__title is-tbd" data-i18n="materials.items.2.title"></h3>
-                <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="mat__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></a>
+                <div class="mat__cover" aria-hidden="true"><span class="mat__cover-title" data-i18n="materials.post"></span></div>
+                <div class="mat__body">
+                  <p class="mat__channel"><span class="mat__avatar" aria-hidden="true"></span><span class="mat__channel-name" data-i18n="materials.channel"></span><span class="mat__kind" data-i18n="materials.post"></span></p>
+                  <h3 class="mat__title is-tbd" data-i18n="materials.items.1.title"></h3>
+                  <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>
+                </div>
               </article></li>
               <li class="mat__item"><article class="mat__card mat__card--dark">
-                <span class="mat__glow" aria-hidden="true"></span>
-                <svg class="mat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
-                <span class="mat__badge"><span data-i18n="materials.post"></span> 4</span>
-                <h3 class="mat__title is-tbd" data-i18n="materials.items.3.title"></h3>
-                <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="mat__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></a>
+                <div class="mat__cover" aria-hidden="true"><span class="mat__cover-title" data-i18n="materials.post"></span></div>
+                <div class="mat__body">
+                  <p class="mat__channel"><span class="mat__avatar" aria-hidden="true"></span><span class="mat__channel-name" data-i18n="materials.channel"></span><span class="mat__kind" data-i18n="materials.post"></span></p>
+                  <h3 class="mat__title is-tbd" data-i18n="materials.items.2.title"></h3>
+                  <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>
+                </div>
+              </article></li>
+              <li class="mat__item"><article class="mat__card mat__card--dark">
+                <div class="mat__cover" aria-hidden="true"><span class="mat__cover-title" data-i18n="materials.post"></span></div>
+                <div class="mat__body">
+                  <p class="mat__channel"><span class="mat__avatar" aria-hidden="true"></span><span class="mat__channel-name" data-i18n="materials.channel"></span><span class="mat__kind" data-i18n="materials.post"></span></p>
+                  <h3 class="mat__title is-tbd" data-i18n="materials.items.3.title"></h3>
+                  <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></a>
+                </div>
               </article></li>
             </ul>
           </div>
         </div>
       </section>
 
+      <!-- 13 FAQ (T37 — вариант A «переписка», reference/run3/faq-A-chosen.png): слева заголовок, «Не знайшли відповідь?»
+           и вопросы из faq.json кнопками; справа общий телефон (src/core/phone.js) с чатом Володимира: выбранный вопрос
+           уходит сообщением посетителя, «друкує…», затем ответ. Вопросы сами перебираются, пока блок в окне; пауза — только
+           под курсором на списке. reduced-motion / ?nomotion=1 — первый вопрос и ответ сразу, без автолистания. -->
       <section id="faq" class="section section--faq" data-section="faq" aria-labelledby="faq-title">
         <div class="container faq">
           <div class="faq__side">
@@ -1084,13 +1058,44 @@
               <span class="faq__ask-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
             </a>
           </div>
-          <div class="faq__cols" data-faq>
-            <ul class="faq__list" data-faq-list="0"></ul>
-            <ul class="faq__list" data-faq-list="1"></ul>
+          <ul class="faq__list" role="tablist" aria-orientation="vertical" data-i18n-attr="aria-label:faq.listLabel" data-faq-list></ul>
+          <div class="faq__stage">
+            <phone-frame class="faq__phone" data-faq-phone>
+              <div class="phone__view">
+                <div class="phone__chat" aria-hidden="true">
+                  <span class="phone__back"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
+                  <span class="phone__who">
+                    <span class="phone__name" data-i18n="faq.chat.name"></span>
+                    <span class="phone__sub phone__sub--online" data-faq-status data-i18n="faq.chat.status"></span>
+                  </span>
+                  <span class="phone__avatar phone__avatar--photo" data-faq-avatar>
+                    <picture>
+                      <source type="image/avif" srcset="/img/photo/volodymyr-founder-480.avif" />
+                      <source type="image/webp" srcset="/img/photo/volodymyr-founder-480.webp" />
+                      <img src="/img/photo/volodymyr-founder-480.jpg" width="480" height="600" alt="" loading="lazy" decoding="async" />
+                    </picture>
+                  </span>
+                </div>
+                <div class="phone__feed faq__feed" id="faq-chat" role="tabpanel" data-faq-feed>
+                  <div class="phone__thread" data-faq-thread></div>
+                </div>
+                <div class="phone__bottom phone__bottom--input" aria-hidden="true">
+                  <span class="phone__input">
+                    <svg class="phone__clip" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m14.5 8.5-5.8 5.8a2.5 2.5 0 0 1-3.5-3.5l6.4-6.4a1.6 1.6 0 0 1 2.3 2.3l-6.4 6.4a.7.7 0 0 1-1-1l5.8-5.8" /></svg>
+                    <span class="phone__placeholder" data-i18n="formats.phone.message"></span>
+                    <svg class="phone__mic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="7" y="2" width="6" height="10" rx="3" /><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v3" /></svg>
+                  </span>
+                </div>
+              </div>
+            </phone-frame>
           </div>
         </div>
       </section>
 
+      <!-- 14 Фінальний CTA (T37 — вариант B «чат з Володимиром», reference/run3/cta-B-chosen.png): слева огромный
+           заголовок, текст и кнопка в Telegram; справа общий телефон с чатом Володимира — одно его сообщение-приглашение,
+           внизу поле «Повідомлення» и кнопка отправки; весь экран телефона — ссылка в Telegram. При появлении блока
+           сообщение приходит после «друкує…» (один раз); reduced-motion / ?nomotion=1 — сообщение видно сразу. -->
       <section id="cta" class="section section--cta" data-section="cta" aria-labelledby="cta-title">
         <div class="cta__inner container">
           <div class="cta__body">
@@ -1102,16 +1107,40 @@
               <a class="btn btn--primary btn--lg cta__btn" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="final_cta">
                 <span data-i18n="cta.button"></span><span class="btn__arrow" aria-hidden="true" data-i18n="cta.arrow"></span>
               </a>
-              <p class="cta__handle"><svg class="cta__handle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>{{config.telegramHandle}}</p>
             </div>
           </div>
-          <figure class="cta__photo" data-cta-photo>
-            <picture>
-              <source type="image/avif" srcset="/img/photo/volodymyr-cta-480.avif 480w, /img/photo/volodymyr-cta-900.avif 900w" sizes="(min-width: 900px) 34vw, 90vw" />
-              <source type="image/webp" srcset="/img/photo/volodymyr-cta-480.webp 480w, /img/photo/volodymyr-cta-900.webp 900w" sizes="(min-width: 900px) 34vw, 90vw" />
-              <img class="photo-img" src="/img/photo/volodymyr-cta-480.jpg" srcset="/img/photo/volodymyr-cta-480.jpg 480w, /img/photo/volodymyr-cta-900.jpg 900w" sizes="(min-width: 900px) 34vw, 90vw" width="480" height="703" alt="" data-i18n-attr="alt:founder.photoAlt" loading="lazy" decoding="async" />
-            </picture>
-          </figure>
+          <div class="cta__stage">
+            <phone-frame class="cta__phone" data-cta-phone>
+              <div class="phone__view">
+                <div class="phone__chat" aria-hidden="true">
+                  <span class="phone__back"><svg viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2 2 10l8 8" /></svg></span>
+                  <span class="phone__who">
+                    <span class="phone__name" data-i18n="cta.chat.name"></span>
+                    <span class="phone__sub phone__sub--online"><span>{{config.telegramHandle}}</span> · <span data-cta-status data-i18n="cta.chat.status"></span></span>
+                  </span>
+                  <span class="phone__avatar phone__avatar--photo">
+                    <picture>
+                      <source type="image/avif" srcset="/img/photo/volodymyr-founder-480.avif" />
+                      <source type="image/webp" srcset="/img/photo/volodymyr-founder-480.webp" />
+                      <img src="/img/photo/volodymyr-founder-480.jpg" width="480" height="600" alt="" loading="lazy" decoding="async" />
+                    </picture>
+                  </span>
+                </div>
+                <div class="phone__feed">
+                  <div class="phone__thread" data-cta-thread>
+                    <p class="phone__msg phone__msg--in" data-cta-hello><span class="phone__msg-text" data-i18n="cta.chatHello"></span></p>
+                  </div>
+                </div>
+                <div class="phone__bottom phone__bottom--send" aria-hidden="true">
+                  <span class="phone__input">
+                    <span class="phone__placeholder" data-i18n="formats.phone.message"></span>
+                  </span>
+                  <span class="phone__send"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 3.6 2.9 10.7c-1 .4-1 1.8.1 2.1l4.6 1.4 1.8 5.6c.3.9 1.4 1.1 2 .4l2.6-2.6 4.6 3.4c.8.6 1.9.1 2.1-.8l3.1-14.6c.3-1.2-.9-2.2-2.4-1.6Zm-3.6 4.1-8.4 7.6-.3 3.3-1.4-4.5 9.6-6.1c.4-.3.8.2.5.5Z" /></svg></span>
+                </div>
+              </div>
+              <a class="phone__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" data-place="final_cta_chat"></a>
+            </phone-frame>
+          </div>
         </div>
       </section>
     </main>
@@ -1161,7 +1190,7 @@
         <p class="footer__copy" data-i18n="footer.copyright"></p>
         <p class="footer__credit">
           <span data-i18n="footer.creditLabel"></span>
-          <a class="is-placeholder" href="#" data-placeholder data-i18n="footer.creditName"></a>
+          <a href="https://zabolotnyistudio.com" target="_blank" rel="noopener" data-i18n="footer.creditName"></a>
         </p>
         <button type="button" class="footer__top" data-scroll-top>
           <span data-i18n="footer.toTop"></span>

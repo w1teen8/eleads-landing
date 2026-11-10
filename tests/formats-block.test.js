@@ -4,8 +4,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
 import { disableSections } from '../src/core/sections.js';
+import { expandPhones } from '../src/core/phone.js';
 
-const html = read('index.html');
+// телефон в разметке — шаблон <phone-frame> (T37); проверяется развёрнутым, как его отдаёт сборка
+const html = expandPhones(read('index.html'));
 const config = readJson('src/data/config.json');
 const ua = readJson('src/data/content.ua.json');
 const en = readJson('src/data/content.en.json');
@@ -59,7 +61,8 @@ test('H11: у блока нет переходов по прокрутке — �
 // T23 (H14), T27: телефон — в палитре канала (металлический бортик — смеси палитры, обои экрана — производные --bg),
 // сами макеты остаются похожими на Telegram
 test('облик: рамка телефона — градиент из палитры, экран — обои; макеты похожи на Telegram', () => {
-  const css = read('src/styles/sections/formats.css');
+  // рамка и экран — общий телефон (T37, src/styles/phone.css), макеты рекламы — у блока
+  const css = read('src/styles/phone.css') + read('src/styles/sections/formats.css');
   assert.match(css, /\.phone\s*\{[^}]*background:\s*linear-gradient\(/, 'металлический бортик');
   assert.match(css, /\.phone__screen\s*\{[^}]*background-color:\s*var\(--phone-wall-2\)/, 'обои экрана');
   assert.doesNotMatch(css, /\.formats__shot\b/, 'прежних рамок-скриншотов нет');

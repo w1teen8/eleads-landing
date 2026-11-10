@@ -1,41 +1,70 @@
-// 11 Екосистема (T30): шлях клієнта — статичные плитки; услуги — лента карточек в духе showcase-scroll (H07):
-// на широком экране блок закрепляется под шапкой, карточки едут влево по мере прокрутки страницы
-// (showcaseScroll из motion-kit — единственный разрешённый переход по прокрутке, H11). На узком экране и при
-// reduced-motion — горизонтальная прокрутка пальцем (CSS). Описание карточки раскрывается по hover / focus-visible
-// (CSS), на тач — по тапу; aria-expanded отражает только открытое тапом состояние.
-import { $, $$, on } from '../core/dom.js';
+// 11 Екосистема (T36, H49): шлях клієнта з послугами під кожним кроком — выбор пользователя, вариант A
+// (reference/run3/ecosystem-A-chosen.png). Шесть шагов в ряд, под каждым — его услуги (STEP_SERVICES).
+// «Бегущий импульс»: шаги по очереди загораются жёлто-оранжевым слева направо (класс is-on на шаге — CSS проявляет
+// градиентную грань карточки и рамки его услуг через opacity), каждый горит PULSE_MS. Наведение мышью на сам шаг
+// (карточка и его услуги) зажигает его и ставит импульс на паузу; курсор где-то ещё в блоке паузы не ставит
+// (урок блока 09). Импульс идёт, только пока блок в окне и вкладка видна. reduced-motion / ?nomotion=1 — без
+// импульса: горит первый шаг, наведение по-прежнему подсвечивает. Прежней ленты showcase-scroll в блоке нет.
+import { $$, on } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
-import { showcaseScroll } from '../core/motion-kit.js';
+import { reduced } from '../core/motion.js';
+import { PULSE_MS, nextStep } from './ecosystem-model.js';
 
 export function init(root) {
   accentTitles(root);
+  const steps = $$('[data-eco-step]', root);
+  const total = steps.length;
+  if (!total) return;
 
-  const track = $('[data-eco-track]', root);
-  const progress = $('[data-eco-progress]', root);
-  if (progress) progress.style.transform = 'scaleX(0)';
-  if (track) {
-    const ride = showcaseScroll(root, track, {
-      onProgress: (p) => {
-        if (progress) progress.style.transform = `scaleX(${p})`;
-      },
-    });
-    // лента не поедет (reduced-motion, ?nomotion=1, GSAP не загрузился) — запасная горизонтальная прокрутка пальцем
-    ride.ready.then((ok) => root.classList.toggle('is-static', !ok));
+  let current = Math.max(0, steps.findIndex((s) => s.classList.contains('is-on')));
+  let timer = 0;
+  const state = { hovered: false, inView: false, hidden: document.hidden };
+
+  const light = (i) => {
+    current = i;
+    steps.forEach((step, n) => step.classList.toggle('is-on', n === i));
+  };
+
+  // один отсчёт за раз; любая смена состояния перезапускает его с полного шага
+  function sync() {
+    clearTimeout(timer);
+    timer = 0;
+    if (reduced || state.hovered || !state.inView || state.hidden) return;
+    timer = setTimeout(() => {
+      light(nextStep(current, total));
+      sync();
+    }, PULSE_MS);
   }
 
-  const rows = $$('.eco__row', root);
-  const set = (row, open) => {
-    row.classList.toggle('is-open', open);
-    row.setAttribute('aria-expanded', String(open));
-  };
-  for (const row of rows) {
-    on(row, 'click', () => {
-      const open = !row.classList.contains('is-open');
-      for (const other of rows) if (other !== row) set(other, false);
-      set(row, open);
+  steps.forEach((step, i) => {
+    on(step, 'pointerenter', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      state.hovered = true;
+      light(i);
+      sync();
     });
-    on(row, 'keydown', (e) => {
-      if (e.key === 'Escape' && row.classList.contains('is-open')) set(row, false);
+    on(step, 'pointerleave', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      state.hovered = false;
+      sync();
     });
+  });
+
+  on(document, 'visibilitychange', () => {
+    state.hidden = document.hidden;
+    sync();
+  });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(
+      ([entry]) => {
+        state.inView = entry.isIntersecting;
+        sync();
+      },
+      // на телефоне путь выше экрана — порог от доли узла не сработал бы; «в окне» = хоть часть пути в средней полосе
+      { rootMargin: '-20% 0px' },
+    ).observe(steps[0].parentElement);
+  } else {
+    state.inView = true;
+    sync();
   }
 }

@@ -3,13 +3,16 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
+import { expandPhones } from '../src/core/phone.js';
 
 const strip = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
-const html = read('index.html');
+// T37: телефон — общий компонент: в разметке шаблон <phone-frame> (разворачивает сборка), стили рамки и экрана —
+// src/styles/phone.css; блок 04 проверяется в том виде, в каком его получает браузер
+const html = expandPhones(read('index.html'));
 const ua = readJson('src/data/content.ua.json');
 const en = readJson('src/data/content.en.json');
 const js = read('src/sections/formats.js');
-const css = strip(read('src/styles/sections/formats.css'));
+const css = strip(read('src/styles/phone.css') + read('src/styles/sections/formats.css'));
 const formats = html.split(/<section\b[^>]*\sid="formats"/)[1].split('</section>')[0];
 const count = (s, re) => (s.match(re) || []).length;
 const KINDS = ['channel', 'video', 'bot'];

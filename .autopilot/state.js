@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-10T12:25:21+02:00",
+  "updatedAt": "2026-11-10T15:04:34+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1493,15 +1493,136 @@ window.STATE =
       "review": "нет",
       "model": "сильная",
       "status": "done",
-      "retries": 0,
-      "repairs": 0,
       "startedAt": "2026-11-10T12:14:56+02:00",
       "finishedAt": "2026-11-10T12:25:21+02:00",
+      "retries": 0,
+      "repairs": 0,
       "tests": {
         "passed": 217,
         "failed": 0
       },
       "commit": "9fd2da4"
+    },
+    {
+      "id": "35",
+      "title": "Блок 10 «Відгуки + засновник»: кружки, как видео-сообщения Telegram",
+      "requirements": [
+        "H48",
+        "H15",
+        "H14",
+        "H18",
+        "H24"
+      ],
+      "blockedBy": [
+        "30"
+      ],
+      "wave": 27,
+      "zone": [
+        "src/sections/reviews.js",
+        "src/styles/sections/reviews.css",
+        "#reviews",
+        "index.html",
+        "reviews",
+        "founder",
+        "content.*.json",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "startedAt": "2026-11-10T13:17:28+02:00",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "36",
+      "title": "Блоки 11 «Екосистема» (шлях клієнта) и 12 «Матеріали» (картки-пости)",
+      "requirements": [
+        "H49",
+        "H07",
+        "H15",
+        "H14",
+        "H18",
+        "H24"
+      ],
+      "blockedBy": [
+        "31"
+      ],
+      "wave": 28,
+      "zone": [
+        "src/sections/{ecosystem,materials}.js",
+        "src/styles/sections/{ecosystem,materials}.css",
+        "#ecosystem",
+        "#materials",
+        "ecosystem",
+        "materials",
+        "content.*.json",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "startedAt": "2026-11-10T14:59:55+02:00",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "37",
+      "title": "Блоки 13 «FAQ» (переписка) и 14 «Фінальний CTA» (чат с Володимиром) — в телефоне",
+      "requirements": [
+        "H49",
+        "H50",
+        "H15",
+        "H14",
+        "H18",
+        "H24"
+      ],
+      "blockedBy": [
+        "31"
+      ],
+      "wave": 28,
+      "zone": [
+        "src/sections/{faq,cta}.js",
+        "src/styles/sections/{faq,cta}.css",
+        "#faq",
+        "#cta",
+        "faq",
+        "cta",
+        "content.*.json",
+        "faq.json",
+        "formats.css",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "startedAt": "2026-11-10T14:59:56+02:00",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "38",
+      "title": "Админка текстов: /admin/, сохранение через GitHub",
+      "requirements": [
+        "H51"
+      ],
+      "blockedBy": [],
+      "wave": 28,
+      "zone": [
+        "admin.html",
+        "src/admin/*",
+        "vite.config.js",
+        "build.rollupOptions.input",
+        "tests/admin-*.test.js",
+        "README.md",
+        ".github/workflows/deploy.yml"
+      ],
+      "review": "да (безопасность)",
+      "model": "сильная",
+      "status": "in-progress",
+      "retries": 0,
+      "repairs": 0,
+      "startedAt": "2026-11-10T15:04:34+02:00"
     },
     {
       "id": "F1",
@@ -1775,9 +1896,16 @@ window.STATE =
     "2026-11-10T11:30:08+02:00",
     "2026-11-10T12:14:55+02:00",
     "2026-11-10T12:14:56+02:00",
-    "2026-11-10T12:25:21+02:00"
+    "2026-11-10T12:25:21+02:00",
+    "2026-11-10T13:17:27+02:00",
+    "2026-11-10T13:17:28+02:00",
+    "2026-11-10T14:59:53+02:00",
+    "2026-11-10T14:59:55+02:00",
+    "2026-11-10T14:59:56+02:00",
+    "2026-11-10T15:04:33+02:00",
+    "2026-11-10T15:04:34+02:00"
   ],
-  "rev": 180,
+  "rev": 187,
   "waiting": null,
   "waits": [
     {
@@ -3166,6 +3294,53 @@ window.STATE =
         "passed": 217,
         "failed": 0
       }
+    },
+    {
+      "t": "2026-11-10T13:17:27+02:00",
+      "k": "tickets",
+      "n": 36
+    },
+    {
+      "t": "2026-11-10T13:17:28+02:00",
+      "k": "ticket",
+      "ids": [
+        "35"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-10T14:59:53+02:00",
+      "k": "tickets",
+      "n": 38
+    },
+    {
+      "t": "2026-11-10T14:59:55+02:00",
+      "k": "ticket",
+      "ids": [
+        "36"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-10T14:59:56+02:00",
+      "k": "ticket",
+      "ids": [
+        "37"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-10T15:04:33+02:00",
+      "k": "tickets",
+      "n": 39
+    },
+    {
+      "t": "2026-11-10T15:04:34+02:00",
+      "k": "ticket",
+      "ids": [
+        "38"
+      ],
+      "act": "start"
     }
   ],
   "reqList": [

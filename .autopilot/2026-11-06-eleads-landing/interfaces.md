@@ -347,3 +347,12 @@ export function forecast(input, rates): Forecast
 - Разметка: список `role="tablist"` (строки `.tg__item`, `aria-selected`), левая колонка `tabpanel`, `aria-live` только при ручном выборе; иконки диска дублируют вкладки (`aria-hidden`). Кольцо прогресса — две вращающиеся половины (без `stroke-dasharray`).
 - `icons.js`: новые ключи `pin`, `globe`, `heart`, `hash`, `megaphone`, `people`. Контент: `targeting.kicker`, `targeting.listLabel`.
 
+### T35–T37 — блоки 10–14 (H48, H49, H50)
+
+- 10: кружки как видео Telegram — `reviews-model.js` (`STEP_MS = 10000`, `reviewAvatar`, `isTbd`), `reviews.items.*.case` → аватар кейса, `founder.video` (пусто — кнопки нет). Старый слайдер удалён.
+- 11: шлях клієнта — `ecosystem-model.js` (`STEP_SERVICES`, `PULSE_MS = 2500`), `ol.eco__path` → `li.eco__step[data-eco-step]`; лента showcase-scroll в блоке 11 убрана.
+- 12: карточки-посты `article.mat__card`, лента по прокрутке через `showcaseScroll`.
+- Общий телефон: `src/core/phone.js` (`phoneFrame`, `expandPhones`; в разметке `<phone-frame>` разворачивается сборкой), `src/styles/phone.css`; используется в 04, 13, 14. Тесты, читающие телефон из `index.html`, — через `expandPhones`.
+- 13: FAQ-переписка в телефоне (`STEP_MS = 8000`, `TYPING_MS = 700`, вкладки вопросов); 14: чат с Володимиром в телефоне (`cta.chatHello`, место клика `final_cta_chat`).
+- Автолистание везде — пауза только при наведении на сам интерактивный элемент.
+

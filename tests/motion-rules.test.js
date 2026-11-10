@@ -23,18 +23,4 @@ test('процесс: без stroke-dash; рост ступеней пишет �
 });
 
 // T13: у ниш курсорной подсветки больше нет — там орбита (tests/aether-sections.test.js)
-test('свечение материалов: курсор двигает слой transform-ом, позиция градиента от переменных не зависит', () => {
-  for (const [file, vars] of [
-    ['src/styles/sections/materials.css', ['--gx', '--gy']],
-  ]) {
-    const css = strip(read(file));
-    for (const [, value] of css.matchAll(/background(?:-image|-position)?:\s*([^;]+);/g)) {
-      for (const v of vars) assert.ok(!value.includes(`var(${v})`), `${file}: ${v} в background — градиент перерисовывается на каждый pointermove`);
-    }
-    for (const v of vars) {
-      const uses = [...css.matchAll(new RegExp(`([a-z-]+):[^;]*var\\(${v}\\)`, 'g'))].map((m) => m[1]);
-      assert.ok(uses.length > 0, `${file}: ${v} не используется`);
-      assert.deepEqual([...new Set(uses)], ['transform'], `${file}: ${v} меняет не только transform`);
-    }
-  }
-});
+// T36: у материалов тоже — карточки-посты как в Telegram, без свечения за курсором (tests/ecosystem-materials.test.js)
