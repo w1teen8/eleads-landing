@@ -1,9 +1,11 @@
 {
-  "_note": "Цифр і текстів по кейсах ще немає: «уточнити» / «TBD» — заглушки. «done» — шаблон з вайрфрейму клієнта, підтвердити по кожному кейсу. screenshot — шлях до /img/cases/<id>.webp, коли буде.",
+  "_note": "Цифр і текстів по кейсах ще немає: «уточнити» / «TBD» — заглушки. «done» — шаблон з вайрфрейму клієнта, підтвердити по кожному кейсу. avatar: true — є аватар /img/cases/<id>.webp (+ <id>@2x.webp; avatarRetina: false — файлу @2x немає, вихідник малий); accent — колір бренду з аватара (дані, не оформлення), без нього — акцент сайту. screenshot — шлях до скриншота відгуку, коли буде. Аватар-жабка у Cryptonite — припущення за нішею Crypto, підтвердити.",
   "cases": [
     {
       "id": "cryptonite",
       "featured": true,
+      "avatar": true,
+      "accent": "#F2596B",
       "niche": {
         "ua": "Crypto",
         "en": "Crypto"
@@ -57,14 +59,16 @@
       "screenshot": ""
     },
     {
-      "id": "finmap",
+      "id": "monolit",
+      "avatar": true,
+      "accent": "#19B5E0",
       "niche": {
-        "ua": "Finance / B2B",
-        "en": "Finance / B2B"
+        "ua": "Finance / Investments",
+        "en": "Finance / Investments"
       },
       "name": {
-        "ua": "Finmap",
-        "en": "Finmap"
+        "ua": "Monolit",
+        "en": "Monolit"
       },
       "budget": {
         "ua": "уточнити",
@@ -112,6 +116,8 @@
     },
     {
       "id": "global-auto-logistic",
+      "avatar": true,
+      "accent": "#DCE21C",
       "niche": {
         "ua": "Auto",
         "en": "Auto"
@@ -165,7 +171,178 @@
       "screenshot": ""
     },
     {
+      "id": "trackdesk",
+      "avatar": true,
+      "accent": "#12B76A",
+      "niche": {
+        "ua": "SaaS / B2B",
+        "en": "SaaS / B2B"
+      },
+      "name": {
+        "ua": "Trackdesk",
+        "en": "Trackdesk"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "prosales",
+      "avatar": true,
+      "accent": "#7B4DFF",
+      "niche": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "name": {
+        "ua": "ПроSales",
+        "en": "ProSales"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "finmap",
+      "avatar": true,
+      "accent": "#74E3A8",
+      "niche": {
+        "ua": "Finance / B2B",
+        "en": "Finance / B2B"
+      },
+      "name": {
+        "ua": "Finmap",
+        "en": "Finmap"
+      },
+      "budget": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "result": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "cpa": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "task": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "done": [
+        {
+          "ua": "Запит клієнта: уточнити",
+          "en": "Client request: TBD"
+        },
+        {
+          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
+          "en": "Built the strategy and prepared the ad creatives"
+        },
+        {
+          "ua": "Протестовано: уточнити",
+          "en": "Tested: TBD"
+        },
+        {
+          "ua": "Масштабовано зв’язки з найкращою економікою",
+          "en": "Scaled the combinations with the best unit economics"
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
       "id": "kniaziev",
+      "avatar": true,
+      "accent": "#4F6BFF",
+      "avatarRetina": false,
       "niche": {
         "ua": "Auto / Korea",
         "en": "Auto / Korea"
@@ -220,6 +397,7 @@
     },
     {
       "id": "mukhin",
+      "avatar": false,
       "niche": {
         "ua": "Expert",
         "en": "Expert"
@@ -274,6 +452,7 @@
     },
     {
       "id": "dombovetskyi",
+      "avatar": false,
       "niche": {
         "ua": "Expert",
         "en": "Expert"
@@ -281,60 +460,6 @@
       "name": {
         "ua": "Віктор Домбовецький",
         "en": "Viktor Dombovetskyi"
-      },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "done": [
-        {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
-        },
-        {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
-        },
-        {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
-        },
-        {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
-        }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
-    },
-    {
-      "id": "trackdesk",
-      "niche": {
-        "ua": "SaaS / B2B",
-        "en": "SaaS / B2B"
-      },
-      "name": {
-        "ua": "Trackdesk",
-        "en": "Trackdesk"
       },
       "budget": {
         "ua": "уточнити",

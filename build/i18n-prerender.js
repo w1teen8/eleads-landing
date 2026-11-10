@@ -9,6 +9,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve as resolvePath } from 'node:path';
 import { disableSections } from '../src/core/sections.js';
+import { inlineIcons } from '../src/core/icons.js';
 
 const TEXT_NODE = /<([a-zA-Z][\w-]*)((?:\s[^>]*?)?)(\sdata-i18n=")([^"]+)("[^>]*)>([^<]*)<\/\1>/g;
 const ATTR_TAG = /<[a-zA-Z][^>]*\sdata-i18n-attr="([^"]+)"[^>]*>/g;
@@ -36,7 +37,8 @@ export function prerender(html, dict, config = {}, { strict = false, warn = cons
     return path;
   };
 
-  let out = html.replace(CONFIG_TOKEN, (token, path) => {
+  // иконки ниш: пустой <svg data-icon="ключ"></svg> получает содержимое из src/core/icons.js
+  let out = inlineIcons(html).replace(CONFIG_TOKEN, (token, path) => {
     const value = lookup(config, path);
     if (typeof value === 'string') return escapeAttr(value);
     missing.push(`config.${path}`);

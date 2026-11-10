@@ -2,8 +2,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read } from './helpers.js';
+import { inlineIcons } from '../src/core/icons.js';
 
-const html = read('index.html');
+// иконки плиток вписывает сборка из src/core/icons.js (T29: общий модуль с карточками кейсов)
+const html = inlineIcons(read('index.html'));
 const css = read('src/styles/sections/niches.css').replace(/\/\*[\s\S]*?\*\//g, '');
 const section = html.split(/<section\b[^>]*\sid="niches"/)[1].split('</section>')[0];
 const items = section.split('<li class="niches__item">').slice(1);

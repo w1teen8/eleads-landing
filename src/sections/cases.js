@@ -3,7 +3,10 @@
 // карточки едут влево по мере прокрутки страницы (showcaseScroll из core/motion-kit.js). Стрелок и перетаскивания нет.
 // Узкий экран, reduced-motion, ?nomotion=1 или GSAP не загрузился — обычная горизонтальная прокрутка пальцем
 // (класс is-static, scroll-snap в CSS). Полоса под лентой — пройденный путь (scaleX).
-// У карточки аватар клиента: <img> /img/cases/<id>.webp (publicUrl); файла нет — остаётся круг с первой буквой имени.
+// Карточка (вариант F, выбор пользователя): на фоне «линия роста» — декоративная кривая с заливкой в цвет бренда
+// (не данные: без осей и цифр; три заготовки формы по индексу карточки); шапка — круглый аватар и справа имя
+// с нишей; акценты — в цвет бренда кейса (cases.json → accent, инлайн-переменная --case-accent). Фото — только у кейсов с avatar: true:
+// /img/cases/<id>.webp через publicUrl; иначе (и при сбое загрузки) — круг с первой буквой имени и акцент сайта.
 // Модалка — нативный <dialog>: Esc, клик вне, кнопка; фокус заперт и возвращается на карточку;
 // фон не скроллится (lockScroll ставит Lenis на паузу).
 import { $, $$, el, on, trapFocus } from '../core/dom.js';
@@ -15,16 +18,64 @@ import { publicUrl } from '../core/public-url.js';
 import { track } from '../core/analytics.js';
 import data from '../data/cases.json';
 
-const CARD_FIELDS = ['niche', 'name', 'cpa', 'budget', 'result'];
+const CARD_FIELDS = ['niche', 'name', 'result'];
 const MODAL_FIELDS = ['name', 'niche', 'task', 'geo', 'budget', 'result', 'cpa', 'review'];
 const CLOSE_MS = 260;
-/** Тона запасного аватара (круг с буквой) — по кругу; сами цвета — в cases.css. */
-const AVATAR_TONES = ['sun', 'light', 'ember'];
 
-/** Путь к аватару клиента в public/: /img/cases/<id>.webp. */
-export const avatarPath = (id) => `/img/cases/${id}.webp`;
-/** Первая буква имени для запасного аватара. */
+/** Путь к аватару клиента в public/: /img/cases/<id>.webp (256 px); retina — /img/cases/<id>@2x.webp (512 px). */
+export const avatarPath = (id, retina = false) => `/img/cases/${id}${retina ? '@2x' : ''}.webp`;
+/** Первая буква имени — запасной аватар в круге, когда картинки нет. */
 export const initial = (name) => (String(name ?? '').trim().match(/[\p{L}\p{N}]/u)?.[0] ?? '').toUpperCase();
+/** Цвет бренда кейса из cases.json (accent) — только #rgb / #rrggbb; иначе null, и карточка берёт акцент сайта. */
+export const accentOf = (item) => (typeof item?.accent === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(item.accent) ? item.accent : null);
+
+/**
+ * «Линия роста» на фоне карточки — украшение, не данные: три заготовки кривой слева-снизу вправо-вверх в рамке 300×200.
+ * d — сама кривая (под ней заливка до низа рамки), end — высота её правого конца (там круглая точка).
+ */
+export const CHART_SHAPES = [
+  { d: 'M0 170 C40 160 60 150 90 130 S140 140 170 95 S230 70 300 20', end: 20 },
+  { d: 'M0 180 C50 176 80 140 120 138 S170 120 200 78 S260 52 300 30', end: 30 },
+  { d: 'M0 160 C35 158 70 120 105 124 S150 100 185 104 S250 40 300 14', end: 14 },
+];
+
+/** Разметка кривой для карточки с номером index (форма — по кругу, детерминированно). Цвет — currentColor. */
+export function chartSvg(index) {
+  const i = Math.abs(Math.trunc(Number(index) || 0));
+  const { d, end } = CHART_SHAPES[i % CHART_SHAPES.length];
+  const id = `cases-chart-${i}`;
+  return (
+    `<svg viewBox="0 0 300 200" preserveAspectRatio="none" focusable="false">` +
+    `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">` +
+    `<stop offset="0" stop-color="currentColor" stop-opacity="0.45"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/>` +
+    `</linearGradient></defs>` +
+    `<path class="cases__chart-fill" d="${d} V200 H0Z" fill="url(#${id})"/>` +
+    `<path class="cases__chart-line" d="${d}" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"/>` +
+    `</svg><span class="cases__chart-dot" style="top:${(end / 2).toFixed(1)}%"></span>`
+  );
+}
+
+/** Красит узел в цвет кейса: инлайн-переменная --case-accent (в CSS секции hex нет). */
+function tint(node, item) {
+  const accent = accentOf(item);
+  if (accent) node.style.setProperty('--case-accent', accent);
+  else node.style.removeProperty('--case-accent');
+}
+
+/** Аватар: фото только у кейсов с avatar: true (лишних запросов нет); иначе и при сбое загрузки — круг с буквой. */
+function paintAvatar(avatar, item) {
+  if (!avatar) return;
+  for (const old of $$('img', avatar)) old.remove();
+  avatar.classList.remove('has-image');
+  if (item.avatar !== true) return;
+  const attrs = { src: publicUrl(avatarPath(item.id)), alt: '', decoding: 'async' };
+  // файл @2x есть не у всех: у маленького исходника (avatarRetina: false) его нет — запрос не делается
+  if (item.avatarRetina !== false) attrs.srcset = `${attrs.src} 1x, ${publicUrl(avatarPath(item.id, true))} 2x`;
+  const img = el('img', { class: 'cases__avatar-img', attrs });
+  img.addEventListener('load', () => avatar.classList.add('has-image'), { once: true });
+  img.addEventListener('error', () => img.remove(), { once: true });
+  avatar.append(img);
+}
 
 const text = (value, lang) => (value && typeof value === 'object' ? value[lang] ?? value.ua ?? '' : String(value ?? ''));
 const isTbd = (value) => value === t('common.tbd') || value === 'уточнити' || value === 'TBD';
@@ -47,24 +98,14 @@ export function init(root) {
   const cards = cases.map((item, i) => {
     const li = tpl.content.firstElementChild.cloneNode(true);
     applyTranslations(li);
-    if (item.featured) li.classList.add('cases__item--featured');
-    const num = $('[data-case-num]', li);
-    if (num) num.textContent = String(i + 1).padStart(2, '0');
+    tint(li, item);
     const button = $('.cases__card', li);
     button.dataset.case = item.id;
     on(button, 'click', () => open(item, button));
-    const avatar = $('[data-case-avatar]', li);
-    if (avatar) {
-      avatar.dataset.tone = AVATAR_TONES[i % AVATAR_TONES.length];
-      // фото клиента поверх буквы; файла нет (или отдан не рисунок) — <img> убирается, остаётся буква
-      const img = el('img', {
-        class: 'cases__avatar-img',
-        attrs: { src: publicUrl(avatarPath(item.id)), alt: '', loading: 'lazy', decoding: 'async' },
-      });
-      img.addEventListener('load', () => avatar.classList.add('has-image'), { once: true });
-      img.addEventListener('error', () => img.remove(), { once: true });
-      avatar.append(img);
-    }
+    paintAvatar($('[data-case-avatar]', li), item);
+    // декор: разметка — строка из констант этого модуля (форма по номеру карточки), данных кейса в ней нет
+    const chart = $('[data-case-chart]', li);
+    if (chart) chart.innerHTML = chartSvg(i);
     return { item, li };
   });
   grid.replaceChildren(...cards.map((c) => c.li));
@@ -73,8 +114,7 @@ export function init(root) {
   const paintCards = (lang) => {
     for (const { item, li } of cards) {
       for (const f of CARD_FIELDS) fill($(`[data-f="${f}"]`, li), text(item[f], lang));
-      const letter = $('[data-case-letter]', li);
-      if (letter) letter.textContent = initial(text(item.name, lang));
+      for (const letter of $$('[data-case-letter]', li)) letter.textContent = initial(text(item.name, lang));
     }
   };
   paintCards(getLang());
@@ -86,6 +126,8 @@ export function init(root) {
 
   const paintModal = (item, lang) => {
     for (const f of MODAL_FIELDS) fill($(`[data-m="${f}"]`, modal), text(item[f], lang));
+    const letter = $('[data-m-letter]', modal);
+    if (letter) letter.textContent = initial(text(item.name, lang));
     const list = $('[data-m-list="done"]', modal);
     list?.replaceChildren(
       ...(item.done || []).map((d) => {
@@ -120,6 +162,8 @@ export function init(root) {
     clearTimeout(closeTimer);
     current = item;
     opener = trigger;
+    tint(modal, item);
+    paintAvatar($('[data-m-avatar]', modal), item);
     paintModal(item, getLang());
     if (!modal.open) {
       if (typeof modal.showModal === 'function') modal.showModal();

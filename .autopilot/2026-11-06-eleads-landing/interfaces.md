@@ -323,3 +323,9 @@ export function forecast(input, rates): Forecast
 - Убраны «нижние надписи»: `geo.footnote`, `targeting.hint/note`, `reviews.shot*`, `ecosystem.caption`, `faq.note`, `cta.sign`, заголовки колонок подвала.
 - `config.sections.enabled` — все 16 секций.
 
+### T29 (доработка) — карточки кейсов с аватарками (H43)
+
+- `cases.json`: 9 кейсов (добавлены `monolit`, `prosales`); поля `avatar`, `accent` (цвет бренда, только при аватаре), `avatarRetina:false` у `kniaziev`. Аватары — `public/img/cases/<id>.webp` и `<id>@2x.webp`; картинка запрашивается только при `avatar:true`.
+- Карточка: `[data-case-avatar]` + `.cases__who` (имя, ниша), фон `[data-case-chart]` — «линия роста» (`chartSvg(index)`, 3 формы), `--case-accent` / `--case-tone` инлайн из данных; большой буквы и иконок ниш нет.
+- `src/core/icons.js` (`ICONS`, `iconSvg`, `inlineIcons`) — иконки блока 03 вписываются сборкой по `data-icon`.
+

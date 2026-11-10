@@ -29,6 +29,7 @@
 | Фото Володимира | `public/img/photo/` | Подключены три кадра: `volodymyr-hero-*`, `volodymyr-founder-*`, `volodymyr-cta-*` — каждый в AVIF, WebP и JPG двух ширин. Чтобы заменить, положите файлы с теми же именами и размерами. Исходники фотосессии в репозиторий не входят. |
 | Логотипы клиентов | `public/img/logos/` | 7 файлов SVG/PNG. |
 | Скриншоты рекламы | `public/img/ads/` | 3 файла: канал, медиа, бот. |
+| Аватары клиентов в кейсах | `public/img/cases/` | Квадратные WebP: `<id>.webp` (256×256) и `<id>@2x.webp` (512×512), где `<id>` — `id` кейса в `src/data/cases.json`. Подключены: `cryptonite`, `monolit`, `global-auto-logistic`, `trackdesk`, `prosales`, `finmap`, `kniaziev` (у `kniaziev` исходник 160×160 — файл один, без `@2x`; в данных `"avatarRetina": false`). Картинка запрашивается только у кейса с `"avatar": true`; `"accent": "#hex"` там же — цвет бренда для акцентов карточки. Без аватара — круг с первой буквой имени. |
 | Скриншоты кейсов | `public/img/cases/<id>.webp` | путь указывается в `src/data/cases.json`, поле `screenshot` |
 | OG-картинка, favicon | `public/og.jpg` (1200x630), `public/favicon.svg` | сейчас заглушки |
 

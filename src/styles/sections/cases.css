@@ -1,12 +1,13 @@
 /* 06 Кейси (T29): облик блоков 02–05 — заголовок шрифтом канала заглавными со второй строкой акцентом; под ним лента
-   карточек в один экран. Карточка — тёмная поверхность с тонкой линией: аватар клиента (фото или круг с первой буквой
-   имени), тег ниши и номер, название шрифтом канала, крупная цифра CPA / CPS жёлтый → оранжевый, две строки фактов,
-   «Детальніше». Карточка Cryptonite (featured) — акцентная жёлто-оранжевая с тёмным текстом.
-   Лента — как на блоках 11–12 (правка пользователя): на широком альбомном экране блок закрепляется под шапкой и
-   карточки едут влево по прокрутке страницы (cases.js → showcaseScroll, transform). Узкий экран, reduced-motion,
-   ?nomotion=1 (класс is-static) — обычная горизонтальная прокрутка пальцем со scroll-snap по оси X.
-   Полоса под лентой — пройденный путь (scaleX). На широком экране блок — ровно экран под шапкой (layout.css):
-   высота карточек и кегль цифр — от высоты окна (svh). Двигаются только transform и opacity. */
+   карточек в один экран. Карточка — вариант F (выбор пользователя, reference/run3/cases-F-*.png): тёмная поверхность,
+   на фоне «линия роста» — декоративная кривая с заливкой в цвет бренда кейса; вверху круглый аватар в кольце этого цвета и
+   справа от него имя с нишей; внизу «Результат», значение крупно цветом бренда, линия, «Детальніше» с круглой стрелкой.
+   Цвет бренда — данные (cases.json → accent), в CSS приходит инлайн-переменной --case-accent; hex здесь нет.
+   Лента — как на блоках 11–12: на широком альбомном экране блок закрепляется под шапкой и карточки едут влево
+   по прокрутке страницы (cases.js → showcaseScroll, transform). Узкий экран, reduced-motion, ?nomotion=1
+   (класс is-static) — обычная горизонтальная прокрутка пальцем со scroll-snap по оси X. Полоса под лентой —
+   пройденный путь (scaleX). На широком экране блок — ровно экран под шапкой (layout.css): высота карточек и кегль —
+   от высоты окна (svh). Двигаются только transform и opacity. */
 
 .section--cases {
   --cases-gap: clamp(0.75rem, 1.1vw, 1.25rem);
@@ -81,15 +82,25 @@
   }
 }
 
-/* — карточка — */
+/* — карточка (вариант F): цвет бренда кейса приходит инлайн-переменной --case-accent из cases.json (cases.js);
+     без неё — акцент сайта. --case-tone — тот же цвет, чуть осветлённый к тексту: крупные надписи на тёмной
+     поверхности проходят AA (не меньше 3:1) и у тёмных брендов (фиолетовый) — */
+.cases__item,
+.case-modal {
+  --case-accent: var(--accent);
+  --case-tone: color-mix(in srgb, var(--case-accent) 78%, var(--text));
+}
+
 .cases__card {
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: clamp(0.75rem, 1.6svh, 1.1rem);
+  gap: clamp(0.4rem, 1svh, 0.6rem);
   width: 100%;
-  min-height: min(clamp(17rem, 14rem + 6vw, 22rem), 46svh);
+  min-height: min(clamp(20rem, 16rem + 10vw, 26.875rem), 58svh);
   padding: var(--cases-pad);
   border: 1px solid var(--line);
   border-radius: var(--r-card-lg);
@@ -105,53 +116,67 @@
 }
 
 .cases__card:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--case-tone);
   outline-offset: 3px;
 }
 
-/* акцентная карточка — Cryptonite */
-.cases__item--featured .cases__card {
-  border-color: transparent;
-  background: var(--grad);
-  color: var(--accent-ink);
+/* «линия роста» на фоне (вариант 5, выбор пользователя): плавная кривая слева-снизу вправо-вверх цветом бренда,
+   под ней заливка в прозрачность, на правом конце круглая точка. Украшение: без осей и цифр, aria-hidden.
+   Занимает среднюю часть карточки между шапкой и «Результат»; текст лежит поверх */
+.cases__chart {
+  position: absolute;
+  z-index: -1;
+  top: 21%;
+  right: 0;
+  left: 0;
+  height: 40%;
+  color: var(--case-accent);
+  pointer-events: none;
 }
 
+.cases__chart svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cases__chart-dot {
+  position: absolute;
+  right: 0;
+  width: 14px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translate(50%, -50%);
+}
+
+/* шапка: аватар и справа — кто это (имя, под ним ниша) */
 .cases__top-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.9rem;
+  margin-bottom: auto;
+  padding: 6px 0 0 6px; /* под кольцо аватара */
 }
 
-/* аватар клиента: круг с первой буквой имени на цвете палитры; фото (cases.js, /img/cases/<id>.webp) ложится поверх */
+/* аватар клиента: круг в кольце цвета бренда; фото (cases.js) ложится поверх буквы */
 .cases__avatar {
   position: relative;
   flex: none;
   display: grid;
   place-items: center;
-  width: clamp(2.75rem, 6.4svh, 3.5rem);
+  width: clamp(3.75rem, 8.2svh, 4.75rem);
   aspect-ratio: 1;
   border-radius: 50%;
-  overflow: hidden;
-  background: var(--accent);
+  background: var(--case-accent);
   color: var(--accent-ink);
-}
-
-.cases__avatar[data-tone='light'] {
-  background: var(--text);
-}
-
-.cases__avatar[data-tone='ember'] {
-  background: var(--accent-2);
-}
-
-.cases__item--featured .cases__avatar {
-  background: var(--accent-ink);
-  color: var(--accent);
+  box-shadow: 0 0 0 4px var(--surface), 0 0 0 6px var(--case-accent);
 }
 
 .cases__avatar-letter {
   font-family: var(--font-head);
-  font-size: clamp(1.5rem, 3.6svh, 2rem);
+  font-size: clamp(1.9rem, 4.4svh, 2.5rem);
   font-weight: 900;
   line-height: 1;
   text-transform: uppercase;
@@ -162,6 +187,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  border-radius: 50%;
   object-fit: cover;
   opacity: 0;
 }
@@ -170,158 +196,93 @@
   opacity: 1;
 }
 
-.cases__num {
-  margin-left: auto;
+.cases__who {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
 }
 
-.cases__tag {
-  display: inline-flex;
-  align-items: center;
-  min-height: 1.75rem;
-  padding: 0 0.8rem;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-pill);
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  color: var(--text);
-}
-
-.cases__item--featured .cases__tag {
-  border-color: color-mix(in srgb, var(--accent-ink) 35%, transparent);
-  color: var(--accent-ink);
-}
-
-.cases__num {
-  font-family: var(--font-head);
-  font-size: 1.125rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: var(--text-muted);
-}
-
-.cases__item--featured .cases__num {
-  color: color-mix(in srgb, var(--accent-ink) 70%, transparent);
-}
-
-/* название — шрифтом канала заглавными; кегль от ширины карточки, переносы только по пробелам */
+/* имя — Onest жирно, до двух строк; переносы только по пробелам */
 .cases__name {
-  font-family: var(--font-head);
-  font-size: clamp(1.75rem, 11cqi, 2.5rem);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: 0;
-  text-transform: uppercase;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: clamp(1.0625rem, 5.4cqi, 1.25rem);
+  font-weight: 700;
+  line-height: 1.15;
   overflow-wrap: normal;
   hyphens: manual;
 }
 
-/* главная цифра — CPA / CPS, жёлтый → оранжевый; на акцентной карточке — тёмная */
+.cases__niche {
+  font-size: var(--fs-sm);
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--text) 78%, transparent);
+}
+
+/* низ карточки: «Результат», значение крупно цветом бренда, линия, «Детальніше» со стрелкой */
 .cases__figure {
   display: grid;
-  gap: 0.2rem;
-  margin-top: auto;
+  gap: 0.35rem;
+  margin-top: clamp(1.25rem, 3.4svh, 2.25rem); /* воздух между шапкой и низом и на самой низкой карточке */
+}
+
+.cases__figure-label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--text) 72%, transparent);
 }
 
 .cases__figure-value {
   width: fit-content;
   max-width: 100%;
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 2rem + 4svh, 4.5rem);
+  font-size: clamp(2.25rem, 1.5rem + 3.4svh, 3.5rem);
   font-weight: 900;
   line-height: 0.9;
   letter-spacing: 0;
-  text-transform: uppercase;
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--case-tone);
 }
 
-.cases__item--featured .cases__figure-value {
-  background: none;
-  color: var(--accent-ink);
-}
-
-.cases__figure-label {
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.cases__item--featured .cases__figure-label {
-  color: color-mix(in srgb, var(--accent-ink) 72%, transparent);
-}
-
-/* факты — две строки с тонкой линией сверху */
-.cases__facts {
-  display: grid;
-  gap: 0.45rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--line-strong);
-  font-size: var(--fs-sm);
-}
-
-.cases__item--featured .cases__facts {
-  border-top-color: color-mix(in srgb, var(--accent-ink) 25%, transparent);
-}
-
-.cases__fact {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.cases__fact-label {
-  color: var(--text-muted);
-}
-
-.cases__item--featured .cases__fact-label {
-  color: color-mix(in srgb, var(--accent-ink) 72%, transparent);
-}
-
-.cases__fact-value {
-  font-weight: 600;
-  text-align: right;
+/* заглушка «уточнити» — курсивом: видно, что данных ещё нет */
+.cases__card .is-tbd {
+  font-style: italic;
 }
 
 .cases__more {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.35rem;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: clamp(0.35rem, 1svh, 0.6rem);
+  padding-top: clamp(0.6rem, 1.5svh, 0.85rem);
+  border-top: 1.5px solid var(--text);
   font-size: var(--fs-sm);
-  font-weight: 600;
-  color: var(--accent);
+  font-weight: 700;
 }
 
-.cases__item--featured .cases__more {
+.cases__go {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: clamp(2.25rem, 4.6svh, 2.625rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--case-accent);
   color: var(--accent-ink);
+  transition: transform var(--dur) var(--ease-out);
 }
 
-.cases__more svg {
-  width: 1em;
-  height: 1em;
-  transition: transform var(--dur-fast) var(--ease-out);
+.cases__go svg {
+  width: 46%;
+  height: 46%;
 }
 
-.cases__card:hover .cases__more svg {
-  transform: translate(2px, -2px);
-}
-
-/* заглушка «уточнити» — курсивом и приглушённо: видно, что данных ещё нет */
-.cases__card .is-tbd {
-  font-style: italic;
-  font-weight: 500;
-  opacity: 0.7;
-}
-
-.cases__figure-value.is-tbd {
-  font-size: clamp(1.5rem, 1.25rem + 1.6svh, 2rem);
-  line-height: 1.1;
-  text-transform: none;
-  font-weight: 800;
+.cases__card:hover .cases__go {
+  transform: rotate(45deg);
 }
 
 /* — полоса положения ленты — */
@@ -343,6 +304,18 @@
   transition: transform var(--dur-fast) linear;
 }
 
+/* телефон: карточка выше, чтобы линия роста помещалась между шапкой и «Результат» */
+@media (max-width: 599px) {
+  .cases__card {
+    min-height: 24rem;
+  }
+
+  .cases__chart {
+    top: 30%;
+    height: 30%;
+  }
+}
+
 /* — ширина карточек по ширине окна — */
 @media (min-width: 700px) {
   .section--cases {
@@ -353,12 +326,6 @@
 @media (min-width: 1100px) {
   .section--cases {
     --card-w: calc((100% - var(--cases-gap) * 4) / 4.3);
-  }
-}
-
-@media (max-width: 599px) {
-  .cases__card {
-    min-height: 0;
   }
 }
 
@@ -466,13 +433,35 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--accent-ink);
-  background: var(--grad);
+  background: var(--case-accent);
+}
+
+/* шапка модалки — как у карточки: аватар и справа имя с нишей */
+.case-modal__who {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  min-width: 0;
+  padding: 6px 3rem 6px 6px; /* 6px — под кольцо аватара */
+}
+
+.case-modal__avatar {
+  width: clamp(4.5rem, 3rem + 5vw, 6.5rem);
+}
+
+.case-modal__avatar .cases__avatar-letter {
+  font-size: clamp(2.25rem, 1.5rem + 2.5vw, 3.25rem);
+}
+
+.case-modal__id {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
 }
 
 .case-modal__title {
-  padding-right: 3rem;
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 1.6rem + 4vw, 5.5rem);
+  font-size: clamp(2.25rem, 1.5rem + 3vw, 4.5rem);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
@@ -538,10 +527,7 @@
   font-weight: 900;
   line-height: 0.9;
   text-transform: uppercase;
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--case-tone);
 }
 
 .case-modal .is-tbd {
@@ -582,7 +568,7 @@
   top: 0.75em;
   width: 0.9rem;
   height: 2px;
-  background: var(--grad);
+  background: var(--case-accent);
 }
 
 .case-modal__done-item .is-tbd {
