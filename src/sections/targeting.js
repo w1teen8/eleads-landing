@@ -16,7 +16,7 @@ import { rollTo } from './stats-odometer.js';
 import { turnTo, nextIndex } from './targeting-model.js';
 
 /** Шаг автолистания, мс. */
-export const STEP_MS = 4000;
+export const STEP_MS = 10000;
 
 const KEYS = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
 

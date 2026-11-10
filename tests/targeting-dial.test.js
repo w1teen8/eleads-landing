@@ -67,9 +67,9 @@ test('доступность: список — tablist из шести вкла�
   assert.match(s, /class="tg__node is-active"[^>]*data-tg-node="0"/, 'без JS активна первая иконка');
 });
 
-test('автолистание: шаг ~4 с, пауза при наведении и фокусе, только в окне и при видимой вкладке; без движения — выключено', () => {
+test('автолистание: шаг 10 с («раз в 10 секунд»), пауза при наведении и фокусе, только в окне и при видимой вкладке; без движения — выключено', () => {
   const step = Number(js.match(/export const STEP_MS = (\d+);/)?.[1]);
-  assert.ok(step >= 3500 && step <= 4500, `шаг ${step}`);
+  assert.equal(step, 10000, `шаг ${step}`);
   for (const ev of ['pointerenter', 'pointerleave', 'focusin', 'focusout', 'visibilitychange']) assert.match(js, new RegExp(`'${ev}'`));
   assert.match(js, /IntersectionObserver/);
   assert.match(js, /if \(reduced\)/, 'reduced-motion / ?nomotion=1 — без автолистания');
