@@ -71,6 +71,7 @@ test('автолистание: шаг 10 с («раз в 10 секунд»), п
   const step = Number(js.match(/export const STEP_MS = (\d+);/)?.[1]);
   assert.equal(step, 10000, `шаг ${step}`);
   for (const ev of ['pointerenter', 'pointerleave', 'focusin', 'focusout', 'visibilitychange']) assert.match(js, new RegExp(`'${ev}'`));
+  assert.doesNotMatch(js, /on\(root, 'pointerenter'/, 'наведение на блок целиком листание не останавливает — только на пункты');
   assert.match(js, /IntersectionObserver/);
   assert.match(js, /if \(reduced\)/, 'reduced-motion / ?nomotion=1 — без автолистания');
   assert.match(js, /\.pause\(\)/);

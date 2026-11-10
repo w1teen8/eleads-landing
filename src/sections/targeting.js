@@ -141,15 +141,19 @@ export function init(root) {
     });
   }
 
-  on(root, 'pointerenter', (e) => {
-    if (e.pointerType !== 'mouse') return;
-    state.hovered = true;
-    sync();
-  });
-  on(root, 'pointerleave', () => {
-    state.hovered = false;
-    sync();
-  });
+  // пауза только пока курсор на самих пунктах (строки списка и иконки диска): блок занимает весь экран, и пауза при
+  // наведении на любую его часть останавливала листание почти всегда (пользователь: «не вижу чтобы оно работало»)
+  for (const el of [...tabs, ...nodes]) {
+    on(el, 'pointerenter', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      state.hovered = true;
+      sync();
+    });
+    on(el, 'pointerleave', () => {
+      state.hovered = false;
+      sync();
+    });
+  }
   // фокус с клавиатуры останавливает листание; кнопка, получившая фокус от клика мышью, — нет (иначе после клика
   // листание стояло бы, пока не кликнут мимо блока)
   const keyboardFocus = (node) => {
