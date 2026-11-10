@@ -1,12 +1,14 @@
-/* 09 Таргетинг (T30). Облик блоков 02–05: фон страницы, заголовок шрифтом канала заглавными с акцентным хвостом,
-   шесть тёмных карточек 3×2 с тонкой линией: крупный номер шрифтом канала акцентом, название заглавными, короткий
-   текст Onest. Наведение / фокус / тап — снизу выезжает жёлто-оранжевая плашка с пояснением (transform + opacity),
-   «плюс» поворачивается в «крестик». Переходов по прокрутке нет (H11), всё видно сразу. На широком экране блок —
-   ровно экран под шапкой: высота карточек и кегли — от высоты окна (svh). */
+/* 09 Таргетинг (T34, H47): диск, который сам листает способы. Образец — reference/run3/targeting-dial-chosen.png,
+   стили макета — reference/run3/targeting-dial-mock.js, вариант 3 «Текст · диск · список».
+   Три колонки: слева метка, название текущего способа крупно жёлто-оранжевым шрифтом канала и описание; в центре
+   диск — кольцо-дорожка с полосой прогресса, шесть круглых иконок по окружности (активная крупнее, жёлто-оранжевая
+   со свечением), в середине номер шрифтом канала; справа список шести способов, у активного — полоска-таймер.
+   Поворот диска — transform: rotate(--tg-turn) у орбиты и обратный поворот у каждой иконки (иконки вертикальны).
+   Кольцо прогресса — две половины, каждая крутит полукольцо под маской (transform из targeting.js). На широком
+   экране блок — ровно экран под шапкой: диаметр диска и кегли — от высоты окна (svh). Телефон: диск сверху ≈300px,
+   под ним название и описание, список — пилюлями. Двигаются только transform и opacity. */
 
 .section--targeting {
-  --tg-gap: clamp(0.75rem, 1.1vw, 1.25rem);
-  --tg-pad: clamp(1.1rem, 0.9rem + 1vw, 1.75rem);
   overflow-x: clip;
   padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
   color: var(--text);
@@ -28,166 +30,396 @@
   color: var(--text);
 }
 
-/* — сетка карточек — */
-.tg__grid {
+/* ——— раскладка: телефон — диск, текст, пилюли; широкий экран — текст · диск · список ——— */
+.tg__body {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--tg-gap);
+  gap: clamp(1.5rem, 3vw, 3.75rem);
+  align-items: center;
+}
+
+.tg__dial {
+  order: -1;
+  justify-self: center;
+}
+
+/* ——— текущий способ ——— */
+.tg__now {
+  display: grid;
+  align-content: center;
+  gap: clamp(0.6rem, 1.2vw, 1rem);
+  min-width: 0;
+}
+
+.tg__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* название — одна строка: кегль подобран под самое длинное («Конкретні канали» / «Specific channels») */
+.tg__name {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  font-family: var(--font-head);
+  font-size: clamp(2.75rem, 1.2rem + 4.6vw, 6.25rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* во время табло (flipSwap) текст — в двух строках-спанах: градиент рисует каждый спан, а не родитель —
+   иначе срез градиента по тексту ездящих детей даёт «квадраты» */
+.tg__name:has(> span) {
+  background: none;
+}
+
+.tg__name > span {
+  width: fit-content;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* описание — место под четыре строки, чтобы колонка не прыгала при смене пункта */
+.tg__desc {
+  max-width: 34rem;
+  min-height: calc(4 * 1.45em);
+  font-size: clamp(1rem, 0.9rem + 0.45vw, 1.3125rem);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text) 82%, transparent);
+}
+
+/* ——— диск ——— */
+.tg__dial {
+  --tg-d: min(26rem, 76vw);
+  --tg-arc: 4px;
+  --tg-r: calc(var(--tg-d) / 2 - var(--tg-arc) / 2);
+  --tg-node: calc(var(--tg-d) * 0.152);
+  position: relative;
+  width: var(--tg-d);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 calc(var(--tg-d) * 0.1) color-mix(in srgb, var(--text) 3.5%, transparent);
+}
+
+.tg__track,
+.tg__prog,
+.tg__half,
+.tg__arc {
+  position: absolute;
+  pointer-events: none;
+}
+
+.tg__track {
+  inset: 0;
+  border: var(--tg-arc) solid var(--line);
+  border-radius: 50%;
+}
+
+.tg__prog {
+  inset: 0;
+}
+
+.tg__half {
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  overflow: hidden;
+}
+
+.tg__half--r {
+  right: 0;
+}
+
+.tg__half--l {
+  left: 0;
+}
+
+/* полукольцо во всю ширину диска: правая половина начинается с закрашенной левой (под маской не видна) и, вращаясь,
+   выводит дугу сверху по часовой; левая — так же со второй половины круга */
+.tg__arc {
+  top: 0;
+  width: 200%;
+  height: 100%;
+  border: var(--tg-arc) solid transparent;
+  border-radius: 50%;
+  transform: rotate(-45deg);
+}
+
+.tg__arc--r {
+  right: 0;
+  border-top-color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.tg__arc--l {
+  left: 0;
+  border-right-color: var(--accent-2);
+  border-bottom-color: var(--accent-2);
+}
+
+/* без автолистания кольцо — целое, как рамка */
+.section--targeting.is-static .tg__arc {
+  transform: rotate(135deg);
+}
+
+.tg__mid {
+  position: absolute;
+  inset: 20.8%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--text) 5%, var(--bg));
+}
+
+.tg__num {
+  font-family: var(--font-head);
+  font-size: calc(var(--tg-d) * 0.3);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* номер во время барабана (stats-odometer.js): градиент — у ячеек (.odo__char / .odo__strip в stats.css) */
+.tg__num > .odo {
+  position: relative;
+  display: inline-flex;
+  background: none;
+  white-space: pre;
+}
+
+.tg__num:has(> .odo) {
+  background: none;
+}
+
+/* орбита с иконками поворачивается целиком; активная встаёт слева */
+.tg__orbit {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--tg-turn));
+  transition: transform 900ms var(--ease-out);
+}
+
+/* иконка: от центра диска на радиус в своём направлении (--a от левой точки по часовой), затем обратный поворот на
+   свой угол и на угол орбиты — круг и иконка в нём стоят вертикально при любом повороте диска */
+.tg__node {
+  --s: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: var(--tg-node);
+  height: var(--tg-node);
+  margin: calc(var(--tg-node) / -2) 0 0 calc(var(--tg-node) / -2);
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  color: color-mix(in srgb, var(--text) 72%, transparent);
+  cursor: pointer;
+  transform: rotate(var(--a)) translateX(calc(-1 * var(--tg-r))) rotate(calc(-1 * var(--a))) rotate(calc(-1 * var(--tg-turn))) scale(var(--s));
+  transition: transform 900ms var(--ease-out);
+}
+
+/* активная: заливка градиентом и свечение — слои, проявляются opacity */
+.tg__node::before,
+.tg__node::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.tg__node::before {
+  background: var(--grad);
+}
+
+.tg__node::after {
+  box-shadow:
+    0 0 0 calc(var(--tg-node) * 0.1) color-mix(in srgb, var(--accent-2) 16%, transparent),
+    0 0 calc(var(--tg-node) * 0.5) color-mix(in srgb, var(--accent-2) 50%, transparent);
+}
+
+.tg__node.is-active {
+  --s: 1.32;
+  z-index: 3;
+  border-color: transparent;
+  color: var(--accent-ink);
+}
+
+.tg__node.is-active::before,
+.tg__node.is-active::after {
+  opacity: 1;
+}
+
+.tg__icon {
+  width: 42%;
+  height: 42%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tg__node:not(.is-active):hover {
+    --s: 1.08;
+    color: var(--text);
+  }
+}
+
+/* ——— список способов ——— */
+.tg__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .tg__item {
-  display: flex;
   min-width: 0;
 }
 
-.tg__card {
+.tg__tab {
   position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-rows: auto 1fr;
-  column-gap: clamp(0.9rem, 1.3vw, 1.5rem);
-  row-gap: 0.5rem;
-  align-items: start;
-  width: 100%;
-  min-height: clamp(9rem, 7rem + 5vw, 13rem);
-  padding: var(--tg-pad);
-  padding-right: calc(var(--tg-pad) + 2.25rem);
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  padding: 0.55rem 0.9rem;
   border: 1px solid var(--line);
-  border-radius: var(--r-card-lg);
+  border-radius: var(--r-pill);
   background: var(--surface);
-  color: var(--text);
+  color: color-mix(in srgb, var(--text) 55%, transparent);
   text-align: left;
   cursor: pointer;
-  transition: transform var(--dur) var(--ease-out);
 }
 
-.tg__card:focus-visible {
+.tg__tab:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
-/* номер — шрифт канала, акцент; занимает левую колонку обеих строк */
-.tg__num {
-  grid-row: 1 / 3;
-  padding-top: 0.04em;
+.tg__tab-num {
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 2rem + 2vw, 4.5rem);
+  font-size: 1.125rem;
   font-weight: 900;
-  line-height: 0.85;
-  letter-spacing: 0;
+  line-height: 1;
   color: var(--accent);
-  transition: opacity var(--dur) var(--ease-out);
 }
 
-.tg__name {
+.tg__tab-name {
   font-family: var(--font-head);
-  font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.75rem);
+  font-size: 1.25rem;
   font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: 0;
+  line-height: 1;
   text-transform: uppercase;
-  overflow-wrap: normal;
 }
 
-.tg__text {
-  max-width: 34ch;
-  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.125rem);
-  line-height: 1.45;
-  color: color-mix(in srgb, var(--text) 78%, transparent);
+.tg__tab[aria-selected='true'] {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
-/* пояснение — акцентная плашка во всю карточку, выезжает снизу */
-.tg__more {
+/* полоска-таймер под активной строкой — заполняется transform-ом (targeting.js) */
+.tg__bar {
   position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: grid;
-  align-content: center;
-  padding: var(--tg-pad);
-  padding-right: calc(var(--tg-pad) + 2.25rem);
+  left: 0;
+  bottom: -1px;
+  width: 62%;
+  height: 3px;
   background: var(--grad);
-  color: var(--accent-ink);
-  font-size: clamp(0.9375rem, 0.9rem + 0.35vw, 1.1875rem);
-  font-weight: 500;
-  line-height: 1.4;
-  transform: translate3d(0, 102%, 0);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
   opacity: 0;
-  transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
 }
 
-/* «плюс» в правом верхнем углу, поверх плашки; на открытой — крестик тёмный на акценте */
-.tg__plus {
-  position: absolute;
-  top: var(--tg-pad);
-  right: var(--tg-pad);
-  z-index: 3;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  border: 1px solid var(--line-strong);
-  transition: transform var(--dur) var(--ease-out);
-}
-
-.tg__plus::before,
-.tg__plus::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0.7rem;
-  height: 1.5px;
-  margin: -0.75px 0 0 -0.35rem;
-  background: currentColor;
-}
-
-.tg__plus::after {
-  transform: rotate(90deg);
-}
-
-.tg__card:hover .tg__more,
-.tg__card:focus-visible .tg__more,
-.tg__card.is-open .tg__more {
-  transform: none;
+.tg__tab[aria-selected='true'] .tg__bar {
   opacity: 1;
 }
 
-.tg__card:hover .tg__plus,
-.tg__card:focus-visible .tg__plus,
-.tg__card.is-open .tg__plus {
-  color: var(--accent-ink);
-  border-color: color-mix(in srgb, var(--accent-ink) 40%, transparent);
-  transform: rotate(45deg);
+.section--targeting.is-static .tg__tab[aria-selected='true'] .tg__bar {
+  transform: none;
 }
 
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .tg__card:hover {
-    transform: translateY(-4px);
-  }
-}
-
-/* — планшет: 2 столбца — */
-@media (min-width: 600px) {
-  .tg__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* — широкий экран: 3×2 — */
+/* ——— широкий экран: текст · диск · список ——— */
 @media (min-width: 1000px) {
-  .tg__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .tg__body {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .tg__dial {
+    order: 0;
+    --tg-d: min(31.25rem, 30vw);
+  }
+
+  .tg__name {
+    font-size: clamp(2.75rem, min(4.2vw, 10.5svh), 6.25rem);
+  }
+
+  .tg__list {
+    display: grid;
+    justify-content: stretch;
+    gap: 0;
+  }
+
+  .tg__tab[aria-selected='true'] {
+    border-color: var(--line);
+  }
+
+  .tg__tab {
+    width: 100%;
+    gap: 0.875rem;
+    padding: clamp(0.7rem, 1.6svh, 0.95rem) 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    background: none;
+  }
+
+  .tg__tab-num {
+    width: 2.125rem;
+    flex: none;
+    font-size: clamp(1.125rem, 1.25vw, 1.5rem);
+    background: var(--grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .tg__tab-name {
+    font-size: clamp(1.5rem, 1.8vw, 2.125rem);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tg__tab:not([aria-selected='true']):hover {
+      color: var(--text);
+    }
   }
 }
 
 /* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна, размеры — от высоты окна — */
-@media (min-width: 900px) and (orientation: landscape) {
+@media (min-width: 1000px) and (orientation: landscape) {
   .section--targeting {
-    --tg-pad: clamp(1rem, 2.8svh, 1.75rem);
     padding-block: var(--screen-pad);
   }
 
@@ -199,50 +431,59 @@
     font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
   }
 
-  .tg__card {
-    min-height: clamp(8.5rem, 27svh, 16rem);
+  .tg__dial {
+    --tg-d: min(31.25rem, 30vw, 53svh);
   }
 
-  .tg__num {
-    font-size: clamp(2.5rem, min(2rem + 2vw, 7svh), 4.5rem);
-  }
-
-  .tg__name {
-    font-size: clamp(1.625rem, min(1.3rem + 1.4vw, 4.2svh), 2.75rem);
-  }
-
-  .tg__text,
-  .tg__more {
-    font-size: clamp(0.9375rem, min(0.85rem + 0.3vw, 2.1svh), 1.125rem);
+  .tg__tab-name {
+    font-size: clamp(1.375rem, min(1.8vw, 3.6svh), 2.125rem);
   }
 }
 
-/* — телефон: карточки-строки компактнее — */
+/* — телефон: диск ≈300px сверху, текст по центру — */
 @media (max-width: 599px) {
-  .tg__card {
-    min-height: 0;
-    padding: 1rem 3rem 1rem 1rem;
-    border-radius: var(--r-card);
+  .tg__dial {
+    --tg-d: min(18.75rem, 78vw);
   }
 
-  .tg__more {
-    padding: 1rem 3rem 1rem 1rem;
-  }
-
-  .tg__plus {
-    top: 1rem;
-    right: 1rem;
-  }
-
-  .tg__num {
-    font-size: 2.25rem;
+  .tg__now {
+    text-align: center;
+    justify-items: center;
   }
 
   .tg__name {
-    font-size: 1.625rem;
+    font-size: clamp(2.5rem, 13vw, 3.5rem);
   }
 
-  .tg__text {
-    font-size: 0.9375rem;
+  .tg__desc {
+    min-height: calc(5 * 1.45em);
+    font-size: 1rem;
+  }
+
+  .tg__tab {
+    padding: 0.45rem 0.75rem;
+  }
+
+  .tg__tab-num {
+    font-size: 1rem;
+  }
+
+  .tg__tab-name {
+    font-size: 1.125rem;
+  }
+}
+
+/* без автолистания (reduced-motion, ?nomotion=1) диск становится на место сразу */
+.section--targeting.is-static .tg__orbit,
+.section--targeting.is-static .tg__node {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tg__orbit,
+  .tg__node,
+  .tg__node::before,
+  .tg__node::after {
+    transition: none;
   }
 }

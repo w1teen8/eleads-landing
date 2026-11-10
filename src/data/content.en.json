@@ -354,6 +354,8 @@
   "targeting": {
     "title": "How we find the right audience",
     "titleAccent": "the right audience",
+    "kicker": "Targeting method",
+    "listLabel": "Targeting methods",
     "items": [
       {
         "num": "01",

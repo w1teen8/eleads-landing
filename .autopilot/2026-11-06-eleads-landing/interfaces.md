@@ -341,3 +341,9 @@ export function forecast(input, rates): Forecast
 - Раскладка «Л 4»: `ul.geo__list[data-geo-list]` → `button.geo__row[data-region][aria-pressed]`; раскрытая строка Європи — `.geo__row-info` + `[data-geo-figure]` (rollTo). Выбор: клик, наведение мышью (140 мс), фокус, стрелки, клик по метке. Глобус всегда лицом к выбранному региону, бездействие — покачивание ±18°.
 - Словари: у регионов только `name`; у Європи `figure`, `figureText`. `stats-dots`/`stats-model` блок 08 больше не использует.
 
+### T34 — блок 09: диск с автолистанием (H47)
+
+- `targeting.js`: автолистание `STEP_MS = 4000`, пауза при наведении, `:focus-visible`, вне окна и на скрытой вкладке; ручной выбор перезапускает таймер; reduced-motion — без автолистания. `targeting-model.js`: `turnTo(from, i)` (кратчайший поворот), `nextIndex`.
+- Разметка: список `role="tablist"` (строки `.tg__item`, `aria-selected`), левая колонка `tabpanel`, `aria-live` только при ручном выборе; иконки диска дублируют вкладки (`aria-hidden`). Кольцо прогресса — две вращающиеся половины (без `stroke-dasharray`).
+- `icons.js`: новые ключи `pin`, `globe`, `heart`, `hash`, `megaphone`, `people`. Контент: `targeting.kicker`, `targeting.listLabel`.
+

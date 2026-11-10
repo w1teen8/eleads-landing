@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-10T11:06:44+02:00",
+  "updatedAt": "2026-11-10T12:14:56+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1420,9 +1420,9 @@ window.STATE =
       "model": "сильная",
       "status": "done",
       "startedAt": "2026-11-10T10:51:37+02:00",
+      "finishedAt": "2026-11-10T11:06:44+02:00",
       "retries": 0,
       "repairs": 0,
-      "finishedAt": "2026-11-10T11:06:44+02:00",
       "tests": {
         "passed": 204,
         "failed": 0
@@ -1455,10 +1455,47 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
+      "status": "done",
+      "startedAt": "2026-11-10T11:05:12+02:00",
+      "finishedAt": "2026-11-10T11:30:08+02:00",
+      "retries": 0,
+      "repairs": 0,
+      "tests": {
+        "passed": 211,
+        "failed": 0
+      },
+      "commit": "22aaa5b"
+    },
+    {
+      "id": "34",
+      "title": "Блок 09 «Таргетинг»: диск, который сам листает способы",
+      "requirements": [
+        "H47",
+        "H15",
+        "H14",
+        "H18",
+        "H24"
+      ],
+      "blockedBy": [
+        "30"
+      ],
+      "wave": 26,
+      "zone": [
+        "src/sections/targeting.js",
+        "src/styles/sections/targeting.css",
+        "#targeting",
+        "index.html",
+        "targeting",
+        "content.*.json",
+        "src/core/icons.js",
+        "tests/"
+      ],
+      "review": "нет",
+      "model": "сильная",
       "status": "in-progress",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-10T11:05:12+02:00"
+      "startedAt": "2026-11-10T12:14:56+02:00"
     },
     {
       "id": "F1",
@@ -1505,7 +1542,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 204,
+    "passed": 211,
     "failed": 0
   },
   "debt": {
@@ -1728,9 +1765,12 @@ window.STATE =
     "2026-11-10T10:51:37+02:00",
     "2026-11-10T11:05:11+02:00",
     "2026-11-10T11:05:12+02:00",
-    "2026-11-10T11:06:44+02:00"
+    "2026-11-10T11:06:44+02:00",
+    "2026-11-10T11:30:08+02:00",
+    "2026-11-10T12:14:55+02:00",
+    "2026-11-10T12:14:56+02:00"
   ],
-  "rev": 176,
+  "rev": 179,
   "waiting": null,
   "waits": [
     {
@@ -3082,6 +3122,31 @@ window.STATE =
         "passed": 204,
         "failed": 0
       }
+    },
+    {
+      "t": "2026-11-10T11:30:08+02:00",
+      "k": "ticket",
+      "ids": [
+        "33"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 211,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-10T12:14:55+02:00",
+      "k": "tickets",
+      "n": 35
+    },
+    {
+      "t": "2026-11-10T12:14:56+02:00",
+      "k": "ticket",
+      "ids": [
+        "34"
+      ],
+      "act": "start"
     }
   ],
   "reqList": [

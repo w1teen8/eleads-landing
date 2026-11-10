@@ -819,50 +819,70 @@
           <div class="section__head tg__head">
             <h2 id="targeting-title" class="display section__title" data-i18n="targeting.title" data-title-accent="targeting.titleAccent"></h2>
           </div>
-          <ul class="tg__grid">
-            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
-              <span class="tg__num" data-i18n="targeting.items.0.num"></span>
-              <span class="tg__name" data-i18n="targeting.items.0.name"></span>
-              <span class="tg__text" data-i18n="targeting.items.0.text"></span>
-              <span class="tg__more" data-i18n="targeting.items.0.more"></span>
-              <span class="tg__plus" aria-hidden="true"></span>
-            </button></li>
-            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
-              <span class="tg__num" data-i18n="targeting.items.1.num"></span>
-              <span class="tg__name" data-i18n="targeting.items.1.name"></span>
-              <span class="tg__text" data-i18n="targeting.items.1.text"></span>
-              <span class="tg__more" data-i18n="targeting.items.1.more"></span>
-              <span class="tg__plus" aria-hidden="true"></span>
-            </button></li>
-            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
-              <span class="tg__num" data-i18n="targeting.items.2.num"></span>
-              <span class="tg__name" data-i18n="targeting.items.2.name"></span>
-              <span class="tg__text" data-i18n="targeting.items.2.text"></span>
-              <span class="tg__more" data-i18n="targeting.items.2.more"></span>
-              <span class="tg__plus" aria-hidden="true"></span>
-            </button></li>
-            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
-              <span class="tg__num" data-i18n="targeting.items.3.num"></span>
-              <span class="tg__name" data-i18n="targeting.items.3.name"></span>
-              <span class="tg__text" data-i18n="targeting.items.3.text"></span>
-              <span class="tg__more" data-i18n="targeting.items.3.more"></span>
-              <span class="tg__plus" aria-hidden="true"></span>
-            </button></li>
-            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
-              <span class="tg__num" data-i18n="targeting.items.4.num"></span>
-              <span class="tg__name" data-i18n="targeting.items.4.name"></span>
-              <span class="tg__text" data-i18n="targeting.items.4.text"></span>
-              <span class="tg__more" data-i18n="targeting.items.4.more"></span>
-              <span class="tg__plus" aria-hidden="true"></span>
-            </button></li>
-            <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
-              <span class="tg__num" data-i18n="targeting.items.5.num"></span>
-              <span class="tg__name" data-i18n="targeting.items.5.name"></span>
-              <span class="tg__text" data-i18n="targeting.items.5.text"></span>
-              <span class="tg__more" data-i18n="targeting.items.5.more"></span>
-              <span class="tg__plus" aria-hidden="true"></span>
-            </button></li>
-          </ul>
+          <div class="tg__body" data-tg>
+            <div class="tg__now" id="tg-panel" role="tabpanel" aria-live="off" aria-labelledby="tg-tab-0">
+              <p class="tg__kicker" data-i18n="targeting.kicker"></p>
+              <h3 class="tg__name" data-tg-name data-i18n="targeting.items.0.name"></h3>
+              <p class="tg__desc"><span data-tg-text data-i18n="targeting.items.0.text"></span> <span data-tg-more data-i18n="targeting.items.0.more"></span></p>
+            </div>
+            <div class="tg__dial" style="--tg-turn: 0deg" data-tg-dial>
+              <span class="tg__track" aria-hidden="true"></span>
+              <span class="tg__prog" aria-hidden="true"><span class="tg__half tg__half--r"><span class="tg__arc tg__arc--r"></span></span><span class="tg__half tg__half--l"><span class="tg__arc tg__arc--l"></span></span></span>
+              <span class="tg__mid" aria-hidden="true"><span class="tg__num" data-tg-num>01</span></span>
+              <div class="tg__orbit">
+                  <button type="button" class="tg__node is-active" style="--a: 0deg" data-tg-node="0" tabindex="-1" aria-hidden="true">
+                    <svg class="tg__icon" data-icon="pin"></svg>
+                  </button>
+                  <button type="button" class="tg__node" style="--a: 60deg" data-tg-node="1" tabindex="-1" aria-hidden="true">
+                    <svg class="tg__icon" data-icon="globe"></svg>
+                  </button>
+                  <button type="button" class="tg__node" style="--a: 120deg" data-tg-node="2" tabindex="-1" aria-hidden="true">
+                    <svg class="tg__icon" data-icon="heart"></svg>
+                  </button>
+                  <button type="button" class="tg__node" style="--a: 180deg" data-tg-node="3" tabindex="-1" aria-hidden="true">
+                    <svg class="tg__icon" data-icon="hash"></svg>
+                  </button>
+                  <button type="button" class="tg__node" style="--a: 240deg" data-tg-node="4" tabindex="-1" aria-hidden="true">
+                    <svg class="tg__icon" data-icon="megaphone"></svg>
+                  </button>
+                  <button type="button" class="tg__node" style="--a: 300deg" data-tg-node="5" tabindex="-1" aria-hidden="true">
+                    <svg class="tg__icon" data-icon="people"></svg>
+                  </button>
+              </div>
+            </div>
+            <ol class="tg__list" role="tablist" aria-orientation="vertical" data-i18n-attr="aria-label:targeting.listLabel">
+              <li class="tg__item"><button type="button" class="tg__tab" role="tab" id="tg-tab-0" aria-selected="true" tabindex="0" aria-controls="tg-panel" data-tg-tab="0">
+                <span class="tg__tab-num" data-i18n="targeting.items.0.num"></span>
+                <span class="tg__tab-name" data-i18n="targeting.items.0.name"></span>
+                <span class="tg__bar" aria-hidden="true"></span>
+              </button></li>
+              <li class="tg__item"><button type="button" class="tg__tab" role="tab" id="tg-tab-1" aria-selected="false" tabindex="-1" aria-controls="tg-panel" data-tg-tab="1">
+                <span class="tg__tab-num" data-i18n="targeting.items.1.num"></span>
+                <span class="tg__tab-name" data-i18n="targeting.items.1.name"></span>
+                <span class="tg__bar" aria-hidden="true"></span>
+              </button></li>
+              <li class="tg__item"><button type="button" class="tg__tab" role="tab" id="tg-tab-2" aria-selected="false" tabindex="-1" aria-controls="tg-panel" data-tg-tab="2">
+                <span class="tg__tab-num" data-i18n="targeting.items.2.num"></span>
+                <span class="tg__tab-name" data-i18n="targeting.items.2.name"></span>
+                <span class="tg__bar" aria-hidden="true"></span>
+              </button></li>
+              <li class="tg__item"><button type="button" class="tg__tab" role="tab" id="tg-tab-3" aria-selected="false" tabindex="-1" aria-controls="tg-panel" data-tg-tab="3">
+                <span class="tg__tab-num" data-i18n="targeting.items.3.num"></span>
+                <span class="tg__tab-name" data-i18n="targeting.items.3.name"></span>
+                <span class="tg__bar" aria-hidden="true"></span>
+              </button></li>
+              <li class="tg__item"><button type="button" class="tg__tab" role="tab" id="tg-tab-4" aria-selected="false" tabindex="-1" aria-controls="tg-panel" data-tg-tab="4">
+                <span class="tg__tab-num" data-i18n="targeting.items.4.num"></span>
+                <span class="tg__tab-name" data-i18n="targeting.items.4.name"></span>
+                <span class="tg__bar" aria-hidden="true"></span>
+              </button></li>
+              <li class="tg__item"><button type="button" class="tg__tab" role="tab" id="tg-tab-5" aria-selected="false" tabindex="-1" aria-controls="tg-panel" data-tg-tab="5">
+                <span class="tg__tab-num" data-i18n="targeting.items.5.num"></span>
+                <span class="tg__tab-name" data-i18n="targeting.items.5.name"></span>
+                <span class="tg__bar" aria-hidden="true"></span>
+              </button></li>
+            </ol>
+          </div>
         </div>
       </section>
 

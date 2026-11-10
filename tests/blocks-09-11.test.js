@@ -64,18 +64,7 @@ test('H18/H15: заголовки — шрифт канала заглавным
   }
 });
 
-test('09: шесть карточек-кнопок из словаря; aria-expanded меняет только клик — наведение и фокус его не трогают', () => {
-  const s = section('targeting');
-  assert.equal(count(s, /class="tg__card" aria-expanded="false"/g), 6);
-  for (let i = 0; i < 6; i++) {
-    for (const f of ['num', 'name', 'text', 'more']) assert.match(s, new RegExp(`data-i18n="targeting\\.items\\.${i}\\.${f}"`));
-  }
-  const src = js('targeting');
-  assert.doesNotMatch(src, /mouseenter|mouseleave|pointerenter|'focus'|'blur'/, 'aria-expanded от наведения — баг T03');
-  assert.match(src, /setAttribute\('aria-expanded', String\(open\)\)/);
-  // показ по наведению и фокусу — в CSS
-  assert.match(css('targeting'), /\.tg__card:hover \.tg__more,\s*\.tg__card:focus-visible \.tg__more,\s*\.tg__card\.is-open \.tg__more/);
-});
+// T34: сетка 3×2 блока 09 заменена диском, который сам листает способы, — tests/targeting-dial.test.js
 
 test('10: карточка засновника с фото и «50+ проєктів», отзывы — карусель с кнопками и точками, без выдуманного', () => {
   const s = section('reviews');
