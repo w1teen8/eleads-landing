@@ -1,52 +1,175 @@
-/* 13 FAQ: светлый контейнер overtake; аккордеон в две колонки, вопрос — скруглённая плашка, плюс — тёмный
-   кружок; ответ раскрывается grid-rows и появляется через opacity. */
+/* 13 FAQ (T31): облик блоков 02–05 — фон страницы, заголовок шрифтом канала заглавными, хвост градиентом.
+   Слева заголовок и акцентная карточка «Не знайшли відповідь?» (ссылка в Telegram), справа аккордеон в двух
+   независимых колонках: вопрос — тёмная плашка --surface с тонкой --line, плюс — жёлтый кружок; ответ раскрывается
+   grid-rows и проявляется через opacity. Открыт один вопрос за раз — блок остаётся в один экран (H15).
+   Появлений по прокрутке нет (H11); двигаются только transform и opacity. */
 
-.faq__list {
+.section--faq {
+  --faq-gap: clamp(1rem, 2vw, 2.5rem);
+  --faq-r: 14px;
+  overflow-x: clip;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
+  color: var(--text);
+}
+
+.faq {
   display: grid;
+  gap: clamp(1.5rem, 3vw, 3rem) var(--faq-gap);
   grid-template-columns: minmax(0, 1fr);
-  gap: 0.5rem clamp(0.75rem, 1.4vw, 1.25rem);
+}
+
+/* — левая колонка: заголовок и карточка-вопрос — */
+.faq__side {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  align-content: start;
+}
+
+.faq__head {
+  gap: 0;
+  margin-bottom: 0;
+  max-width: none;
+}
+
+.section--faq .display.section__title {
+  max-width: none;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+/* хвост заголовка — второй строкой, жёлтый → оранжевый (components.css .display__accent) */
+
+/* акцентная карточка: жёлто-оранжевый градиент, тёмный текст, стрелка-кружок */
+.faq__ask {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  width: 100%;
+  max-width: 26rem;
+  padding: clamp(1.1rem, 1rem + 0.8vw, 1.75rem);
+  padding-right: 4.5rem;
+  border-radius: var(--r-card-lg);
+  background: var(--grad);
+  color: var(--accent-ink);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.faq__ask:hover,
+.faq__ask:focus-visible {
+  transform: translateY(-3px);
+}
+
+.faq__ask-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.faq__ask-text {
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--accent-ink) 78%, transparent);
+}
+
+.faq__ask-arrow {
+  position: absolute;
+  top: 50%;
+  right: 1.1rem;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-ink);
+  color: var(--accent);
+  transform: translateY(-50%);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.faq__ask-arrow svg {
+  width: 45%;
+  height: 45%;
+}
+
+.faq__ask:hover .faq__ask-arrow,
+.faq__ask:focus-visible .faq__ask-arrow {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* — правая часть: две независимые колонки — */
+.faq__cols {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
 }
 
+.faq__list {
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+}
+
 .faq__item {
-  padding-inline: clamp(0.9rem, 1.6vw, 1.4rem);
-  border-radius: var(--r-card-sm);
-  background: var(--surface-2);
+  padding-inline: clamp(0.9rem, 0.8rem + 0.6vw, 1.4rem);
+  border: 1px solid var(--line);
+  border-radius: var(--faq-r);
+  background: var(--surface);
   color: var(--text);
+}
+
+.faq__item.is-open {
+  border-color: var(--line-strong);
 }
 
 .faq__btn {
   display: grid;
-  grid-template-columns: 2.6rem minmax(0, 1fr) 32px;
+  grid-template-columns: 2rem minmax(0, 1fr) 32px;
   align-items: center;
   column-gap: 0.75rem;
   width: 100%;
-  min-height: 72px;
-  padding: 1rem 0;
+  min-height: 60px;
+  padding: 0.85rem 0;
   text-align: left;
+  color: inherit;
+}
+
+.faq__btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 8px;
 }
 
 .faq__num {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  color: var(--text-muted);
+  font-family: var(--font-head);
+  font-size: var(--fs-base);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--accent);
 }
 
 .faq__q {
-  font-family: var(--font-display);
-  font-size: clamp(1.2rem, 1rem + 0.8vw, 1.65rem);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.2rem);
   font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-  text-transform: none;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
+/* плюс — жёлтый кружок с тёмным знаком; в открытом — поворот в крест */
 .faq__icon {
   position: relative;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--block);
+  background: var(--accent);
   transition: transform var(--dur) var(--ease-out);
 }
 
@@ -57,9 +180,10 @@
   top: 50%;
   left: 50%;
   width: 12px;
-  height: 1.5px;
-  margin: -0.75px 0 0 -6px;
-  background: var(--text-on-block);
+  height: 2px;
+  margin: -1px 0 0 -6px;
+  border-radius: 1px;
+  background: var(--accent-ink);
 }
 
 .faq__icon::after {
@@ -85,39 +209,86 @@
 .faq__a-inner {
   overflow: hidden;
   min-height: 0;
-  padding-left: 3.35rem;
+  padding-left: 2.75rem;
 }
 
 .faq__a-text {
-  padding: 0 2.5rem 1.25rem 0;
+  padding: 0 2.5rem 1.1rem 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
   color: var(--text-muted);
 }
 
+/* ответа ещё нет — видимая заглушка «уточнити» */
 .faq__a-text.is-tbd {
   font-family: var(--font-mono);
-  color: var(--text);
+  color: var(--accent);
 }
 
-.faq__note {
-  margin-top: clamp(2rem, 4vw, 3rem);
-  padding: 1.1rem 1.5rem;
-  width: fit-content;
-  max-width: 100%;
-  border: 0;
-  border-radius: var(--r-pill);
-  background: var(--accent);
-  color: var(--accent-ink);
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  letter-spacing: 0.04em;
-}
-
-@media (min-width: 1000px) {
-  .faq__list {
+@media (min-width: 640px) {
+  .faq__cols {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
 
-  .faq__item:nth-last-child(1):nth-child(odd) {
-    grid-column: 1 / -1;
+/* — широкий экран: заголовок слева, две колонки вопросов справа; блок — ровно экран (H15), размеры от высоты окна — */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--faq {
+    padding-block: var(--screen-pad);
+  }
+
+  .faq {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: center;
+  }
+
+  .faq__cols {
+    gap: clamp(0.5rem, 1.4svh, 1rem);
+  }
+
+  .faq__list {
+    gap: clamp(0.5rem, 1.4svh, 1rem);
+  }
+
+  .section--faq .display.section__title {
+    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.5svh), 6rem);
+  }
+
+  .faq__btn {
+    min-height: clamp(52px, 9svh, 88px);
+    padding-block: clamp(0.5rem, 1.6svh, 1.1rem);
+  }
+
+  .faq__q {
+    font-size: clamp(1rem, min(0.9rem + 0.45vw, 2.6svh), 1.45rem);
+  }
+
+  .faq__a-text {
+    font-size: clamp(0.875rem, min(0.8rem + 0.25vw, 2svh), 1.0625rem);
+  }
+
+  .faq__ask {
+    padding-block: clamp(0.9rem, 2svh, 1.75rem);
+  }
+}
+
+/* на 1366×768 заголовок чуть мельче, чтобы колонка слева не теснила вопросы */
+@media (min-width: 900px) and (max-width: 1400px) and (orientation: landscape) {
+  .section--faq .display.section__title {
+    font-size: clamp(2.25rem, 7svh, 3.75rem);
+  }
+
+  .faq__btn {
+    min-height: clamp(48px, 7.4svh, 64px);
+    padding-block: clamp(0.4rem, 1.1svh, 0.75rem);
+  }
+
+  .faq__q {
+    font-size: clamp(0.9375rem, 2.2svh, 1.0625rem);
+  }
+
+  .faq__a-text {
+    padding-bottom: 0.75rem;
+    font-size: 0.875rem;
   }
 }

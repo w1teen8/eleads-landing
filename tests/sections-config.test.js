@@ -20,8 +20,7 @@ test('config.json: включены первый экран, ленты (T23, H1
   assert.deepEqual(ON.slice(0, 3), ['hero', 'ribbons', 'stats']);
   assert.deepEqual(ON, order, 'список — по порядку секций в index.html, без лишних имён');
   assert.deepEqual(ALWAYS_ON, ['header', 'preloader']);
-  assert.equal(isSectionEnabled('footer', config), false, 'footer');
-  for (const name of ['hero', 'ribbons', 'header', 'preloader']) assert.equal(isSectionEnabled(name, config), true, name);
+  for (const name of ['hero', 'ribbons', 'header', 'preloader', 'footer']) assert.equal(isSectionEnabled(name, config), true, name);
   assert.equal(isSectionEnabled('stats', {}), true, 'без списка включено всё');
   assert.equal(isSectionEnabled('stats', { sections: { enabled: ['hero', 'stats'] } }), true);
 });

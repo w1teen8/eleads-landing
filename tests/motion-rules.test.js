@@ -12,13 +12,12 @@ test('меню: Lenis не гасит в нём колесо и тач (data-len
   assert.match(menu, /\sdata-lenis-prevent(\s|>|=)/);
 });
 
-test('процесс: прогресс линии — transform слоя, а не stroke-dashoffset', () => {
+// T29: линии прорисовки в процессе больше нет (H11) — блок статичен; stroke-dash не возвращается
+test('процесс: без прорисовки линии по прокрутке — ни stroke-dash, ни ScrollTrigger', () => {
   const js = strip(read('src/sections/process.js'));
   const css = strip(read('src/styles/sections/process.css'));
-  assert.doesNotMatch(js, /strokeDashoffset|stroke-dashoffset|strokeDasharray/);
+  assert.doesNotMatch(js, /strokeDashoffset|stroke-dashoffset|strokeDasharray|ScrollTrigger|motionReady/);
   assert.doesNotMatch(css, /stroke-dash/);
-  assert.match(js, /scaleX\(/);
-  assert.match(js, /scaleY\(/);
 });
 
 // T13: у ниш курсорной подсветки больше нет — там орбита (tests/aether-sections.test.js)

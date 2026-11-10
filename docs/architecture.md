@@ -13,7 +13,7 @@ Vite + vanilla JS, без фреймворков. Весь текст в JSON. �
 
 - `src/main.js` — единственная точка сборки: секции и CSS подхватываются через `import.meta.glob` по имени (`[data-section="x"]` -> `src/sections/x.js` + `src/styles/sections/x.css`). Не править.
 - `src/core/` — общие сервисы: `i18n` (язык, `t`, `applyTranslations`), `motion` (единственный Lenis, ScrollTrigger, правило reduced-motion, `reveal`/`parallax`/`pinSection`/`marquee`/`scrollToTarget`/`lockScroll`), `analytics` (`track`), `dom` (`$`, `$$`, `el`, `on`, `focusables`, `trapFocus`), `format` (`formatInt`/`formatMoney`/`formatRange`/`countTo`), `intro` (дедлайн прелоадера), `lang-switch`.
-- `src/sections/<name>.js` — один модуль на секцию, контракт `export function init(root)`. Секция не трогает чужой DOM и не импортирует другую секцию. Чистая логика без DOM вынесена в `*-model.js` (`calculator-model.js`, `geo-model.js`) и покрыта тестами.
+- `src/sections/<name>.js` — один модуль на секцию, контракт `export function init(root)`. Секция не трогает чужой DOM и не импортирует другую секцию (исключение — общий модуль карт из точек `stats-dots.js` / `stats-model.js`: его берут блоки 02 и 08). Чистая логика без DOM вынесена в `*-model.js` (`calculator-model.js`, `stats-model.js`) и покрыта тестами.
 - `src/data/` — `content.ua.json`/`content.en.json` (ключи обоих совпадают, тест `tests/i18n-keys.test.js`), `cases.json`, `faq.json`, `calculator.json`, `geo-dots.json`, `config.json`.
 - `src/styles/` — `tokens.css` (ровно 9 цветов + `--grad`), `base.css`, `layout.css`, `sections/*.css`.
 
@@ -22,7 +22,7 @@ Vite + vanilla JS, без фреймворков. Весь текст в JSON. �
 - Анимируем только `transform` и `opacity`; `backdrop-filter` только в шапке.
 - Контент виден без JS: начальное скрытое состояние ставит JS (класс `.js-anim` на `<html>`), не CSS по умолчанию.
 - `[data-reveal]` и `[data-reveal="stagger"]` раскрываются сами; `MutationObserver` ловит перерисованные узлы, при смене языка ничего делать не надо.
-- Один `<canvas>` на странице — карта GEO, на паузе вне экрана.
+- `<canvas>` на странице нет: карты блоков 02 и 08 — точки SVG (`createDotMap` из `stats-dots.js`), цикл кадров стоит вне экрана.
 - Любой `a[href*="t.me/"]` сам шлёт `cta_telegram_click`, `place` берётся из `data-place`. События всего четыре: `cta_telegram_click`, `calculator_change`, `calculator_cta_click`, `case_open`.
 - Якоря `a[href^="#"]` скроллит Lenis (`scrollToTarget`). id секций менять нельзя: `#hero #stats #niches #formats #calculator #cases #process #geo #targeting #reviews #ecosystem #materials #faq #cta`.
 - Нет данных — видимая заглушка `уточнити` / `TBD`, не придуманный факт. Английский — черновик (`"draft": true` в `content.en.json`).

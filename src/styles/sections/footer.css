@@ -1,183 +1,112 @@
-/* Подвал как у Aether (G15): сверху свечение акцента, абзац и колонки ссылок, тонкая орбита через весь блок;
-   ниже огромное «ELEADS» во всю ширину — буквы поднимаются снизу по одной из маски (overflow: hidden +
-   translateY), цвета чередуются акцент / белый; внизу © 2026 eLeads, автор-заглушка и «Нагору» моно-капсом. */
+/* Подвал (T31): компактный, в облике блоков 02–05 — фон страницы, тонкая линия сверху. Одна строка: логотип словом
+   с короткой подводкой, ссылки на разделы, переключатель UA/EN и акцентная кнопка в Telegram; ниже — © 2026 eLeads,
+   автор (заглушка) и «Нагору». Без вордмарка, «подъёма букв», свечений и эффектов появления (H11). */
 .footer {
   position: relative;
   border-top: 1px solid var(--line);
-  padding-top: clamp(5rem, 10vw, 9rem);
+  padding-top: clamp(1.75rem, 3vw, 2.5rem);
   overflow: clip;
-  container-type: inline-size;
-  isolation: isolate;
-}
-
-/* свечение акцента над подвалом: статичный радиальный градиент */
-.footer__glow {
-  position: absolute;
-  z-index: -1;
-  left: 50%;
-  top: 0;
-  width: 140%;
-  height: clamp(16rem, 34vw, 30rem);
-  transform: translate3d(-50%, -50%, 0);
-  background: radial-gradient(closest-side, var(--glow), transparent);
-  opacity: 0.8;
-  pointer-events: none;
-}
-
-/* тонкая орбита — эллипс, проходящий через вордмарк */
-.footer__orbit {
-  position: absolute;
-  z-index: -1;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1440 / 400;
-  color: color-mix(in srgb, var(--accent-2) 70%, transparent);
-  pointer-events: none;
+  color: var(--text);
 }
 
 .footer__inner {
   display: grid;
-  gap: 2.5rem;
+  gap: 1.5rem 2rem;
   grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.footer__col--brand {
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+}
+
+/* логотип — как в шапке: слово Onest 700 */
+.footer .footer__logo {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  text-transform: none;
 }
 
 .footer__tagline {
-  max-width: 24rem;
-  font-size: var(--fs-lg);
+  max-width: 26rem;
+  font-size: var(--fs-sm);
   line-height: 1.45;
-  color: var(--text);
-}
-
-.footer__nav {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2.5rem 1.5rem;
-}
-
-.footer__heading {
-  margin-bottom: 1.1rem;
   color: var(--text-muted);
 }
 
 .footer__links {
-  display: grid;
-  gap: 0.55rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
 }
 
 .footer__link {
   display: inline-block;
-  font-size: var(--fs-base);
-  color: var(--text);
+  padding-block: 0.15rem;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-muted);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
-.footer__link:hover {
-  transform: translateX(4px);
+.footer__link:hover,
+.footer__link:focus-visible {
+  color: var(--text);
+  transform: translateY(-1px);
 }
 
 .footer__col--contact {
-  display: grid;
-  gap: 1rem;
-  align-content: start;
-  justify-items: start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.footer__col--contact .footer__heading {
-  margin-bottom: 0.1rem;
-}
-
-.footer__tg {
-  display: grid;
-  gap: 4px;
-  font-size: var(--fs-base);
-  color: var(--text);
+.footer__tg-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
 }
 
 .footer__tg-handle {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  color: var(--accent);
+  font-weight: 500;
+  opacity: 0.7;
 }
 
-/* — огромный вордмарк: ширина — от контейнера подвала (cqi), без горизонтального скролла — */
-.footer__wordmark {
-  margin-top: clamp(3rem, 8cqi, 7rem);
-  padding-inline: var(--gutter);
-  overflow: hidden;
-  font-family: var(--font-display);
-  /* ширина «ELEADS» в Unbounded 800 ≈ 5.03 кегля — слово ровно во всю ширину между полями */
-  font-size: calc((100cqi - 2 * var(--gutter)) / 5.1);
-  font-weight: 800;
-  line-height: 0.86;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-  text-align: center;
-  color: var(--text);
-  user-select: none;
-  pointer-events: none;
-}
-
-.footer__word {
-  display: inline-block;
-  padding-top: 0.08em;
-  text-transform: uppercase;
-}
-
-.footer__char {
-  display: inline-block;
-  transition: transform 1s var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 110ms);
-}
-
-.footer__char--accent {
-  background: var(--grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* начальное состояние — только при живых анимациях (html.js-anim) и до входа в экран */
-.js-anim .footer__wordmark:not(.is-in) .footer__char {
-  transform: translate3d(0, 110%, 0);
-}
-
+/* — нижняя строка — */
 .footer__bottom {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem 2rem;
-  padding-block: 1.25rem 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-mono);
-  text-transform: uppercase;
+  gap: 0.5rem 1.5rem;
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+  padding-block: 1rem 1.25rem;
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-xs);
   color: var(--text-muted);
 }
 
 .footer__copy {
   color: var(--text);
-  text-transform: none;
 }
 
 .footer__credit {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 0.5em;
-  text-transform: none;
-  letter-spacing: 0.04em;
+  gap: 0.4em;
 }
 
 .footer__top {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: var(--tracking-mono);
-  text-transform: uppercase;
+  gap: 6px;
+  font-size: var(--fs-xs);
+  font-weight: 500;
   color: var(--text);
 }
 
@@ -193,11 +122,20 @@
 
 @media (min-width: 900px) {
   .footer__inner {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
-    gap: 3rem;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr) auto;
+    align-items: center;
   }
 
-  .footer__nav {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .footer__col--nav {
+    justify-self: center;
+  }
+
+  .footer__links {
+    justify-content: center;
+  }
+
+  .footer__col--contact {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
   }
 }

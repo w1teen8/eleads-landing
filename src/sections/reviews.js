@@ -1,4 +1,5 @@
-// 10 Відгуки: слайдер на scroll-snap — свайп на мобильном, кнопки и стрелки с клавиатуры, точки.
+// 10 Відгуки + засновник (T30): слайдер отзывов на scroll-snap — свайп на тач, кнопки, точки (клик по точке —
+// к слайду), стрелки с клавиатуры. Карточка засновника — статичная. Переходов по прокрутке нет (H11).
 import { $, $$, el, on } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
 
@@ -11,11 +12,15 @@ export function init(root) {
   const prev = $('[data-slider-prev]', host);
   const next = $('[data-slider-next]', host);
   const dots = $('[data-slider-dots]', host);
-  dots.replaceChildren(...slides.map(() => el('span', { class: 'reviews__dot' })));
+  const dotNodes = slides.map((_, i) =>
+    el('button', { class: 'reviews__dot', attrs: { type: 'button', tabindex: '-1', 'aria-hidden': 'true', 'data-slide': String(i) } }),
+  );
+  dots.replaceChildren(...dotNodes);
 
   const step = () => (slides[1] ? slides[1].offsetLeft - slides[0].offsetLeft : view.clientWidth);
   const index = () => Math.round(view.scrollLeft / (step() || 1));
-  const go = (dir) => view.scrollBy({ left: dir * step(), behavior: 'smooth' });
+  const goTo = (i) => view.scrollTo({ left: Math.max(0, Math.min(slides.length - 1, i)) * step(), behavior: 'smooth' });
+  const go = (dir) => goTo(index() + dir);
 
   function sync() {
     const max = view.scrollWidth - view.clientWidth;
@@ -24,11 +29,12 @@ export function init(root) {
     prev.disabled = !scrollable || view.scrollLeft <= 2;
     next.disabled = !scrollable || view.scrollLeft >= max - 2;
     const i = Math.min(slides.length - 1, index());
-    $$('.reviews__dot', dots).forEach((d, n) => d.classList.toggle('is-active', n === i));
+    dotNodes.forEach((d, n) => d.classList.toggle('is-active', n === i));
   }
 
   on(prev, 'click', () => go(-1));
   on(next, 'click', () => go(1));
+  dotNodes.forEach((d, i) => on(d, 'click', () => goTo(i)));
   on(view, 'scroll', sync, { passive: true });
   on(view, 'keydown', (e) => {
     if (e.key === 'ArrowRight') {

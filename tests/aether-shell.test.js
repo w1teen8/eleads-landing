@@ -40,39 +40,23 @@ test('ленты: бегут через motion.marquee в разные стор�
   assert.ok(angles.some((a) => a <= -3 && a >= -4) && angles.some((a) => a >= 3 && a <= 4), `углы: ${angles}`);
 });
 
-test('подвал: колонки ссылок, абзац, Telegram, ©, UA/EN, строка автора и вордмарк из словаря', () => {
-  const footer = html.match(/<footer\b[\s\S]*?<\/footer>/)[0];
+test('подвал (T31): компактный — логотип словом, ссылки, Telegram, ©, UA/EN, строка автора', () => {
+  const footer = html.match(/<footer class="footer"[\s\S]*?<\/footer>/)[0];
   assert.match(footer, /data-i18n="footer\.tagline"/);
-  assert.ok((footer.match(/class="footer__col\b/g) || []).length >= 2, 'колонки ссылок');
+  assert.ok((footer.match(/class="footer__col\b/g) || []).length >= 2, 'колонки');
   assert.match(footer, /href="\{\{config\.telegramUrl\}\}"[^>]*data-place="footer"/);
   assert.match(footer, /data-i18n="footer\.copyright"/);
   assert.match(footer, /data-lang-switch/);
   assert.match(footer, /data-i18n="footer\.creditLabel"/);
   assert.match(footer, /data-wordmark[^>]*data-i18n="common\.brand"|data-i18n="common\.brand"[^>]*data-wordmark/);
+  assert.ok((footer.match(/class="footer__link"/g) || []).length >= 10, 'ссылки на разделы одной строкой');
 });
 
-test('подвал: буквы вордмарка — по одной, акцент и белый чередуются, первая — акцент', async () => {
-  globalThis.window ??= { location: { search: '' }, addEventListener() {} };
-  const { wordmarkLetters } = await import('../src/sections/footer.js');
-  assert.deepEqual(wordmarkLetters('eLeads'), [
-    { char: 'E', accent: true },
-    { char: 'L', accent: false },
-    { char: 'E', accent: true },
-    { char: 'A', accent: false },
-    { char: 'D', accent: true },
-    { char: 'S', accent: false },
-  ]);
-  assert.deepEqual(wordmarkLetters(''), []);
-});
-
-test('подвал: буквы прячутся только под .js-anim и до .is-in — без JS и при reduced-motion видны', () => {
+test('подвал (T31): без «подъёма букв», огромного вордмарка и эффектов появления — правило клиента и H11', () => {
+  const footer = html.match(/<footer class="footer"[\s\S]*?<\/footer>/)[0];
+  assert.doesNotMatch(footer, /footer__wordmark|footer__glow|footer__orbit|data-reveal/);
+  const js = strip(read('src/sections/footer.js'));
+  assert.doesNotMatch(js, /wordmarkLetters|IntersectionObserver|footer__char/);
   const css = strip(read('src/styles/sections/footer.css'));
-  const rules = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter(([, sel, body]) => /footer__char/.test(sel) && /translate3d\(0,\s*1\d\d%/.test(body));
-  assert.ok(rules.length > 0, 'нет начального состояния букв');
-  for (const [, sel] of rules) {
-    for (const part of sel.split(',')) {
-      assert.match(part, /\.js-anim/, `без .js-anim: ${part.trim()}`);
-      assert.match(part, /:not\(\.is-in\)/, `без выхода: ${part.trim()}`);
-    }
-  }
+  assert.doesNotMatch(css, /footer__char|\.is-in|translate3d\(0,\s*1\d\d%/);
 });

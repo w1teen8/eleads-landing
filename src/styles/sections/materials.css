@@ -1,51 +1,130 @@
-/* 12 Матеріали: тёмный блок overtake; карточки-обложки поста — акцентный заголовок на тёмной плашке,
-   тёплое свечение следует за курсором, «Читати» — светлая пилюля. */
+/* 12 Матеріали (T31): облик блоков 02–05 — фон страницы, заголовок шрифтом канала, хвост градиентом. Посты канала —
+   лента крупных карточек-обложек в духе showcase-scroll (H07): на широком альбомном экране блок закреплён под шапкой,
+   полоса .mat__grid едет влево на величину переполнения (transform из motion-kit → showcaseScroll), справа от
+   заголовка — тонкая линия прогресса (scaleX). На узком/портретном экране и при reduced-motion лента — обычная
+   горизонтальная прокрутка пальцем со snap. Карточка: «ПОСТ N», название шрифтом канала, ссылка «Читати в Telegram»;
+   тона — акцентная жёлто-оранжевая, тёмная, светлая. Двигаются только transform и opacity. */
 
 .section--materials {
-  color: var(--text-on-block);
+  --mat-gap: clamp(0.75rem, 1.1vw, 1.25rem);
+  --mat-pad: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+  --mat-card-w: min(82vw, 22rem);
+  --mat-card-h: 20rem;
+  overflow-x: clip;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
+  color: var(--text);
 }
 
-.section--materials .section__title {
-  color: var(--text-on-block);
+.mat__top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-.section--materials .section__lead {
-  color: var(--text-on-block-muted);
+.mat__head {
+  gap: 0;
+  margin-bottom: 0;
+  max-width: none;
+}
+
+.section--materials .display.section__title {
+  max-width: none;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.mat__progress {
+  display: none;
+  position: relative;
+  flex: none;
+  width: clamp(8rem, 16vw, 18rem);
+  height: 2px;
+  margin-bottom: 0.9rem;
+  border-radius: 1px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.mat__progress-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--grad);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+/* ——— лента ——— */
+.mat__window {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(-1 * var(--gutter));
+  padding-inline: var(--gutter);
+  scroll-padding-inline: var(--gutter);
+}
+
+.mat__window::-webkit-scrollbar {
+  display: none;
 }
 
 .mat__grid {
-  display: grid;
-  gap: clamp(0.75rem, 1.4vw, 1.25rem);
-  grid-template-columns: minmax(0, 1fr);
+  display: flex;
+  gap: var(--mat-gap);
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  will-change: transform;
 }
 
 .mat__item {
   display: flex;
-  min-width: 0;
+  flex: none;
+  width: var(--mat-card-w);
+  scroll-snap-align: start;
 }
 
 .mat__card {
   --gx: 80%;
   --gy: 90%;
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 2rem;
+  gap: 1rem;
   width: 100%;
-  min-height: 380px;
-  padding: clamp(1.25rem, 2vw, 1.75rem);
-  border: 1px solid color-mix(in srgb, var(--text-on-block) 10%, transparent);
-  border-radius: var(--r-card-sm) var(--r-card-lg) var(--r-card-sm) var(--r-card-lg);
-  background: var(--block-2);
-  color: var(--text-on-block);
-  overflow: hidden;
-  isolation: isolate;
+  min-height: var(--mat-card-h);
+  padding: var(--mat-pad);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card-lg);
+  background: var(--surface);
+  color: var(--text);
   transition: transform var(--dur) var(--ease-out);
 }
 
 .mat__card:hover {
   transform: translateY(-5px);
+}
+
+.mat__card--accent {
+  border-color: transparent;
+  background: var(--grad);
+  color: var(--accent-ink);
+}
+
+.mat__card--light {
+  border-color: transparent;
+  background: var(--text);
+  color: var(--accent-ink);
 }
 
 /* свечение — слой размером с карточку, центр градиента в его середине; слой стоит центром в (0,0)
@@ -60,78 +139,176 @@
   background: radial-gradient(60% 50% at center, color-mix(in srgb, var(--accent-2) 55%, transparent), transparent 70%);
   transform: translate3d(var(--gx), var(--gy), 0);
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.25;
   transition: opacity var(--dur) var(--ease-out);
 }
 
 .mat__card:hover .mat__glow {
-  opacity: 0.7;
-  will-change: transform;
+  opacity: 0.6;
+}
+
+.mat__card--accent .mat__glow,
+.mat__card--light .mat__glow {
+  display: none;
+}
+
+/* крупный контурный самолётик Telegram — как иконки плиток блока 03 */
+.mat__icon {
+  position: absolute;
+  right: 4%;
+  top: 8%;
+  z-index: -1;
+  width: 34%;
+  aspect-ratio: 1;
+  opacity: 0.14;
+  pointer-events: none;
+  transform-origin: 100% 0;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.mat__card:hover .mat__icon {
+  transform: scale(1.08) rotate(-6deg);
 }
 
 .mat__badge {
   width: fit-content;
-  padding: 0.3rem 0.85rem;
+  padding: 0.35rem 0.9rem;
   border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--text-on-block) 10%, transparent);
-  font-family: var(--font-mono);
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  font-family: var(--font-body);
   font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
-  color: var(--text-on-block);
+  font-weight: 700;
+  letter-spacing: 0.08em;
 }
 
 .mat__title {
-  font-family: var(--font-display);
-  font-size: clamp(1.4rem, 1rem + 0.9vw, 1.9rem);
-  font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: var(--tracking-display);
+  margin-top: auto;
+  max-width: 14ch;
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 1.5rem + 1.8vw, 3.75rem);
+  font-weight: 900;
+  line-height: 0.95;
   text-transform: uppercase;
   overflow-wrap: normal;
   hyphens: manual;
-  color: var(--accent);
   text-wrap: balance;
 }
 
+/* названия поста ещё нет — видимая заглушка «уточнити» */
 .mat__title.is-tbd {
+  width: fit-content;
   font-family: var(--font-mono);
   font-size: 1.25rem;
   font-weight: 500;
   text-transform: none;
+  color: var(--accent);
   border-bottom: 1px dashed currentColor;
-  width: fit-content;
+}
+
+.mat__card--light .mat__title.is-tbd {
+  color: inherit;
 }
 
 .mat__link {
   display: inline-flex;
   align-items: center;
-  gap: 0.6em;
+  gap: 0.75em;
   width: fit-content;
-  min-height: 40px;
-  padding: 0 0.4rem 0 1rem;
-  border-radius: var(--r-pill);
-  background: var(--surface);
-  color: var(--text);
+  min-height: 44px;
+  font-size: var(--fs-base);
   font-weight: 600;
+  color: inherit;
 }
 
-.mat__link .btn__arrow {
+.mat__arrow {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
-.mat__link:hover .btn__arrow,
-.mat__link:focus-visible .btn__arrow {
-  transform: translateX(4px);
+.mat__card--accent .mat__arrow,
+.mat__card--light .mat__arrow {
+  background: var(--accent-ink);
+  color: var(--accent);
 }
 
-@media (min-width: 640px) {
-  .mat__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.mat__arrow svg {
+  width: 45%;
+  height: 45%;
+}
+
+.mat__link:hover .mat__arrow,
+.mat__link:focus-visible .mat__arrow {
+  transform: rotate(45deg);
+}
+
+@media (min-width: 600px) {
+  .section--materials {
+    --mat-card-w: clamp(20rem, 44vw, 28rem);
   }
 }
 
-@media (min-width: 1100px) {
-  .mat__grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+/* — широкий альбомный экран: блок — ровно экран (H15), лента едет по прокрутке (showcaseScroll) — */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--materials {
+    --mat-card-w: clamp(24rem, 36vw, 42rem);
+    --mat-card-h: clamp(16rem, 52svh, 34rem);
+    padding-block: var(--screen-pad);
+  }
+
+  .mat__top {
+    margin-bottom: clamp(1rem, 3.4svh, 2.75rem);
+  }
+
+  .section--materials .display.section__title {
+    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.5svh), 6rem);
+  }
+
+  .mat__progress {
+    display: block;
+  }
+
+  .mat__window {
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+    scroll-snap-type: none;
+  }
+
+  .mat__title {
+    font-size: clamp(2rem, min(1.5rem + 1.8vw, 7svh), 3.75rem);
+  }
+}
+
+/* лента не едет (reduced-motion, ?nomotion=1 → .is-static из materials.js) — обычная горизонтальная прокрутка */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--materials.is-static .mat__window {
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scroll-snap-type: x mandatory;
+  }
+
+  .section--materials.is-static .mat__progress {
+    display: none;
+  }
+}
+
+@media (min-width: 900px) and (orientation: landscape) and (prefers-reduced-motion: reduce) {
+  .mat__window {
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scroll-snap-type: x mandatory;
+  }
+
+  .mat__progress {
+    display: none;
   }
 }

@@ -1,200 +1,159 @@
-/* 07 Процес: 7 шагов на линии; линия прорисовывается scaleX / scaleY слоя .process__fill (JS), шаги загораются.
-   Без JS и при reduced-motion линия нарисована, шаги горят (класс .is-armed ставит JS).
-   Оформление overtake: тёмный блок, текст — --text-on-block. */
+/* 07 Процес (T29): облик блоков 02–05 — заголовок шрифтом канала со второй строкой акцентом, справа от него короткий
+   текст о подходе (process.lead). Ниже семь шагов в один ряд: у каждого тонкая линия сверху, крупный номер шрифтом
+   канала жёлтый → оранжевый и подпись Onest; последний шаг «Масштабую те, що працює» — акцентная жёлто-оранжевая
+   плитка с тёмным текстом. Переходов и появления по прокрутке нет (H11): всё видно сразу, наведение чуть поднимает шаг.
+   На широком экране блок — ровно экран под шапкой (layout.css): высота ряда и кегль номеров — от высоты окна (svh).
+   На телефоне шаги — список: номер слева, подпись справа. Двигаются только transform и opacity. */
 
 .section--process {
-  --on: var(--text-on-block);
-  --on-muted: var(--text-on-block-muted);
-  --hair: color-mix(in srgb, var(--text-on-block) 22%, transparent);
-  color: var(--on);
+  --process-gap: clamp(0.75rem, 1.1vw, 1.25rem);
+  overflow-x: clip;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
+  color: var(--text);
 }
 
-.section--process .section__title {
-  color: var(--on);
-}
-
-.section--process .section__lead {
-  color: var(--on-muted);
-}
-
-.process__track {
-  position: relative;
-}
-
-.process__steps {
-  position: relative;
+/* — шапка: заголовок слева, текст справа внизу (как в блоках 03 и 04) — */
+.process__top {
   display: grid;
-  gap: 1.75rem;
-  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.75rem);
+  margin-bottom: clamp(1.75rem, 5svh, 3.5rem);
 }
 
-.process__line {
-  position: absolute;
-  overflow: visible;
-  pointer-events: none;
+.process__head {
+  gap: clamp(0.9rem, 1.5vw, 1.5rem);
+  margin-bottom: 0;
 }
 
-.process__line--h {
-  display: none;
+.section--process .display.section__title {
+  max-width: none;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
-/* мобильная линия — вертикаль через центры кружков */
-.process__line--v {
-  top: 24px;
-  bottom: 24px;
-  left: 23px;
-  width: 2px;
-  height: auto;
-  inset-block: 24px;
+/* хвост заголовка — второй строкой, жёлтый → оранжевый (components.css .display__accent) */
+
+.process__lead {
+  max-width: 40ch;
+  font-size: var(--fs-lg);
+  line-height: 1.45;
+  color: var(--text-muted);
 }
 
-.process__rail {
-  stroke: var(--hair);
-  stroke-width: 2;
-  fill: none;
-}
-
-.process__draw {
-  stroke: var(--accent);
-  stroke-width: 2;
-  fill: none;
-}
-
-/* слой прорисовки (копия линии без рельса, её делает process.js): растёт от начала линии */
-.process__fill {
-  transform-origin: 0 0;
-  will-change: transform;
+/* — шаги: на телефоне список, номер слева — */
+.process__steps {
+  display: grid;
+  gap: 0;
+  counter-reset: none;
 }
 
 .process__step {
-  position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 1.1rem;
+  gap: clamp(1rem, 4vw, 1.5rem);
+  min-width: 0;
+  padding: clamp(0.9rem, 2.4svh, 1.5rem) 0.25rem;
+  border-top: 1px solid var(--line-strong);
+  transition: transform var(--dur) var(--ease-out);
 }
 
-.process__node {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  font-family: var(--font-mono);
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--accent-ink);
-  background: var(--accent);
-  transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
+.process__num {
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 2rem + 2.5vw, 3.25rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .process__label {
-  font-family: var(--font-display);
-  font-size: clamp(1.15rem, 1rem + 0.5vw, 1.45rem);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
   font-weight: 600;
-  line-height: 1.1;
-  text-transform: none;
-  letter-spacing: -0.02em;
-  transition: opacity var(--dur) var(--ease-out);
+  line-height: 1.3;
+  text-wrap: balance;
 }
 
-/* до прокрутки: контурные кружки, приглушённые подписи */
-.process.is-armed .process__node {
-  background: var(--block);
-  border-color: var(--hair);
-  color: var(--on-muted);
-}
-
-.process.is-armed .process__label {
-  opacity: 0.62;
-}
-
-.process.is-armed .process__step.is-lit .process__node {
-  background: var(--accent);
-  border-color: transparent;
-  color: var(--accent-ink);
-  transform: scale(1.12);
-}
-
-.process.is-armed .process__step.is-lit .process__label {
-  opacity: 1;
-}
-
-.process__note {
-  position: relative;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-  padding: clamp(1.5rem, 3vw, 2.75rem);
-  border-radius: var(--r-card-lg);
-  border: 0;
-  background: var(--surface);
-  color: var(--text);
-  font-size: var(--fs-lg);
-  max-width: 62ch;
-}
-
-.process__note::before {
-  content: '';
-  display: block;
-  width: 36px;
-  height: 3px;
-  margin-bottom: 1rem;
-  border-radius: 2px;
+/* последний шаг — акцентная плитка с тёмным текстом */
+.process__step--accent {
+  padding-inline: clamp(1rem, 1.5vw, 1.5rem);
+  border-top-color: transparent;
+  border-radius: var(--r-card);
   background: var(--grad);
+  color: var(--accent-ink);
 }
 
+.process__step--accent .process__num {
+  background: none;
+  color: var(--accent-ink);
+}
+
+/* — широкий экран: семь колонок в ряд, номер над подписью — */
 @media (min-width: 900px) {
-  /* секция закрепляется на экране целиком: отступы считаются от высоты окна, иначе низ обрезается на ноутбуках */
-  .section--process {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding-block: clamp(4.5rem, 11vh, 7rem) clamp(1.5rem, 5vh, 4rem);
+  .process__top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 32rem);
+    align-items: end;
+    gap: clamp(1.5rem, 4vw, 5rem);
   }
 
-  .section--process .section__head {
-    margin-bottom: clamp(1.5rem, 4vh, 3rem);
-  }
-
-  .process__note {
-    margin-top: clamp(1.5rem, 4vh, 3rem);
-  }
-
-  .section--process > .container {
-    width: 100%;
+  .process__lead {
+    justify-self: end;
+    padding-bottom: 0.35rem;
   }
 
   .process__steps {
     grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 0.75rem;
+    gap: var(--process-gap);
   }
 
   .process__step {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
-    padding-right: 0.75rem;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: space-between;
+    align-items: start;
+    gap: clamp(1.5rem, 8svh, 5rem);
+    min-height: clamp(13rem, 38svh, 24rem);
+    padding: clamp(1rem, 2.4svh, 1.5rem) 0.25rem 0;
   }
 
-  .process__node {
-    width: 56px;
-    height: 56px;
+  .process__step:hover {
+    transform: translateY(-4px);
+  }
+
+  .process__num {
+    font-size: clamp(3.5rem, 2rem + 8svh, 6.5rem);
   }
 
   .process__label {
-    font-size: clamp(1rem, 0.5rem + 0.9vw, 1.35rem);
+    font-size: clamp(0.95rem, 0.8rem + 0.35vw, 1.2rem);
+    padding-bottom: 0.25rem;
   }
 
-  .process__line--v {
-    display: none;
+  .process__step--accent {
+    padding: clamp(1rem, 2.4svh, 1.5rem) clamp(1rem, 1.3vw, 1.5rem);
+  }
+}
+
+@media (min-width: 1400px) {
+  .process__label {
+    font-size: clamp(1.05rem, 0.9rem + 0.4vw, 1.35rem);
+  }
+}
+
+/* — широкий альбомный экран: блок ровно в один экран под шапкой — поля и заголовок от высоты окна — */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--process {
+    padding-block: var(--screen-pad);
   }
 
-  .process__line--h {
-    display: block;
-    top: 27px;
-    height: 2px;
-    inset-inline: 28px calc(100% / 7 - 28px + 0.1rem);
+  .section--process .display.section__title {
+    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 9svh), 6rem);
   }
 }

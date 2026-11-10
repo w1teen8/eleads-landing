@@ -648,32 +648,30 @@
         </div>
       </section>
 
-      <section id="cases" class="section section--cases section--alt" data-section="cases" aria-labelledby="cases-title">
-        <div class="cases__stage" data-cases-stage>
-          <p class="cases__word" aria-hidden="true" data-cases-word data-i18n="cases.word"></p>
-          <div class="container cases__head" data-cases-head>
-            <h2 id="cases-title" class="display cases__title" data-i18n="cases.title"></h2>
+      <section id="cases" class="section section--cases" data-section="cases" aria-labelledby="cases-title">
+        <div class="container">
+          <div class="cases__top">
+            <div class="section__head cases__head">
+              <h2 id="cases-title" class="display section__title" data-i18n="cases.title" data-title-accent="cases.titleAccent"></h2>
+            </div>
           </div>
           <div class="cases__viewport" data-cases-viewport role="region" data-i18n-attr="aria-label:cases.listLabel">
             <ul class="cases__track" data-cases-grid></ul>
           </div>
-          <div class="container cases__foot">
-            <div class="cases__progress" aria-hidden="true"><span class="cases__progress-fill" data-cases-progress></span></div>
-          </div>
-        </div>
+          <div class="cases__progress" aria-hidden="true"><span class="cases__progress-fill" data-cases-progress></span></div>
 
-        <div class="container">
           <template data-case-card>
             <li class="cases__item">
               <button type="button" class="cases__card" aria-haspopup="dialog">
-                <span class="cases__top">
+                <span class="cases__top-row">
+                  <span class="cases__avatar" data-case-avatar aria-hidden="true"><span class="cases__avatar-letter" data-case-letter></span></span>
                   <span class="cases__tag" data-f="niche"></span>
                   <span class="cases__num" data-case-num></span>
                 </span>
                 <span class="cases__name" data-f="name"></span>
                 <span class="cases__figure">
-                  <span class="cases__figure-label" data-i18n="cases.labels.cpa"></span>
                   <span class="cases__figure-value" data-f="cpa"></span>
+                  <span class="cases__figure-label" data-i18n="cases.labels.cpa"></span>
                 </span>
                 <span class="cases__facts">
                   <span class="cases__fact"><span class="cases__fact-label" data-i18n="cases.labels.budget"></span><span class="cases__fact-value" data-f="budget"></span></span>
@@ -681,7 +679,7 @@
                 </span>
                 <span class="cases__more">
                   <span data-i18n="cases.more"></span>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
                 </span>
               </button>
             </li>
@@ -722,116 +720,105 @@
 
       <section id="process" class="section section--process" data-section="process" aria-labelledby="process-title">
         <div class="container">
-          <div class="section__head" data-reveal="stagger">
-            <h2 id="process-title" class="display section__title" data-i18n="process.title" data-title-accent="process.titleAccent"></h2>
-          </div>
-          <div class="process" data-process>
-            <div class="process__track">
-              <svg class="process__line process__line--h" viewBox="0 0 1000 2" preserveAspectRatio="none" aria-hidden="true"><line class="process__rail" x1="0" y1="1" x2="1000" y2="1" /><line class="process__draw" x1="0" y1="1" x2="1000" y2="1" pathLength="1" /></svg>
-              <svg class="process__line process__line--v" viewBox="0 0 2 1000" preserveAspectRatio="none" aria-hidden="true"><line class="process__rail" x1="1" y1="0" x2="1" y2="1000" /><line class="process__draw" x1="1" y1="0" x2="1" y2="1000" pathLength="1" /></svg>
-              <ol class="process__steps">
-                <li class="process__step" style="--i: 0">
-                  <span class="process__node">1</span>
-                  <span class="process__label" data-i18n="process.steps.0"></span>
-                </li>
-                <li class="process__step" style="--i: 1">
-                  <span class="process__node">2</span>
-                  <span class="process__label" data-i18n="process.steps.1"></span>
-                </li>
-                <li class="process__step" style="--i: 2">
-                  <span class="process__node">3</span>
-                  <span class="process__label" data-i18n="process.steps.2"></span>
-                </li>
-                <li class="process__step" style="--i: 3">
-                  <span class="process__node">4</span>
-                  <span class="process__label" data-i18n="process.steps.3"></span>
-                </li>
-                <li class="process__step" style="--i: 4">
-                  <span class="process__node">5</span>
-                  <span class="process__label" data-i18n="process.steps.4"></span>
-                </li>
-                <li class="process__step" style="--i: 5">
-                  <span class="process__node">6</span>
-                  <span class="process__label" data-i18n="process.steps.5"></span>
-                </li>
-                <li class="process__step" style="--i: 6">
-                  <span class="process__node">7</span>
-                  <span class="process__label" data-i18n="process.steps.6"></span>
-                </li>
-              </ol>
+          <div class="process__top">
+            <div class="section__head process__head">
+              <h2 id="process-title" class="display section__title" data-i18n="process.title" data-title-accent="process.titleAccent"></h2>
             </div>
-            <p class="process__note" data-i18n="process.note"></p>
+            <p class="process__lead" data-i18n="process.lead"></p>
           </div>
+          <ol class="process__steps" data-process>
+            <li class="process__step">
+              <span class="process__num" aria-hidden="true">01</span>
+              <span class="process__label" data-i18n="process.steps.0"></span>
+            </li>
+            <li class="process__step">
+              <span class="process__num" aria-hidden="true">02</span>
+              <span class="process__label" data-i18n="process.steps.1"></span>
+            </li>
+            <li class="process__step">
+              <span class="process__num" aria-hidden="true">03</span>
+              <span class="process__label" data-i18n="process.steps.2"></span>
+            </li>
+            <li class="process__step">
+              <span class="process__num" aria-hidden="true">04</span>
+              <span class="process__label" data-i18n="process.steps.3"></span>
+            </li>
+            <li class="process__step">
+              <span class="process__num" aria-hidden="true">05</span>
+              <span class="process__label" data-i18n="process.steps.4"></span>
+            </li>
+            <li class="process__step">
+              <span class="process__num" aria-hidden="true">06</span>
+              <span class="process__label" data-i18n="process.steps.5"></span>
+            </li>
+            <li class="process__step process__step--accent">
+              <span class="process__num" aria-hidden="true">07</span>
+              <span class="process__label" data-i18n="process.steps.6"></span>
+            </li>
+          </ol>
         </div>
       </section>
 
-      <section id="geo" class="section section--geo section--alt" data-section="geo" aria-labelledby="geo-title">
+      <section id="geo" class="section section--geo" data-section="geo" aria-labelledby="geo-title">
         <div class="container">
-          <div class="section__head" data-reveal="stagger">
+          <div class="section__head geo__head">
             <h2 id="geo-title" class="display section__title" data-i18n="geo.title" data-title-accent="geo.titleAccent"></h2>
           </div>
-          <div class="geo" data-reveal>
-            <div class="geo__map" data-geo-map>
-              <canvas class="geo__canvas" data-geo-canvas role="img" data-i18n-attr="aria-label:geo.mapAlt"></canvas>
-              <span class="geo__tag" data-i18n="geo.mapLabel"></span>
-              <div class="geo__card" data-geo-card role="status" aria-live="polite">
-                <p class="geo__card-name" data-geo-name></p>
-                <p class="geo__card-figure text-grad" data-geo-figure></p>
-                <p class="geo__card-text" data-geo-text></p>
+          <div class="geo">
+            <div class="geo__card">
+              <!-- карта мира из точек: кружки ставит stats-dots.js (createDotMap) по сетке src/data/geo-dots.json, первый <g> — точки, второй — метки регионов -->
+              <div class="geo__map" role="img" data-geo-map data-i18n-attr="aria-label:geo.mapAlt">
+                <svg viewBox="0 0 72.5 27" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><g class="geo__dots"></g><g class="geo__pins" data-geo-pins></g></svg>
+                <div class="geo__tip" data-geo-tip role="status" aria-live="polite">
+                  <p class="geo__tip-name" data-geo-name></p>
+                  <p class="geo__tip-figure" data-geo-figure hidden></p>
+                  <p class="geo__tip-text" data-geo-text></p>
+                </div>
               </div>
             </div>
             <aside class="geo__list">
               <h3 class="geo__list-title" data-i18n="geo.listTitle"></h3>
-              <ul>
+              <ul class="geo__regions">
                 <li><button type="button" class="geo__region" data-region="ukraine" aria-pressed="false">
-                  <span class="geo__region-dot" aria-hidden="true"></span>
                   <span class="geo__region-name" data-i18n="geo.regions.ukraine.name"></span>
                   <span class="geo__region-text" data-i18n="geo.regions.ukraine.text"></span>
                 </button></li>
                 <li><button type="button" class="geo__region" data-region="europe" aria-pressed="false">
-                  <span class="geo__region-dot" aria-hidden="true"></span>
                   <span class="geo__region-name" data-i18n="geo.regions.europe.name"></span>
                   <span class="geo__region-text" data-i18n="geo.regions.europe.text"></span>
                 </button></li>
                 <li><button type="button" class="geo__region" data-region="uk" aria-pressed="false">
-                  <span class="geo__region-dot" aria-hidden="true"></span>
                   <span class="geo__region-name" data-i18n="geo.regions.uk.name"></span>
                   <span class="geo__region-text" data-i18n="geo.regions.uk.text"></span>
                 </button></li>
                 <li><button type="button" class="geo__region" data-region="usa" aria-pressed="false">
-                  <span class="geo__region-dot" aria-hidden="true"></span>
                   <span class="geo__region-name" data-i18n="geo.regions.usa.name"></span>
                   <span class="geo__region-text" data-i18n="geo.regions.usa.text"></span>
                 </button></li>
                 <li><button type="button" class="geo__region" data-region="canada" aria-pressed="false">
-                  <span class="geo__region-dot" aria-hidden="true"></span>
                   <span class="geo__region-name" data-i18n="geo.regions.canada.name"></span>
                   <span class="geo__region-text" data-i18n="geo.regions.canada.text"></span>
                 </button></li>
                 <li><button type="button" class="geo__region" data-region="australia" aria-pressed="false">
-                  <span class="geo__region-dot" aria-hidden="true"></span>
                   <span class="geo__region-name" data-i18n="geo.regions.australia.name"></span>
                   <span class="geo__region-text" data-i18n="geo.regions.australia.text"></span>
                 </button></li>
                 <li><button type="button" class="geo__region" data-region="asia" aria-pressed="false">
-                  <span class="geo__region-dot" aria-hidden="true"></span>
                   <span class="geo__region-name" data-i18n="geo.regions.asia.name"></span>
                   <span class="geo__region-text" data-i18n="geo.regions.asia.text"></span>
                 </button></li>
               </ul>
             </aside>
           </div>
-          <p class="geo__footnote" data-reveal data-i18n="geo.footnote"></p>
         </div>
       </section>
 
       <section id="targeting" class="section section--targeting" data-section="targeting" aria-labelledby="targeting-title">
         <div class="container">
-          <div class="section__head" data-reveal="stagger">
+          <div class="section__head tg__head">
             <h2 id="targeting-title" class="display section__title" data-i18n="targeting.title" data-title-accent="targeting.titleAccent"></h2>
           </div>
-          <p class="targeting__hint" data-reveal data-i18n="targeting.hint"></p>
-          <ul class="tg__grid" data-reveal="stagger">
+          <ul class="tg__grid">
             <li class="tg__item"><button type="button" class="tg__card" aria-expanded="false">
               <span class="tg__num" data-i18n="targeting.items.0.num"></span>
               <span class="tg__name" data-i18n="targeting.items.0.name"></span>
@@ -875,287 +862,278 @@
               <span class="tg__plus" aria-hidden="true"></span>
             </button></li>
           </ul>
-          <p class="tg__note" data-reveal data-i18n="targeting.note"></p>
         </div>
       </section>
 
       <section id="reviews" class="section section--reviews section--alt" data-section="reviews" aria-labelledby="reviews-title">
         <div class="container">
-          <div class="section__head" data-reveal="stagger">
+          <div class="section__head reviews__head">
             <h2 id="reviews-title" class="display section__title" data-i18n="reviews.title" data-title-accent="reviews.titleAccent"></h2>
           </div>
-          <div class="reviews" data-slider>
-            <div class="reviews__viewport" data-slider-viewport tabindex="0" role="region" aria-roledescription="carousel" data-i18n-attr="aria-label:reviews.sliderLabel">
-              <ul class="reviews__track">
+          <div class="reviews__body">
+            <article class="founder">
+              <figure class="founder__photo">
+                <picture>
+                  <source type="image/avif" srcset="/img/photo/volodymyr-founder-480.avif 480w, /img/photo/volodymyr-founder-800.avif 800w" sizes="(min-width: 1000px) 24vw, 90vw" />
+                  <source type="image/webp" srcset="/img/photo/volodymyr-founder-480.webp 480w, /img/photo/volodymyr-founder-800.webp 800w" sizes="(min-width: 1000px) 24vw, 90vw" />
+                  <img class="photo-img" src="/img/photo/volodymyr-founder-480.jpg" srcset="/img/photo/volodymyr-founder-480.jpg 480w, /img/photo/volodymyr-founder-800.jpg 800w" sizes="(min-width: 1000px) 24vw, 90vw" width="480" height="600" alt="" data-i18n-attr="alt:founder.photoAlt" loading="lazy" decoding="async" />
+                </picture>
+              </figure>
+              <div class="founder__body">
+                <p class="founder__badge" data-i18n="founder.badge"></p>
+                <h3 class="founder__title" data-i18n="founder.title"></h3>
+                <p class="founder__text" data-i18n="founder.text"></p>
+                <ul class="founder__stats">
+                  <li><span class="founder__value" data-i18n="hero.stats.years.value"></span><span class="founder__label" data-i18n="hero.stats.years.label"></span></li>
+                  <li><span class="founder__value" data-i18n="hero.stats.budgets.value"></span><span class="founder__label" data-i18n="hero.stats.budgets.label"></span></li>
+                  <li><span class="founder__value" data-i18n="hero.stats.projects.value"></span><span class="founder__label" data-i18n="hero.stats.projects.label"></span></li>
+                </ul>
+              </div>
+            </article>
+            <div class="reviews" data-slider>
+              <div class="reviews__viewport" data-slider-viewport tabindex="0" role="region" aria-roledescription="carousel" data-i18n-attr="aria-label:reviews.sliderLabel">
+                <ul class="reviews__track">
                 <li class="reviews__slide"><article class="reviews__card">
                   <svg class="reviews__quote" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M0 24V12.5C0 5 4 .7 11 0l1 3.2C8.5 4 7 6 6.8 8.8H12V24H0Zm20 0V12.5C20 5 24 .7 31 0l1 3.2C28.500 4 27 6 26.800 8.800H32V24H20Z" /></svg>
-                  <div class="reviews__shot"><span class="reviews__shot-title" data-i18n="reviews.shot"></span><span class="reviews__shot-cap" data-i18n="reviews.shotCaption"></span></div>
                   <p class="reviews__text is-tbd" data-i18n="reviews.items.0.quote"></p>
-                  <p class="reviews__name" data-i18n="reviews.items.0.name"></p>
-                  <p class="reviews__role" data-i18n="reviews.items.0.role"></p>
+                  <div class="reviews__who">
+                    <p class="reviews__name" data-i18n="reviews.items.0.name"></p>
+                    <p class="reviews__role" data-i18n="reviews.items.0.role"></p>
+                  </div>
                 </article></li>
                 <li class="reviews__slide"><article class="reviews__card">
                   <svg class="reviews__quote" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M0 24V12.5C0 5 4 .7 11 0l1 3.2C8.5 4 7 6 6.8 8.8H12V24H0Zm20 0V12.5C20 5 24 .7 31 0l1 3.2C28.500 4 27 6 26.800 8.800H32V24H20Z" /></svg>
-                  <div class="reviews__shot"><span class="reviews__shot-title" data-i18n="reviews.shot"></span><span class="reviews__shot-cap" data-i18n="reviews.shotCaption"></span></div>
                   <p class="reviews__text is-tbd" data-i18n="reviews.items.1.quote"></p>
-                  <p class="reviews__name" data-i18n="reviews.items.1.name"></p>
-                  <p class="reviews__role" data-i18n="reviews.items.1.role"></p>
+                  <div class="reviews__who">
+                    <p class="reviews__name" data-i18n="reviews.items.1.name"></p>
+                    <p class="reviews__role" data-i18n="reviews.items.1.role"></p>
+                  </div>
                 </article></li>
                 <li class="reviews__slide"><article class="reviews__card">
                   <svg class="reviews__quote" viewBox="0 0 32 24" fill="currentColor" aria-hidden="true"><path d="M0 24V12.5C0 5 4 .7 11 0l1 3.2C8.5 4 7 6 6.8 8.8H12V24H0Zm20 0V12.5C20 5 24 .7 31 0l1 3.2C28.500 4 27 6 26.800 8.800H32V24H20Z" /></svg>
-                  <div class="reviews__shot"><span class="reviews__shot-title" data-i18n="reviews.shot"></span><span class="reviews__shot-cap" data-i18n="reviews.shotCaption"></span></div>
                   <p class="reviews__text is-tbd" data-i18n="reviews.items.2.quote"></p>
-                  <p class="reviews__name" data-i18n="reviews.items.2.name"></p>
-                  <p class="reviews__role" data-i18n="reviews.items.2.role"></p>
+                  <div class="reviews__who">
+                    <p class="reviews__name" data-i18n="reviews.items.2.name"></p>
+                    <p class="reviews__role" data-i18n="reviews.items.2.role"></p>
+                  </div>
                 </article></li>
-              </ul>
+                </ul>
+              </div>
+              <div class="reviews__controls">
+                <button type="button" class="reviews__btn" data-slider-prev data-i18n-attr="aria-label:reviews.prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
+                <span class="reviews__dots" data-slider-dots aria-hidden="true"></span>
+                <button type="button" class="reviews__btn" data-slider-next data-i18n-attr="aria-label:reviews.next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
+              </div>
             </div>
-            <div class="reviews__controls">
-              <button type="button" class="reviews__btn" data-slider-prev data-i18n-attr="aria-label:reviews.prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
-              <span class="reviews__dots" data-slider-dots aria-hidden="true"></span>
-              <button type="button" class="reviews__btn" data-slider-next data-i18n-attr="aria-label:reviews.next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
-            </div>
-          </div>
-          <div class="founder" data-reveal>
-            <div class="founder__body">
-              <p class="founder__badge" data-i18n="founder.badge"></p>
-              <h3 class="founder__title" data-i18n="founder.title"></h3>
-              <p class="founder__text" data-i18n="founder.text"></p>
-              <ul class="founder__stats">
-                <li><span class="text-grad" data-i18n="hero.stats.years.value"></span><span data-i18n="hero.stats.years.label"></span></li>
-                <li><span class="text-grad" data-i18n="hero.stats.budgets.value"></span><span data-i18n="hero.stats.budgets.label"></span></li>
-                <li><span class="text-grad" data-i18n="hero.stats.projects.value"></span><span data-i18n="hero.stats.projects.label"></span></li>
-              </ul>
-            </div>
-            <figure class="founder__photo">
-              <picture>
-                <source type="image/avif" srcset="/img/photo/volodymyr-founder-480.avif 480w, /img/photo/volodymyr-founder-800.avif 800w" sizes="(min-width: 1000px) 360px, 90vw" />
-                <source type="image/webp" srcset="/img/photo/volodymyr-founder-480.webp 480w, /img/photo/volodymyr-founder-800.webp 800w" sizes="(min-width: 1000px) 360px, 90vw" />
-                <img class="photo-img" src="/img/photo/volodymyr-founder-480.jpg" srcset="/img/photo/volodymyr-founder-480.jpg 480w, /img/photo/volodymyr-founder-800.jpg 800w" sizes="(min-width: 1000px) 360px, 90vw" width="480" height="600" alt="" data-i18n-attr="alt:founder.photoAlt" loading="lazy" decoding="async" />
-              </picture>
-            </figure>
           </div>
         </div>
       </section>
 
       <section id="ecosystem" class="section section--ecosystem" data-section="ecosystem" aria-labelledby="ecosystem-title">
-        <div class="container">
-          <div class="section__head" data-reveal="stagger">
+        <div class="container eco__top">
+          <div class="section__head eco__head">
             <h2 id="ecosystem-title" class="display section__title" data-i18n="ecosystem.title" data-title-accent="ecosystem.titleAccent"></h2>
           </div>
-          <div class="eco__flowwrap" data-eco-flow>
-          <span class="eco__rail" aria-hidden="true"><span class="eco__pulse"></span></span>
-          <ol class="eco__flow" data-reveal="stagger" data-i18n-attr="aria-label:ecosystem.flowLabel">
-            <li class="eco__tile eco__tile--hot" style="--i: 0">
-              <span class="eco__tile-num">01</span>
-              <span class="eco__tile-name" data-i18n="ecosystem.flow.0"></span>
-              <span class="eco__tile-lit" aria-hidden="true"></span>
-            </li>
-            <li class="eco__tile eco__tile--hot" style="--i: 1">
-              <span class="eco__tile-num">02</span>
-              <span class="eco__tile-name" data-i18n="ecosystem.flow.1"></span>
-              <span class="eco__tile-lit" aria-hidden="true"></span>
-            </li>
-            <li class="eco__tile eco__tile--cool" style="--i: 2">
-              <span class="eco__tile-num">03</span>
-              <span class="eco__tile-name" data-i18n="ecosystem.flow.2"></span>
-              <span class="eco__tile-lit" aria-hidden="true"></span>
-            </li>
-            <li class="eco__tile eco__tile--cool" style="--i: 3">
-              <span class="eco__tile-num">04</span>
-              <span class="eco__tile-name" data-i18n="ecosystem.flow.3"></span>
-              <span class="eco__tile-lit" aria-hidden="true"></span>
-            </li>
-            <li class="eco__tile eco__tile--hot" style="--i: 4">
-              <span class="eco__tile-num">05</span>
-              <span class="eco__tile-name" data-i18n="ecosystem.flow.4"></span>
-              <span class="eco__tile-lit" aria-hidden="true"></span>
-            </li>
-            <li class="eco__tile eco__tile--hot" style="--i: 5">
-              <span class="eco__tile-num">06</span>
-              <span class="eco__tile-name" data-i18n="ecosystem.flow.5"></span>
-              <span class="eco__tile-lit" aria-hidden="true"></span>
-            </li>
-          </ol>
+          <div class="eco__flowwrap">
+            <ol class="eco__flow" data-i18n-attr="aria-label:ecosystem.flowLabel">
+              <li class="eco__tile eco__tile--hot"><span class="eco__tile-name" data-i18n="ecosystem.flow.0"></span></li>
+              <li class="eco__tile eco__tile--hot"><span class="eco__tile-name" data-i18n="ecosystem.flow.1"></span></li>
+              <li class="eco__tile eco__tile--cool"><span class="eco__tile-name" data-i18n="ecosystem.flow.2"></span></li>
+              <li class="eco__tile eco__tile--cool"><span class="eco__tile-name" data-i18n="ecosystem.flow.3"></span></li>
+              <li class="eco__tile eco__tile--hot"><span class="eco__tile-name" data-i18n="ecosystem.flow.4"></span></li>
+              <li class="eco__tile eco__tile--hot"><span class="eco__tile-name" data-i18n="ecosystem.flow.5"></span></li>
+            </ol>
+            <span class="eco__progress" aria-hidden="true"><span class="eco__progress-fill" data-eco-progress></span></span>
           </div>
-          <ol class="eco__services" data-reveal="stagger" data-i18n-attr="aria-label:ecosystem.servicesLabel">
-            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-              <span class="eco__row-num">01</span>
-              <span class="eco__row-name" data-i18n="ecosystem.services.0.name"></span>
-              <span class="eco__row-text" data-i18n="ecosystem.services.0.text"></span>
-              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-            </button></li>
-            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-              <span class="eco__row-num">02</span>
-              <span class="eco__row-name" data-i18n="ecosystem.services.1.name"></span>
-              <span class="eco__row-text" data-i18n="ecosystem.services.1.text"></span>
-              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-            </button></li>
-            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-              <span class="eco__row-num">03</span>
-              <span class="eco__row-name" data-i18n="ecosystem.services.2.name"></span>
-              <span class="eco__row-text" data-i18n="ecosystem.services.2.text"></span>
-              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-            </button></li>
-            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-              <span class="eco__row-num">04</span>
-              <span class="eco__row-name" data-i18n="ecosystem.services.3.name"></span>
-              <span class="eco__row-text" data-i18n="ecosystem.services.3.text"></span>
-              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-            </button></li>
-            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-              <span class="eco__row-num">05</span>
-              <span class="eco__row-name" data-i18n="ecosystem.services.4.name"></span>
-              <span class="eco__row-text" data-i18n="ecosystem.services.4.text"></span>
-              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-            </button></li>
-            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-              <span class="eco__row-num">06</span>
-              <span class="eco__row-name" data-i18n="ecosystem.services.5.name"></span>
-              <span class="eco__row-text" data-i18n="ecosystem.services.5.text"></span>
-              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-            </button></li>
-            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-              <span class="eco__row-num">07</span>
-              <span class="eco__row-name" data-i18n="ecosystem.services.6.name"></span>
-              <span class="eco__row-text" data-i18n="ecosystem.services.6.text"></span>
-              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-            </button></li>
-            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-              <span class="eco__row-num">08</span>
-              <span class="eco__row-name" data-i18n="ecosystem.services.7.name"></span>
-              <span class="eco__row-text" data-i18n="ecosystem.services.7.text"></span>
-              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-            </button></li>
-            <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
-              <span class="eco__row-num">09</span>
-              <span class="eco__row-name" data-i18n="ecosystem.services.8.name"></span>
-              <span class="eco__row-text" data-i18n="ecosystem.services.8.text"></span>
-              <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
-            </button></li>
-          </ol>
-          <p class="eco__caption" data-reveal data-i18n="ecosystem.caption"></p>
+        </div>
+        <div class="container">
+          <div class="eco__window" data-eco-window>
+            <ol class="eco__services" data-eco-track data-i18n-attr="aria-label:ecosystem.servicesLabel">
+              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+                <span class="eco__row-num">01</span>
+                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                <span class="eco__row-name" data-i18n="ecosystem.services.0.name"></span>
+                <span class="eco__row-text" data-i18n="ecosystem.services.0.text"></span>
+              </button></li>
+              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+                <span class="eco__row-num">02</span>
+                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                <span class="eco__row-name" data-i18n="ecosystem.services.1.name"></span>
+                <span class="eco__row-text" data-i18n="ecosystem.services.1.text"></span>
+              </button></li>
+              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+                <span class="eco__row-num">03</span>
+                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                <span class="eco__row-name" data-i18n="ecosystem.services.2.name"></span>
+                <span class="eco__row-text" data-i18n="ecosystem.services.2.text"></span>
+              </button></li>
+              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+                <span class="eco__row-num">04</span>
+                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                <span class="eco__row-name" data-i18n="ecosystem.services.3.name"></span>
+                <span class="eco__row-text" data-i18n="ecosystem.services.3.text"></span>
+              </button></li>
+              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+                <span class="eco__row-num">05</span>
+                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                <span class="eco__row-name" data-i18n="ecosystem.services.4.name"></span>
+                <span class="eco__row-text" data-i18n="ecosystem.services.4.text"></span>
+              </button></li>
+              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+                <span class="eco__row-num">06</span>
+                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                <span class="eco__row-name" data-i18n="ecosystem.services.5.name"></span>
+                <span class="eco__row-text" data-i18n="ecosystem.services.5.text"></span>
+              </button></li>
+              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+                <span class="eco__row-num">07</span>
+                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                <span class="eco__row-name" data-i18n="ecosystem.services.6.name"></span>
+                <span class="eco__row-text" data-i18n="ecosystem.services.6.text"></span>
+              </button></li>
+              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+                <span class="eco__row-num">08</span>
+                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                <span class="eco__row-name" data-i18n="ecosystem.services.7.name"></span>
+                <span class="eco__row-text" data-i18n="ecosystem.services.7.text"></span>
+              </button></li>
+              <li class="eco__service"><button type="button" class="eco__row" aria-expanded="false">
+                <span class="eco__row-num">09</span>
+                <span class="eco__row-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+                <span class="eco__row-name" data-i18n="ecosystem.services.8.name"></span>
+                <span class="eco__row-text" data-i18n="ecosystem.services.8.text"></span>
+              </button></li>
+            </ol>
+          </div>
         </div>
       </section>
 
-      <section id="materials" class="section section--materials section--alt" data-section="materials" aria-labelledby="materials-title">
-        <div class="container">
-          <div class="section__head" data-reveal="stagger">
+      <section id="materials" class="section section--materials" data-section="materials" aria-labelledby="materials-title">
+        <div class="container mat__top">
+          <div class="section__head mat__head">
             <h2 id="materials-title" class="display section__title" data-i18n="materials.title" data-title-accent="materials.titleAccent"></h2>
           </div>
-          <ul class="mat__grid" data-reveal="stagger">
-            <li class="mat__item"><article class="mat__card">
-              <span class="mat__glow" aria-hidden="true"></span>
-              <span class="mat__badge"><span data-i18n="materials.post"></span> 1</span>
-              <h3 class="mat__title" data-i18n="materials.items.0.title"></h3>
-              <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="btn__arrow" aria-hidden="true" data-i18n="materials.arrow"></span></a>
-            </article></li>
-            <li class="mat__item"><article class="mat__card">
-              <span class="mat__glow" aria-hidden="true"></span>
-              <span class="mat__badge"><span data-i18n="materials.post"></span> 2</span>
-              <h3 class="mat__title is-tbd" data-i18n="materials.items.1.title"></h3>
-              <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="btn__arrow" aria-hidden="true" data-i18n="materials.arrow"></span></a>
-            </article></li>
-            <li class="mat__item"><article class="mat__card">
-              <span class="mat__glow" aria-hidden="true"></span>
-              <span class="mat__badge"><span data-i18n="materials.post"></span> 3</span>
-              <h3 class="mat__title is-tbd" data-i18n="materials.items.2.title"></h3>
-              <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="btn__arrow" aria-hidden="true" data-i18n="materials.arrow"></span></a>
-            </article></li>
-            <li class="mat__item"><article class="mat__card">
-              <span class="mat__glow" aria-hidden="true"></span>
-              <span class="mat__badge"><span data-i18n="materials.post"></span> 4</span>
-              <h3 class="mat__title is-tbd" data-i18n="materials.items.3.title"></h3>
-              <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="btn__arrow" aria-hidden="true" data-i18n="materials.arrow"></span></a>
-            </article></li>
-          </ul>
+          <span class="mat__progress" aria-hidden="true"><span class="mat__progress-fill" data-mat-progress></span></span>
+        </div>
+        <div class="container">
+          <div class="mat__window">
+            <ul class="mat__grid" data-mat-track>
+              <li class="mat__item"><article class="mat__card mat__card--accent">
+                <span class="mat__glow" aria-hidden="true"></span>
+                <svg class="mat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+                <span class="mat__badge"><span data-i18n="materials.post"></span> 1</span>
+                <h3 class="mat__title" data-i18n="materials.items.0.title"></h3>
+                <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="mat__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></a>
+              </article></li>
+              <li class="mat__item"><article class="mat__card mat__card--dark">
+                <span class="mat__glow" aria-hidden="true"></span>
+                <svg class="mat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+                <span class="mat__badge"><span data-i18n="materials.post"></span> 2</span>
+                <h3 class="mat__title is-tbd" data-i18n="materials.items.1.title"></h3>
+                <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="mat__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></a>
+              </article></li>
+              <li class="mat__item"><article class="mat__card mat__card--light">
+                <span class="mat__glow" aria-hidden="true"></span>
+                <svg class="mat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+                <span class="mat__badge"><span data-i18n="materials.post"></span> 3</span>
+                <h3 class="mat__title is-tbd" data-i18n="materials.items.2.title"></h3>
+                <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="mat__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></a>
+              </article></li>
+              <li class="mat__item"><article class="mat__card mat__card--dark">
+                <span class="mat__glow" aria-hidden="true"></span>
+                <svg class="mat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+                <span class="mat__badge"><span data-i18n="materials.post"></span> 4</span>
+                <h3 class="mat__title is-tbd" data-i18n="materials.items.3.title"></h3>
+                <a class="mat__link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials.read"></span><span class="mat__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span></a>
+              </article></li>
+            </ul>
+          </div>
         </div>
       </section>
 
       <section id="faq" class="section section--faq" data-section="faq" aria-labelledby="faq-title">
-        <div class="container">
-          <div class="section__head" data-reveal="stagger">
-            <h2 id="faq-title" class="display section__title" data-i18n="faq.title" data-title-accent="faq.titleAccent"></h2>
+        <div class="container faq">
+          <div class="faq__side">
+            <div class="section__head faq__head">
+              <h2 id="faq-title" class="display section__title" data-i18n="faq.title" data-title-accent="faq.titleAccent"></h2>
+            </div>
+            <a class="faq__ask" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="faq">
+              <span class="faq__ask-title" data-i18n="faq.ask.title"></span>
+              <span class="faq__ask-text" data-i18n="faq.ask.text"></span>
+              <span class="faq__ask-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9" /></svg></span>
+            </a>
           </div>
-          <div class="faq" data-faq>
-            <ul class="faq__list" data-faq-list></ul>
+          <div class="faq__cols" data-faq>
+            <ul class="faq__list" data-faq-list="0"></ul>
+            <ul class="faq__list" data-faq-list="1"></ul>
           </div>
-          <p class="faq__note" data-reveal data-i18n="faq.note"></p>
         </div>
       </section>
 
       <section id="cta" class="section section--cta" data-section="cta" aria-labelledby="cta-title">
-        <span class="cta__glow" aria-hidden="true" data-cta-glow></span>
         <div class="cta__inner container">
           <div class="cta__body">
-            <div class="section__head" data-reveal="stagger">
+            <div class="section__head cta__head">
               <h2 id="cta-title" class="display section__title cta__title" data-i18n="cta.title" data-title-accent="cta.titleAccent"></h2>
             </div>
-            <div data-reveal="stagger" class="cta__rest">
-              <p class="cta__text" data-i18n="cta.text"></p>
+            <p class="cta__text" data-i18n="cta.text"></p>
+            <div class="cta__actions">
               <a class="btn btn--primary btn--lg cta__btn" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="final_cta">
-                <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
                 <span data-i18n="cta.button"></span><span class="btn__arrow" aria-hidden="true" data-i18n="cta.arrow"></span>
               </a>
-              <p class="cta__handle">{{config.telegramHandle}}</p>
+              <p class="cta__handle"><svg class="cta__handle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>{{config.telegramHandle}}</p>
             </div>
           </div>
           <figure class="cta__photo" data-cta-photo>
             <picture>
-              <source type="image/avif" srcset="/img/photo/volodymyr-cta-480.avif 480w, /img/photo/volodymyr-cta-900.avif 900w" sizes="(min-width: 1000px) 30vw, 90vw" />
-              <source type="image/webp" srcset="/img/photo/volodymyr-cta-480.webp 480w, /img/photo/volodymyr-cta-900.webp 900w" sizes="(min-width: 1000px) 30vw, 90vw" />
-              <img class="photo-img" src="/img/photo/volodymyr-cta-480.jpg" srcset="/img/photo/volodymyr-cta-480.jpg 480w, /img/photo/volodymyr-cta-900.jpg 900w" sizes="(min-width: 1000px) 30vw, 90vw" width="480" height="703" alt="" data-i18n-attr="alt:founder.photoAlt" loading="lazy" decoding="async" />
+              <source type="image/avif" srcset="/img/photo/volodymyr-cta-480.avif 480w, /img/photo/volodymyr-cta-900.avif 900w" sizes="(min-width: 900px) 34vw, 90vw" />
+              <source type="image/webp" srcset="/img/photo/volodymyr-cta-480.webp 480w, /img/photo/volodymyr-cta-900.webp 900w" sizes="(min-width: 900px) 34vw, 90vw" />
+              <img class="photo-img" src="/img/photo/volodymyr-cta-480.jpg" srcset="/img/photo/volodymyr-cta-480.jpg 480w, /img/photo/volodymyr-cta-900.jpg 900w" sizes="(min-width: 900px) 34vw, 90vw" width="480" height="703" alt="" data-i18n-attr="alt:founder.photoAlt" loading="lazy" decoding="async" />
             </picture>
           </figure>
         </div>
-        <p class="cta__sign container" data-i18n="cta.sign"></p>
       </section>
     </main>
 
     <!-- Подвал -->
     <footer class="footer" data-section="footer">
-      <div class="footer__glow" aria-hidden="true"></div>
-      <svg class="footer__orbit" viewBox="0 0 1440 400" preserveAspectRatio="none" fill="none" aria-hidden="true"><ellipse cx="720" cy="240" rx="760" ry="120" transform="rotate(-8 720 240)" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" /></svg>
-
       <div class="footer__inner container">
-        <p class="footer__tagline" data-i18n="footer.tagline"></p>
+        <div class="footer__col footer__col--brand">
+          <a class="logo footer__logo" href="#hero" data-i18n-attr="aria-label:common.home">
+            <span class="logo__word" data-wordmark data-i18n="common.brand"></span>
+          </a>
+          <p class="footer__tagline" data-i18n="footer.tagline"></p>
+        </div>
 
-        <nav class="footer__nav" data-i18n-attr="aria-label:nav.label">
-          <div class="footer__col">
-            <p class="footer__heading mono-label" data-i18n="footer.navTitle"></p>
-            <ul class="footer__links">
-              <li><a class="footer__link" href="#stats" data-i18n="nav.sections.stats"></a></li>
-              <li><a class="footer__link" href="#niches" data-i18n="nav.sections.niches"></a></li>
-              <li><a class="footer__link" href="#formats" data-i18n="nav.sections.formats"></a></li>
-              <li><a class="footer__link" href="#calculator" data-i18n="nav.sections.calculator"></a></li>
-            </ul>
-          </div>
-          <div class="footer__col">
-            <p class="footer__heading mono-label" data-i18n="footer.moreTitle"></p>
-            <ul class="footer__links">
-              <li><a class="footer__link" href="#cases" data-i18n="nav.sections.cases"></a></li>
-              <li><a class="footer__link" href="#process" data-i18n="nav.sections.process"></a></li>
-              <li><a class="footer__link" href="#geo" data-i18n="nav.sections.geo"></a></li>
-              <li><a class="footer__link" href="#faq" data-i18n="nav.sections.faq"></a></li>
-            </ul>
-          </div>
-          <div class="footer__col footer__col--contact">
-            <p class="footer__heading mono-label" data-i18n="footer.contactTitle"></p>
-            <a class="footer__tg" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="footer">
-              <span data-i18n="footer.telegram"></span>
-              <span class="footer__tg-handle">{{config.telegramHandle}}</span>
-            </a>
-            <div class="lang-switch" role="group" data-lang-switch data-active="ua" data-i18n-attr="aria-label:common.langLabel">
-              <span class="lang-switch__thumb" aria-hidden="true"></span>
-              <button type="button" class="lang-switch__btn" data-lang="ua" aria-pressed="true" data-i18n-attr="aria-label:common.langUaFull"><span data-i18n="common.langUa"></span></button>
-              <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false" data-i18n-attr="aria-label:common.langEnFull"><span data-i18n="common.langEn"></span></button>
-            </div>
-          </div>
+        <nav class="footer__col footer__col--nav" data-i18n-attr="aria-label:nav.label">
+          <ul class="footer__links">
+            <li><a class="footer__link" href="#stats" data-i18n="nav.sections.stats"></a></li>
+            <li><a class="footer__link" href="#niches" data-i18n="nav.sections.niches"></a></li>
+            <li><a class="footer__link" href="#formats" data-i18n="nav.sections.formats"></a></li>
+            <li><a class="footer__link" href="#calculator" data-i18n="nav.sections.calculator"></a></li>
+            <li><a class="footer__link" href="#cases" data-i18n="nav.sections.cases"></a></li>
+            <li><a class="footer__link" href="#process" data-i18n="nav.sections.process"></a></li>
+            <li><a class="footer__link" href="#geo" data-i18n="nav.sections.geo"></a></li>
+            <li><a class="footer__link" href="#targeting" data-i18n="nav.sections.targeting"></a></li>
+            <li><a class="footer__link" href="#reviews" data-i18n="nav.sections.reviews"></a></li>
+            <li><a class="footer__link" href="#ecosystem" data-i18n="nav.sections.ecosystem"></a></li>
+            <li><a class="footer__link" href="#materials" data-i18n="nav.sections.materials"></a></li>
+            <li><a class="footer__link" href="#faq" data-i18n="nav.sections.faq"></a></li>
+          </ul>
         </nav>
-      </div>
 
-      <div class="footer__wordmark" aria-hidden="true">
-        <span class="footer__word" data-wordmark data-i18n="common.brand"></span>
+        <div class="footer__col footer__col--contact">
+          <div class="lang-switch" role="group" data-lang-switch data-active="ua" data-i18n-attr="aria-label:common.langLabel">
+            <span class="lang-switch__thumb" aria-hidden="true"></span>
+            <button type="button" class="lang-switch__btn" data-lang="ua" aria-pressed="true" data-i18n-attr="aria-label:common.langUaFull"><span data-i18n="common.langUa"></span></button>
+            <button type="button" class="lang-switch__btn" data-lang="en" aria-pressed="false" data-i18n-attr="aria-label:common.langEnFull"><span data-i18n="common.langEn"></span></button>
+          </div>
+          <a class="btn btn--pill btn--sm footer__tg" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="footer">
+            <svg class="footer__tg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 4 3 11.2l6.3 2.3L19 7l-7.6 8.2 6.1 4.8L21 4Z" /></svg>
+            <span data-i18n="footer.telegram"></span>
+            <span class="footer__tg-handle">{{config.telegramHandle}}</span>
+          </a>
+        </div>
       </div>
 
       <div class="footer__bottom container">

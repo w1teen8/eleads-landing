@@ -43,23 +43,18 @@ test('geo-dots.json: сетка суши согласована с размер�
   }
 });
 
-test('на странице ровно один <canvas> — карта GEO', () => {
-  assert.equal(count(html, /<canvas\b/g), 1);
-  assert.match(section('geo'), /<canvas\b/);
-});
-
-test('карта и поток останавливаются вне экрана и при скрытой вкладке', () => {
-  for (const file of ['src/sections/geo.js', 'src/sections/ecosystem.js']) {
-    const src = read(file);
-    assert.match(src, /IntersectionObserver/, file);
-    assert.match(src, /visibilitychange/, file);
-  }
+// T29: карта GEO — точки SVG из общего модуля блока 02 (tests/blocks-06-08.test.js), <canvas> на странице больше нет.
+// T30: бегущего импульса в блоке 11 больше нет (лента showcase — tests/blocks-09-11.test.js).
+test('на странице нет <canvas>: карта GEO — SVG из stats-dots.js, который сам останавливается вне экрана', () => {
+  assert.equal(count(html, /<canvas\b/g), 0);
+  assert.match(read('src/sections/geo.js'), /createDotMap\(/);
+  assert.match(read('src/sections/stats-dots.js'), /IntersectionObserver/);
 });
 
 test('раскладка секций: 8 ниш, 3 формата, 7 шагов, 7 регионов, 6 таргетингов, 6 этапов и 9 услуг', () => {
   assert.equal(count(section('niches'), /class="niches__item"/g), 8);
   assert.equal(count(section('formats'), /class="formats__item"/g), 3);
-  assert.equal(count(section('process'), /class="process__step"/g), 7);
+  assert.equal(count(section('process'), /class="process__step[ "]/g), 7);
   assert.equal(count(section('geo'), /data-region="/g), 7);
   assert.equal(count(section('targeting'), /class="tg__item"/g), 6);
   assert.equal(count(section('ecosystem'), /class="eco__tile /g), 6);
@@ -90,7 +85,9 @@ test('тексты: ключевые дословные строки UA и EN-ч
   assert.equal(ua.niches.items.length, 7);
   assert.equal(ua.niches.other.name, 'Інша ніша?');
   assert.equal(ua.process.steps.length, 7);
-  assert.match(ua.process.note, /^Клієнту не потрібно самостійно розбиратися в Telegram Ads/);
+  // T29: текст о подходе — не подпись под блоком, а текст рядом с заголовком (process.lead вместо process.note)
+  assert.match(ua.process.lead, /^Клієнту не потрібно самостійно розбиратися в Telegram Ads/);
+  assert.equal(ua.process.note, undefined);
   assert.equal(ua.ecosystem.services.length, 9);
   assert.deepEqual(ua.ecosystem.flow, ['Traffic', 'Telegram', 'Content', 'Funnel', 'Lead', 'Sale']);
   assert.equal(ua.targeting.items.length, 6);
@@ -109,9 +106,4 @@ test('нет выдуманных фактов: отзывы и посты бе�
 
 // T27: лайтбокс форматов убран по правке пользователя — телефон не кликабелен (tests/formats-phone.test.js)
 
-test('процесс: секция закрепляется через gsap.matchMedia (пин пересоздаётся при resize), линия прорисовки есть в разметке', () => {
-  const src = read('src/sections/process.js');
-  assert.match(src, /pin: true/);
-  assert.match(src, /gsap\.matchMedia\(\)/);
-  assert.match(read('index.html'), /class="process__draw"/);
-});
+// T29: закрепление и прорисовка линии процесса сняты (H11 — переходов по прокрутке нет): tests/blocks-06-08.test.js

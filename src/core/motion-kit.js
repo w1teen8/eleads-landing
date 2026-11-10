@@ -209,3 +209,89 @@ export function stagger(items, { onEach, trigger, start = STAGGER.start } = {}) 
       }),
   );
 }
+
+/* ——— лента showcase (задача 3, H07/H11: единственный переход по прокрутке — ленты блоков 06, 11 и 12) ——— */
+
+/** Лента едет только на широком альбомном экране — там, где блок ровно один экран (layout.css). */
+export const SHOWCASE_MEDIA = '(min-width: 900px) and (orientation: landscape)';
+
+const cssPx = (name, fallback) => {
+  const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const n = parseFloat(raw);
+  return Number.isFinite(n) ? n : fallback;
+};
+
+/**
+ * Лента карточек в духе showcase-scroll.framer.ai: пока страница прокручивается, section закреплён под шапкой,
+ * а track едет влево на величину своего переполнения. Общий помощник: о разметке блока ничего не знает —
+ * нужны только закрепляемый узел и дорожка. Только transform. На узком/портретном экране, при reduced-motion и
+ * без GSAP ничего не делает — запасной вариант (горизонтальная прокрутка пальцем) даёт CSS блока.
+ *
+ *   showcaseScroll(section, track, { viewport, media, offset, speed, onProgress })
+ *     → { ready: Promise<boolean>, refresh(), destroy() }
+ *
+ *   section    — узел, который закрепляется (pin); его высота должна быть ≤ окна минус offset;
+ *   track      — дорожка карточек (display:flex; width:max-content); на media у её окна не должно быть своей
+ *                прокрутки (overflow: visible / clip);
+ *   viewport   — «окно» дорожки, по умолчанию track.parentElement: путь = track.scrollWidth − viewport.clientWidth;
+ *   media      — где лента едет (по умолчанию SHOWCASE_MEDIA); вне media закрепление снимается, transform чистится;
+ *   offset     — отступ закрепления от верха окна, px (по умолчанию --header-h из tokens.css);
+ *   speed      — пикселей прокрутки страницы на пиксель пути ленты (по умолчанию 1: лента едет как обычная прокрутка);
+ *   onProgress — (p: 0..1) на каждое обновление прокрутки: полоса прогресса, счётчик, точки.
+ *
+ *   ready      — true: GSAP загружен, на media лента едет; false: reduced-motion, ?nomotion=1 или сбой загрузки
+ *                (блок ставит себе запасную прокрутку, например класс is-static);
+ *   refresh()  — пересчитать путь после смены состава или ширины карточек (смена языка — уже через refreshMotion);
+ *   destroy()  — снять закрепление совсем.
+ * Пока лента закреплена, на section стоит класс `is-pinned`.
+ */
+export function showcaseScroll(section, track, { viewport, media = SHOWCASE_MEDIA, offset, speed = 1, onProgress } = {}) {
+  let setReady;
+  const handle = { refresh() {}, destroy() {}, ready: new Promise((resolve) => (setReady = resolve)) };
+  if (reduced || !section || !track) {
+    setReady(false);
+    return handle;
+  }
+  let mm = null;
+  motionReady().then((api) => {
+    setReady(Boolean(api) && !handle.dead);
+    if (!api || handle.dead) return;
+    const { gsap, ScrollTrigger } = api;
+    mm = gsap.matchMedia();
+    mm.add(media, () => {
+      const frame = viewport || track.parentElement || section;
+      // путь считается заново на каждый refresh: дорожку могут наполнить позже (карточки из JSON, шрифты, язык)
+      const distance = () => Math.max(0, track.scrollWidth - frame.clientWidth);
+      const top = () => offset ?? cssPx('--header-h', 0);
+      const tween = gsap.to(track, {
+        x: () => -distance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: () => `top ${top()}px`,
+          end: () => `+=${Math.max(1, distance() * speed)}`,
+          pin: true,
+          pinSpacing: true,
+          scrub: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onToggle: (self) => section.classList.toggle('is-pinned', self.isActive),
+          onUpdate: onProgress ? (self) => onProgress(self.progress) : undefined,
+        },
+      });
+      handle.refresh = () => ScrollTrigger.refresh();
+      return () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        gsap.set(track, { clearProps: 'transform' });
+        section.classList.remove('is-pinned');
+        handle.refresh = () => {};
+      };
+    });
+  });
+  handle.destroy = () => {
+    handle.dead = true;
+    mm?.revert();
+  };
+  return handle;
+}

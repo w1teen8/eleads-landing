@@ -314,3 +314,12 @@ export function forecast(input, rates): Forecast
 - Контент: `calculator.bot.{avatar,tag,time}`, `calculator.intro`, `calculator.introGeo.{ua,worldwide}`; `paramsTitle`/`budget`/`forecastTitle` переписаны; `note.tail` удалён.
 - CSS: барабаны внутри `.calc` — сплошной цвет; в `.calc__cell--big` градиент с `background-clip:text` (тест-регресс на «квадраты»).
 
+### T29–T31 — блоки 06–14 и подвал (H41, H42)
+
+- `motion-kit.js`: `showcaseScroll(section, track, { viewport, media = SHOWCASE_MEDIA, offset, speed = 1, onProgress }) → { ready, refresh(), destroy() }` — закрепляет секцию под шапкой и везёт дорожку 1:1 с прокруткой; `ready=false` при reduced-motion/`?nomotion=1` — блок включает `is-static` (нативная горизонтальная прокрутка). Используют блоки 06, 11, 12 — единственный переход по прокрутке на сайте.
+- 06: `cases.js` — `avatarPath(id)` (`/img/cases/<id>.webp`, запасной круг с буквой), модалка как раньше. 07: шаги в ряд, без закрепления. 08: карта через `createDotMap` из `stats-dots.js` (canvas на сайте больше нет), `pinPoint(grid, lon, lat)`; `geo-model.js` удалён.
+- 09: `button.tg__card[aria-expanded]` (состояние меняет только клик). 10: `article.founder` + `.reviews[data-slider]`. 11: `[data-eco-track]`, `[data-eco-progress]`.
+- 12: `[data-mat-track]`, `[data-mat-progress]`. 13: `faq-model.js` `splitColumns`, `a.faq__ask[data-place="faq"]`. 14: `[data-cta-photo]`. Подвал: одна строка, без вордмарка.
+- Убраны «нижние надписи»: `geo.footnote`, `targeting.hint/note`, `reviews.shot*`, `ecosystem.caption`, `faq.note`, `cta.sign`, заголовки колонок подвала.
+- `config.sections.enabled` — все 16 секций.
+

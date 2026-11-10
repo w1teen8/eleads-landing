@@ -1,32 +1,41 @@
-/* 09 Таргетинг: тёмный блок overtake; 6 карточек, крупный контурный номер; пояснение — светлая плашка,
-   выезжает снизу (transform + opacity). */
+/* 09 Таргетинг (T30). Облик блоков 02–05: фон страницы, заголовок шрифтом канала заглавными с акцентным хвостом,
+   шесть тёмных карточек 3×2 с тонкой линией: крупный номер шрифтом канала акцентом, название заглавными, короткий
+   текст Onest. Наведение / фокус / тап — снизу выезжает жёлто-оранжевая плашка с пояснением (transform + opacity),
+   «плюс» поворачивается в «крестик». Переходов по прокрутке нет (H11), всё видно сразу. На широком экране блок —
+   ровно экран под шапкой: высота карточек и кегли — от высоты окна (svh). */
 
 .section--targeting {
-  color: var(--text-on-block);
+  --tg-gap: clamp(0.75rem, 1.1vw, 1.25rem);
+  --tg-pad: clamp(1.1rem, 0.9rem + 1vw, 1.75rem);
+  overflow-x: clip;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
+  color: var(--text);
 }
 
-.section--targeting .section__title {
-  color: var(--text-on-block);
+.tg__head {
+  gap: 0;
+  margin-bottom: clamp(1.5rem, 3vw, 3rem);
 }
 
-.section--targeting .section__lead {
-  color: var(--text-on-block-muted);
-}
-
-.targeting__hint {
-  margin-top: calc(-1 * clamp(1.25rem, 3vw, 2.5rem));
-  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.1em;
+.section--targeting .display.section__title {
+  max-width: none;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
   text-transform: uppercase;
-  color: var(--text-on-block-muted);
+  color: var(--text);
 }
 
+/* — сетка карточек — */
 .tg__grid {
   display: grid;
-  gap: clamp(0.75rem, 1.4vw, 1.25rem);
   grid-template-columns: minmax(0, 1fr);
+  gap: var(--tg-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .tg__item {
@@ -36,70 +45,91 @@
 
 .tg__card {
   position: relative;
-  display: grid;
-  align-content: start;
-  gap: 0.6rem;
-  width: 100%;
-  min-height: 280px;
-  padding: clamp(1.25rem, 2.2vw, 2rem);
-  border: 1px solid color-mix(in srgb, var(--text-on-block) 10%, transparent);
-  border-radius: var(--r-card-lg) var(--r-card-sm) var(--r-card-lg) var(--r-card-sm);
-  background: var(--block-2);
-  color: var(--text-on-block);
-  text-align: left;
+  isolation: isolate;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(0.9rem, 1.3vw, 1.5rem);
+  row-gap: 0.5rem;
+  align-items: start;
+  width: 100%;
+  min-height: clamp(9rem, 7rem + 5vw, 13rem);
+  padding: var(--tg-pad);
+  padding-right: calc(var(--tg-pad) + 2.25rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card-lg);
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: transform var(--dur) var(--ease-out);
 }
 
+.tg__card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* номер — шрифт канала, акцент; занимает левую колонку обеих строк */
 .tg__num {
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 3rem + 3vw, 6.5rem);
-  font-weight: 600;
+  grid-row: 1 / 3;
+  padding-top: 0.04em;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 2rem + 2vw, 4.5rem);
+  font-weight: 900;
   line-height: 0.85;
-  letter-spacing: -0.04em;
-  color: transparent;
-  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--text-on-block) 32%, transparent);
+  letter-spacing: 0;
+  color: var(--accent);
   transition: opacity var(--dur) var(--ease-out);
 }
 
 .tg__name {
-  margin-top: 0.75rem;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.1rem);
-  font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
-  text-transform: none;
+  font-family: var(--font-head);
+  font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.75rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  overflow-wrap: normal;
 }
 
 .tg__text {
-  max-width: 32ch;
-  color: var(--text-on-block-muted);
-  font-size: var(--fs-sm);
+  max-width: 34ch;
+  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.125rem);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text) 78%, transparent);
 }
 
+/* пояснение — акцентная плашка во всю карточку, выезжает снизу */
 .tg__more {
   position: absolute;
-  inset: auto 0 0 0;
-  padding: 1.5rem clamp(1.25rem, 2.2vw, 2rem);
-  margin: 0.5rem;
-  border-radius: var(--r-card-sm);
-  background: var(--surface);
-  color: var(--text);
-  font-size: var(--fs-sm);
-  line-height: 1.5;
-  transform: translate3d(0, 100%, 0);
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  align-content: center;
+  padding: var(--tg-pad);
+  padding-right: calc(var(--tg-pad) + 2.25rem);
+  background: var(--grad);
+  color: var(--accent-ink);
+  font-size: clamp(0.9375rem, 0.9rem + 0.35vw, 1.1875rem);
+  font-weight: 500;
+  line-height: 1.4;
+  transform: translate3d(0, 102%, 0);
   opacity: 0;
   transition: transform var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
 }
 
+/* «плюс» в правом верхнем углу, поверх плашки; на открытой — крестик тёмный на акценте */
 .tg__plus {
   position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  width: 28px;
-  height: 28px;
+  top: var(--tg-pad);
+  right: var(--tg-pad);
+  z-index: 3;
+  width: 1.75rem;
+  height: 1.75rem;
   border-radius: 50%;
-  background: var(--surface);
+  border: 1px solid var(--line-strong);
   transition: transform var(--dur) var(--ease-out);
 }
 
@@ -109,10 +139,10 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 10px;
+  width: 0.7rem;
   height: 1.5px;
-  margin: -0.75px 0 0 -5px;
-  background: var(--text);
+  margin: -0.75px 0 0 -0.35rem;
+  background: currentColor;
 }
 
 .tg__plus::after {
@@ -129,30 +159,90 @@
 .tg__card:hover .tg__plus,
 .tg__card:focus-visible .tg__plus,
 .tg__card.is-open .tg__plus {
+  color: var(--accent-ink);
+  border-color: color-mix(in srgb, var(--accent-ink) 40%, transparent);
   transform: rotate(45deg);
 }
 
-.tg__card:hover .tg__num,
-.tg__card:focus-visible .tg__num,
-.tg__card.is-open .tg__num {
-  opacity: 0.4;
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .tg__card:hover {
+    transform: translateY(-4px);
+  }
 }
 
-.tg__note {
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
-  max-width: 70ch;
-  font-size: var(--fs-xs);
-  color: var(--text-on-block-muted);
-}
-
-@media (min-width: 700px) {
+/* — планшет: 2 столбца — */
+@media (min-width: 600px) {
   .tg__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1100px) {
+/* — широкий экран: 3×2 — */
+@media (min-width: 1000px) {
   .tg__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* — экран 1920×1080 (H15): блок целиком между шапкой и низом окна, размеры — от высоты окна — */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--targeting {
+    --tg-pad: clamp(1rem, 2.8svh, 1.75rem);
+    padding-block: var(--screen-pad);
+  }
+
+  .tg__head {
+    margin-bottom: clamp(1rem, 3.2svh, 3rem);
+  }
+
+  .section--targeting .display.section__title {
+    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
+  }
+
+  .tg__card {
+    min-height: clamp(8.5rem, 27svh, 16rem);
+  }
+
+  .tg__num {
+    font-size: clamp(2.5rem, min(2rem + 2vw, 7svh), 4.5rem);
+  }
+
+  .tg__name {
+    font-size: clamp(1.625rem, min(1.3rem + 1.4vw, 4.2svh), 2.75rem);
+  }
+
+  .tg__text,
+  .tg__more {
+    font-size: clamp(0.9375rem, min(0.85rem + 0.3vw, 2.1svh), 1.125rem);
+  }
+}
+
+/* — телефон: карточки-строки компактнее — */
+@media (max-width: 599px) {
+  .tg__card {
+    min-height: 0;
+    padding: 1rem 3rem 1rem 1rem;
+    border-radius: var(--r-card);
+  }
+
+  .tg__more {
+    padding: 1rem 3rem 1rem 1rem;
+  }
+
+  .tg__plus {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .tg__num {
+    font-size: 2.25rem;
+  }
+
+  .tg__name {
+    font-size: 1.625rem;
+  }
+
+  .tg__text {
+    font-size: 0.9375rem;
   }
 }

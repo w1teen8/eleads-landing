@@ -1,7 +1,10 @@
-// 13 FAQ: аккордеон из src/data/faq.json на <button aria-expanded>; смена языка перерисовывает тексты на месте.
-import { $, el, on } from '../core/dom.js';
+// 13 FAQ (T31): аккордеон из src/data/faq.json в двух независимых колонках (ряды не выравниваются друг по другу —
+// раскрытый ответ не двигает соседнюю колонку). Открыт один вопрос за раз — блок остаётся в один экран.
+// Появлений по прокрутке нет (H11): всё видно сразу; смена языка перерисовывает тексты на месте.
+import { $$, el, on } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
 import { t, getLang, onLangChange } from '../core/i18n.js';
+import { splitColumns } from './faq-model.js';
 import data from '../data/faq.json';
 
 const pick = (v, lang) => (v && typeof v === 'object' ? (v[lang] ?? v.ua ?? '') : String(v ?? ''));
@@ -9,9 +12,9 @@ const isTbd = (s) => s === 'уточнити' || s === 'TBD' || s === t('common.
 
 export function init(root) {
   accentTitles(root);
-  const list = $('[data-faq-list]', root);
+  const lists = $$('[data-faq-list]', root);
   const items = Array.isArray(data?.items) ? data.items : [];
-  if (!list || !items.length) return;
+  if (!lists.length || !items.length) return;
 
   const rows = items.map((item, i) => {
     const q = el('span', { class: 'faq__q' });
@@ -29,15 +32,23 @@ export function init(root) {
       el('div', { class: 'faq__a-inner' }, a),
     );
     const li = el('li', { class: 'faq__item' }, btn, panel);
-    on(btn, 'click', () => {
-      const open = btn.getAttribute('aria-expanded') !== 'true';
-      btn.setAttribute('aria-expanded', String(open));
-      li.classList.toggle('is-open', open);
-    });
-    return { item, q, a, li };
+    return { item, q, a, li, btn };
   });
-  list.replaceChildren(...rows.map((r) => r.li));
-  list.dataset.reveal = 'stagger';
+
+  const setOpen = (row, open) => {
+    row.btn.setAttribute('aria-expanded', String(open));
+    row.li.classList.toggle('is-open', open);
+  };
+  for (const row of rows) {
+    on(row.btn, 'click', () => {
+      const open = row.btn.getAttribute('aria-expanded') !== 'true';
+      for (const other of rows) if (other !== row) setOpen(other, false);
+      setOpen(row, open);
+    });
+  }
+
+  const columns = splitColumns(rows, lists.length);
+  lists.forEach((list, i) => list.replaceChildren(...columns[i].map((r) => r.li)));
 
   const paint = (lang) => {
     for (const { item, q, a } of rows) {

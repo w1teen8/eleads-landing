@@ -1,223 +1,258 @@
-/* 11 Екосистема: секция без внешнего контейнера, на основе страницы. Шесть плиток-этапов разного цвета темы
-   (тёмные «горячие», светлые «холодные») с бегущим по цепочке импульсом (transform) и нумерованный список услуг. */
+/* 11 Екосистема (T30). Облик блоков 02–05: фон страницы, заголовок шрифтом канала с акцентным хвостом.
+   Сверху — шлях клієнта: шесть плиток в ряд (акцентные «горячие» и тёмные «холодные») со стрелками между ними,
+   статично. Ниже — лента карточек услуг в духе showcase-scroll (H07): на широком альбомном экране блок закреплён
+   под шапкой, а полоса .eco__services едет влево на величину переполнения (transform из motion-kit → showcaseScroll);
+   тонкая линия прогресса (scaleX) — справа от плиток. На узком/портретном экране и при reduced-motion лента —
+   обычная горизонтальная прокрутка пальцем со snap. Карточка: номер и стрелка сверху, название шрифтом канала снизу;
+   по hover / focus / тапу название приподнимается (transform), под ним проявляется описание (opacity).
+   Блок — ровно экран под шапкой: высота карточек — от высоты окна (svh). Двигаются только transform и opacity. */
 
+.section--ecosystem {
+  --eco-gap: clamp(0.75rem, 1.1vw, 1.25rem);
+  --eco-pad: clamp(1.1rem, 0.9rem + 1vw, 1.75rem);
+  --eco-card-w: clamp(16rem, 21vw, 24rem);
+  --eco-card-h: clamp(13rem, 10rem + 8vw, 20rem);
+  --eco-text-h: 4.6rem; /* зона описания под названием — на неё поднимается название */
+  overflow-x: clip;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
+  color: var(--text);
+}
+
+.eco__top {
+  display: grid;
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  margin-bottom: clamp(1.5rem, 3vw, 3rem);
+}
+
+.eco__head {
+  gap: 0;
+  margin-bottom: 0;
+}
+
+.section--ecosystem .display.section__title {
+  max-width: none;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+/* ——— шлях клієнта ——— */
 .eco__flowwrap {
-  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--eco-gap);
+  align-items: center;
 }
 
 .eco__flow {
-  display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.eco__rail {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 100%;
-  display: none;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-  border-radius: var(--r-card);
-}
-
-.eco__pulse {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 12px;
-  margin-top: -6px;
-  animation: eco-run 6s linear infinite;
-}
-
-.eco__pulse::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 30%, transparent);
-}
-
-@keyframes eco-run {
-  from {
-    transform: translate3d(-100%, 0, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .eco__tile {
   position: relative;
   display: grid;
-  align-content: space-between;
-  gap: 2.5rem;
-  min-height: 150px;
-  padding: 1.25rem;
+  place-items: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.1rem;
   border: 1px solid var(--line);
-  border-radius: var(--r-card-sm);
+  border-radius: var(--r-pill);
   background: var(--surface);
   color: var(--text);
-  overflow: hidden;
-  isolation: isolate;
 }
 
 .eco__tile--hot {
   border-color: transparent;
-  background: var(--block);
-  color: var(--text-on-block);
-}
-
-/* первая плитка — акцентная: точка входа в цепочку */
-.eco__tile:first-child {
-  background: var(--accent);
+  background: var(--grad);
   color: var(--accent-ink);
 }
 
-.eco__tile-num {
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
-  opacity: 0.7;
-}
-
 .eco__tile-name {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.1rem);
-  font-weight: 600;
-  text-transform: none;
-  letter-spacing: -0.03em;
+  font-family: var(--font-head);
+  font-size: clamp(1.25rem, 1rem + 0.9vw, 1.875rem);
+  font-weight: 900;
   line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
-/* вспышка тайла, когда через него проходит импульс — только opacity */
-.eco__tile-lit {
+/* стрелка между плитками */
+.eco__tile + .eco__tile {
+  margin-left: 1.25rem;
+}
+
+.eco__tile + .eco__tile::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -1.25rem;
+  width: 1.25rem;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.eco__tile + .eco__tile::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -0.5rem;
+  width: 0.375rem;
+  height: 0.375rem;
+  margin-top: -0.2rem;
+  border-top: 1px solid var(--line-strong);
+  border-right: 1px solid var(--line-strong);
+  transform: rotate(45deg);
+}
+
+/* линия прогресса ленты — только когда лента едет (десктоп) */
+.eco__progress {
+  display: none;
+  position: relative;
+  height: 2px;
+  min-width: 6rem;
+  border-radius: 1px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.eco__progress-fill {
   position: absolute;
   inset: 0;
-  z-index: -1;
   background: var(--grad);
-  opacity: 0;
-  animation: eco-lit 6s linear infinite;
-  animation-delay: calc(var(--i) * 1s + 0.2s);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
 }
 
-.eco__tile:has(.eco__tile-lit) .eco__tile-name {
-  position: relative;
+/* ——— лента услуг ——— */
+.eco__window {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: calc(-1 * var(--gutter));
+  padding-inline: var(--gutter);
+  scroll-padding-inline: var(--gutter);
 }
 
-@keyframes eco-lit {
-  0%,
-  100% {
-    opacity: 0;
-  }
-  3% {
-    opacity: 0.22;
-  }
-  14% {
-    opacity: 0;
-  }
+.eco__window::-webkit-scrollbar {
+  display: none;
 }
 
-.eco__flowwrap.is-paused .eco__pulse,
-.eco__flowwrap.is-paused .eco__tile-lit {
-  animation-play-state: paused;
-}
-
-.eco__flowwrap.is-static .eco__pulse,
-.eco__flowwrap.is-static .eco__tile-lit {
-  animation: none;
-}
-
-.eco__flowwrap.is-static .eco__tile-lit {
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .eco__pulse,
-  .eco__tile-lit {
-    animation: none;
-  }
-}
-
-/* ——— услуги ——— */
 .eco__services {
-  margin-top: clamp(2.5rem, 5vw, 4.5rem);
-  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: var(--eco-gap);
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  will-change: transform;
 }
 
 .eco__service {
-  border-top: 1px solid var(--line);
+  flex: none;
+  display: flex;
+  width: var(--eco-card-w);
+  scroll-snap-align: start;
 }
 
 .eco__row {
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
-  grid-template-columns: 3.2rem minmax(0, 1fr) 28px;
-  align-items: center;
-  column-gap: 1rem;
+  grid-template-rows: auto 1fr;
   width: 100%;
-  padding: clamp(0.9rem, 1.6vw, 1.35rem) 0;
+  height: var(--eco-card-h);
+  padding: var(--eco-pad);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card-lg);
+  background: var(--surface);
+  color: var(--text);
   text-align: left;
-}
-
-.eco__row-num {
-  font-family: var(--font-mono);
-  font-size: var(--fs-sm);
-  color: var(--text-muted);
-}
-
-.eco__row-name {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 1rem + 2.6vw, 3.25rem);
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: -0.035em;
-  text-transform: none;
+  cursor: pointer;
   transition: transform var(--dur) var(--ease-out);
 }
 
-.eco__row-text {
-  grid-column: 2 / 3;
-  grid-row: 2;
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  font-size: var(--fs-base);
-  color: var(--text-muted);
-  transform: translate3d(0, 8px, 0);
-  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+.eco__row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.eco__row-num {
+  font-family: var(--font-head);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  font-weight: 900;
+  line-height: 0.9;
+  color: var(--accent);
 }
 
 .eco__row-arrow {
-  grid-column: 3;
-  grid-row: 1;
-  width: 28px;
-  height: 28px;
-  padding: 5px;
+  position: absolute;
+  top: var(--eco-pad);
+  right: var(--eco-pad);
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: 50%;
-  background: var(--block);
-  color: var(--text-on-block);
-  opacity: 0.4;
-  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
+  background: var(--accent);
+  color: var(--accent-ink);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.eco__row-arrow svg {
+  width: 50%;
+  height: 50%;
+}
+
+/* название — у нижнего края; при раскрытии поднимается на высоту зоны описания */
+.eco__row-name {
+  align-self: end;
+  font-family: var(--font-head);
+  font-size: clamp(1.875rem, 1.4rem + 1.6vw, 3rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  overflow-wrap: normal;
+  transform: translate3d(0, 0, 0);
+  transition: transform var(--dur) var(--ease-out);
+}
+
+/* описание — в зоне под названием, проявляется opacity */
+.eco__row-text {
+  position: absolute;
+  left: var(--eco-pad);
+  right: var(--eco-pad);
+  bottom: var(--eco-pad);
+  height: var(--eco-text-h);
+  display: flex;
+  align-items: flex-end;
+  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.0625rem);
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--text) 78%, transparent);
+  opacity: 0;
+  transform: translate3d(0, 8px, 0);
+  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
 }
 
 .eco__row:hover .eco__row-name,
 .eco__row:focus-visible .eco__row-name,
 .eco__row.is-open .eco__row-name {
-  transform: translate3d(14px, 0, 0);
+  transform: translate3d(0, calc(-1 * var(--eco-text-h) - 0.6rem), 0);
 }
 
 .eco__row:hover .eco__row-text,
 .eco__row:focus-visible .eco__row-text,
 .eco__row.is-open .eco__row-text {
-  max-height: 4rem;
-  margin-top: 0.4rem;
   opacity: 1;
   transform: none;
 }
@@ -225,35 +260,144 @@
 .eco__row:hover .eco__row-arrow,
 .eco__row:focus-visible .eco__row-arrow,
 .eco__row.is-open .eco__row-arrow {
-  opacity: 1;
-  transform: translate3d(4px, -4px, 0);
+  transform: rotate(45deg);
 }
 
-.eco__caption {
-  margin-top: clamp(2rem, 4vw, 3.5rem);
-  max-width: 34ch;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 1rem + 2vw, 2.75rem);
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  text-transform: none;
-}
-
-@media (min-width: 1000px) {
-  .eco__flow {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+/* — широкий альбомный экран: лента едет по прокрутке (showcaseScroll), окно без собственной прокрутки — */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--ecosystem {
+    --eco-pad: clamp(1rem, 2.6svh, 1.75rem);
+    --eco-card-h: clamp(12rem, 40svh, 25rem);
+    --eco-text-h: clamp(3.6rem, 9svh, 4.8rem);
+    padding-block: var(--screen-pad);
   }
 
-  .eco__rail {
+  .eco__top {
+    gap: clamp(1rem, 3svh, 2.5rem);
+    margin-bottom: clamp(1rem, 3.2svh, 3rem);
+  }
+
+  .section--ecosystem .display.section__title {
+    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
+  }
+
+  .eco__flowwrap {
+    grid-template-columns: minmax(0, 1fr) clamp(6rem, 12vw, 14rem);
+  }
+
+  .eco__progress {
     display: block;
   }
 
   .eco__tile {
-    min-height: 220px;
+    min-height: clamp(2.5rem, 5.2svh, 3.25rem);
+  }
+
+  .eco__tile-name {
+    font-size: clamp(1.25rem, min(1rem + 0.9vw, 3.2svh), 1.875rem);
+  }
+
+  .eco__window {
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+    scroll-snap-type: none;
+  }
+
+  .eco__row-name {
+    font-size: clamp(1.75rem, min(1.4rem + 1.6vw, 4.6svh), 3rem);
   }
 
   .eco__row-text {
-    grid-column: 2;
+    font-size: clamp(0.9375rem, min(0.85rem + 0.3vw, 2.1svh), 1.0625rem);
+  }
+}
+
+/* лента не едет (reduced-motion, ?nomotion=1 → .is-static из ecosystem.js) — обычная горизонтальная прокрутка */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--ecosystem.is-static .eco__window {
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scroll-snap-type: x mandatory;
+  }
+
+  .section--ecosystem.is-static .eco__progress {
+    display: none;
+  }
+}
+
+@media (min-width: 900px) and (orientation: landscape) and (prefers-reduced-motion: reduce) {
+  .eco__window {
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    scroll-snap-type: x mandatory;
+  }
+
+  .eco__progress {
+    display: none;
+  }
+}
+
+/* — телефон — */
+@media (max-width: 599px) {
+  .section--ecosystem {
+    --eco-card-w: min(78vw, 20rem);
+    --eco-card-h: 13rem;
+    --eco-text-h: 4rem;
+  }
+
+  .eco__tile {
+    min-height: 2.25rem;
+    padding: 0.4rem 0.85rem;
+  }
+
+  .eco__tile-name {
+    font-size: 1.125rem;
+  }
+
+  /* шесть плиток — в два ряда по три; стрелка только между соседями в ряду */
+  .eco__flow {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    gap: 0.5rem 1rem;
+  }
+
+  .eco__tile + .eco__tile {
+    margin-left: 0;
+  }
+
+  .eco__tile + .eco__tile::before {
+    left: -1rem;
+    width: 1rem;
+  }
+
+  .eco__tile:nth-child(3n + 1)::before,
+  .eco__tile:nth-child(3n + 1)::after {
+    display: none;
+  }
+
+  .eco__row {
+    padding: 1rem;
+    border-radius: var(--r-card);
+  }
+
+  .eco__row-arrow {
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .eco__row-text {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .eco__row-name {
+    font-size: 1.75rem;
   }
 }

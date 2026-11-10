@@ -108,14 +108,11 @@
   },
   "footer": {
     "tagline": "Growth through official Telegram advertising in Ukraine and worldwide.",
-    "navTitle": "Sections",
-    "contactTitle": "Contact",
     "telegram": "Telegram",
     "copyright": "© 2026 eLeads",
     "creditLabel": "Design & development —",
     "creditName": "[NAME]",
-    "toTop": "Back to top",
-    "moreTitle": "More"
+    "toTop": "Back to top"
   },
   "common": {
     "brand": "eLeads",
@@ -288,7 +285,7 @@
   },
   "cases": {
     "title": "Results across niches and GEOs",
-    "word": "CASES",
+    "titleAccent": "across niches and GEOs",
     "listLabel": "Cases — swipe sideways",
     "labels": {
       "budget": "Budget",
@@ -321,15 +318,13 @@
       "I analyse and optimise",
       "I scale what works"
     ],
-    "note": "The client does not have to figure out Telegram Ads alone: I join the task from strategy and ad materials through to optimisation and scaling."
+    "lead": "The client does not have to figure out Telegram Ads alone: I join the task from strategy and ad materials through to optimisation and scaling."
   },
   "geo": {
     "title": "Audiences in Ukraine and all over the world",
     "titleAccent": "and all over the world",
-    "mapLabel": "Interactive map",
     "mapAlt": "Dot map of the world with ad delivery regions",
     "listTitle": "Main directions",
-    "footnote": "*Eurostat, 31.08.2026: 4.43 million non-EU citizens who fled Ukraine under temporary protection in the EU; 98.5% are citizens of Ukraine.",
     "regions": {
       "ukraine": {
         "name": "Ukraine",
@@ -339,7 +334,7 @@
         "name": "Europe",
         "text": "Ukrainians + international segments",
         "figure": "4.43M",
-        "figureText": "people who left Ukraine under temporary protection in the EU*"
+        "figureText": "people who left Ukraine under temporary protection in the EU"
       },
       "uk": {
         "name": "United Kingdom",
@@ -366,7 +361,6 @@
   "targeting": {
     "title": "How we find the right audience",
     "titleAccent": "the right audience",
-    "hint": "Hover or tap a card to see the explanation.",
     "items": [
       {
         "num": "01",
@@ -404,8 +398,7 @@
         "text": "Available audience segments depending on the cabinet type.",
         "more": "We use ready-made audience segments that your type of ad cabinet opens up."
       }
-    ],
-    "note": "Availability of parameters depends on the current capabilities of Telegram Ads / Euro Cabinet."
+    ]
   },
   "reviews": {
     "title": "What clients say",
@@ -413,8 +406,6 @@
     "sliderLabel": "Client reviews",
     "prev": "Previous review",
     "next": "Next review",
-    "shot": "Review",
-    "shotCaption": "original screenshot / quote",
     "items": [
       {
         "name": "Oleksandr Mukhin",
@@ -483,15 +474,13 @@
         "name": "Consultations",
         "text": "A review of your project and suggested next steps."
       }
-    ],
-    "caption": "A client can come only for Telegram Ads or hand eLeads the full Telegram system."
+    ]
   },
   "materials": {
     "title": "Useful materials on Telegram",
     "titleAccent": "on Telegram",
     "post": "POST",
     "read": "Read on Telegram",
-    "arrow": "→",
     "items": [
       {
         "title": "8 ways to promote a business via Telegram"
@@ -510,22 +499,22 @@
   "faq": {
     "title": "Frequently asked questions",
     "titleAccent": "questions",
-    "note": "Minimum ad budget is €650. The cost of services is individual."
+    "ask": {
+      "title": "Didn't find an answer?",
+      "text": "Write to me on Telegram — I will reply personally."
+    }
   },
   "cta": {
     "title": "Shall we discuss your project?",
     "titleAccent": "your project?",
     "text": "Write to me on Telegram. I will review your project, task and GEO and suggest which promotion format on Telegram will be the best.",
     "button": "Write to Volodymyr on Telegram",
-    "arrow": "→",
-    "photoCaption": "PHOTO OF VOLODYMYR",
-    "sign": "eLeads • Telegram Ads • UA / EN"
+    "arrow": "→"
   },
   "founder": {
     "badge": "eLeads FOUNDER",
     "title": "Personal expertise stands behind eLeads.",
     "text": "Hi, I am Volodymyr, founder of eLeads. 7+ years in digital marketing, $2M+ in ad budgets and 50+ projects in different niches and GEOs. I personally take part in strategy and in running clients’ ad campaigns.",
-    "photoCaption": "PHOTO OF VOLODYMYR",
     "photoAlt": "Volodymyr Kucher, founder of eLeads"
   },
   "ribbons": {

@@ -1,185 +1,319 @@
-/* 08 GEO: светлый контейнер overtake; широкая точечная карта (canvas) на тёмной плашке слева, светлый список
-   регионов справа; карточка региона — светлая, плавает у точки. Цвета точек geo.js берёт из переменных .geo__map. */
+/* 08 GEO (T29): облик блоков 02–05 — заголовок шрифтом канала со второй строкой акцентом; слева карточка с картой мира
+   из точек (тот же модуль, что у блока 02: stats-dots.js, классы точек .stats__dot), поверх — метки регионов
+   с пульсом и карточка выбранного региона; справа без рамок — список направлений строками с тонкой линией:
+   название шрифтом канала, пояснение приглушённым. Сноски и подписи под блоком нет (правка клиента). Появления
+   по прокрутке нет (H11); пульс меток и волны по точкам — реакции внутри блока, при reduced-motion статично.
+   На широком экране блок — ровно экран под шапкой (layout.css): высота карты — от высоты окна (svh).
+   Двигаются только transform и opacity. */
 
+.section--geo {
+  --geo-gap: clamp(0.75rem, 1.1vw, 1.25rem);
+  --geo-pad: clamp(1.25rem, 1rem + 1.2vw, 2.125rem);
+  overflow-x: clip;
+  padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
+  color: var(--text);
+}
+
+.geo__head {
+  gap: clamp(0.9rem, 1.5vw, 1.5rem);
+  margin-bottom: clamp(1.75rem, 5svh, 3.5rem);
+}
+
+.section--geo .display.section__title {
+  max-width: none;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+/* хвост заголовка — второй строкой, жёлтый → оранжевый (components.css .display__accent) */
+
+/* — раскладка: карта и список; на телефоне друг под другом — */
 .geo {
   display: grid;
-  gap: clamp(1rem, 2vw, 1.75rem);
   grid-template-columns: minmax(0, 1fr);
-}
-
-.geo__map {
-  position: relative;
-  min-width: 0;
-  padding: clamp(0.75rem, 2vw, 1.75rem);
-  border-radius: var(--r-card-lg);
-  background: radial-gradient(120% 90% at 50% 0%, var(--block-2), var(--block));
-  color: var(--text-on-block);
-}
-
-.geo__canvas {
-  width: 100%;
-  aspect-ratio: 144 / 54;
-  touch-action: pan-y;
-}
-
-.geo__tag {
-  position: absolute;
-  top: clamp(0.75rem, 2vw, 1.5rem);
-  left: clamp(0.75rem, 2vw, 1.75rem);
-  font-family: var(--font-mono);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-on-block-muted);
-  pointer-events: none;
+  gap: var(--geo-gap);
 }
 
 .geo__card {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 2;
-  width: min(240px, 70%);
-  margin: 0;
-  padding: 0.9rem 1.1rem;
+  display: grid;
+  align-content: center;
+  min-width: 0;
+  padding: var(--geo-pad);
   border: 1px solid var(--line);
-  border-radius: var(--r-card-sm);
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--block) 60%, transparent);
-  transform: translate3d(0, calc(-100% - 22px), 0);
-  opacity: 0;
+  border-radius: var(--r-card-lg);
+  background: color-mix(in srgb, var(--text) 5.5%, transparent);
+}
+
+/* карта: рамка — viewBox из разметки (72.5 × 27 шагов сетки), высота от ширины; курсор ловит рамка, не кружки */
+.geo__map {
+  position: relative;
+  min-width: 0;
+  touch-action: pan-y;
+}
+
+.geo__map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.geo__dots {
   pointer-events: none;
-  /* позиция меняется скачком (left/top ставит JS), плавно — только появление */
-  transition: opacity var(--dur) var(--ease-out);
 }
 
-.geo__card.is-shown {
-  opacity: 1;
+/* суша — приглушённые точки; размер, сдвиг и яркость на гребне волны ставит stats-dots.js */
+.geo__dots .stats__dot {
+  fill: color-mix(in srgb, var(--text) 46%, transparent);
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0.88;
 }
 
-.geo__card.is-below {
-  transform: translate3d(0, 22px, 0);
+/* метки регионов: точка жёлтый-оранжевый и кольцо пульса; активная — крупнее и ярче */
+.geo__pin {
+  cursor: pointer;
 }
 
-/* узкий экран: карта слишком мала, чтобы держать карточку над точкой — карточка встаёт под картой (left/top от JS игнорируются) */
-@media (max-width: 899px) {
-  .geo__card,
-  .geo__card.is-below {
-    position: relative;
-    left: 0 !important;
-    top: 0 !important;
-    width: auto;
-    margin-top: 0.75rem;
-    transform: none;
+.geo__pin-dot {
+  fill: var(--accent-2);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.geo__pin-ring {
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-width: 0.18;
+  opacity: 0.45;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.9);
+}
+
+/* пульс — только при живых анимациях (.js-anim нет при reduced-motion и ?nomotion=1: кольцо стоит) */
+.js-anim .geo__pin-ring {
+  animation: geo-pulse 2.6s var(--ease-out) infinite;
+}
+
+.geo__pin.is-active .geo__pin-dot {
+  fill: var(--accent);
+  transform: scale(1.5);
+}
+
+.geo__pin.is-active .geo__pin-ring {
+  stroke: var(--accent);
+  opacity: 0.9;
+}
+
+@keyframes geo-pulse {
+  0% {
+    transform: scale(0.45);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
   }
 }
 
-.geo__card-name {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-  text-transform: none;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
-/* цифра на светлой карточке: градиентный текст (.text-grad) здесь бледный — сплошным цветом текста */
-.geo__card .geo__card-figure {
-  background: none;
+/* — карточка выбранного региона над меткой (положение ставит geo.js в px) — */
+.geo__tip {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: max-content;
+  max-width: min(17rem, 70%);
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-card-sm);
+  background: var(--bg);
   color: var(--text);
-  letter-spacing: -0.04em;
-  width: fit-content;
-  font-family: var(--font-display);
-  font-size: 2.6rem;
-  font-weight: 700;
-  line-height: 1;
-  margin-top: 0.25rem;
+  pointer-events: none;
+  transform: translateY(calc(-100% - 1.1rem));
+  transition: transform var(--dur) var(--ease-out);
 }
 
-.geo__card-text {
+.geo__tip.is-below {
+  transform: translateY(1.1rem);
+}
+
+.geo__tip::after {
+  content: '';
+  position: absolute;
+  left: var(--tip-arrow, 50%);
+  bottom: -5px;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--line-strong);
+  border-top: 0;
+  border-left: 0;
+  background: var(--bg);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.geo__tip.is-below::after {
+  top: -5px;
+  bottom: auto;
+  transform: translateX(-50%) rotate(-135deg);
+}
+
+.geo__tip-name {
+  font-family: var(--font-head);
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.75rem);
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.geo__tip-figure {
   margin-top: 0.3rem;
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 1.5rem + 2svh, 3rem);
+  font-weight: 900;
+  line-height: 0.9;
+  text-transform: uppercase;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.geo__tip-text {
+  margin-top: 0.35rem;
   font-size: var(--fs-sm);
+  line-height: 1.35;
   color: var(--text-muted);
 }
 
+/* — список направлений справа: строки с тонкой линией сверху — */
 .geo__list {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  padding: clamp(1.25rem, 2.2vw, 2rem);
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  background: var(--surface-2);
-  color: var(--text);
 }
 
 .geo__list-title {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  letter-spacing: -0.03em;
-  text-transform: none;
+  margin-bottom: clamp(0.5rem, 1.2svh, 0.9rem);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.geo__regions {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.geo__regions li {
+  display: flex;
+  flex: 1 1 auto;
 }
 
 .geo__region {
-  display: grid;
-  grid-template-columns: 14px 1fr;
-  column-gap: 0.85rem;
-  align-items: baseline;
-  width: 100%;
-  padding: 0.85rem 0;
-  border-top: 1px solid var(--line);
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
+  padding: clamp(0.4rem, 1.25svh, 1.1rem) 0.75rem clamp(0.4rem, 1.25svh, 1.1rem) 0.25rem;
+  border-top: 1px solid var(--line-strong);
   border-radius: 0;
+  color: var(--text);
   text-align: left;
-}
-
-.geo__region-dot {
-  grid-row: 1 / 3;
-  align-self: center;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--text-muted);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
+.geo__region:hover,
+.geo__region.is-hovered {
+  transform: translateX(4px);
+}
+
+.geo__region:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
 .geo__region-name {
-  font-weight: 600;
+  flex: none;
+  font-family: var(--font-head);
+  font-size: clamp(1.35rem, 0.6rem + 2.4svh, 2.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.geo__region.is-active .geo__region-name {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .geo__region-text {
-  grid-column: 2;
-  font-size: var(--fs-sm);
+  font-size: clamp(0.8125rem, 0.75rem + 0.25vw, 1rem);
+  line-height: 1.3;
+  text-align: right;
   color: var(--text-muted);
 }
 
-.geo__region:hover .geo__region-dot,
-.geo__region:focus-visible .geo__region-dot,
-.geo__region.is-active .geo__region-dot {
-  transform: scale(1.5);
-  background: var(--accent-2);
-}
-
-/* активный регион — пилюля-подложка вместо цветного текста (жёлтый текст на светлом не читался бы) */
-.geo__region.is-active .geo__region-name {
-  display: inline-block;
-  width: fit-content;
-  padding: 0 0.55rem;
-  margin-left: -0.55rem;
-  border-radius: var(--r-pill);
-  background: var(--block);
-  color: var(--text-on-block);
-}
-
-.geo__footnote {
-  margin-top: clamp(1.25rem, 2.5vw, 2rem);
-  max-width: 90ch;
-  font-size: var(--fs-xs);
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-@media (min-width: 1000px) {
+/* — широкий экран: карта слева шире, список справа — */
+@media (min-width: 900px) {
   .geo {
-    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
     align-items: stretch;
+  }
+
+  .geo__region {
+    padding-inline: 0.25rem;
+  }
+}
+
+/* — узкий экран: карта мелкая, карточка региона не висит над ней, а стоит под картой во всю ширину — */
+@media (max-width: 899px) {
+  .geo__tip,
+  .geo__tip.is-below {
+    position: static;
+    width: auto;
+    max-width: none;
+    margin-top: 0.9rem;
+    transform: none;
+  }
+
+  .geo__tip::after {
+    display: none;
+  }
+
+  .geo__list-title {
+    margin-top: 0.5rem;
+  }
+}
+
+/* — широкий альбомный экран: блок ровно в один экран под шапкой — поля и заголовок от высоты окна — */
+@media (min-width: 900px) and (orientation: landscape) {
+  .section--geo {
+    padding-block: var(--screen-pad);
+  }
+
+  .section--geo .display.section__title {
+    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 9svh), 6rem);
+  }
+
+  .geo__head {
+    margin-bottom: clamp(1rem, 3.2svh, 3rem);
   }
 }

@@ -1,41 +1,41 @@
-// 11 Екосистема: поток по цепочке (CSS-анимация transform) идёт, только пока блок на экране и вкладка видна;
-// услуги — превью по hover/фокусу (CSS), на тач — по тапу.
+// 11 Екосистема (T30): шлях клієнта — статичные плитки; услуги — лента карточек в духе showcase-scroll (H07):
+// на широком экране блок закрепляется под шапкой, карточки едут влево по мере прокрутки страницы
+// (showcaseScroll из motion-kit — единственный разрешённый переход по прокрутке, H11). На узком экране и при
+// reduced-motion — горизонтальная прокрутка пальцем (CSS). Описание карточки раскрывается по hover / focus-visible
+// (CSS), на тач — по тапу; aria-expanded отражает только открытое тапом состояние.
 import { $, $$, on } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
-import { reduced } from '../core/motion.js';
+import { showcaseScroll } from '../core/motion-kit.js';
 
 export function init(root) {
   accentTitles(root);
-  const flow = $('[data-eco-flow]', root);
-  if (flow) {
-    if (reduced) flow.classList.add('is-static');
-    let inView = false;
-    const apply = () => flow.classList.toggle('is-paused', !inView || document.hidden);
-    new IntersectionObserver(([e]) => {
-      inView = e.isIntersecting;
-      apply();
-    }).observe(flow);
-    document.addEventListener('visibilitychange', apply);
-    apply();
+
+  const track = $('[data-eco-track]', root);
+  const progress = $('[data-eco-progress]', root);
+  if (progress) progress.style.transform = 'scaleX(0)';
+  if (track) {
+    const ride = showcaseScroll(root, track, {
+      onProgress: (p) => {
+        if (progress) progress.style.transform = `scaleX(${p})`;
+      },
+    });
+    // лента не поедет (reduced-motion, ?nomotion=1, GSAP не загрузился) — запасная горизонтальная прокрутка пальцем
+    ride.ready.then((ok) => root.classList.toggle('is-static', !ok));
   }
 
   const rows = $$('.eco__row', root);
-  const expanded = (row, value) => row.setAttribute('aria-expanded', String(value));
+  const set = (row, open) => {
+    row.classList.toggle('is-open', open);
+    row.setAttribute('aria-expanded', String(open));
+  };
   for (const row of rows) {
     on(row, 'click', () => {
       const open = !row.classList.contains('is-open');
-      rows.forEach((r) => {
-        r.classList.remove('is-open');
-        expanded(r, false);
-      });
-      row.classList.toggle('is-open', open);
-      expanded(row, open);
+      for (const other of rows) if (other !== row) set(other, false);
+      set(row, open);
     });
-    const show = () => expanded(row, true);
-    const hide = () => expanded(row, row.classList.contains('is-open'));
-    on(row, 'mouseenter', show);
-    on(row, 'focus', show);
-    on(row, 'mouseleave', hide);
-    on(row, 'blur', hide);
+    on(row, 'keydown', (e) => {
+      if (e.key === 'Escape' && row.classList.contains('is-open')) set(row, false);
+    });
   }
 }

@@ -1,21 +1,30 @@
-// 06 Кейси — галерея в духе «SHOT AFTER DARK» (Aether): карточки из src/data/cases.json по <template>.
-// ≥900px без reduced-motion: сцена закреплена (ScrollTrigger pin + scrub), вертикальная прокрутка двигает
-// ленту вбок (translateX), огромное слово «КЕЙСИ» за ней едет медленнее, полоса прогресса растёт scaleX.
-// Длина закрепления = на сколько лента шире экрана. Меньше / reduced / без JS — нативный горизонтальный
-// свайп со scroll-snap; стрелки ←/→ переводят фокус между карточками.
+// 06 Кейси (T29): карточки из src/data/cases.json по <template> — горизонтальная лента в один экран.
+// Лента — как на блоках 11–12 (правка пользователя): на широком альбомном экране блок закрепляется под шапкой, а
+// карточки едут влево по мере прокрутки страницы (showcaseScroll из core/motion-kit.js). Стрелок и перетаскивания нет.
+// Узкий экран, reduced-motion, ?nomotion=1 или GSAP не загрузился — обычная горизонтальная прокрутка пальцем
+// (класс is-static, scroll-snap в CSS). Полоса под лентой — пройденный путь (scaleX).
+// У карточки аватар клиента: <img> /img/cases/<id>.webp (publicUrl); файла нет — остаётся круг с первой буквой имени.
 // Модалка — нативный <dialog>: Esc, клик вне, кнопка; фокус заперт и возвращается на карточку;
 // фон не скроллится (lockScroll ставит Lenis на паузу).
 import { $, $$, el, on, trapFocus } from '../core/dom.js';
+import { accentTitles } from '../core/title-accent.js';
 import { t, getLang, onLangChange, applyTranslations } from '../core/i18n.js';
-import { lockScroll, reduced, motionReady, refreshMotion, scrollToTarget } from '../core/motion.js';
+import { lockScroll, reduced } from '../core/motion.js';
+import { showcaseScroll, SHOWCASE_MEDIA } from '../core/motion-kit.js';
+import { publicUrl } from '../core/public-url.js';
 import { track } from '../core/analytics.js';
 import data from '../data/cases.json';
 
 const CARD_FIELDS = ['niche', 'name', 'cpa', 'budget', 'result'];
 const MODAL_FIELDS = ['name', 'niche', 'task', 'geo', 'budget', 'result', 'cpa', 'review'];
 const CLOSE_MS = 260;
-const GALLERY_MEDIA = '(min-width: 900px)';
-const WORD_SPEED = 0.38; // слово-фон проходит 38% пути ленты — «едет медленнее»
+/** Тона запасного аватара (круг с буквой) — по кругу; сами цвета — в cases.css. */
+const AVATAR_TONES = ['sun', 'light', 'ember'];
+
+/** Путь к аватару клиента в public/: /img/cases/<id>.webp. */
+export const avatarPath = (id) => `/img/cases/${id}.webp`;
+/** Первая буква имени для запасного аватара. */
+export const initial = (name) => (String(name ?? '').trim().match(/[\p{L}\p{N}]/u)?.[0] ?? '').toUpperCase();
 
 const text = (value, lang) => (value && typeof value === 'object' ? value[lang] ?? value.ua ?? '' : String(value ?? ''));
 const isTbd = (value) => value === t('common.tbd') || value === 'уточнити' || value === 'TBD';
@@ -27,32 +36,45 @@ function fill(node, value) {
 }
 
 export function init(root) {
+  accentTitles(root);
   const grid = $('[data-cases-grid]', root);
   const tpl = $('template[data-case-card]', root);
   const modal = $('[data-case-modal]', root);
   const cases = Array.isArray(data?.cases) ? data.cases : [];
   if (!grid || !tpl || !cases.length) return;
 
-  // карточки создаются один раз; смена языка меняет только тексты (ревил не сбрасывается)
+  // карточки создаются один раз; смена языка меняет только тексты
   const cards = cases.map((item, i) => {
     const li = tpl.content.firstElementChild.cloneNode(true);
     applyTranslations(li);
-    li.style.setProperty('--i', String(i));
     if (item.featured) li.classList.add('cases__item--featured');
     const num = $('[data-case-num]', li);
     if (num) num.textContent = String(i + 1).padStart(2, '0');
     const button = $('.cases__card', li);
     button.dataset.case = item.id;
     on(button, 'click', () => open(item, button));
+    const avatar = $('[data-case-avatar]', li);
+    if (avatar) {
+      avatar.dataset.tone = AVATAR_TONES[i % AVATAR_TONES.length];
+      // фото клиента поверх буквы; файла нет (или отдан не рисунок) — <img> убирается, остаётся буква
+      const img = el('img', {
+        class: 'cases__avatar-img',
+        attrs: { src: publicUrl(avatarPath(item.id)), alt: '', loading: 'lazy', decoding: 'async' },
+      });
+      img.addEventListener('load', () => avatar.classList.add('has-image'), { once: true });
+      img.addEventListener('error', () => img.remove(), { once: true });
+      avatar.append(img);
+    }
     return { item, li };
   });
   grid.replaceChildren(...cards.map((c) => c.li));
-  grid.dataset.reveal = 'stagger';
-  const galleryApi = gallery(root, grid);
+  const ribbon = ride(root, grid);
 
   const paintCards = (lang) => {
     for (const { item, li } of cards) {
       for (const f of CARD_FIELDS) fill($(`[data-f="${f}"]`, li), text(item[f], lang));
+      const letter = $('[data-case-letter]', li);
+      if (letter) letter.textContent = initial(text(item.name, lang));
     }
   };
   paintCards(getLang());
@@ -82,7 +104,7 @@ export function init(root) {
       shot.classList.remove('has-image');
       if (item.screenshot) {
         const img = el('img', {
-          attrs: { src: item.screenshot, alt: text(item.name, lang), loading: 'lazy', decoding: 'async' },
+          attrs: { src: publicUrl(item.screenshot), alt: text(item.name, lang), loading: 'lazy', decoding: 'async' },
         });
         img.addEventListener('load', () => shot.classList.add('has-image'), { once: true });
         img.addEventListener('error', () => img.remove(), { once: true });
@@ -146,19 +168,46 @@ export function init(root) {
   onLangChange((lang) => {
     paintCards(lang);
     if (current) paintModal(current, lang);
-    galleryApi.refresh();
+    ribbon.refresh();
   });
 }
 
-/* ——— галерея ——— */
-function gallery(root, trackEl) {
-  const stage = $('[data-cases-stage]', root);
+/* ——— лента: едет по прокрутке страницы (showcaseScroll), запасной вариант — нативная прокрутка ——— */
+function ride(root, trackEl) {
   const viewport = $('[data-cases-viewport]', root);
-  const word = $('[data-cases-word]', root);
-  const head = $('[data-cases-head]', root);
   const bar = $('[data-cases-progress]', root);
   const faces = () => $$('.cases__card', trackEl);
-  let pin = null; // ScrollTrigger закреплённой сцены, пока она есть
+  const paintBar = (p) => {
+    if (bar) bar.style.transform = `scaleX(${Math.min(1, Math.max(0, p)).toFixed(4)})`;
+  };
+  paintBar(0);
+
+  let riding = false; // лента закрепляется и едет по прокрутке страницы (GSAP есть, анимации живые)
+  const wide = () => Boolean(window.matchMedia?.(SHOWCASE_MEDIA).matches);
+  const handle = showcaseScroll(root, trackEl, { onProgress: paintBar });
+  handle.ready.then((ok) => {
+    riding = ok;
+    root.classList.toggle('is-static', !ok);
+  });
+
+  // запасная прокрутка пальцем: полоса идёт за scrollLeft окна ленты
+  if (viewport) {
+    let frame = 0;
+    const paint = () => {
+      frame = 0;
+      if (riding && wide()) return;
+      const max = viewport.scrollWidth - viewport.clientWidth;
+      paintBar(max > 0 ? viewport.scrollLeft / max : 0);
+    };
+    on(
+      viewport,
+      'scroll',
+      () => {
+        if (!frame) frame = requestAnimationFrame(paint);
+      },
+      { passive: true },
+    );
+  }
 
   // ←/→ — к соседней карточке; Home/End — к крайним
   on(trackEl, 'keydown', (e) => {
@@ -168,83 +217,25 @@ function gallery(root, trackEl) {
     const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: list.length - 1 }[e.key];
     if (to === undefined || to < 0 || to >= list.length) return;
     e.preventDefault();
-    list[to].focus({ preventScroll: Boolean(pin) });
-    if (!pin) list[to].parentElement.scrollIntoView({ block: 'nearest', inline: 'start', behavior: reduced ? 'auto' : 'smooth' });
+    list[to].focus({ preventScroll: true });
   });
 
-  // свайп: полоса прогресса идёт за нативной прокруткой ленты
-  let frame = 0;
-  const paintSwipe = () => {
-    frame = 0;
-    if (pin || !bar || !viewport) return;
-    const max = viewport.scrollWidth - viewport.clientWidth;
-    bar.style.transform = `scaleX(${max > 0 ? (viewport.scrollLeft / max).toFixed(4) : 0})`;
-  };
-  if (viewport) {
-    on(viewport, 'scroll', () => {
-      if (!frame) frame = requestAnimationFrame(paintSwipe);
-    }, { passive: true });
-    on(window, 'resize', paintSwipe);
-    paintSwipe();
-  }
-
-  // закреплённая сцена: фокус Tab на карточке за краем экрана — докручиваем страницу до неё
+  // фокус на карточке за краем окна ленты: едущую ленту докручиваем прокруткой страницы (пиксель в пиксель),
+  // обычную — нативно
   on(trackEl, 'focusin', (e) => {
-    if (!pin || !viewport) return;
     const item = e.target.closest?.('.cases__item');
-    if (!item) return;
-    // сцена закреплена: браузер мог сдвинуть клип-вьюпорт к фокусу — возвращаем, ленту двигает только transform
-    viewport.scrollLeft = 0;
-    const distance = pin.end - pin.start;
-    const room = trackEl.scrollWidth - viewport.clientWidth;
-    if (distance <= 0 || room <= 0) return;
-    // где карточка сейчас на экране (offsetLeft — от .cases__track, у него position: relative)
-    const left = item.offsetLeft - pin.progress * room;
-    if (left >= 0 && left + item.offsetWidth <= viewport.clientWidth) return;
-    const center = item.offsetLeft + item.offsetWidth / 2 - viewport.clientWidth / 2;
-    const p = Math.min(1, Math.max(0, center / room));
-    scrollToTarget(pin.start + p * distance, { immediate: true });
+    if (!item || !viewport) return;
+    const box = viewport.getBoundingClientRect();
+    const rect = item.getBoundingClientRect();
+    const dx = rect.left < box.left ? rect.left - box.left : rect.right > box.right ? rect.right - box.right : 0;
+    if (!dx) return;
+    if (riding && wide()) {
+      viewport.scrollLeft = 0;
+      window.scrollBy({ top: dx, behavior: 'auto' });
+    } else {
+      viewport.scrollBy({ left: dx, behavior: reduced ? 'auto' : 'smooth' });
+    }
   });
 
-  if (stage && viewport) {
-    motionReady().then((api) => {
-      if (!api) return;
-      const { gsap } = api;
-      gsap.matchMedia().add(GALLERY_MEDIA, () => {
-        root.classList.add('is-pinned');
-        viewport.scrollLeft = 0;
-        const distance = () => Math.max(0, trackEl.scrollWidth - viewport.clientWidth);
-        const tl = gsap.timeline({
-          defaults: { ease: 'none' },
-          scrollTrigger: {
-            trigger: stage,
-            start: 'top top',
-            end: () => `+=${distance()}`,
-            pin: true,
-            scrub: 0.6,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-        tl.to(trackEl, { x: () => -distance(), duration: 1 }, 0);
-        if (word) tl.to(word, { x: () => -distance() * WORD_SPEED, duration: 1 }, 0);
-        if (bar) tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 1 }, 0);
-        // заголовок уходит в тень, когда на него наезжают карточки
-        if (head) tl.to(head, { opacity: 0.22, duration: 0.3 }, 0.04);
-        pin = tl.scrollTrigger;
-        return () => {
-          pin = null;
-          root.classList.remove('is-pinned');
-          requestAnimationFrame(paintSwipe);
-        };
-      });
-    });
-  }
-
-  return {
-    refresh() {
-      if (pin) refreshMotion();
-      else paintSwipe();
-    },
-  };
+  return { refresh: () => handle.refresh() };
 }

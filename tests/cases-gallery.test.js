@@ -1,6 +1,6 @@
-// Таск 12 (G14, история 83): кейсы — закреплённая галерея, лента едет вбок при прокрутке вниз,
-// за ней медленнее плывёт огромное слово «КЕЙСИ» / «CASES», внизу растёт полоса прогресса.
-// Мобильный и reduced-motion — горизонтальный свайп со scroll-snap, без закрепления.
+// T29 (H41): блок 06 «Кейси» в облике блоков 02–05 — лента карточек в один экран. По правке пользователя лента едет
+// по прокрутке страницы, как на блоках 11–12 (showcaseScroll из core/motion-kit.js); стрелок и перетаскивания нет.
+// Узкий экран, reduced-motion, ?nomotion=1 — горизонтальная прокрутка пальцем со scroll-snap. У карточки — аватар клиента.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
@@ -8,72 +8,89 @@ import { read, readJson } from './helpers.js';
 const html = read('index.html');
 const ua = readJson('src/data/content.ua.json');
 const en = readJson('src/data/content.en.json');
+const { cases } = readJson('src/data/cases.json');
 const stripCss = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '');
 const stripJs = (s) => s.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
 const css = stripCss(read('src/styles/sections/cases.css'));
 const js = stripJs(read('src/sections/cases.js'));
 const section = html.split(/<section\b[^>]*\sid="cases"/)[1].split(/<\/section>/)[0];
+const tpl = section.split('<template data-case-card>')[1].split('</template>')[0];
 
-// всё вне @media (min-width: 900px) — базовые правила (мобильный / reduced / без JS)
-const wideBlocks = [];
-const base = css.replace(/@media\s*\(min-width:\s*900px\)\s*\{((?:[^{}]|\{[^{}]*\})*)\}/g, (_, body) => {
-  wideBlocks.push(body);
-  return '';
-});
-const wide = wideBlocks.join('\n');
-
-test('разметка: сцена, вьюпорт с лентой, слово-фон из JSON, полоса прогресса', () => {
-  assert.match(section, /data-cases-stage/);
+test('разметка: заголовок с акцентной строкой, окно с лентой, полоса пути, модалка; слова-фона и стрелок нет', () => {
+  assert.match(section, /<h2\b[^>]*class="display section__title"[^>]*data-i18n="cases\.title"[^>]*data-title-accent="cases\.titleAccent"/);
   assert.match(section, /data-cases-viewport/);
   assert.match(section, /<ul\b[^>]*data-cases-grid/);
   assert.match(section, /data-cases-progress/);
-  assert.match(section, /data-i18n="cases\.word"[^>]*>|data-cases-word[^>]*data-i18n="cases\.word"/);
-  assert.match(section, /aria-hidden="true"[^>]*data-cases-word|data-cases-word[^>]*aria-hidden="true"/, 'слово-фон скрыто от скринридера');
-  assert.match(section, /<dialog\b[^>]*data-case-modal/, 'модалка на месте');
+  assert.match(section, /<dialog\b[^>]*data-case-modal[^>]*data-lenis-prevent/, 'модалка на месте, Lenis в ней не гасит прокрутку');
+  assert.doesNotMatch(section, /cases__word|data-cases-word|data-cases-stage/, 'огромного слова-фона и сцены нет');
+  assert.doesNotMatch(section, /data-cases-prev|data-cases-next|cases__arrow/, 'стрелок нет — ленту двигает прокрутка');
+  assert.doesNotMatch(section, /data-reveal|eyebrow|section--alt/, 'без появления по прокрутке, метки и линии сверху');
+  for (const dict of [ua, en]) {
+    assert.equal(dict.cases.word, undefined);
+    assert.equal(dict.cases.prev, undefined);
+    assert.ok(dict.cases.title.endsWith(dict.cases.titleAccent) && dict.cases.titleAccent.length < dict.cases.title.length);
+  }
 });
 
-test('слово-фон: «КЕЙСИ» / «CASES»; заголовок — широкий капс, вторая строка акцентом', () => {
-  assert.equal(ua.cases.word, 'КЕЙСИ');
-  assert.equal(en.cases.word, 'CASES');
-  assert.match(section, /<h2\b[^>]*class="display cases__title"[^>]*data-i18n="cases\.title"/);
-  assert.match(css, /\.cases__title::first-line\s*\{[^}]*color:\s*var\(--text\)/);
-});
-
-test('карточка: ниша-тег, название, бюджет, результат, CPA/CPS и номер', () => {
-  const tpl = section.split('<template data-case-card>')[1].split('</template>')[0];
+test('карточка: аватар, ниша-тег, номер, название, CPA/CPS, бюджет, результат — кнопка', () => {
   for (const f of ['niche', 'name', 'budget', 'result', 'cpa']) assert.match(tpl, new RegExp(`data-f="${f}"`), f);
   assert.match(tpl, /data-case-num/);
+  assert.match(tpl, /data-case-avatar[^>]*aria-hidden="true"/, 'аватар — украшение, имя читается из названия');
+  assert.match(tpl, /data-case-letter/);
   assert.match(tpl, /<button\b/, 'карточка — кнопка: Enter и Space открывают модалку');
 });
 
-test('мобильный и reduced-motion: горизонтальный свайп со scroll-snap, без закрепления', () => {
+test('аватар: /img/cases/<id>.webp через publicUrl, запасной — первая буква имени; сбой загрузки убирает <img>', async () => {
+  assert.match(js, /publicUrl\(avatarPath\(item\.id\)\)/);
+  assert.match(js, /addEventListener\('error',\s*\(\)\s*=>\s*img\.remove\(\)/);
+  assert.match(js, /addEventListener\('load',\s*\(\)\s*=>\s*avatar\.classList\.add\('has-image'\)/);
+  // чистые помощники — без DOM
+  const src = read('src/sections/cases.js');
+  const avatarPath = new Function(`return ${src.match(/export const avatarPath = ([^\n]+);/)[1]}`)();
+  const initial = new Function(`return ${src.match(/export const initial = ([^\n]+);/)[1]}`)();
+  assert.equal(avatarPath('finmap'), '/img/cases/finmap.webp');
+  assert.deepEqual(cases.map((c) => initial(c.name.ua)), ['C', 'F', 'G', 'К', 'О', 'В', 'T']);
+  assert.equal(initial('  «Monolit»'), 'M');
+  assert.equal(initial(''), '');
+  assert.match(css, /\.cases__avatar\s*\{[^}]*border-radius:\s*50%/);
+  assert.match(css, /\.cases__avatar\.has-image \.cases__avatar-img\s*\{[^}]*opacity:\s*1/);
+});
+
+test('лента едет по прокрутке страницы — только общий помощник showcaseScroll; перетаскивания и своего pin нет', () => {
+  assert.match(js, /import \{[^}]*\bshowcaseScroll\b[^}]*\} from '\.\.\/core\/motion-kit\.js'/);
+  assert.match(js, /showcaseScroll\(root, trackEl, \{ onProgress: paintBar \}\)/);
+  assert.match(js, /classList\.toggle\('is-static', !ok\)/, 'лента не поедет — запасная прокрутка пальцем');
+  assert.doesNotMatch(js, /pointerdown|pointermove|setPointerCapture|is-dragging/, 'перетаскивание убрано');
+  assert.doesNotMatch(js, /ScrollTrigger|gsap|pin:/, 'свой pin не пишем — он в motion-kit');
+  assert.match(js, /scaleX\(/, 'полоса пути — transform');
+});
+
+test('CSS: по умолчанию прокрутка пальцем со scroll-snap; на широком альбомном экране без is-static окно не скроллится', () => {
+  const wideBlocks = [];
+  const base = css.replace(/@media\s*\(min-width:\s*900px\)\s*and\s*\(orientation:\s*landscape\)\s*\{((?:[^{}]|\{[^{}]*\})*)\}/g, (_, body) => {
+    wideBlocks.push(body);
+    return '';
+  });
+  const wide = wideBlocks.join('\n');
   assert.match(base, /\.cases__viewport\s*\{[^}]*overflow-x:\s*auto/);
   assert.match(base, /scroll-snap-type:\s*x\s+mandatory/);
   assert.match(base, /scroll-snap-align:\s*start/);
-  assert.doesNotMatch(base, /\.is-pinned/, 'закрепление — только внутри min-width: 900px');
-  assert.doesNotMatch(css, /position:\s*sticky/, 'старой стопки нет');
+  assert.match(base, /\.cases__track\s*\{[^}]*display:\s*flex/, 'showcaseScroll ждёт полосу display:flex');
+  assert.match(wide, /\.section--cases:not\(\.is-static\) \.cases__viewport\s*\{[^}]*overflow:\s*visible/);
+  assert.match(css, /\.section--cases\s*\{[^}]*overflow-x:\s*clip/, 'лента шире экрана, но горизонтального скролла страницы нет');
+  assert.doesNotMatch(css, /position:\s*sticky|cursor:\s*grab/);
 });
 
-test('широкий экран: закреплённая сцена режет переполнение, карточки разного размера', () => {
-  assert.match(wide, /\.is-pinned/);
-  assert.match(wide, /overflow:\s*clip/, 'лента шире экрана, но горизонтального скролла страницы нет');
-  const sizes = new Set([...wide.matchAll(/--card-w:\s*([^;]+);/g)].map((m) => m[1].trim()));
-  assert.ok(sizes.size >= 3, `ширины карточек: ${[...sizes]}`);
-  assert.match(wide, /--card-dy:/, 'вертикальный сдвиг карточек');
-  assert.match(css, /\.cases__item--featured[^{]*\{[^}]*--card-w/, 'Cryptonite крупнее');
-});
-
-test('движение: pin + scrub на (min-width: 900px), длина — по ширине ленты, только transform/opacity', () => {
-  assert.match(js, /\(min-width:\s*900px\)/);
-  assert.match(js, /pin:/);
-  assert.match(js, /scrub:/);
-  assert.match(js, /scrollWidth/, 'длина закрепления считается от ширины ленты');
-  assert.match(js, /scaleX/, 'полоса прогресса растёт через scaleX');
-  const animated = [...js.matchAll(/\b(?:to|fromTo|set)\([^)]*?\{([^}]*)\}/g)].map((m) => m[1]).join(',');
-  for (const prop of ['width', 'height', 'left', 'top', 'filter', 'blur']) {
-    assert.doesNotMatch(animated, new RegExp(`\\b${prop}\\s*:`), `анимируется ${prop}`);
+test('облик: шрифт канала у заголовка, названий и цифр; акцентная карточка featured; заглушка «уточнити» видна', () => {
+  for (const sel of ['.section--cases .display.section__title', '.cases__name', '.cases__figure-value', '.case-modal__title']) {
+    const esc = sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    assert.match(css, new RegExp(`${esc}\\s*\\{[^}]*font-family:\\s*var\\(--font-head\\)[^}]*text-transform:\\s*uppercase`), sel);
   }
-  assert.match(js, /motionReady/);
+  assert.doesNotMatch(css, /--font-display|--font-mono/, 'прежних шрифтов (Unbounded, моно) в блоке нет');
+  assert.match(css, /\.cases__item--featured \.cases__card\s*\{[^}]*background:\s*var\(--grad\)[^}]*color:\s*var\(--accent-ink\)/);
+  assert.match(css, /\.cases__card \.is-tbd\s*\{/);
+  assert.match(css, /\d(?:\.\d+)?svh/, 'размеры от высоты окна');
+  assert.doesNotMatch(css, /\.section--cases\s*\{[^}]*background\s*:/, 'своего фона у блока нет');
 });
 
 test('модалка работает как раньше: case_open, trapFocus, lockScroll, Esc', () => {
@@ -83,9 +100,10 @@ test('модалка работает как раньше: case_open, trapFocus,
   assert.match(js, /'cancel'/);
 });
 
-test('клавиатура в ленте: стрелки переводят фокус между карточками', () => {
+test('клавиатура: стрелки переводят фокус между карточками, карточка за краем докручивается', () => {
   assert.match(js, /ArrowRight/);
   assert.match(js, /ArrowLeft/);
+  assert.match(js, /'focusin'/);
 });
 
 test('длинные названия не рвутся посреди слова', () => {
