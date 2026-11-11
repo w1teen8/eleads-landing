@@ -4,6 +4,7 @@
 // видео-отзыв выбранного клиента (reviews.items.*.video; пусто — аватар и «відео-відгук скоро»), два слота отзывов.
 // Справа ряд круглых аватаров клиентов, карточка отзыва выбранного и цифры. Отзывы сами листаются раз в 10 с.
 import { test } from 'node:test';
+import { existsSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
 import { reviewAvatar, reviewVideo, isTbd } from '../src/sections/reviews-model.js';
@@ -59,12 +60,14 @@ test('большой круг слева — видео-отзыв выбран�
   assert.match(js, /stage\.show\(i\)/, 'смена отзыва меняет и большой круг');
 });
 
-test('видео-отзывы: два слота, путь к файлу — строка словаря (правится в админке), пока пусто', () => {
+test('видео-отзывы: два слота, путь к файлу — строка словаря (правится в админке), файлы лежат в public/', () => {
   for (const dict of [ua, en]) {
     assert.equal(dict.reviews.items.length, 2, 'клиент: «Додати два відеовідгуки»');
     for (const item of dict.reviews.items) {
       assert.deepEqual(Object.keys(item), ['name', 'role', 'quote', 'case', 'video']);
-      assert.equal(item.video, '', 'видео клиент ещё не прислал');
+      // 2026-11-11: пользователь прислал оба видео (9:16), сжаты в public/video/reviews/
+      assert.equal(item.video, `video/reviews/${item.case}.mp4`);
+      assert.ok(existsSync(new URL(`../public/${item.video}`, import.meta.url)), item.video);
     }
   }
   // формат пути — тот же, что проверяет админка

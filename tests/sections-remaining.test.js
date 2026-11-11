@@ -103,7 +103,8 @@ test('нет выдуманных фактов: отзывы и посты бе�
   assert.deepEqual(ua.materials.items.slice(1).map((i) => i.title), ['уточнити', 'уточнити', 'уточнити']);
   // T42: два слота видео-отзывов (клиент: «Додати два відеовідгуки») — третьего нет, видео пока нет
   assert.equal(ua.reviews.items.length, 2);
-  for (const item of [...ua.reviews.items, ...en.reviews.items]) assert.equal(item.video, '');
+  // видео прислал пользователь (2026-11-11) — путь к реальному файлу, не заглушка
+  for (const item of [...ua.reviews.items, ...en.reviews.items]) assert.match(item.video, /^video\/reviews\/[a-z]+\.mp4$/);
 });
 
 // T27: лайтбокс форматов убран по правке пользователя — телефон не кликабелен (tests/formats-phone.test.js)

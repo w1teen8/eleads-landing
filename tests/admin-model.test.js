@@ -141,7 +141,8 @@ test('разделы: в порядке страницы, с человечес�
     const video = fieldOf(`reviews.items.${i}.video`);
     assert.equal(video.section, 'reviews');
     assert.equal(video.kind, 'file');
-    assert.deepEqual(video.slots.map((s) => [s.lang, s.value]), [['ua', ''], ['en', '']]);
+    const file = ['video/reviews/mukhin.mp4', 'video/reviews/dombovetskyi.mp4'][i]; // 2026-11-11: видео подключены
+    assert.deepEqual(video.slots.map((s) => [s.lang, s.value]), [['ua', file], ['en', file]]);
   }
   // T42: цифры GEO и шаги экосистемы — строки словарей, админка их показывает
   for (const key of ['geo.regions.europe.users', 'geo.regions.europe.ukrainians', 'geo.regions.america.ukrainians', 'geo.regions.worldwide.users']) {

@@ -8,3 +8,4 @@ __pycache__/
 .autopilot/serve.*
 eleads-dev.zip
 Photos/
+/Video/
