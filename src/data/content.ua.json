@@ -274,7 +274,7 @@
       "cpa": "CPA / CPS"
     },
     "cta": {
-      "label": "Отримати точний прогноз",
+      "label": "Обговорити мій проєкт",
       "arrow": "→"
     },
     "live": "Прогноз на {budget}: покази {impressions}, кліки {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}.",

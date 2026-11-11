@@ -275,7 +275,7 @@
       "cpa": "CPA / CPS"
     },
     "cta": {
-      "label": "Get an exact forecast",
+      "label": "Discuss my project",
       "arrow": "→"
     },
     "live": "Forecast for {budget}: impressions {impressions}, clicks {clicks}, {goal} {conversions}, CPC {cpc}, CPA {cpa}.",
