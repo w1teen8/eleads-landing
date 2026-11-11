@@ -138,12 +138,12 @@ test('14 CTA: заголовок, текст и кнопка без измене
   const scene = s.match(/<div class="cta__scene" data-cta-photo>([\s\S]*?)<\/div>/);
   assert.ok(scene, 'фото на месте телефона');
   const pic = scene[1];
-  assert.match(pic, /<img class="cta__scene-bg" src="\/img\/photo\/volodymyr-cta-scene-800\.webp" srcset="\/img\/photo\/volodymyr-cta-scene-800\.webp 800w, \/img\/photo\/volodymyr-cta-scene-1200\.webp 1200w"/);
+  assert.doesNotMatch(pic, /cta__scene-bg/, 'улицы за фигурой больше нет — фон блока шёлк');
   assert.match(pic, /<img class="cta__scene-cut" src="\/img\/photo\/volodymyr-cta-cut-800\.webp" srcset="\/img\/photo\/volodymyr-cta-cut-800\.webp 800w, \/img\/photo\/volodymyr-cta-cut-1200\.webp 1200w"/);
-  assert.equal((pic.match(/width="800" height="1020"/g) || []).length, 2, 'оба слоя одного размера — без сдвига вёрстки');
+  assert.match(pic, /width="800" height="1020"/, 'размер фигуры — без сдвига вёрстки');
   assert.match(pic, /class="cta__scene-cut"[^>]*data-i18n-attr="alt:cta\.photoAlt"/, 'alt — из словаря, у фигуры');
-  assert.equal((pic.match(/loading="lazy"/g) || []).length, 2);
-  for (const f of ['scene-800', 'scene-1200', 'cut-800', 'cut-1200']) {
+  assert.match(pic, /loading="lazy"/);
+  for (const f of ['cut-800', 'cut-1200']) {
     assert.ok(existsSync(new URL(`../public/img/photo/volodymyr-cta-${f}.webp`, import.meta.url)), f);
   }
   // ключи чата больше не используются
@@ -157,8 +157,6 @@ test('14 CTA: заголовок, текст и кнопка без измене
 
 test('14 CTA: фото без рамки — улица растворяется в фон, фигура поверх с тёплым контуром; кадр крупный, забор ниже края', () => {
   assert.doesNotMatch(ctaCss, /\.cta__photo|::after/, 'рамки и старого фото нет');
-  assert.match(ctaCss, /\.cta__scene-bg\s*\{[^}]*mask-image:\s*radial-gradient/, 'улица плавно уходит в фон');
-  assert.match(ctaCss, /\.cta__scene-bg\s*\{[^}]*brightness/, 'улица притемнена');
   assert.match(ctaCss, /\.cta__scene-cut\s*\{[^}]*drop-shadow/, 'тёплый контур фигуры');
   assert.match(ctaCss, /\.cta__glow\s*\{[^}]*var\(--accent-2\)/, 'свечение за головой');
   // широкий экран: кадр выше блока в 1,25 раза — сложенные руки (≈74% кадра) видны
@@ -167,22 +165,22 @@ test('14 CTA: фото без рамки — улица растворяется
   assert.doesNotMatch(ctaCss, /@keyframes|animation:/, 'движение — только на холсте');
 });
 
-test('14 CTA: живой фон — топографические линии с волной света; холст из JS, только пока блок виден', async () => {
+test('14 CTA: фон «Silk» на весь блок — шёлковая ткань из линий; холст из JS, только пока блок виден', async () => {
   assert.doesNotMatch(section(html, 'cta'), /<canvas/, 'в HTML холста нет — его добавляет cta.js');
   assert.match(ctaJs, /document\.createElement\('canvas'\)/);
+  assert.match(ctaJs, /canvas\.className = 'cta__silk'/);
+  assert.match(ctaCss, /\.cta__silk\s*\{[^}]*position:\s*absolute[^}]*inset:\s*0/, 'на весь блок');
   assert.match(ctaJs, /IntersectionObserver/);
   assert.match(ctaJs, /visibilitychange/);
-  assert.match(ctaJs, /if \(reduced\) return;/, 'reduced-motion — линии стоят, без волны');
-  const { LINES, contourSegments, wavePos, hexRgb } = await import('../src/sections/cta-lines.js');
-  assert.ok(LINES.base <= 0.06 && LINES.wave <= 0.4, '«линии менее заметными»');
-  const seg = contourSegments(200, 100, { cell: 10, levels: 6 });
-  assert.ok(seg.length > 0 && seg.length % 4 === 0, 'отрезки по 4 числа');
-  assert.ok(seg.every((n) => Number.isFinite(n) && n >= -0.001 && n <= 210), 'внутри холста');
-  assert.deepEqual(contourSegments(0, 100), []);
-  assert.deepEqual(contourSegments(200, 100, { cell: 10, levels: 6 }), seg, 'один и тот же рисунок');
-  assert.ok(wavePos(0) < 0 && wavePos(5) > wavePos(0), 'волна идёт слева направо');
+  assert.doesNotMatch(ctaJs, /cta-lines|contourSegments/, 'топографических линий больше нет');
+  const { SILK, UNIT_H, silkY, sheenOf, lineCount, hexRgb } = await import('../src/sections/cta-silk.js');
+  assert.equal(UNIT_H, 877);
+  assert.ok(lineCount() * SILK.gap >= UNIT_H + 60, 'линии закрывают всю высоту');
+  assert.equal(silkY(5, 100, 2), silkY(5, 100, 2), 'один и тот же рисунок');
+  assert.notEqual(silkY(5, 100, 2), silkY(5, 100, 3), 'ткань движется');
+  for (const t of [0, 1.3, 7]) for (const i of [0, 10, 40]) { const s = sheenOf(i, t); assert.ok(s >= 0 && s <= 1); }
+  assert.ok(SILK.base + SILK.sheen <= 0.4, 'ткань не перебивает текст');
   assert.deepEqual(hexRgb('#FFD23F'), [255, 210, 63]);
-  assert.deepEqual(hexRgb('#fff'), [255, 255, 255]);
   assert.equal(hexRgb('red'), null);
 });
 

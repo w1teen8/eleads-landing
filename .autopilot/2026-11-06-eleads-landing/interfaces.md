@@ -399,3 +399,9 @@ export function forecast(input, rates): Forecast
 - `cta-lines.js`: `LINES {base, wave, cell, levels, scale, z, speed}`, `relief(x, y, z)`, `contourSegments(w, h, opts)` → [x1, y1, x2, y2, …], `wavePos(seconds)`, `hexRgb(value)`.
 - `cta.js`: создаёт `canvas.cta__lines` первым ребёнком секции; цвета — `--accent`, `--accent-2`, `--text`; рисует только при видимости блока и открытой вкладке.
 
+## Финальный экран 14 — фон «Silk» (2026-11-11, заменяет живой фон с линиями)
+
+- Разметка: `.cta__stage > .cta__scene[data-cta-photo]` > `span.cta__glow` + `img.cta__scene-cut`; кадра с улицей (`cta__scene-bg`) и `cta-lines.js` больше нет.
+- `cta-silk.js`: `SILK {gap, step, a1, k1, v1, a2, k2, v2, base, sheen, width}`, `UNIT_H = 877`, `silkY(i, x, t)`, `sheenOf(i, t)`, `lineCount()`, `hexRgb(value)`.
+- `cta.js`: создаёт `canvas.cta__silk` первым ребёнком секции; рисует в единицах высоты блока; цвета — `--accent`, `--accent-2`.
+
