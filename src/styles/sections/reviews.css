@@ -4,6 +4,9 @@
    Справа — метка, ряд круглых аватаров клиентов (выбранный — с кольцом прогресса до следующего отзыва), карточка отзыва
    выбранного и три цифры. На широком экране блок — ровно экран под шапкой: размеры — от высоты окна (svh). На телефоне
    большой круг сверху (220px), кружки клиентов прокручиваются внутри ряда. Двигаются только transform и opacity. */
+/* 2026-11-11 (выбор 10-2 + «видео 9 на 16 … вместо кружка»): слева вертикальная карточка 9:16 на всю высоту блока
+   (рамка тем же градиентом), справа сверху вниз — заголовок, кружки клиентов, отзыв, цифры. Ширина карточки — --vd-d,
+   высота — из пропорции; на широком экране она считается от высоты окна. */
 
 .section--reviews {
   --rv-gap: clamp(1rem, 2.4svh, 1.375rem);
@@ -44,17 +47,19 @@
   min-width: 0;
 }
 
-/* кольцо: градиент жёлтый → оранжевый снаружи, полоса фона между кольцом и кадром */
+/* рамка: градиент жёлтый → оранжевый снаружи, полоса фона между рамкой и кадром; кадр 9:16 */
 .reviews__circle {
   --vd-d: clamp(13.75rem, 10rem + 8vw, 18.75rem);
   --vd-ring: 3px;
   --vd-gap: 6px;
+  --vd-r: var(--r-card-lg);
   position: relative;
   flex: none;
   width: var(--vd-d);
-  aspect-ratio: 1;
+  max-width: 100%;
+  aspect-ratio: 9 / 16;
   padding: var(--vd-ring);
-  border-radius: 50%;
+  border-radius: var(--vd-r);
   background: var(--grad);
 }
 
@@ -66,7 +71,7 @@
   height: 100%;
   overflow: hidden;
   border: var(--vd-gap) solid var(--bg);
-  border-radius: 50%;
+  border-radius: calc(var(--vd-r) - var(--vd-ring));
   background: var(--surface);
 }
 
@@ -432,8 +437,13 @@ html:not(.js-anim) .reviews__arc {
     font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
   }
 
+  /* высота карточки ≈ высота блока без полей и подписи «скоро»: ширина = высота × 9/16 */
   .reviews__circle {
-    --vd-d: clamp(12rem, min(20vw, 40svh), 24rem);
+    --vd-d: min(calc((100svh - var(--header-h) - 2 * var(--screen-pad) - 2.5rem) * 9 / 16), 30vw);
+  }
+
+  .reviews .reviews__head {
+    margin-bottom: clamp(0.5rem, 3svh, 2rem);
   }
 
   .reviews__tab {

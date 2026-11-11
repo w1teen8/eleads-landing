@@ -877,12 +877,10 @@
 
       <section id="reviews" class="section section--reviews section--alt" data-section="reviews" aria-labelledby="reviews-title">
         <div class="container">
-          <div class="section__head reviews__head">
-            <h2 id="reviews-title" class="display section__title" data-i18n="reviews.title" data-title-accent="reviews.titleAccent"></h2>
-          </div>
           <div class="reviews__body">
-            <!-- видео-отзыв выбранного клиента (T42): большой круг, как видео-кружок Telegram. Файл — reviews.items.*.video
-                 (public/video/reviews/), пусто — аватар клиента и «відео-відгук скоро»; кнопка ▶ — только когда файл есть -->
+            <!-- видео-отзыв выбранного клиента: вертикальное видео 9:16 (пользователь: «надо чтобы просто видео 9 на 16 проигрывался
+                 вместо кружка как на 10-2»). Файл — reviews.items.*.video (public/video/reviews/), пусто — аватар клиента и
+                 «відео-відгук скоро»; кнопка ▶ — только когда файл есть. Заголовок блока — в правой колонке (раскладка 10-2) -->
             <div class="reviews__stage">
               <div class="reviews__circle" data-rv-circle>
                 <div class="reviews__screen" data-rv-screen><span class="reviews__big-letter" data-rv-big-letter aria-hidden="true"></span></div>
@@ -892,6 +890,9 @@
             </div>
             <!-- отзывы (T35): кружки клиентов — вкладки; карточка — отзыв выбранного; листаются сами раз в 10 с -->
             <div class="reviews" data-rv>
+              <div class="section__head reviews__head">
+                <h2 id="reviews-title" class="display section__title" data-i18n="reviews.title" data-title-accent="reviews.titleAccent"></h2>
+              </div>
               <p class="reviews__kicker" id="rv-kicker" data-i18n="reviews.kicker"></p>
               <div class="reviews__row" role="tablist" aria-labelledby="rv-kicker" data-rv-list>
               <button type="button" class="reviews__tab" role="tab" id="rv-tab-0" aria-selected="true" tabindex="0" aria-controls="rv-panel" data-rv-tab="0">

@@ -177,3 +177,15 @@ test('облик: кольца — box-shadow/border, движение — то�
   assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/i, 'литерал цвета');
   assert.match(css, /\d(?:\.\d+)?svh/, 'на десктопе — от высоты окна');
 });
+
+// 2026-11-11: раскладка 10-2 и «видео 9 на 16 … вместо кружка»
+test('видео-отзыв — вертикальная карточка 9:16, заголовок блока — в правой колонке', () => {
+  const rcss = read('src/styles/sections/reviews.css');
+  assert.match(rcss, /\.reviews__circle \{[^}]*aspect-ratio: 9 \/ 16;/);
+  assert.doesNotMatch(rcss, /\.reviews__circle \{[^}]*border-radius: 50%/);
+  const sec = read('index.html').split(/<section\b[^>]*\sid="reviews"/)[1].split('</section>')[0];
+  const col = sec.indexOf('<div class="reviews" data-rv>');
+  const head = sec.indexOf('class="section__head reviews__head"');
+  assert.ok(col > -1 && head > col, 'заголовок внутри правой колонки');
+  assert.ok(sec.indexOf('reviews__stage') < col, 'видео — слева');
+});
