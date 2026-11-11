@@ -131,8 +131,9 @@
     padding-block: var(--screen-pad);
   }
 
+  /* «Финальный блок сделай больше» (2026-11-11): заголовок, текст, кнопка и фото крупнее, фото — на всю высоту экрана */
   .cta__inner {
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
     min-height: calc(100svh - var(--header-h) - 2 * var(--screen-pad));
   }
 
@@ -144,15 +145,24 @@
     width: auto;
     max-width: 100%;
     height: 100%;
-    max-height: 46rem;
     min-height: 22rem;
   }
 
   .section--cta .display.section__title {
-    font-size: clamp(3rem, min(2rem + 5vw, 15svh), 8.5rem);
+    font-size: clamp(3.5rem, min(2rem + 6.4vw, 19svh), 11rem);
+  }
+
+  .cta__body {
+    gap: clamp(1.5rem, 4svh, 3rem);
   }
 
   .cta__text {
-    font-size: clamp(1rem, min(1.3125rem, 2.6svh), 1.3125rem);
+    max-width: 40ch;
+    font-size: clamp(1.125rem, min(1.7vw, 3.3svh), 1.75rem);
+  }
+
+  .cta__btn {
+    font-size: clamp(1rem, min(1.15vw, 2.3svh), 1.375rem);
+    padding: clamp(0.75rem, 1.6svh, 1.1rem) clamp(0.75rem, 1.6svh, 1.1rem) clamp(0.75rem, 1.6svh, 1.1rem) clamp(1.5rem, 2vw, 2.25rem);
   }
 }
