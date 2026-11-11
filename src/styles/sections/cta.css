@@ -93,9 +93,9 @@
 
 .cta__scene {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  top: -2%;
+  left: -14%;
+  width: 128%;
   aspect-ratio: 800 / 1020;
 }
 
@@ -139,8 +139,8 @@
     max-width: 50%;
   }
 
-  /* сцена привязана к блоку, а не к колонке: кадр выше блока в 1,25 раза — сложенные руки (≈74% кадра) в кадре
-     («Так чтобы руки тоже было видно») */
+  /* сцена привязана к блоку, а не к колонке: кадр выше блока в 1,5 раза — Володимир крупно, голова у верха блока
+     («Давай приблизм владимира»; раньше 1,25 — с руками в кадре) */
   .cta__stage {
     position: absolute;
     inset: 0;
@@ -150,11 +150,11 @@
   }
 
   .cta__scene {
-    top: calc(var(--cta-h) * -0.022);
-    right: calc(var(--cta-h) * -0.065);
+    top: calc(var(--cta-h) * -0.06);
+    right: calc(var(--cta-h) * -0.1);
     left: auto;
     width: auto;
-    height: calc(var(--cta-h) * 1.25);
+    height: calc(var(--cta-h) * 1.5);
   }
 
   .section--cta .display.section__title {
