@@ -8,6 +8,19 @@
 // и ?nomotion=1 всё видно сразу в конечном виде.
 import { $, $$, on } from '../core/dom.js';
 import { reduced, motionReady } from '../core/motion.js';
+
+/** Плитка → калькулятор: «При нажатии на блок пускай перекидывает на калькулятор … сразу … забита желанная ниша».
+ *  Плитки — ссылки на #calculator (прокрутку делает motion.js); здесь выставляется тематика калькулятора по
+ *  data-calc-niche («Експерти» — без выбора: такой строки в калькуляторе нет). */
+export function pickNiche(id, doc = document) {
+  const select = doc.querySelector('#calc-niche');
+  if (!id || !select || ![...select.options].some((o) => o.value === id)) return false;
+  if (select.value !== id) {
+    select.value = id;
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  return true;
+}
 import { accentTitles } from '../core/title-accent.js';
 
 /** Наклон к курсору, градусы. */
@@ -81,6 +94,8 @@ function enter(root) {
 
 export function init(root) {
   accentTitles(root);
+  // клик по плитке ведёт к калькулятору (ссылка #calculator) и сразу выбирает в нём тематику
+  for (const card of $$('[data-calc-niche]', root)) on(card, 'click', () => pickNiche(card.dataset.calcNiche));
   if (reduced) return;
   enter(root);
   if (!window.matchMedia?.('(hover: hover) and (pointer: fine)').matches) return;

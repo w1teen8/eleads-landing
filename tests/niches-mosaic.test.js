@@ -103,3 +103,14 @@ test('наведение: подъём и наклон плитки, рост и
   assert.match(css, /\.niches__card--other:hover \.niches__icon[^{]*\{[^}]*animation:\s*niches-fly 700ms/);
   assert.match(css, /\.niches__card--other:hover \.niches__arrow[^{]*\{[^}]*transform:\s*rotate\(/);
 });
+
+// «При нажатии на блок пускай перекидывает на калькулятор … сразу чтобы была забита желанная ниша»
+test('плитки ниш — ссылки на калькулятор с тематикой; «Експерти» — без тематики', () => {
+  const sec = html.split(/<section\b[^>]*\sid="niches"/)[1].split('</section>')[0];
+  const ids = [...sec.matchAll(/<a class="niches__card[^"]*" href="#calculator" data-niches-card data-calc-niche="(\w*)">/g)].map((m) => m[1]);
+  assert.deepEqual(ids, ['business', '', 'crypto', 'education', 'auto', 'finance', 'business']);
+  assert.doesNotMatch(sec, /<article/);
+  const js = read('src/sections/niches.js');
+  assert.match(js, /export function pickNiche\(id, doc = document\)/);
+  assert.match(js, /dispatchEvent\(new Event\('change'/);
+});
