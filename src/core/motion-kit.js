@@ -217,6 +217,16 @@ export function stagger(items, { onEach, trigger, start = STAGGER.start } = {}) 
 /** Лента едет только на широком альбомном экране — там, где блок ровно один экран (layout.css). */
 export const SHOWCASE_MEDIA = '(min-width: 900px) and (orientation: landscape)';
 
+/**
+ * Где закрепить блок: по центру свободного места под шапкой. Блок теперь по высоте содержимого
+ * (2026-11-11, равные промежутки между блоками), поэтому, пока он стоит, вид тот же, что у блока-экрана:
+ * пусто сверху и снизу поровну. Блок выше этого места — встаёт по центру, его поля уходят под шапку.
+ */
+const pinTop = (section) => {
+  const header = cssPx('--header-h', 0);
+  return header + (window.innerHeight - header - section.offsetHeight) / 2;
+};
+
 const cssPx = (name, fallback) => {
   const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const n = parseFloat(raw);
@@ -237,7 +247,7 @@ const cssPx = (name, fallback) => {
  *                прокрутки (overflow: visible / clip);
  *   viewport   — «окно» дорожки, по умолчанию track.parentElement: путь = track.scrollWidth − viewport.clientWidth;
  *   media      — где лента едет (по умолчанию SHOWCASE_MEDIA); вне media закрепление снимается, transform чистится;
- *   offset     — отступ закрепления от верха окна, px (по умолчанию --header-h из tokens.css);
+ *   offset     — отступ закрепления от верха окна, px (по умолчанию — по центру места под шапкой, pinTop);
  *   speed      — пикселей прокрутки страницы на пиксель пути ленты (по умолчанию 1: лента едет как обычная прокрутка);
  *   onProgress — (p: 0..1) на каждое обновление прокрутки: полоса прогресса, счётчик, точки.
  *
@@ -264,7 +274,7 @@ export function showcaseScroll(section, track, { viewport, media = SHOWCASE_MEDI
       const frame = viewport || track.parentElement || section;
       // путь считается заново на каждый refresh: дорожку могут наполнить позже (карточки из JSON, шрифты, язык)
       const distance = () => Math.max(0, track.scrollWidth - frame.clientWidth);
-      const top = () => offset ?? cssPx('--header-h', 0);
+      const top = () => offset ?? pinTop(section);
       const tween = gsap.to(track, {
         x: () => -distance(),
         ease: 'none',
@@ -312,7 +322,7 @@ export function showcaseScroll(section, track, { viewport, media = SHOWCASE_MEDI
  *   section    — узел, который закрепляется; его высота должна быть ≤ окна минус offset;
  *   length     — () => px: сколько прокрутки страница стоит на месте (считается заново на каждый refresh);
  *   media      — где закреплять (по умолчанию SHOWCASE_MEDIA — там, где блок ровно один экран);
- *   offset     — отступ закрепления от верха окна, px (по умолчанию --header-h из tokens.css);
+ *   offset     — отступ закрепления от верха окна, px (по умолчанию — по центру места под шапкой, pinTop);
  *   onProgress — (p: 0..1) сразу после включения и на каждое обновление прокрутки; до закрепления p = 0, после — 1;
  *   onRefresh  — перемерить раскладку блока (смена окна, языка, шрифтов) — до следующего onProgress;
  *   onRevert   — вышли из media или destroy(): блок снимает свои инлайн-стили и встаёт в конечный вид.
@@ -332,7 +342,7 @@ export function pinScrub(section, { length, media = SHOWCASE_MEDIA, offset, onPr
     const { gsap, ScrollTrigger } = api;
     mm = gsap.matchMedia();
     mm.add(media, () => {
-      const top = () => offset ?? cssPx('--header-h', 0);
+      const top = () => offset ?? pinTop(section);
       const state = { p: 0 };
       const tween = gsap.to(state, {
         p: 1,

@@ -399,7 +399,7 @@
 @media (min-width: 900px) and (orientation: landscape) {
   .section--stats {
     --stats-pad: clamp(1rem, 3.6svh, 2.125rem);
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
   }
 
   .stats__top {

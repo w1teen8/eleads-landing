@@ -184,11 +184,13 @@ test('14 CTA: фон «Silk» на весь блок — шёлковая тка
   assert.equal(hexRgb('red'), null);
 });
 
-test('13 и 14 — ровно экран на широком; телефон 13 и фото 14 — на всю высоту блока', () => {
+test('13 — не выше телефона, 14 — ровно экран на широком; телефон 13 и фото 14 — на всю высоту блока', () => {
   for (const id of ['faq', 'cta']) {
     const c = strip(read(`src/styles/sections/${id}.css`));
     const wide = c.slice(c.indexOf('@media (min-width: 900px) and (orientation: landscape)'));
-    assert.match(wide, /min-height:\s*calc\(100svh - var\(--header-h\) - 2 \* var\(--screen-pad\)\)/, id);
+    // 2026-11-11 равные промежутки: FAQ — не выше телефона (46rem), финальный экран — по-прежнему во всё окно
+    if (id === 'faq') assert.match(wide, /min-height:\s*min\(calc\(100svh - var\(--header-h\) - 2 \* var\(--screen-pad\)\), 46rem\)/, id);
+    else assert.match(wide, /min-height:\s*calc\(100svh - var\(--header-h\) - 2 \* var\(--screen-pad\)\)/, id);
     if (id === 'faq') assert.match(wide, /\.faq__stage \.phone\s*\{[^}]*height:\s*100%/, 'faq: по высоте');
     // 2026-11-11: фото 14 привязано к самому блоку и выше его — на всю высоту
     else assert.match(wide, /\.cta__stage\s*\{[^}]*position:\s*absolute;\s*inset:\s*0/, 'cta: фото на всю высоту блока');

@@ -41,7 +41,7 @@ test('облик и формат: шрифт канала у H2, размеры 
     const c = css(id);
     assert.match(c, new RegExp(`\\.section--${id} \\.display\\.section__title\\s*\\{[^}]*font-family:\\s*var\\(--font-head\\)[^}]*text-transform:\\s*uppercase`), id);
     assert.match(c, /\d(?:\.\d+)?svh/, `${id}: размеры не от высоты окна`);
-    assert.match(c, new RegExp(`@media \\(min-width: 900px\\) and \\(orientation: landscape\\)\\s*\\{\\s*\\.section--${id}\\s*\\{\\s*padding-block:\\s*var\\(--screen-pad\\)`), `${id}: поля экрана`);
+    assert.match(c, new RegExp(`@media \\(min-width: 900px\\) and \\(orientation: landscape\\)\\s*\\{\\s*\\.section--${id}\\s*\\{\\s*padding-block:\\s*calc\\(var\\(--block-gap\\) / 2\\)`), `${id}: поля — половина общего промежутка между блоками`);
     assert.doesNotMatch(c, new RegExp(`\\.section--${id}\\s*\\{[^}]*background\\s*:`), `${id}: свой фон`);
     assert.doesNotMatch(c, /--font-display|--font-mono/, `${id}: прежние шрифты`);
     assert.match(section(id), new RegExp(`<h2\\b[^>]*data-title-accent="${id}\\.titleAccent"`), `${id}: акцентная строка`);

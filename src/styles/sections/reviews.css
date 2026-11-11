@@ -426,7 +426,7 @@ html:not(.js-anim) .reviews__arc {
 /* — экран-блок (H15): целиком между шапкой и низом окна; размеры — от высоты окна — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--reviews {
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
   }
 
   .reviews__head {

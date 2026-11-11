@@ -569,7 +569,7 @@
 @media (min-width: 900px) and (orientation: landscape) {
   .section--calculator {
     --calc-key-h: clamp(40px, 5.8svh, 56px);
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
   }
 
   .calc__head {

@@ -210,7 +210,7 @@
 
 @media (min-width: 900px) and (orientation: landscape) {
   .section--ecosystem {
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
   }
 
   .eco__head {

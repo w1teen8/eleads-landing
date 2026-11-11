@@ -583,7 +583,7 @@
      Телефон — вся высота своей области (с потолком), ширина — от пропорций — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--formats {
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
   }
 
   .section--formats .container {
@@ -591,7 +591,8 @@
     grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     grid-template-rows: auto minmax(0, 1fr) auto;
     column-gap: var(--formats-gap);
-    min-height: calc(100svh - var(--header-h) - 2 * var(--screen-pad));
+    /* не выше телефона (max-height 46rem): иначе под ним пустая полоса и промежуток до следующего блока больше */
+    min-height: min(calc(100svh - var(--header-h) - 2 * var(--screen-pad)), 46rem);
   }
 
   .formats__body {

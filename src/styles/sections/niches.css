@@ -297,7 +297,7 @@
 @media (min-width: 900px) and (orientation: landscape) {
   .section--niches {
     --niches-pad: clamp(1rem, 3.4svh, 2.25rem);
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
   }
 
   .niches__top {

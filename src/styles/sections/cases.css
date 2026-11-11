@@ -675,7 +675,7 @@
 /* — широкий альбомный экран: блок ровно в один экран под шапкой — поля и заголовок от высоты окна — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--cases {
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
   }
 
   .section--cases .display.section__title {

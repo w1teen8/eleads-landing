@@ -164,7 +164,7 @@
 /* — широкий альбомный экран: ступени в ряд, высота растёт слева направо, общее основание снизу; блок — один экран — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--process {
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
     --step-h0: clamp(8.5rem, 16svh, 12rem); /* самая низкая ступень */
     --step-dh: 5.34svh; /* прибавка на шаг: ≈50px на 1903×937 */
   }

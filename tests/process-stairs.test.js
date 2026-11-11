@@ -94,7 +94,7 @@ test('motion-kit: pinScrub — общий помощник: pin + pinSpacing + s
   assert.match(fn, /if \(reduced \|\| !section \|\| typeof length !== 'function'\)/);
   assert.match(fn, /gsap\.matchMedia\(\)/);
   assert.match(fn, /start: \(\) => `top \$\{top\(\)\}px`/, 'закрепляется, когда блок встал под шапку');
-  assert.match(fn, /const top = \(\) => offset \?\? cssPx\('--header-h', 0\)/);
+  assert.match(fn, /const top = \(\) => offset \?\? pinTop\(section\)/);
   assert.match(fn, /end: \(\) => `\+=\$\{Math\.max\(1, Math\.round\(length\(\)\)\)\}`/);
   for (const opt of ['pin: true', 'pinSpacing: true', 'scrub: true', 'invalidateOnRefresh: true']) assert.ok(fn.includes(opt), opt);
   assert.match(fn, /onRevert\?\.\(\)/, 'вне media блок встаёт в конечный вид');

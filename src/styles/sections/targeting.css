@@ -174,7 +174,7 @@
 /* — экран-блок (H15): целиком между шапкой и низом окна; кегли — от высоты окна — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--targeting {
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
   }
 
   .tg__head {

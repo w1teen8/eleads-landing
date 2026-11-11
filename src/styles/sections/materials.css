@@ -281,7 +281,7 @@
     --mat-card-h: clamp(22rem, 59svh, 40rem);
     --mat-cover-h: 41%;
     --mat-pad: clamp(1rem, 2.1svh, 1.5rem) clamp(1.125rem, 1.1vw, 1.5rem);
-    padding-block: var(--screen-pad);
+    padding-block: calc(var(--block-gap) / 2);
   }
 
   .mat__top {

@@ -60,11 +60,14 @@ test('H14: весь сайт в палитре канала — цветов п�
   }
 });
 
-test('H15: на десктопе каждый блок — один экран под шапкой, содержимое по центру; размеры — от высоты окна', () => {
+// 2026-11-11 «Расстояние между блоками сделай одинаковое»: блок по высоте содержимого (не растягивается на экран),
+// поля — половина --block-gap, под лентами — весь промежуток; размеры внутри по-прежнему от высоты окна (svh)
+test('H15 + равные промежутки: на десктопе блок по содержимому, поля — половина общего промежутка; размеры — от высоты окна', () => {
   const screen = layout.match(/@media[^{]*min-width:\s*900px[^{]*\{([\s\S]*?\n)\}/)?.[1] || '';
   const rule = screen.match(/\.section\s*\{([^}]*)\}/)?.[1] || '';
-  assert.match(rule, /min-height:\s*calc\(100svh\s*-\s*var\(--header-h\)\)/, 'высота блока = окно минус шапка');
-  assert.match(rule, /align-content:\s*center/, 'содержимое по центру по вертикали');
+  assert.doesNotMatch(rule, /min-height/, 'блок не растягивается на экран — иначе промежутки разные');
+  assert.match(rule, /padding-block:\s*calc\(var\(--block-gap\) \/ 2\)/, 'поля — половина общего промежутка');
+  assert.match(screen, /\.ribbons \+ \.section\s*\{\s*padding-top:\s*var\(--block-gap\)/, 'под лентами — весь промежуток');
   for (const name of ['stats', 'niches', 'formats', 'calculator']) {
     const css = strip(read(`src/styles/sections/${name}.css`));
     assert.match(css, /\d(?:\.\d+)?svh/, `${name}.css: размеры не от высоты окна`);

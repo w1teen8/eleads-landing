@@ -31,11 +31,13 @@ test('правила клиента: без нижних надписей, ме�
   }
 });
 
-test('облик: заголовки шрифтом канала, блок — экран (screen-pad), только семантические переменные, без hex', () => {
+test('облик: заголовки шрифтом канала, поля блока — общий промежуток (block-gap), только семантические переменные, без hex', () => {
   for (const id of BLOCKS) {
     const c = css(id);
     assert.match(c, new RegExp(`\\.section--${id} \\.display\\.section__title\\s*\\{[^}]*font-family:\\s*var\\(--font-head\\)`), `${id}: заголовок`);
-    assert.match(c, /@media \(min-width: 900px\) and \(orientation: landscape\)[\s\S]*padding-block:\s*var\(--screen-pad\)/, `${id}: экран`);
+    // финальный экран (14) остаётся во всё окно — фото на весь блок; остальные — половина общего промежутка
+    const pad = id === 'cta' ? /padding-block:\s*var\(--screen-pad\)/ : /padding-block:\s*calc\(var\(--block-gap\) \/ 2\)/;
+    assert.match(c, new RegExp(`@media \\(min-width: 900px\\) and \\(orientation: landscape\\)[\\s\\S]*${pad.source}`), `${id}: поля`);
     assert.doesNotMatch(c, /#[0-9a-f]{3,8}\b/i, `${id}: hex`);
     assert.doesNotMatch(c, /font-display/, `${id}: Unbounded`);
   }
