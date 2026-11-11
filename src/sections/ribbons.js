@@ -13,12 +13,15 @@ import { marquee, reduced } from '../core/motion.js';
 const SPEED = { accent: 70, muted: -55 };
 /** Зазор между лентами и нижним краем кнопки / карточки первого экрана, px. */
 export const LIFT_GAP = 20;
+/** Доля свободного места, на которую ленты поднимаются («По ниже опусти» → «давай еще чуть ниже» → «еще чуть-чуть» → «еще капельку ниже» — 0: ленты ровно на срезе фото, нижнем крае первого экрана; число оставлено, чтобы можно было снова поднять). */
+export const LIFT_SHARE = 0;
 const WIDE = '(min-width: 900px) and (orientation: landscape)';
 
-/** Подъём лент: свободное место под самыми нижними элементами первого экрана минус зазор; не меньше 0. */
-export function liftFor(heroBottom, bottoms, gap = LIFT_GAP) {
+/** Подъём лент: доля LIFT_SHARE свободного места под самыми нижними элементами первого экрана за вычетом
+ *  зазора; не меньше 0. */
+export function liftFor(heroBottom, bottoms, gap = LIFT_GAP, share = LIFT_SHARE) {
   const free = Math.min(...bottoms.map((b) => heroBottom - b));
-  return Number.isFinite(free) ? Math.max(0, Math.round(free - gap)) : 0;
+  return Number.isFinite(free) ? Math.max(0, Math.round((free - gap) * share)) : 0;
 }
 
 function lift(root) {

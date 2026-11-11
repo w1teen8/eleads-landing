@@ -44,7 +44,8 @@ test('ленты: бегут через motion.marquee в разные стор�
   assert.match(css, /margin-top: calc\(-1 \* var\(--rb-lift, 0px\)\)/);
   const { liftFor, LIFT_GAP } = await import('../src/sections/ribbons.js');
   assert.equal(LIFT_GAP, 20);
-  assert.equal(liftFor(937, [864, 860]), 53, 'по самому нижнему элементу');
+  assert.equal(liftFor(937, [864, 860]), 0, '«еще капельку ниже»: ровно на срезе фото');
+  assert.equal(liftFor(937, [864, 860], 20, 0.5), 27, 'доля задаёт подъём');
   assert.equal(liftFor(720, [705]), 0, 'места нет — не поднимаем');
   assert.equal(liftFor(900, []), 0);
 });
