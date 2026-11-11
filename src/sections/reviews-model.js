@@ -34,3 +34,10 @@ export function reviewVideo(value) {
   const path = String(value ?? '').trim();
   return /^\/?(?!.*\.\.)[A-Za-z0-9_\-/.]+\.(?:mp4|webm)$/i.test(path) ? path : '';
 }
+
+/** Стоп-кадр видео-отзыва: файл рядом с видео с тем же именем и расширением .jpg (video/reviews/mukhin.mp4 →
+ *  video/reviews/mukhin.jpg). Пользователь: «Не думаю, что нужно эту фотку … выбрать какой-то стоп кадр». Нет видео — ''. */
+export function reviewPoster(value) {
+  const video = reviewVideo(value);
+  return video ? video.replace(/\.(?:mp4|webm)$/i, '.jpg') : '';
+}

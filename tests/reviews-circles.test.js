@@ -206,3 +206,16 @@ test('видео-отзыв играет сам, пока карточку ви�
   assert.match(js, /on\(document, 'pointerdown', unmuteOnGesture/);
   assert.match(js, /userPaused = true;/, 'пауза рукой — само не продолжает');
 });
+
+// 2026-11-11: «Не думаю, что нужно эту фотку … выбрать какой-то стоп кадр»
+test('пока видео не играет — стоп-кадр из видео (.jpg рядом с видео), без него — аватар', async () => {
+  const { reviewPoster } = await import('../src/sections/reviews-model.js');
+  assert.equal(reviewPoster('video/reviews/mukhin.mp4'), 'video/reviews/mukhin.jpg');
+  assert.equal(reviewPoster('/video/reviews/a.webm'), '/video/reviews/a.jpg');
+  assert.equal(reviewPoster(''), '');
+  assert.equal(reviewPoster('https://evil.example/a.mp4'), '');
+  for (const item of ua.reviews.items) {
+    assert.ok(existsSync(new URL(`../public/${reviewPoster(item.video)}`, import.meta.url)), `стоп-кадр ${item.case}`);
+  }
+  assert.match(js, /const poster = reviewPoster\(item\(index, 'video'\)\);/);
+});

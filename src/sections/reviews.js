@@ -16,7 +16,7 @@ import { reduced } from '../core/motion.js';
 import { flipSwap } from '../core/motion-kit.js';
 import { publicUrl } from '../core/public-url.js';
 import { avatarPath, initial } from './cases.js';
-import { reviewAvatar, reviewVideo, isTbd, STEP_MS } from './reviews-model.js';
+import { reviewAvatar, reviewVideo, reviewPoster, isTbd, STEP_MS } from './reviews-model.js';
 import { nextIndex } from './targeting-model.js';
 import data from '../data/cases.json';
 
@@ -87,12 +87,15 @@ function videoStage(root, { onPlaying, onEnded, onProgress }) {
     label();
   }
 
-  // аватар клиента: фото кейса (крупный файл), без фото и при сбое — буква; виден, пока видео не играет
+  // картинка в карточке, пока видео не играет: стоп-кадр видео (файл .jpg рядом с видео); нет кадра или видео —
+  // фото кейса (аватар); без фото и при сбое — буква
   function paintAvatar() {
     const found = avatarOf(index);
     if (letter) letter.textContent = initial(item(index, 'name'));
     circle.style.setProperty('--rv-accent', found?.accent || '');
-    const src = found ? (found.srcset ? publicUrl(avatarPath(String(item(index, 'case')).trim(), true)) : found.src) : '';
+    const avatar = found ? (found.srcset ? publicUrl(avatarPath(String(item(index, 'case')).trim(), true)) : found.src) : '';
+    const poster = reviewPoster(item(index, 'video'));
+    const src = poster ? publicUrl(poster) : avatar;
     if (img && img.dataset.src === src) return;
     img?.remove();
     img = null;
@@ -100,7 +103,17 @@ function videoStage(root, { onPlaying, onEnded, onProgress }) {
     if (!src) return;
     const next = el('img', { class: 'reviews__shot', attrs: { src, alt: '', decoding: 'async' }, dataset: { src } });
     on(next, 'load', () => img === next && screen.classList.add('has-image'), { once: true });
-    on(next, 'error', () => next.remove(), { once: true });
+    on(
+      next,
+      'error',
+      () => {
+        // стоп-кадра нет (новое видео без .jpg) — показываем аватар клиента
+        if (src === avatar || !avatar) return next.remove();
+        next.dataset.src = avatar;
+        next.src = avatar;
+      },
+      { once: true },
+    );
     img = next;
     screen.prepend(next);
   }
