@@ -11,6 +11,9 @@ import { accentTitles } from '../core/title-accent.js';
 import { reduced } from '../core/motion.js';
 import { PULSE_MS, nextStep } from './ecosystem-model.js';
 
+/** Где импульс не бежит сам: узкий экран. */
+export const NARROW_MEDIA = '(max-width: 899px)';
+
 export function init(root) {
   accentTitles(root);
   const steps = $$('[data-eco-step]', root);
@@ -20,6 +23,8 @@ export function init(root) {
   let current = Math.max(0, steps.findIndex((s) => s.classList.contains('is-on')));
   let timer = 0;
   const state = { hovered: false, inView: false, hidden: document.hidden };
+  // телефон: без автоматической смены подсветки (клиент 2026-11-11) — шаг загорается по нажатию
+  const narrow = window.matchMedia?.(NARROW_MEDIA);
 
   const light = (i) => {
     current = i;
@@ -30,13 +35,15 @@ export function init(root) {
   function sync() {
     clearTimeout(timer);
     timer = 0;
-    if (reduced || state.hovered || !state.inView || state.hidden) return;
+    if (reduced || narrow?.matches || state.hovered || !state.inView || state.hidden) return;
     timer = setTimeout(() => {
       light(nextStep(current, total));
       sync();
     }, PULSE_MS);
   }
 
+  // на телефоне шаг загорается по нажатию
+  steps.forEach((step, i) => on(step, 'click', () => narrow?.matches && light(i)));
   steps.forEach((step, i) => {
     on(step, 'pointerenter', (e) => {
       if (e.pointerType !== 'mouse') return;

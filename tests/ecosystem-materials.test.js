@@ -156,3 +156,11 @@ test('12: лента едет по прокрутке через showcaseScroll;
   assert.doesNotMatch(matCss, /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/i, 'цвета — только переменные');
   assert.doesNotMatch(ecoCss, /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/i, 'цвета — только переменные');
 });
+
+// клиент 2026-11-11: «Тут предлагаю убрать автоматическую смену подсветки блока» (телефон)
+test('11: на узком экране импульс сам не бежит, шаг загорается по нажатию', () => {
+  const eco = read('src/sections/ecosystem.js');
+  assert.match(eco, /export const NARROW_MEDIA = '\(max-width: 899px\)';/);
+  assert.match(eco, /if \(reduced \|\| narrow\?\.matches \|\|/);
+  assert.match(eco, /on\(step, 'click', \(\) => narrow\?\.matches && light\(i\)\)/);
+});

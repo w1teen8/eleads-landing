@@ -15,6 +15,10 @@ import { accentTitles } from '../core/title-accent.js';
 import { pinScrub } from '../core/motion-kit.js';
 import { stepProgress, stepPose, pinLength, GROW_MIN } from './process-model.js';
 
+/** Закрепление с ростом ступеней по прокрутке: выключено (клиент 2026-11-11: «во втором — убрать. Не так важно,
+ *  чтобы они это читали прям») — ступени сразу в конечном виде, страница не стоит. */
+export const PINNED = false;
+
 /** Минимальный зазор между номером и подписью, px. */
 const GAP = 8;
 
@@ -75,6 +79,7 @@ export function init(root) {
     if (base) base.style.transform = '';
   };
 
+  if (!PINNED) return;
   pinScrub(root, {
     length: () => window.innerHeight * pinLength(n),
     onRefresh: () => {
