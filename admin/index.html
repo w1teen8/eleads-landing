@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Админка текстов (T38). На сайт не ссылается, в поиск не попадает. Запросы — только к своему адресу и api.github.com. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="theme-color" content="#070C18" />
+    <title>Тексти сайту — eLeads</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Sofia+Sans+Extra+Condensed:wght@800;900&display=swap"
+    />
+  </head>
+  <body>
+    <p class="adm-loading">Завантаження…</p>
+    <noscript>Для редагування текстів увімкніть JavaScript.</noscript>
+    <script type="module" src="/src/admin/main.js"></script>
+  </body>
+</html>

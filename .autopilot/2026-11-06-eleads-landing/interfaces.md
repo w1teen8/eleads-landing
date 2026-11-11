@@ -356,3 +356,10 @@ export function forecast(input, rates): Forecast
 - 13: FAQ-переписка в телефоне (`STEP_MS = 8000`, `TYPING_MS = 700`, вкладки вопросов); 14: чат с Володимиром в телефоне (`cta.chatHello`, место клика `final_cta_chat`).
 - Автолистание везде — пауза только при наведении на сам интерактивный элемент.
 
+### T38 — админка текстов (H51)
+
+- `admin/index.html` → `/admin/` (вторая точка входа Vite, noindex, CSP: connect-src только `https://api.github.com`). Модули `src/admin/`: `config.js` (owner/repo/branch, список файлов, `MAX_LENGTH`), `json-text.js` (замена строкового значения по пути без изменения структуры и форматирования), `fields.js` (разделы по экранам, поиск, сборка изменённых файлов), `validate.js`, `github.js` (только api.github.com, без cookies/referrer/redirect; сохранение одним коммитом blobs → tree → commit → PATCH ref, конфликт по sha), `token.js` (sessionStorage / localStorage по галочке), `main.js` (UI только через textContent/value).
+- Редактируются: все строки `content.*.json`; `{ua,en}` в `faq.json`, `cases.json`, `calculator.json`; `telegramUrl`/`telegramHandle` в `config.json`.
+- `build/i18n-prerender.js`: замены атрибутов — функцией (иначе «$&», «$1» в тексте ломали HTML при сборке).
+- Новый ключ/текст на сайте: добавлять в оба словаря — админка покажет его автоматически.
+

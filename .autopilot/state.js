@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-10T15:04:34+02:00",
+  "updatedAt": "2026-11-10T15:58:28+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1529,10 +1529,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "startedAt": "2026-11-10T13:17:28+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "finishedAt": "2026-11-10T15:58:13+02:00",
+      "tests": {
+        "passed": 238,
+        "failed": 0
+      },
+      "commit": "2813f3d"
     },
     {
       "id": "36",
@@ -1561,10 +1567,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "startedAt": "2026-11-10T14:59:55+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "finishedAt": "2026-11-10T15:58:18+02:00",
+      "tests": {
+        "passed": 238,
+        "failed": 0
+      },
+      "commit": "2813f3d"
     },
     {
       "id": "37",
@@ -1595,10 +1607,16 @@ window.STATE =
       ],
       "review": "нет",
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "startedAt": "2026-11-10T14:59:56+02:00",
       "retries": 0,
-      "repairs": 0
+      "repairs": 0,
+      "finishedAt": "2026-11-10T15:58:28+02:00",
+      "tests": {
+        "passed": 238,
+        "failed": 0
+      },
+      "commit": "2813f3d"
     },
     {
       "id": "38",
@@ -1669,7 +1687,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 217,
+    "passed": 238,
     "failed": 0
   },
   "debt": {
@@ -1903,9 +1921,12 @@ window.STATE =
     "2026-11-10T14:59:55+02:00",
     "2026-11-10T14:59:56+02:00",
     "2026-11-10T15:04:33+02:00",
-    "2026-11-10T15:04:34+02:00"
+    "2026-11-10T15:04:34+02:00",
+    "2026-11-10T15:58:13+02:00",
+    "2026-11-10T15:58:18+02:00",
+    "2026-11-10T15:58:28+02:00"
   ],
-  "rev": 187,
+  "rev": 190,
   "waiting": null,
   "waits": [
     {
@@ -3341,6 +3362,42 @@ window.STATE =
         "38"
       ],
       "act": "start"
+    },
+    {
+      "t": "2026-11-10T15:58:13+02:00",
+      "k": "ticket",
+      "ids": [
+        "35"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 238,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-10T15:58:18+02:00",
+      "k": "ticket",
+      "ids": [
+        "36"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 238,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-10T15:58:28+02:00",
+      "k": "ticket",
+      "ids": [
+        "37"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 238,
+        "failed": 0
+      }
     }
   ],
   "reqList": [

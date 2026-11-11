@@ -22,5 +22,12 @@ export default defineConfig({
     emptyOutDir: true,
     target: 'es2020',
     assetsInlineLimit: 4096,
+    // две страницы: сайт и админка текстов (T38) — dist/index.html и dist/admin/index.html (адрес /admin/)
+    rollupOptions: {
+      input: {
+        main: `${projectRoot}/index.html`,
+        admin: `${projectRoot}/admin/index.html`,
+      },
+    },
   },
 });

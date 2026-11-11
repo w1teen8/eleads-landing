@@ -1,0 +1,528 @@
+/* Админка текстов: палитра и шрифты сайта из tokens.css, своих цветов нет. */
+@import '../styles/tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.5;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ——— общие элементы ——— */
+
+.adm-kicker {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.adm-title {
+  margin: 0.25rem 0 0.75rem;
+  font-family: var(--font-head);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 2rem + 2vw, 3.75rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.adm-title--sm {
+  font-size: clamp(2rem, 1.6rem + 1.4vw, 3rem);
+}
+
+.adm-h2 {
+  margin: 2rem 0 0.75rem;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.75rem;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.adm-muted {
+  margin: 0 0 1.25rem;
+  color: var(--text-muted);
+}
+
+.adm-input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-card-sm);
+  background: var(--surface-2);
+}
+
+.adm-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.adm-input--area {
+  display: block;
+  resize: vertical;
+  min-height: 2.6rem;
+  overflow: hidden;
+  line-height: 1.45;
+}
+
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.5rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.adm-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.adm-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.adm-btn--primary {
+  border-color: transparent;
+  background: var(--grad);
+  color: var(--accent-ink);
+}
+
+.adm-btn--ghost {
+  background: transparent;
+}
+
+.adm-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-size: var(--fs-sm);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.adm-loading {
+  padding: 3rem var(--gutter);
+  color: var(--text-muted);
+}
+
+/* ——— вход ——— */
+
+.adm-login {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.adm-login__card {
+  width: min(100%, 30rem);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card-lg);
+  background: var(--surface-2);
+}
+
+.adm-login__form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.adm-label {
+  font-weight: 600;
+}
+
+.adm-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.adm-check input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--accent);
+}
+
+.adm-login__error {
+  margin: 0;
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid var(--accent-2);
+  background: var(--tag-2);
+  border-radius: var(--r-media);
+}
+
+.adm-login__help {
+  margin-top: 1.25rem;
+  color: var(--text-muted);
+}
+
+.adm-login__help summary {
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.adm-login__steps {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.adm-login__note {
+  margin: 1.25rem 0 0;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+/* ——— редактор ——— */
+
+/* шапка и сообщение о сохранении — вместе, липкие: результат виден, где бы ни был список полей */
+.adm-top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.adm-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: 0.75rem var(--gutter) 0;
+}
+
+.adm-bar__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 900;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+}
+
+.adm-bar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.adm-count {
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+}
+
+.adm-count.is-on {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: transparent;
+}
+
+.adm-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  margin: 0.75rem var(--gutter) 0;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--line-strong);
+  border-left-width: 4px;
+  border-radius: var(--r-card-sm);
+  background: var(--surface);
+}
+
+.adm-banner__text {
+  margin: 0;
+  flex: 1 1 22rem;
+}
+
+.adm-banner--ok {
+  border-left-color: var(--accent);
+  background: var(--tag-1);
+}
+
+.adm-banner--error,
+.adm-banner--conflict {
+  border-left-color: var(--accent-2);
+  background: var(--tag-2);
+}
+
+.adm-body {
+  display: grid;
+  grid-template-columns: minmax(14rem, 17rem) minmax(0, 1fr);
+  gap: 2rem;
+  padding: 1.25rem var(--gutter) 4rem;
+  align-items: start;
+}
+
+.adm-side {
+  position: sticky;
+  top: calc(var(--adm-top, 4.5rem) + 1rem);
+  display: grid;
+  gap: 0.75rem;
+  max-height: calc(100vh - var(--adm-top, 4.5rem) - 2rem);
+  overflow: auto;
+}
+
+.adm-nav {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.adm-nav__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  border-radius: var(--r-card-sm);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.adm-nav__item:hover {
+  background: var(--surface-2);
+}
+
+.adm-nav__item[aria-current='true'] {
+  background: var(--surface);
+  box-shadow: inset 3px 0 0 var(--accent);
+  font-weight: 600;
+}
+
+.adm-nav__n {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  color: var(--text-muted);
+}
+
+.adm-nav__badge {
+  min-width: 1.5rem;
+  padding: 0 0.4rem;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  text-align: center;
+}
+
+.adm-main {
+  min-width: 0;
+  max-width: 76rem;
+}
+
+.adm-main:focus {
+  outline: none;
+}
+
+.adm-fields {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.adm-group {
+  margin: 1.25rem 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.adm-field {
+  padding: 0.85rem 1rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--surface-2);
+}
+
+.adm-field.is-changed {
+  border-color: var(--accent);
+}
+
+.adm-field.is-invalid {
+  border-color: var(--accent-2);
+}
+
+.adm-field__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.adm-field__label {
+  font-weight: 600;
+}
+
+.adm-field__path {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.adm-field__head .adm-link {
+  margin-left: auto;
+}
+
+.adm-field__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.adm-field--single .adm-field__pair {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.adm-slot {
+  display: grid;
+  gap: 0.3rem;
+  align-content: start;
+}
+
+.adm-slot__lang {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: var(--tracking-mono);
+  color: var(--text-muted);
+}
+
+.adm-slot.is-changed .adm-input {
+  border-color: var(--accent);
+  background: var(--tag-1);
+}
+
+.adm-slot.is-changed .adm-slot__lang::after {
+  content: ' · змінено';
+  color: var(--accent);
+}
+
+.adm-slot.is-invalid .adm-input {
+  border-color: var(--accent-2);
+  background: var(--tag-2);
+}
+
+.adm-slot__error {
+  font-size: var(--fs-sm);
+  color: var(--accent-2);
+}
+
+.adm-slot__error:empty {
+  display: none;
+}
+
+/* ——— телефон: разделы — строкой сверху, языки — друг под другом ——— */
+
+@media (max-width: 860px) {
+  .adm-top {
+    position: static;
+  }
+
+  .adm-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .adm-side {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .adm-nav {
+    display: flex;
+    gap: 0.35rem;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+  }
+
+  .adm-nav__item {
+    width: auto;
+    flex: 0 0 auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+  }
+
+  .adm-nav__item[aria-current='true'] {
+    box-shadow: none;
+    border-color: var(--accent);
+  }
+
+  .adm-field__pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .adm-bar__brand {
+    font-size: 1.3rem;
+  }
+}

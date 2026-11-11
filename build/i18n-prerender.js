@@ -56,10 +56,11 @@ export function prerender(html, dict, config = {}, { strict = false, warn = cons
       if (!attr || !path) continue;
       const value = escapeAttr(text(path));
       const existing = new RegExp(`(\\s${attr}=)"[^"]*"`);
+      // замена — функцией: «$1», «$&», «$`» в тексте (например «від $10K») остаются буквами, а не шаблоном replace
       if (existing.test(result)) {
-        result = result.replace(existing, `$1"${value}"`);
+        result = result.replace(existing, (_, head) => `${head}"${value}"`);
       } else {
-        result = result.replace(/\sdata-i18n-attr=/, ` ${attr}="${value}" data-i18n-attr=`);
+        result = result.replace(/\sdata-i18n-attr=/, () => ` ${attr}="${value}" data-i18n-attr=`);
       }
     }
     return result;
