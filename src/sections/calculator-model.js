@@ -1,33 +1,60 @@
 // Расчёт калькулятора — чистые функции без DOM (шов №1 в interfaces.md).
-// Формулы: impressions = budget / cpm * 1000, clicks = impressions * ctr, cpc = budget / clicks,
-// conversions = clicks * cr, cpa = budget / conversions.
-// Диапазон каждого показателя — медиана × (1 ∓ spread); CPC и CPA — от противоположных концов
-// (меньше кликов → дороже клик). Битый коэффициент даёт null по тем показателям, что от него зависят.
+// T39: по таблице клиента «ниша × GEO» (src/data/calculator.json → table): imp, clk, sub — показы, клики и
+// подписчики на 1 € бюджета. Ниша калькулятора указывает на строку таблицы через segments (Business → saas_b2b).
+// Средние: показы = бюджет × imp, клики = бюджет × clk, подписчики = бюджет × sub; CTR = clk / imp,
+// CPC = 1 / clk, CPS = 1 / sub. Разброс spread (0,2): счётчики mid × (1 ∓ spread), цены mid / (1 ± spread) —
+// меньше кликов → дороже клик. Счётчики — вниз до целого (Math.floor), цены — до 3 знаков, CTR — одно среднее
+// (доля до 4 знаков = проценты до 2). Строки таблицы нет — nodata: цифр не выдумываем.
 
-const DEFAULT_SPREAD = 0.15;
+const DEFAULT_SPREAD = 0.2;
 
 const positive = (n) => typeof n === 'number' && Number.isFinite(n) && n > 0;
+const round = (n, digits) => Math.round(n * 10 ** digits) / 10 ** digits;
 
-const band = (mid, spread) => ({ lo: mid * (1 - spread), hi: mid * (1 + spread) });
+/** Счётчик: { lo, hi, mid } вниз до целого. */
+const count = (raw, spread) => ({ lo: Math.floor(raw * (1 - spread)), hi: Math.floor(raw * (1 + spread)), mid: Math.floor(raw) });
+/** Цена: { lo, hi, mid } до 3 знаков; дешевле — когда результата больше. */
+const price = (raw, spread) => ({ lo: round(raw / (1 + spread), 3), hi: round(raw / (1 - spread), 3), mid: round(raw, 3) });
 
-/** budget / {lo,hi}: дешевле при большем знаменателе — поэтому концы меняются местами. */
-const inverse = (budget, range) => (range && range.lo > 0 ? { lo: budget / range.hi, hi: budget / range.lo } : null);
+function rowOf(input, rates) {
+  const { niche, geo } = input || {};
+  const r = rates || {};
+  const segments = r.segments && typeof r.segments === 'object' ? r.segments : {};
+  const table = r.table && typeof r.table === 'object' ? r.table : {};
+  const segment = segments[niche] ?? niche;
+  const row = table[segment]?.[geo];
+  return row && typeof row === 'object' ? { row, name: `table.${segment}.${geo}` } : null;
+}
 
-function rate(table, key, name, issues) {
-  const value = table && typeof table === 'object' ? table[key] : undefined;
-  if (positive(value)) return value;
-  issues.push(`${name}[${key}] = ${JSON.stringify(value)} — нужен положительный коэффициент`);
-  return null;
+/**
+ * Коэффициенты строки таблицы на 1 € и средние цены: { imp, clk, sub, ctr, cpc, cps } (битое поле — null),
+ * либо null, если для пары «ниша × GEO» данных нет.
+ */
+export function unitRates(input = {}, rates = {}) {
+  const found = rowOf(input, rates);
+  if (!found) return null;
+  const pick = (key) => (positive(found.row[key]) ? found.row[key] : null);
+  const imp = pick('imp');
+  const clk = pick('clk');
+  const sub = pick('sub');
+  return {
+    imp,
+    clk,
+    sub,
+    ctr: imp !== null && clk !== null ? clk / imp : null,
+    cpc: clk !== null ? 1 / clk : null,
+    cps: sub !== null ? 1 / sub : null,
+  };
 }
 
 /**
  * input: { niche, geo, goal, budget } · rates: содержимое calculator.json
- * → { impressions, ctr, clicks, cpc, conversions, cpa } — каждый {lo, hi} или null; issues — причины null.
+ * → { impressions, clicks, conversions, cpc, cpa: {lo, hi, mid} | null, ctr: {mid} | null, nodata, issues }.
  */
 export function forecast(input = {}, rates = {}) {
   const issues = [];
-  const { niche, geo, goal, budget } = input || {};
   const r = rates || {};
+  const empty = { impressions: null, ctr: null, clicks: null, cpc: null, conversions: null, cpa: null };
 
   let spread = r.spread;
   if (!(typeof spread === 'number' && Number.isFinite(spread) && spread >= 0 && spread < 1)) {
@@ -35,45 +62,42 @@ export function forecast(input = {}, rates = {}) {
     spread = DEFAULT_SPREAD;
   }
 
+  const found = rowOf(input, r);
+  if (!found) return { ...empty, nodata: true, issues };
+
+  const budget = input?.budget;
   const money = positive(budget) ? budget : null;
   if (money === null) issues.push(`budget = ${JSON.stringify(budget)} — нужен положительный бюджет`);
-  const cpm = rate(r.cpm, geo, 'cpm', issues);
-  const ctr = rate(r.ctr, niche, 'ctr', issues);
-  const cr = rate(r.cr, goal, 'cr', issues);
-  if (ctr !== null && ctr > 1) issues.push(`ctr[${niche}] = ${ctr} — доля больше 1, проверьте: 1.2% пишется как 0.012`);
-  if (cr !== null && cr > 1) issues.push(`cr[${goal}] = ${cr} — доля больше 1, проверьте: 35% пишется как 0.35`);
-
-  const impressionsMid = money !== null && cpm !== null ? (money / cpm) * 1000 : null;
-  const clicksMid = impressionsMid !== null && ctr !== null ? impressionsMid * ctr : null;
-  const conversionsMid = clicksMid !== null && cr !== null ? clicksMid * cr : null;
-
-  const impressions = impressionsMid !== null ? band(impressionsMid, spread) : null;
-  const clicks = clicksMid !== null ? band(clicksMid, spread) : null;
-  const conversions = conversionsMid !== null ? band(conversionsMid, spread) : null;
+  const u = unitRates(input, r);
+  for (const key of ['imp', 'clk', 'sub']) {
+    if (u[key] === null) issues.push(`${found.name}.${key} = ${JSON.stringify(found.row[key])} — нужен положительный коэффициент`);
+  }
+  if (u.ctr !== null && u.ctr > 1) issues.push(`${found.name}: кликов больше, чем показов — проверьте clk и imp`);
 
   return {
-    impressions,
-    ctr: ctr !== null ? band(ctr, spread) : null,
-    clicks,
-    cpc: money !== null ? inverse(money, clicks) : null,
-    conversions,
-    cpa: money !== null ? inverse(money, conversions) : null,
+    impressions: money !== null && u.imp !== null ? count(money * u.imp, spread) : null,
+    ctr: u.ctr !== null ? { mid: round(u.ctr, 4) } : null,
+    clicks: money !== null && u.clk !== null ? count(money * u.clk, spread) : null,
+    cpc: money !== null && u.cpc !== null ? price(u.cpc, spread) : null,
+    conversions: money !== null && u.sub !== null ? count(money * u.sub, spread) : null,
+    cpa: money !== null && u.cps !== null ? price(u.cps, spread) : null,
+    nodata: false,
     issues,
   };
 }
 
 /**
- * Значения слайдера бюджета: { min, max, scale: [{ upTo, step }] } → [650, 700, … 2000, 2250, … 10000].
- * Позиция ползунка — индекс в этом массиве: так низ диапазона не сжат.
+ * Значения ползунка бюджета: { min, max, scale: [{ upTo, step }] } → [1, 50, 100, … 2000, 2250, … 10000].
+ * Каждое следующее — ближайшее кратное шагу зоны; позиция ползунка — индекс в этом массиве.
  */
-export function budgetScale({ min = 650, max = 10000, scale = [{ upTo: Infinity, step: 50 }] } = {}) {
+export function budgetScale({ min = 1, max = 10000, scale = [{ upTo: Infinity, step: 50 }] } = {}) {
   const out = [min];
   let value = min;
   const zones = [...scale].filter((z) => positive(z?.step)).sort((a, b) => a.upTo - b.upTo);
   for (const { upTo, step } of zones) {
     const limit = Math.min(upTo ?? max, max);
-    while (value + step <= limit + 1e-9) {
-      value += step;
+    for (let next = (Math.floor(value / step) + 1) * step; next <= limit + 1e-9; next += step) {
+      value = next;
       out.push(value);
     }
   }
@@ -81,19 +105,12 @@ export function budgetScale({ min = 650, max = 10000, scale = [{ upTo: Infinity,
   return out;
 }
 
-const mid = (range) => (range ? (range.lo + range.hi) / 2 : null);
-
-/**
- * Ширины трёх ступеней воронки (доли 0…1): логарифм значения, нормированный так, что Покази = 1.
- * floor — «ноль» логарифмической шкалы, чтобы ступени заметно менялись с бюджетом;
- * min — нижняя граница, чтобы ступень не исчезала.
- */
-export function funnelWidths(fc, { floor = 100, min = 0.14 } = {}) {
-  const top = mid(fc?.impressions);
-  const scale = (value) => {
-    if (!positive(top) || !positive(value) || top <= floor) return min;
-    const w = Math.log(Math.max(value, floor) / floor) / Math.log(top / floor);
-    return Math.min(1, Math.max(min, w));
-  };
-  return [positive(top) ? 1 : min, scale(mid(fc?.clicks)), scale(mid(fc?.conversions))];
+/** Сумма из поля ввода → целое евро в пределах [min, max]; пусто и мусор — null (ввод игнорируется). */
+export function clampBudget(raw, { min = 1, max = 10000 } = {}) {
+  if (raw == null) return null;
+  const text = String(raw).trim();
+  if (!text) return null;
+  const n = Number(text);
+  if (!Number.isFinite(n)) return null;
+  return Math.min(max, Math.max(min, Math.floor(n)));
 }

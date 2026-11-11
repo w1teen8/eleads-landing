@@ -1,17 +1,18 @@
-/* 05 Калькулятор (T22; T23 — палитра канала и формат «один экран»; T28 — «Повідомлення від бота» по образцу
-   reference/run3/calc-G-chosen.png). Переходов по прокрутке нет (H11): всё видно сразу.
-   Две колонки. Слева — заголовок панели «Оберіть параметри — бот порахує», параметры как крупные клавиши клавиатуры
-   бота в два столбца (ниша / GEO / цель; выбранная — жёлтый → оранжевый с тёмным текстом), под ними строка бюджета:
-   подпись, ползунок, цифра. Справа — прогноз как сообщение от бота в пузыре: аватар «e», имя, подпись
-   «бот · демо-коефіцієнти», вступительная фраза из параметров, сетка цифр (цель — крупно и акцентом), inline-кнопка
-   Telegram во всю ширину, время в углу. Под сеткой мелкой строкой дисклеймер и «Не знайшли свою нішу?».
+/* 05 Калькулятор (T22; T23 — палитра канала и формат «один экран»; T28 — облик G по образцу
+   reference/run3/calc-G-chosen.png; T39 — формулы клиента, выпадающие списки, поле суммы).
+   Переходов по прокрутке нет (H11): всё видно сразу.
+   Две колонки. Слева — заголовок панели, три выпадающих списка (Тематика / GEO / Ціль) в поле-«клавише»,
+   строка бюджета (подпись · ползунок · цифра) и поле «Вказати суму (€)». Справа — панель прогноза: заголовок,
+   фраза из параметров, сетка цифр (диапазон крупно, под ним «Середнє / Середня»; цель — во всю ширину, акцентом,
+   с плашкой ±20%), кнопка во всю ширину. Нет данных для пары «ниша × GEO» — сетка невидима (место сохраняется),
+   поверх — сообщение со ссылкой. Под сеткой мелкой строкой примечание про ±20% и комиссию реселера.
    Цифры меняют барабаны (stats-odometer.js, разметка .odo — маски и срезы градиента в stats.css). На широком экране
    блок — ровно экран под шапкой: кегль, высоты и отступы — от высоты окна (svh). Двигаются только transform и opacity. */
 
 .section--calculator {
   --calc-gap: clamp(1rem, 1.8vw, 1.75rem);
   --calc-soft: color-mix(in srgb, var(--text) 55%, transparent);
-  --calc-key: color-mix(in srgb, var(--text) 8%, transparent); /* клавиша бота и строка бюджета */
+  --calc-key: color-mix(in srgb, var(--text) 8%, transparent); /* поле списка, строка бюджета, поле суммы */
   --calc-key-h: clamp(48px, 3.4vw, 56px);
   --calc-r: 14px;
   overflow-x: clip;
@@ -50,7 +51,7 @@
   align-items: center;
 }
 
-/* ——— слева: клавиатура бота ——— */
+/* ——— слева: параметры ——— */
 .calc__params {
   display: flex;
   flex-direction: column;
@@ -59,108 +60,81 @@
   margin: 0;
 }
 
-.calc__panel-title {
-  margin-bottom: clamp(0.5rem, 1vw, 1rem);
-  font-family: var(--font-head);
-  font-size: clamp(1.5rem, 1.1rem + 1.1vw, 2.125rem);
-  font-weight: 900;
-  line-height: 0.9;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--text) 90%, transparent);
-}
-
-.calc__group {
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-/* клавиши — два столбца, как inline-клавиатура Telegram */
-.calc__keys {
+/* три списка в ряд: Тематика шире — в ней «Finance / Investments» */
+.calc__fields {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(0.5rem, 0.7vw, 0.625rem);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(0.5rem, 0.8vw, 0.75rem);
 }
 
-.calc__pill {
-  position: relative;
-  display: flex;
+.calc__field {
+  display: grid;
+  gap: 0.4rem;
   min-width: 0;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
 }
 
-/* сам input невидим, но в потоке фокуса: стрелки и Tab работают нативно */
-.calc__pill-input {
-  position: absolute;
-  inset: 0;
+.calc__field-label,
+.calc__amount-label {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--calc-soft);
+}
+
+.calc__select-wrap {
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+/* поле списка и поле суммы — как клавиша: тёмная плашка, крупный текст, фокус акцентом */
+.calc__select,
+.calc__amount-input {
   width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.calc__pill-face {
-  position: relative;
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  min-width: 0;
   min-height: var(--calc-key-h);
-  padding: 0.5rem 1rem;
+  margin: 0;
+  border: 1px solid transparent;
   border-radius: var(--calc-r);
   background: var(--calc-key);
   color: var(--text);
-  font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem);
+  font: inherit;
+  font-size: clamp(0.9375rem, 0.88rem + 0.2vw, 1.0625rem);
   font-weight: 600;
-  text-align: center;
-  isolation: isolate;
-  overflow: hidden;
-  transition: transform var(--dur-fast) var(--ease-out);
 }
 
-/* выбранная — заливка жёлтый → оранжевый отдельным слоем: меняются только opacity и transform */
-.calc__pill-face::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--grad);
-  opacity: 0;
-  transform: scale(0.92);
-  transition:
-    opacity var(--dur) var(--ease-out),
-    transform var(--dur) var(--ease-out);
-}
-
-.calc__pill-text {
-  position: relative;
-  overflow: hidden;
+.calc__select {
+  padding: 0 2.6rem 0 1rem;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
   text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-.calc__pill:hover .calc__pill-face {
-  transform: translateY(-2px);
+/* выпадающий список рисует система: тёмный фон под светлый текст */
+.calc__select option {
+  background: var(--bg);
+  color: var(--text);
 }
 
-.calc__pill-input:checked + .calc__pill-face {
-  color: var(--accent-ink);
+.calc__select:hover,
+.calc__amount-input:hover {
+  border-color: var(--line-strong);
 }
 
-.calc__pill-input:checked + .calc__pill-face::before {
-  opacity: 1;
-  transform: none;
-}
-
-.calc__pill-input:focus-visible + .calc__pill-face {
+.calc__select:focus-visible,
+.calc__amount-input:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline-offset: 2px;
+}
+
+.calc__select-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.9rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--accent);
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 /* ——— строка бюджета: подпись · ползунок · цифра ——— */
@@ -169,7 +143,7 @@
   align-items: center;
   gap: clamp(0.75rem, 1.2vw, 1.25rem);
   min-height: var(--calc-key-h);
-  margin-top: clamp(0.5rem, 1vw, 1rem);
+  margin-top: clamp(0.25rem, 0.6vw, 0.5rem);
   padding: 0.5rem clamp(1rem, 1.4vw, 1.5rem);
   border-radius: var(--calc-r);
   background: var(--calc-key);
@@ -305,7 +279,27 @@
   outline-offset: 5px;
 }
 
-/* ——— справа: сообщение от бота ——— */
+/* ——— точная сумма: подпись и поле ——— */
+.calc__amount {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.calc__amount-input {
+  width: 9rem;
+  padding: 0 1rem;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+
+.calc__amount-input::-webkit-inner-spin-button,
+.calc__amount-input::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+/* ——— справа: панель прогноза ——— */
 .calc__bubble {
   --calc-bubble-pad: clamp(1.25rem, 1rem + 1.2vw, 2.125rem);
   position: relative;
@@ -322,13 +316,6 @@
   box-shadow: 0 40px 80px -40px color-mix(in srgb, var(--bg) 90%, transparent);
   isolation: isolate;
 }
-
-
-
-
-
-
-/* плашка демо-коэффициентов — часть подписи бота */
 
 .calc__forecast-head {
   display: flex;
@@ -371,6 +358,7 @@
 }
 
 .calc__cell {
+  container-type: inline-size; /* кегль цифр — от ширины своей ячейки: до 8 знаков с каждой стороны диапазона */
   display: grid;
   gap: 0.35rem;
   min-width: 0;
@@ -393,7 +381,7 @@
 .calc__cell-value {
   margin: 0;
   font-family: var(--font-head);
-  font-size: clamp(1.75rem, 6.2cqw, 2.875rem);
+  font-size: clamp(1.25rem, 10.6cqi, 2.875rem);
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: 0;
@@ -407,16 +395,87 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  font-size: clamp(2.5rem, 9.4cqw, 4.375rem);
+  font-size: clamp(2.25rem, 9.4cqi, 4.375rem);
 }
 
 .calc__cell--money .calc__cell-value {
-  font-size: clamp(1.5rem, 4.6cqw, 2.125rem);
+  font-size: clamp(1.25rem, 9.5cqi, 2.125rem);
 }
 
-.calc__cell-value.is-empty .calc__dash,
-.calc__rate-value.is-empty .calc__dash {
+.calc__cell-value.is-empty .calc__dash {
   display: none;
+}
+
+/* «Середнє: 2 976 944» — мелко под диапазоном */
+.calc__cell-mid {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--calc-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.calc__cell-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.4rem;
+}
+
+/* плашка ±20% у главного показателя */
+.calc__spread {
+  margin-left: auto;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* нет данных: сетка невидима, но держит место — блок не прыгает; поверх — сообщение со ссылкой */
+.calc__result {
+  position: relative;
+}
+
+.calc__bubble.is-nodata .calc__grid {
+  visibility: hidden;
+}
+
+.calc__nodata {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--calc-r);
+  text-align: center;
+}
+
+.calc__nodata[hidden] {
+  display: none;
+}
+
+.calc__nodata-text {
+  max-width: 28ch;
+  margin: 0;
+  font-size: clamp(1rem, 0.92rem + 0.3vw, 1.25rem);
+  line-height: 1.45;
+}
+
+.calc__nodata-link {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.calc__nodata-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 /* барабаны (разметка из stats-odometer.js, маски — в stats.css): обычные цифры — сплошным цветом текста,
@@ -487,12 +546,13 @@
   transform: translate(2px, -2px);
 }
 
-
-
-
-
-
-
+/* примечание под блоком — одна строка мелким текстом */
+.calc__note {
+  margin: clamp(0.75rem, 1.4vw, 1.25rem) 0 0;
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--calc-soft);
+}
 
 /* — две колонки от 1000px — */
 @media (min-width: 1000px) {
@@ -529,15 +589,17 @@
     gap: clamp(0.4rem, 1.1svh, 0.75rem);
   }
 
-  .calc__keys {
-    gap: clamp(0.4rem, 1.1svh, 0.625rem);
+  .calc__fields {
+    gap: clamp(0.4rem, 1.1svh, 0.75rem);
+  }
+
+  .calc__field {
+    gap: clamp(0.2rem, 0.6svh, 0.4rem);
   }
 
   .calc__bubble {
     --calc-bubble-pad: clamp(1rem, 3.2svh, 2.125rem);
   }
-
-
 
   .calc__intro {
     margin-bottom: clamp(0.5rem, 1.9svh, 1.125rem);
@@ -549,19 +611,23 @@
   }
 
   .calc__cell {
-    gap: clamp(0.2rem, 0.6svh, 0.35rem);
+    gap: clamp(0.1rem, 0.5svh, 0.35rem);
+  }
+
+  .calc__cell-mid {
+    font-size: clamp(0.75rem, 1.5svh, 0.875rem);
   }
 
   .calc__cell-value {
-    font-size: clamp(1.75rem, min(6.2cqw, 4.9svh), 2.875rem);
+    font-size: clamp(1.25rem, min(10.6cqi, 4.9svh), 2.875rem);
   }
 
   .calc__cell--big .calc__cell-value {
-    font-size: clamp(2.5rem, min(9.4cqw, 7.5svh), 4.375rem);
+    font-size: clamp(2.25rem, min(9.4cqi, 7.5svh), 4.375rem);
   }
 
   .calc__cell--money .calc__cell-value {
-    font-size: clamp(1.5rem, min(4.6cqw, 3.6svh), 2.125rem);
+    font-size: clamp(1.25rem, min(9.5cqi, 3.6svh), 2.125rem);
   }
 
   .calc__cta {
@@ -569,6 +635,9 @@
     margin-top: clamp(0.6rem, 2.1svh, 1.25rem);
   }
 
+  .calc__note {
+    margin-top: clamp(0.5rem, 1.6svh, 1.25rem);
+  }
 }
 
 /* невысокий широкий экран (1366×768): плотнее по вертикали */
@@ -582,8 +651,20 @@
   }
 }
 
-/* — узкий экран: клавиатура, под ней пузырь; сетка цифр в один столбец, чтобы диапазоны не ломались — */
+/* — узкий экран: параметры, под ними панель прогноза; списки и сетка цифр в один столбец — */
 @media (max-width: 599px) {
+  .calc__fields {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .calc__field:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .calc__amount {
+    justify-content: space-between;
+  }
+
   .calc__bubble {
     border-radius: 20px 20px 20px 6px;
   }
@@ -612,15 +693,14 @@
   }
 
   .calc__cell-value {
-    font-size: clamp(1.75rem, 9vw, 2.5rem);
+    font-size: clamp(1.25rem, min(9vw, 10.6cqi), 2.5rem);
   }
 
   .calc__cell--big .calc__cell-value {
-    font-size: clamp(2.5rem, 13vw, 3.5rem);
+    font-size: clamp(2.25rem, min(13vw, 9.4cqi), 3.5rem);
   }
 
   .calc__cell--money .calc__cell-value {
-    font-size: clamp(1.5rem, 7.5vw, 2rem);
+    font-size: clamp(1.25rem, min(7.5vw, 9.5cqi), 2rem);
   }
-
 }

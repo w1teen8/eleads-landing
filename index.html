@@ -567,28 +567,42 @@
             <form class="calc__params" data-calc-form aria-labelledby="calc-params-title">
               <h3 id="calc-params-title" class="calc__panel-title" data-i18n="calculator.paramsTitle"></h3>
 
-              <fieldset class="calc__group" data-calc-group="niche">
-                <legend class="visually-hidden" data-i18n="calculator.niche"></legend>
-                <div class="calc__keys" data-calc-options></div>
-              </fieldset>
-
-              <fieldset class="calc__group" data-calc-group="geo">
-                <legend class="visually-hidden" data-i18n="calculator.geo"></legend>
-                <div class="calc__keys" data-calc-options></div>
-              </fieldset>
-
-              <fieldset class="calc__group" data-calc-group="goal">
-                <legend class="visually-hidden" data-i18n="calculator.goal"></legend>
-                <div class="calc__keys" data-calc-options></div>
-              </fieldset>
+              <div class="calc__fields">
+                <label class="calc__field" for="calc-niche">
+                  <span class="calc__field-label" data-i18n="calculator.niche"></span>
+                  <span class="calc__select-wrap">
+                    <select id="calc-niche" class="calc__select" data-calc-select="niche"></select>
+                    <svg class="calc__select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                  </span>
+                </label>
+                <label class="calc__field" for="calc-geo">
+                  <span class="calc__field-label" data-i18n="calculator.geo"></span>
+                  <span class="calc__select-wrap">
+                    <select id="calc-geo" class="calc__select" data-calc-select="geo"></select>
+                    <svg class="calc__select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                  </span>
+                </label>
+                <label class="calc__field" for="calc-goal">
+                  <span class="calc__field-label" data-i18n="calculator.goal"></span>
+                  <span class="calc__select-wrap">
+                    <select id="calc-goal" class="calc__select" data-calc-select="goal"></select>
+                    <svg class="calc__select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                  </span>
+                </label>
+              </div>
 
               <div class="calc__budget">
                 <label class="calc__budget-label" id="calc-budget-label" for="calc-budget" data-i18n="calculator.budget"></label>
                 <div class="calc__range">
                   <span class="calc__range-track" aria-hidden="true"><span class="calc__range-fill" data-calc-fill></span></span>
-                  <input id="calc-budget" class="calc__range-input" type="range" min="0" max="59" step="1" value="17" aria-labelledby="calc-budget-label" data-calc-budget />
+                  <input id="calc-budget" class="calc__range-input" type="range" min="0" max="72" step="1" value="40" aria-labelledby="calc-budget-label" data-calc-budget />
                 </div>
-                <output class="calc__budget-value" for="calc-budget" data-calc-budget-value></output>
+                <output class="calc__budget-value" for="calc-budget calc-amount" data-calc-budget-value></output>
+              </div>
+
+              <div class="calc__amount">
+                <label class="calc__amount-label" for="calc-amount" data-i18n="calculator.amount"></label>
+                <input id="calc-amount" class="calc__amount-input" type="number" inputmode="numeric" min="1" max="10000" step="1" autocomplete="off" data-calc-amount />
               </div>
             </form>
 
@@ -599,28 +613,38 @@
 
               <p class="calc__intro" data-calc-intro></p>
 
-              <dl class="calc__grid">
+              <div class="calc__result">
+                <dl class="calc__grid">
                 <div class="calc__cell" data-calc-step="impressions">
-                  <dt class="calc__cell-label" data-i18n="calculator.steps.impressions"></dt>
+                  <dt class="calc__cell-label"><span data-i18n="calculator.steps.impressions"></span></dt>
                   <dd class="calc__cell-value"><span data-calc-lo="impressions"></span><span class="calc__dash"> – </span><span data-calc-hi="impressions"></span></dd>
+                  <dd class="calc__cell-mid"><span data-i18n="calculator.avg"></span> <span data-calc-mid="impressions"></span></dd>
                 </div>
                 <div class="calc__cell" data-calc-step="clicks">
-                  <dt class="calc__cell-label"><span data-i18n="calculator.steps.clicks"></span> · <span data-i18n="calculator.metrics.ctr"></span> <span class="calc__rate-value"><span data-calc-lo="ctr"></span><span class="calc__dash">–</span><span data-calc-hi="ctr"></span></span></dt>
+                  <dt class="calc__cell-label"><span data-i18n="calculator.steps.clicks"></span> · <span data-i18n="calculator.metrics.ctr"></span> <span class="calc__rate-value" data-calc-mid="ctr"></span></dt>
                   <dd class="calc__cell-value"><span data-calc-lo="clicks"></span><span class="calc__dash"> – </span><span data-calc-hi="clicks"></span></dd>
+                  <dd class="calc__cell-mid"><span data-i18n="calculator.avg"></span> <span data-calc-mid="clicks"></span></dd>
                 </div>
                 <div class="calc__cell calc__cell--big" data-calc-step="conversions">
-                  <dt class="calc__cell-label" data-calc-goal-step></dt>
+                  <dt class="calc__cell-label"><span data-calc-goal-step></span> <span class="calc__spread" data-calc-spread></span></dt>
                   <dd class="calc__cell-value"><span data-calc-lo="conversions"></span><span class="calc__dash"> – </span><span data-calc-hi="conversions"></span></dd>
+                  <dd class="calc__cell-mid"><span data-i18n="calculator.avg"></span> <span data-calc-mid="conversions"></span></dd>
                 </div>
                 <div class="calc__cell calc__cell--money">
-                  <dt class="calc__cell-label" data-i18n="calculator.metrics.cpc"></dt>
+                  <dt class="calc__cell-label"><span data-i18n="calculator.metrics.cpc"></span></dt>
                   <dd class="calc__cell-value"><span data-calc-lo="cpc"></span><span class="calc__dash"> – </span><span data-calc-hi="cpc"></span></dd>
+                  <dd class="calc__cell-mid"><span data-i18n="calculator.avgPrice"></span> <span data-calc-mid="cpc"></span></dd>
                 </div>
                 <div class="calc__cell calc__cell--money">
-                  <dt class="calc__cell-label" data-i18n="calculator.metrics.cpa"></dt>
+                  <dt class="calc__cell-label"><span data-i18n="calculator.metrics.cpa"></span></dt>
                   <dd class="calc__cell-value"><span data-calc-lo="cpa"></span><span class="calc__dash"> – </span><span data-calc-hi="cpa"></span></dd>
+                  <dd class="calc__cell-mid"><span data-i18n="calculator.avgPrice"></span> <span data-calc-mid="cpa"></span></dd>
                 </div>
-              </dl>
+                </dl>
+                <div class="calc__nodata" data-calc-nodata hidden>
+                  <p class="calc__nodata-text"><span data-i18n="calculator.nodata.lead"></span> <a class="calc__nodata-link" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="calculator_nodata" data-i18n="calculator.nodata.link"></a></p>
+                </div>
+              </div>
 
               <a class="calc__cta" href="{{config.telegramUrl}}" target="_blank" rel="noopener" data-place="calculator" data-calc-cta>
                 <span data-i18n="calculator.cta.label"></span>
@@ -629,6 +653,8 @@
               <p class="visually-hidden" aria-live="polite" aria-atomic="true" data-calc-live></p>
             </div>
           </div>
+
+          <p class="calc__note" data-i18n="calculator.note"></p>
         </div>
       </section>
 

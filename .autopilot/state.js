@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-10T15:58:28+02:00",
+  "updatedAt": "2026-11-11T12:33:28+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1531,9 +1531,9 @@ window.STATE =
       "model": "сильная",
       "status": "done",
       "startedAt": "2026-11-10T13:17:28+02:00",
+      "finishedAt": "2026-11-10T15:58:13+02:00",
       "retries": 0,
       "repairs": 0,
-      "finishedAt": "2026-11-10T15:58:13+02:00",
       "tests": {
         "passed": 238,
         "failed": 0
@@ -1569,9 +1569,9 @@ window.STATE =
       "model": "сильная",
       "status": "done",
       "startedAt": "2026-11-10T14:59:55+02:00",
+      "finishedAt": "2026-11-10T15:58:18+02:00",
       "retries": 0,
       "repairs": 0,
-      "finishedAt": "2026-11-10T15:58:18+02:00",
       "tests": {
         "passed": 238,
         "failed": 0
@@ -1609,9 +1609,9 @@ window.STATE =
       "model": "сильная",
       "status": "done",
       "startedAt": "2026-11-10T14:59:56+02:00",
+      "finishedAt": "2026-11-10T15:58:28+02:00",
       "retries": 0,
       "repairs": 0,
-      "finishedAt": "2026-11-10T15:58:28+02:00",
       "tests": {
         "passed": 238,
         "failed": 0
@@ -1637,10 +1637,142 @@ window.STATE =
       ],
       "review": "да (безопасность)",
       "model": "сильная",
+      "status": "done",
+      "startedAt": "2026-11-10T15:04:34+02:00",
+      "finishedAt": "2026-11-11T12:28:47+02:00",
+      "retries": 0,
+      "repairs": 0,
+      "tests": {
+        "passed": 264,
+        "failed": 0
+      },
+      "commit": "ae95a33"
+    },
+    {
+      "id": "39",
+      "title": "Калькулятор: формулы как в образце, бюджет €1–€10 000 и поле суммы, примечание про комиссию",
+      "requirements": [
+        "H52",
+        "H53",
+        "H38",
+        "H40"
+      ],
+      "blockedBy": [
+        "28"
+      ],
+      "wave": 29,
+      "zone": [
+        "src/sections/calculator-model.js",
+        "src/sections/calculator.js",
+        "src/styles/sections/calculator.css",
+        "#calculator",
+        "src/data/calculator.json",
+        "calculator",
+        "content.*.json",
+        "tests/calculator-*.test.js"
+      ],
+      "review": "нет",
+      "model": "сильная",
+      "status": "in-progress",
+      "startedAt": "2026-11-11T12:30:01+02:00",
+      "retries": 0,
+      "repairs": 0
+    },
+    {
+      "id": "40",
+      "title": "Обратная связь клиента: блоки 3 (Ніші), 6 (Кейси), 12 (Матеріали)",
+      "requirements": [
+        "H54"
+      ],
+      "blockedBy": [
+        "37"
+      ],
+      "wave": null,
+      "zone": [
+        "#niches",
+        "src/sections/cases.js",
+        "cases.css",
+        "#cases",
+        "src/data/cases.json",
+        "src/sections/materials.js",
+        "materials.css",
+        "#materials",
+        "niches",
+        "cases",
+        "materials"
+      ],
+      "review": null,
+      "model": "сильная",
       "status": "in-progress",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-10T15:04:34+02:00"
+      "startedAt": "2026-11-11T12:33:27+02:00"
+    },
+    {
+      "id": "41",
+      "title": "Обратная связь клиента: блок 4 (Формати), FAQ, блок 13 (CTA)",
+      "requirements": [
+        "H54"
+      ],
+      "blockedBy": [
+        "37"
+      ],
+      "wave": null,
+      "zone": [
+        "#formats",
+        "src/sections/formats.js",
+        ".css",
+        "src/data/faq.json",
+        "src/sections/faq*.js",
+        ".css",
+        "#cta",
+        "src/sections/cta.js",
+        ".css",
+        "src/core/phone.js",
+        "src/styles/phone.css",
+        "formats",
+        "faq",
+        "cta"
+      ],
+      "review": null,
+      "model": "сильная",
+      "status": "in-progress",
+      "retries": 0,
+      "repairs": 0,
+      "startedAt": "2026-11-11T12:33:28+02:00"
+    },
+    {
+      "id": "42",
+      "title": "Обратная связь клиента: блоки 8 (GEO), 10 (Відгуки), 11 (Екосистема)",
+      "requirements": [
+        "H54"
+      ],
+      "blockedBy": [
+        "37"
+      ],
+      "wave": null,
+      "zone": [
+        "#geo",
+        "src/sections/geo*.js",
+        ".css",
+        "#reviews",
+        "src/sections/reviews*.js",
+        ".css",
+        "#ecosystem",
+        "src/sections/ecosystem*.js",
+        ".css",
+        "geo",
+        "reviews",
+        "founder",
+        "ecosystem",
+        "public/video/reviews/"
+      ],
+      "review": null,
+      "model": "сильная",
+      "status": "in-progress",
+      "retries": 0,
+      "repairs": 0,
+      "startedAt": "2026-11-11T12:33:28+02:00"
     },
     {
       "id": "F1",
@@ -1687,7 +1819,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 238,
+    "passed": 264,
     "failed": 0
   },
   "debt": {
@@ -1924,9 +2056,15 @@ window.STATE =
     "2026-11-10T15:04:34+02:00",
     "2026-11-10T15:58:13+02:00",
     "2026-11-10T15:58:18+02:00",
-    "2026-11-10T15:58:28+02:00"
+    "2026-11-10T15:58:28+02:00",
+    "2026-11-11T12:28:47+02:00",
+    "2026-11-11T12:30:00+02:00",
+    "2026-11-11T12:30:01+02:00",
+    "2026-11-11T12:33:26+02:00",
+    "2026-11-11T12:33:27+02:00",
+    "2026-11-11T12:33:28+02:00"
   ],
-  "rev": 190,
+  "rev": 197,
   "waiting": null,
   "waits": [
     {
@@ -3398,6 +3536,60 @@ window.STATE =
         "passed": 238,
         "failed": 0
       }
+    },
+    {
+      "t": "2026-11-11T12:28:47+02:00",
+      "k": "ticket",
+      "ids": [
+        "38"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 264,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-11T12:30:00+02:00",
+      "k": "tickets",
+      "n": 40
+    },
+    {
+      "t": "2026-11-11T12:30:01+02:00",
+      "k": "ticket",
+      "ids": [
+        "39"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-11T12:33:26+02:00",
+      "k": "tickets",
+      "n": 43
+    },
+    {
+      "t": "2026-11-11T12:33:27+02:00",
+      "k": "ticket",
+      "ids": [
+        "40"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-11T12:33:28+02:00",
+      "k": "ticket",
+      "ids": [
+        "41"
+      ],
+      "act": "start"
+    },
+    {
+      "t": "2026-11-11T12:33:28+02:00",
+      "k": "ticket",
+      "ids": [
+        "42"
+      ],
+      "act": "start"
     }
   ],
   "reqList": [

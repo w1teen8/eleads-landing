@@ -1,31 +1,48 @@
 {
-  "demo": true,
-  "spread": 0.15,
+  "_note": "Дані клієнта (таблиця «ніша × GEO», 2026-11-11): покази (imp), кліки (clk) і підписники (sub) на 1 € бюджету; прогноз = бюджет × коефіцієнт, розкид ±20% (spread). Business у калькуляторі = рядок «SaaS / B2B» таблиці — припущення, уточнюється: щоб змінити, переписати segments.business. Finance / Investments · UA = Crypto · UA, але підписник утричі дорожчий (нижча конверсія клік → підписка): sub = 0.7423 / 3. Немає даних: Auto, Education, Finance · Worldwide — калькулятор показує «прогноз ще готуємо», цифр не вигадує.",
+  "spread": 0.2,
   "budget": {
-    "min": 650,
+    "min": 1,
     "max": 10000,
-    "default": 1500,
+    "default": 1993,
     "scale": [
       { "upTo": 2000, "step": 50 },
       { "upTo": 10000, "step": 250 }
     ]
   },
-  "defaults": { "niche": "business", "geo": "ua", "goal": "subscribers" },
-  "cpm": { "ua": 2.5, "worldwide": 1.8 },
-  "ctr": { "business": 0.012, "crypto": 0.016, "education": 0.014, "auto": 0.009 },
-  "cr": { "subscribers": 0.35, "bot_users": 0.45 },
+  "defaults": { "niche": "crypto", "geo": "ua", "goal": "subscribers" },
+  "segments": { "business": "saas_b2b", "crypto": "crypto", "education": "education", "auto": "auto", "finance": "finance" },
+  "table": {
+    "crypto": {
+      "ua": { "imp": 1493.70, "clk": 12.0289, "sub": 0.7423 },
+      "worldwide": { "imp": 5097.27, "clk": 56.0700, "sub": 1.0066 }
+    },
+    "saas_b2b": {
+      "ua": { "imp": 1892.09, "clk": 4.8938, "sub": 0.4267 },
+      "worldwide": { "imp": 2242.80, "clk": 13.8640, "sub": 0.4686 }
+    },
+    "auto": {
+      "ua": { "imp": 918.14, "clk": 4.3192, "sub": 1.1064 }
+    },
+    "education": {
+      "ua": { "imp": 1374.37, "clk": 5.5137, "sub": 0.5148 }
+    },
+    "finance": {
+      "ua": { "imp": 1493.70, "clk": 12.0289, "sub": 0.2474333333333333 }
+    }
+  },
   "niches": [
     { "id": "business", "label": { "ua": "Business", "en": "Business" } },
     { "id": "crypto", "label": { "ua": "Crypto", "en": "Crypto" } },
     { "id": "education", "label": { "ua": "Education", "en": "Education" } },
-    { "id": "auto", "label": { "ua": "Auto", "en": "Auto" } }
+    { "id": "auto", "label": { "ua": "Auto", "en": "Auto" } },
+    { "id": "finance", "label": { "ua": "Finance / Investments", "en": "Finance / Investments" } }
   ],
   "geos": [
     { "id": "ua", "label": { "ua": "Україна", "en": "Ukraine" } },
     { "id": "worldwide", "label": { "ua": "Worldwide", "en": "Worldwide" } }
   ],
   "goals": [
-    { "id": "subscribers", "label": { "ua": "Підписники", "en": "Subscribers" }, "step": { "ua": "Підписники", "en": "Subscribers" } },
-    { "id": "bot_users", "label": { "ua": "Користувачі бота", "en": "Bot users" }, "step": { "ua": "Користувачі", "en": "Users" } }
+    { "id": "subscribers", "label": { "ua": "Підписники", "en": "Subscribers" }, "step": { "ua": "Підписники", "en": "Subscribers" } }
   ]
 }

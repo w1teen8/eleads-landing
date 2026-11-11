@@ -254,7 +254,7 @@
     "title": "Estimate your Telegram Ads potential",
     "titleAccent": "Telegram Ads potential",
     "paramsTitle": "Pick the settings — the bot will do the math",
-    "niche": "Niche",
+    "niche": "Topic",
     "geo": "GEO",
     "goal": "Goal",
     "budget": "Budget",
@@ -281,7 +281,15 @@
     "introGeo": {
       "ua": "in Ukraine",
       "worldwide": "worldwide"
-    }
+    },
+    "amount": "Exact amount (€)",
+    "avg": "Average:",
+    "avgPrice": "Average:",
+    "nodata": {
+      "lead": "The forecast for this combination is still in the works —",
+      "link": "message me and I’ll calculate it by hand"
+    },
+    "note": "Forecast based on historical ad results, with an approximate deviation of ±20%. The budget already includes the reseller’s commission."
   },
   "cases": {
     "title": "Results across niches and GEOs",
