@@ -387,3 +387,9 @@ export function forecast(input, rates): Forecast
 - Відгуки: 2 отзыва, `reviews.items.*.video` (путь в `public/video/reviews/`), `reviews.player.*`; `reviews-model.js`: `reviewVideo(value)`; раздел `founder.*` удалён.
 - Екосистема: `ecosystem.steps[0..4].{name, items[]}`; `STEP_SERVICES`, `flow`, `services` удалены.
 
+## T43 — блок 09 «Велика формула»
+
+- `content.*.json` `targeting`: `title`, `titleAccent`, `listLabel`, `result`, `items[3].{label, parts[], name, text}`; прежние `kicker`, `num`, `more` и шесть способов удалены.
+- Разметка: `p.tg__formula#tg-panel[role=tabpanel]` > `span.tg__parts[data-tg-parts]` (части способа 0 для пре-рендера) + `=` + `.tg__result`; `.tg__list[role=tablist]` > 3 × `button.tg__item[role=tab][data-tg-tab]` с `.tg__label`, `.tg__name`, `.tg__text`, `.tg__bar`.
+- `targeting.js`: `STEP_MS = 10000`, `SWAP`, `partsOf(read, i)`, `partNodes(doc, parts)`; диск (`tg__dial`, иконки) удалён; `targeting-model.js` остаётся — его `nextIndex` берут `targeting.js` и `reviews.js`.
+

@@ -51,12 +51,12 @@ test('на странице один <canvas> — глобус GEO, которы
   assert.match(read('src/sections/geo.js'), /IntersectionObserver/);
 });
 
-test('раскладка секций: 8 ниш, 3 формата, 7 шагов, 4 региона, 6 таргетингов, 5 этапов и 10 услуг', () => {
+test('раскладка секций: 8 ниш, 3 формата, 7 шагов, 4 региона, 3 способа таргетинга, 5 этапов и 10 услуг', () => {
   assert.equal(count(section('niches'), /class="niches__item"/g), 8);
   assert.equal(count(section('formats'), /class="formats__item"/g), 3);
   assert.equal(count(section('process'), /class="process__step[ "]/g), 7);
   assert.equal(count(section('geo'), /data-region="/g), 4);
-  assert.equal(count(section('targeting'), /class="tg__item"/g), 6);
+  assert.equal(count(section('targeting'), /class="tg__item"/g), 3);
   assert.equal(count(section('ecosystem'), /class="eco__step[ "]/g), 5);
   assert.equal(count(section('ecosystem'), /class="eco__service"/g), 10);
   assert.equal(count(section('materials'), /class="mat__item"/g), 4);
@@ -90,7 +90,7 @@ test('тексты: ключевые дословные строки UA и EN-ч
   assert.equal(ua.process.note, undefined);
   // T42: шлях клієнта — пять шагов из документа клиента
   assert.deepEqual(ua.ecosystem.steps.map((s) => s.name), ['Трафік', 'Посадкові', 'Контент', 'Лід', 'Sales']);
-  assert.equal(ua.targeting.items.length, 6);
+  assert.equal(ua.targeting.items.length, 3);
   assert.equal(ua.cta.title, 'Обговоримо ваш проєкт?');
   assert.equal(ua.geo.regions.worldwide.users, '1B+ MAU');
   assert.equal(en.draft, true);

@@ -366,44 +366,35 @@
   "targeting": {
     "title": "How we find the right audience",
     "titleAccent": "the right audience",
-    "kicker": "Targeting method",
-    "listLabel": "Targeting methods",
+    "listLabel": "Targeting setups",
+    "result": "your client",
     "items": [
       {
-        "num": "01",
-        "name": "GEO",
-        "text": "Country, region or available local geography.",
-        "more": "We show ads only where your audience lives and do not spend budget on extra countries."
+        "label": "GEO + language + interests",
+        "parts": [
+          "GEO",
+          "Language",
+          "Interests"
+        ],
+        "name": "Broad audience targeting",
+        "text": "We show ads to the audience of thematic Telegram channels, taking into account users’ country, language and interests."
       },
       {
-        "num": "02",
-        "name": "Language",
-        "text": "Language parameters of the audience and the Telegram interface.",
-        "more": "We narrow delivery by language so the creative is read by the audience it was written for."
+        "label": "Language + topics",
+        "parts": [
+          "Language",
+          "Topics"
+        ],
+        "name": "Precise topical reach",
+        "text": "We show ads in Telegram channels on specific topics, taking the language into account."
       },
       {
-        "num": "03",
-        "name": "Interests",
-        "text": "Segments by relevant interests.",
-        "more": "We pick interests close to your product and check which of them bring leads."
-      },
-      {
-        "num": "04",
-        "name": "Topics",
-        "text": "Placement in the context of the right topics.",
-        "more": "The ad appears next to channels on topics where your offer is expected."
-      },
-      {
-        "num": "05",
-        "name": "Specific channels",
-        "text": "Targeting the audience / context of selected channels.",
-        "more": "We choose channels by hand: an audience that already reads the right authors is the warmest."
-      },
-      {
-        "num": "06",
-        "name": "Audiences",
-        "text": "Available audience segments depending on the cabinet type.",
-        "more": "We use ready-made audience segments that your type of ad cabinet opens up."
+        "label": "Placement in selected channels",
+        "parts": [
+          "Selected channels"
+        ],
+        "name": "Pinpoint placement",
+        "text": "We buy ad impressions in specific Telegram channels that we hand-pick for your target audience."
       }
     ]
   },
