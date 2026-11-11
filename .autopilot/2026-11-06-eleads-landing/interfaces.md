@@ -393,3 +393,9 @@ export function forecast(input, rates): Forecast
 - Разметка: `p.tg__formula#tg-panel[role=tabpanel]` > `span.tg__parts[data-tg-parts]` (части способа 0 для пре-рендера) + `=` + `.tg__result`; `.tg__list[role=tablist]` > 3 × `button.tg__item[role=tab][data-tg-tab]` с `.tg__label`, `.tg__name`, `.tg__text`, `.tg__bar`.
 - `targeting.js`: `STEP_MS = 10000`, `SWAP`, `partsOf(read, i)`, `partNodes(doc, parts)`; диск (`tg__dial`, иконки) удалён; `targeting-model.js` остаётся — его `nextIndex` берут `targeting.js` и `reviews.js`.
 
+## Финальный экран 14 — живой фон (2026-11-11)
+
+- Разметка: `.cta__stage > .cta__scene[data-cta-photo]` > `img.cta__scene-bg` (кадр с улицей) + `span.cta__glow` + `img.cta__scene-cut` (вырезка, alt `cta.photoAlt`); оба 800×1020, srcset 800/1200 webp.
+- `cta-lines.js`: `LINES {base, wave, cell, levels, scale, z, speed}`, `relief(x, y, z)`, `contourSegments(w, h, opts)` → [x1, y1, x2, y2, …], `wavePos(seconds)`, `hexRgb(value)`.
+- `cta.js`: создаёт `canvas.cta__lines` первым ребёнком секции; цвета — `--accent`, `--accent-2`, `--text`; рисует только при видимости блока и открытой вкладке.
+

@@ -1097,14 +1097,14 @@
               </a>
             </div>
           </div>
+          <!-- фото (2026-11-11): исходный кадр с улицей — притемнён и растворяется в фон («немного фона … плавный переход»),
+               поверх — вырезанная фигура того же размера; кадр крупный, забор ниже края блока -->
           <div class="cta__stage">
-            <figure class="cta__photo" data-cta-photo>
-              <picture>
-                <source type="image/avif" srcset="/img/photo/volodymyr-cta-480.avif 480w, /img/photo/volodymyr-cta-900.avif 900w" sizes="(min-width: 900px) 34vw, 90vw" />
-                <source type="image/webp" srcset="/img/photo/volodymyr-cta-480.webp 480w, /img/photo/volodymyr-cta-900.webp 900w" sizes="(min-width: 900px) 34vw, 90vw" />
-                <img class="photo-img" src="/img/photo/volodymyr-cta-480.jpg" srcset="/img/photo/volodymyr-cta-480.jpg 480w, /img/photo/volodymyr-cta-900.jpg 900w" sizes="(min-width: 900px) 34vw, 90vw" width="480" height="703" alt="" data-i18n-attr="alt:cta.photoAlt" loading="lazy" decoding="async" />
-              </picture>
-            </figure>
+            <div class="cta__scene" data-cta-photo>
+              <img class="cta__scene-bg" src="/img/photo/volodymyr-cta-scene-800.webp" srcset="/img/photo/volodymyr-cta-scene-800.webp 800w, /img/photo/volodymyr-cta-scene-1200.webp 1200w" sizes="(min-width: 900px) 60vw, 140vw" width="800" height="1020" alt="" loading="lazy" decoding="async" />
+              <span class="cta__glow" aria-hidden="true"></span>
+              <img class="cta__scene-cut" src="/img/photo/volodymyr-cta-cut-800.webp" srcset="/img/photo/volodymyr-cta-cut-800.webp 800w, /img/photo/volodymyr-cta-cut-1200.webp 1200w" sizes="(min-width: 900px) 60vw, 140vw" width="800" height="1020" alt="" data-i18n-attr="alt:cta.photoAlt" loading="lazy" decoding="async" />
+            </div>
           </div>
         </div>
       </section>

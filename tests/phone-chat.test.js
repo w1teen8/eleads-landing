@@ -3,6 +3,7 @@
 // сделай экран телефона». T41 (H54): в 14 «Фінальний CTA» телефона больше нет — клиент: «Прибрати зображення телефону,
 // оскільки воно вже повторюється на сайті. Замість телефону додати мою фотографію».
 import { test } from 'node:test';
+import { existsSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
 import { expandPhones, phoneFrame, PHONE_TAG } from '../src/core/phone.js';
@@ -133,36 +134,56 @@ test('14 CTA: заголовок, текст и кнопка без измене
   assert.match(s, /data-i18n="cta\.text"/);
   assert.match(s, /data-i18n="cta\.button"/);
   assert.doesNotMatch(s, /phone|data-cta-(thread|hello|status)|final_cta_chat|telegramHandle/, 'телефона с чатом нет');
-  const photo = s.match(/<figure class="cta__photo" data-cta-photo>([\s\S]*?)<\/figure>/);
-  assert.ok(photo, 'фото на месте телефона');
-  const pic = photo[1];
-  for (const [type, ext] of [['image/avif', 'avif'], ['image/webp', 'webp']]) {
-    assert.match(pic, new RegExp(`<source type="${type}" srcset="/img/photo/volodymyr-cta-480\\.${ext} 480w, /img/photo/volodymyr-cta-900\\.${ext} 900w"`), ext);
+  // 2026-11-11 (выбор «1»): фото без рамки — кадр с улицей снизу и вырезанная фигура того же размера поверх
+  const scene = s.match(/<div class="cta__scene" data-cta-photo>([\s\S]*?)<\/div>/);
+  assert.ok(scene, 'фото на месте телефона');
+  const pic = scene[1];
+  assert.match(pic, /<img class="cta__scene-bg" src="\/img\/photo\/volodymyr-cta-scene-800\.webp" srcset="\/img\/photo\/volodymyr-cta-scene-800\.webp 800w, \/img\/photo\/volodymyr-cta-scene-1200\.webp 1200w"/);
+  assert.match(pic, /<img class="cta__scene-cut" src="\/img\/photo\/volodymyr-cta-cut-800\.webp" srcset="\/img\/photo\/volodymyr-cta-cut-800\.webp 800w, \/img\/photo\/volodymyr-cta-cut-1200\.webp 1200w"/);
+  assert.equal((pic.match(/width="800" height="1020"/g) || []).length, 2, 'оба слоя одного размера — без сдвига вёрстки');
+  assert.match(pic, /class="cta__scene-cut"[^>]*data-i18n-attr="alt:cta\.photoAlt"/, 'alt — из словаря, у фигуры');
+  assert.equal((pic.match(/loading="lazy"/g) || []).length, 2);
+  for (const f of ['scene-800', 'scene-1200', 'cut-800', 'cut-1200']) {
+    assert.ok(existsSync(new URL(`../public/img/photo/volodymyr-cta-${f}.webp`, import.meta.url)), f);
   }
-  assert.match(pic, /<img class="photo-img" src="\/img\/photo\/volodymyr-cta-480\.jpg" srcset="\/img\/photo\/volodymyr-cta-480\.jpg 480w, \/img\/photo\/volodymyr-cta-900\.jpg 900w"/);
-  assert.match(pic, /width="480" height="703"/, 'размеры исходника — без сдвига вёрстки');
-  assert.match(pic, /data-i18n-attr="alt:cta\.photoAlt"/, 'alt — из словаря');
-  assert.match(pic, /loading="lazy"/);
   // ключи чата больше не используются
   for (const dict of [ua, en]) {
     assert.equal(dict.cta.chatHello, undefined, 'cta.chatHello удалён');
     assert.equal(dict.cta.chat, undefined, 'cta.chat удалён');
     assert.match(dict.cta.photoAlt, /Kucher|Кучер/, 'alt фото — свой ключ блока (founder.* может исчезнуть с блоком 10)');
   }
-  assert.doesNotMatch(ctaJs, /phone|typing|IntersectionObserver|setTimeout/, 'cta.js — без чата');
+  assert.doesNotMatch(ctaJs, /phone|typing/, 'cta.js — без чата');
 });
 
-test('14 CTA: фото крупно, скругление, тонкая жёлто-оранжевая рамка и тёплое свечение; переходы — только transform/opacity', () => {
-  const photo = ctaCss.match(/\.cta__photo\s*\{([^}]*)\}/)[1];
-  assert.match(photo, /border-radius:\s*var\(--r-card-lg\)/);
-  assert.match(photo, /aspect-ratio:\s*3 \/ 4/);
-  // рамка — градиент палитры (--grad) по краю: слой ::after с маской-кольцом; свечение — --glow позади
-  assert.match(ctaCss, /\.cta__photo::after\s*\{[^}]*background:\s*var\(--grad\)/, 'рамка — жёлто-оранжевая');
-  assert.match(ctaCss, /\.cta__photo::after\s*\{[^}]*mask-composite:\s*exclude/, 'только кольцо по краю');
-  assert.match(ctaCss, /\.cta__stage::before\s*\{[^}]*var\(--glow\)/, 'тёплое свечение позади');
-  assert.match(ctaCss, /\.cta__photo \.photo-img\s*\{[^}]*object-position/, 'кадр — лицо и плечи');
+test('14 CTA: фото без рамки — улица растворяется в фон, фигура поверх с тёплым контуром; кадр крупный, забор ниже края', () => {
+  assert.doesNotMatch(ctaCss, /\.cta__photo|::after/, 'рамки и старого фото нет');
+  assert.match(ctaCss, /\.cta__scene-bg\s*\{[^}]*mask-image:\s*radial-gradient/, 'улица плавно уходит в фон');
+  assert.match(ctaCss, /\.cta__scene-bg\s*\{[^}]*brightness/, 'улица притемнена');
+  assert.match(ctaCss, /\.cta__scene-cut\s*\{[^}]*drop-shadow/, 'тёплый контур фигуры');
+  assert.match(ctaCss, /\.cta__glow\s*\{[^}]*var\(--accent-2\)/, 'свечение за головой');
+  // широкий экран: кадр выше блока в 1,58 раза — забор (≈66% кадра) уходит ниже края
+  assert.match(ctaCss, /height:\s*calc\(var\(--cta-h\) \* 1\.58\)/);
   for (const [, prop] of ctaCss.matchAll(/transition:\s*([a-z-]+)/g)) assert.ok(['transform', 'opacity'].includes(prop), prop);
-  assert.doesNotMatch(ctaCss, /@keyframes|animation:/);
+  assert.doesNotMatch(ctaCss, /@keyframes|animation:/, 'движение — только на холсте');
+});
+
+test('14 CTA: живой фон — топографические линии с волной света; холст из JS, только пока блок виден', async () => {
+  assert.doesNotMatch(section(html, 'cta'), /<canvas/, 'в HTML холста нет — его добавляет cta.js');
+  assert.match(ctaJs, /document\.createElement\('canvas'\)/);
+  assert.match(ctaJs, /IntersectionObserver/);
+  assert.match(ctaJs, /visibilitychange/);
+  assert.match(ctaJs, /if \(reduced\) return;/, 'reduced-motion — линии стоят, без волны');
+  const { LINES, contourSegments, wavePos, hexRgb } = await import('../src/sections/cta-lines.js');
+  assert.ok(LINES.base <= 0.06 && LINES.wave <= 0.4, '«линии менее заметными»');
+  const seg = contourSegments(200, 100, { cell: 10, levels: 6 });
+  assert.ok(seg.length > 0 && seg.length % 4 === 0, 'отрезки по 4 числа');
+  assert.ok(seg.every((n) => Number.isFinite(n) && n >= -0.001 && n <= 210), 'внутри холста');
+  assert.deepEqual(contourSegments(0, 100), []);
+  assert.deepEqual(contourSegments(200, 100, { cell: 10, levels: 6 }), seg, 'один и тот же рисунок');
+  assert.ok(wavePos(0) < 0 && wavePos(5) > wavePos(0), 'волна идёт слева направо');
+  assert.deepEqual(hexRgb('#FFD23F'), [255, 210, 63]);
+  assert.deepEqual(hexRgb('#fff'), [255, 255, 255]);
+  assert.equal(hexRgb('red'), null);
 });
 
 test('13 и 14 — ровно экран на широком; телефон 13 и фото 14 — на всю высоту блока', () => {
@@ -170,8 +191,9 @@ test('13 и 14 — ровно экран на широком; телефон 13 
     const c = strip(read(`src/styles/sections/${id}.css`));
     const wide = c.slice(c.indexOf('@media (min-width: 900px) and (orientation: landscape)'));
     assert.match(wide, /min-height:\s*calc\(100svh - var\(--header-h\) - 2 \* var\(--screen-pad\)\)/, id);
-    const media = id === 'faq' ? '\\.phone' : '\\.cta__photo';
-    assert.match(wide, new RegExp(`\\.${id}__stage ${media}\\s*\\{[^}]*height:\\s*100%`), `${id}: по высоте`);
+    if (id === 'faq') assert.match(wide, /\.faq__stage \.phone\s*\{[^}]*height:\s*100%/, 'faq: по высоте');
+    // 2026-11-11: фото 14 привязано к самому блоку и выше его — на всю высоту
+    else assert.match(wide, /\.cta__stage\s*\{[^}]*position:\s*absolute;\s*inset:\s*0/, 'cta: фото на всю высоту блока');
     assert.doesNotMatch(c, /#[0-9a-f]{3,8}\b|rgba?\(/i, `${id}: цвета`);
   }
 });

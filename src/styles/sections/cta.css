@@ -1,14 +1,28 @@
-/* 14 Фінальний CTA (T37 — reference/run3/cta-B-chosen.png; T41 — документ клиента, стр. 14): слева огромный заголовок
-   шрифтом канала с акцентным хвостом, текст Onest и акцентная кнопка-пилюля в Telegram; справа — фото Володимира
-   крупно (телефон убран: «вже повторюється на сайті»): скругление, тонкая жёлто-оранжевая рамка градиентом палитры
-   и тёплое свечение позади. Без нижней подписи и метки блока. На широком экране — ровно один экран (H15), фото
-   на всю высоту; на телефоне — под текстом. Без движения. */
+/* 14 Фінальний CTA (T37; T41 — документ клиента, стр. 14; 2026-11-11 — выбор пользователя «1», живой фон): слева
+   огромный заголовок шрифтом канала с акцентным хвостом, текст Onest и акцентная кнопка-пилюля в Telegram. Справа —
+   Володимир крупно, без рамки: внизу слоем — исходный кадр с улицей, притемнён и плавно растворяется в фон («немного
+   фона … чтобы был плавный переход»), поверх — вырезанная фигура того же размера, чёткая, с тёплым контуром. Кадр
+   приближен так, что забор уходит ниже края блока («приблизить фото … чтобы не было видно забора»). За всем —
+   топографические линии с медленной волной света (холст .cta__lines из cta.js). На широком экране — ровно один экран
+   (H15); на телефоне — фото под текстом, квадратом. Движение — только на холсте. */
 
 .section--cta {
   --cta-gap: clamp(1.5rem, 3vw, 4rem);
-  overflow-x: clip;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding-block: clamp(3.5rem, 2.5rem + 4vw, 6rem) clamp(3rem, 2rem + 3vw, 5rem);
   color: var(--text);
+}
+
+/* линии — на весь блок, под всем остальным */
+.cta__lines {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 .cta__inner {
@@ -19,6 +33,8 @@
 }
 
 .cta__body {
+  position: relative;
+  z-index: 2;
   display: grid;
   gap: clamp(1.25rem, 2.5vw, 2.25rem);
   min-width: 0;
@@ -63,89 +79,90 @@
   padding-block: 0.6rem;
 }
 
-/* — фото: скруглённая карточка, тонкая рамка градиентом --grad (кольцо маской), тёплое свечение позади — */
+/* — фото: телефон — квадрат под текстом, кадр шире квадрата (забор ниже края) — */
 .cta__stage {
   position: relative;
-  display: grid;
-  justify-items: center;
-  align-items: center;
-  min-width: 0;
-  min-height: 0;
-}
-
-.cta__stage::before {
-  content: '';
-  position: absolute;
-  inset: 6% -4%;
-  z-index: -1;
-  background: radial-gradient(closest-side, var(--glow), transparent);
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-.cta__photo {
-  position: relative;
-  width: min(100%, 26rem);
-  aspect-ratio: 3 / 4;
-  margin: 0;
-  border-radius: var(--r-card-lg);
-  background: var(--surface);
+  width: 100%;
+  aspect-ratio: 1;
   overflow: hidden;
-  box-shadow:
-    0 0 2.5rem -0.5rem color-mix(in srgb, var(--accent-2) 45%, transparent),
-    0 2rem 4rem -1.5rem color-mix(in srgb, black 70%, transparent);
-}
-
-.cta__photo picture {
-  position: absolute;
-  inset: 0;
-}
-
-/* кадр: лицо и плечи в верхней трети, фигура целиком (исходник 900×1320) */
-.cta__photo .photo-img {
-  object-position: 50% 20%;
-}
-
-/* тонкая рамка: слой с градиентом, видна только полоса толщиной padding (маска content-box исключает середину) */
-.cta__photo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 2px;
-  border-radius: inherit;
-  background: var(--grad);
-  -webkit-mask:
-    linear-gradient(black 0 0) content-box,
-    linear-gradient(black 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(black 0 0) content-box,
-    linear-gradient(black 0 0);
-  mask-composite: exclude;
   pointer-events: none;
+  /* края квадрата растворяются в фон — без жёсткой рамки (низ фигуры тоже уходит в фон) */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 16%, black 72%, transparent), linear-gradient(to right, transparent, black 18%, black 82%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent, black 16%, black 72%, transparent), linear-gradient(to right, transparent, black 18%, black 82%, transparent);
+  mask-composite: intersect;
 }
 
-/* — широкий экран: текст слева, фото справа на всю высоту; блок — ровно один экран (H15) — */
+.cta__scene {
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 140%;
+  aspect-ratio: 800 / 1020;
+}
+
+.cta__scene img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+/* улица вокруг фигуры: темнее и растворяется к краям и вниз */
+.cta__scene-bg {
+  filter: brightness(0.62) saturate(0.85);
+  -webkit-mask-image: radial-gradient(ellipse 50% 56% at 50% 40%, black 38%, color-mix(in srgb, black 55%, transparent) 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 56% at 50% 40%, black 38%, color-mix(in srgb, black 55%, transparent) 62%, transparent 100%);
+}
+
+/* тёплое свечение за головой — как на первом экране */
+.cta__glow {
+  position: absolute;
+  left: 22%;
+  top: 2%;
+  width: 56%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent-2) 32%, transparent), color-mix(in srgb, var(--accent) 8%, transparent) 60%, transparent);
+  mix-blend-mode: screen;
+}
+
+/* фигура: тонкий тёплый контур, чтобы тёмное пальто не сливалось с фоном */
+.cta__scene-cut {
+  filter: drop-shadow(0 0 0.3vw color-mix(in srgb, var(--accent-2) 70%, transparent));
+}
+
+/* — широкий экран: текст слева, Володимир справа крупно на всю высоту; блок — ровно один экран (H15) — */
 @media (min-width: 900px) and (orientation: landscape) {
   .section--cta {
+    --cta-h: calc(100svh - var(--header-h));
     padding-block: var(--screen-pad);
   }
 
-  /* «Финальный блок сделай больше» (2026-11-11): заголовок, текст, кнопка и фото крупнее, фото — на всю высоту экрана */
   .cta__inner {
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
     min-height: calc(100svh - var(--header-h) - 2 * var(--screen-pad));
   }
 
-  .cta__stage {
-    align-self: stretch;
+  .cta__body {
+    max-width: 50%;
   }
 
-  .cta__stage .cta__photo {
+  /* сцена привязана к блоку, а не к колонке: кадр выше блока в 1,58 раза — забор (≈66% кадра) ниже нижнего края */
+  .cta__stage {
+    position: absolute;
+    inset: 0;
     width: auto;
-    max-width: 100%;
-    height: 100%;
-    min-height: 22rem;
+    aspect-ratio: auto;
+    z-index: 0;
+  }
+
+  .cta__scene {
+    top: calc(var(--cta-h) * -0.022);
+    right: calc(var(--cta-h) * -0.065);
+    left: auto;
+    width: auto;
+    height: calc(var(--cta-h) * 1.58);
   }
 
   .section--cta .display.section__title {
