@@ -437,9 +437,9 @@ html:not(.js-anim) .reviews__arc {
     font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
   }
 
-  /* высота карточки ≈ высота блока без полей и подписи «скоро»: ширина = высота × 9/16 */
+  /* высота карточки ≈ 72% высоты блока («Надо меньше видео сделать»): ширина = высота × 9/16 */
   .reviews__circle {
-    --vd-d: min(calc((100svh - var(--header-h) - 2 * var(--screen-pad) - 2.5rem) * 9 / 16), 30vw);
+    --vd-d: min(calc((100svh - var(--header-h) - 2 * var(--screen-pad) - 2.5rem) * 0.72 * 9 / 16), 22vw);
   }
 
   .reviews .reviews__head {
