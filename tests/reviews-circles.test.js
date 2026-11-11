@@ -201,6 +201,8 @@ test('видео-отзыв играет сам, пока карточку ви�
   assert.match(js, /if \(active && !userPaused && !reduced\) play\(\);\s*else if \(playing\(\)\) video\.pause\(\);/);
   assert.match(js, /onEnded: \(\) => select\(nextIndex\(current, total\), false\)/);
   assert.match(js, /on\(video, 'ended'/);
-  assert.match(js, /video\.muted = true; \/\/ сначала без звука/);
+  // «сразу со звуком»; браузер без нажатия на странице разрешает только без звука — звук включит первое нажатие
+  assert.match(js, /let soundOn = true;/);
+  assert.match(js, /on\(document, 'pointerdown', unmuteOnGesture/);
   assert.match(js, /userPaused = true;/, 'пауза рукой — само не продолжает');
 });

@@ -34,10 +34,12 @@ const avatarOf = (i) => reviewAvatar(item(i, 'case'), data.cases, (id, retina) =
 /* ——— видео-отзыв 9:16 выбранного клиента ———
    2026-11-11, пользователь: «видео должно само проигрываться, по окончанию переходит на следующее. Если человек листает
    назад или дальше вниз, то видео останавливается … видео проигрывается только если его видно». Пока карточка видна
-   (не меньше VIDEO_VISIBLE) и вкладка браузера открыта — видео играет само (без звука, как разрешают браузеры); ушла из
+   (не меньше VIDEO_VISIBLE) и вкладка браузера открыта — видео играет само, сразу со звуком («сразу со звуком»); ушла из
    окна — пауза, вернулась — продолжает с того же места; закончилось — onEnded (следующий отзыв). Кнопка ▶ и клик по
    видео: без звука → со звуком → пауза; после паузы рукой само не продолжает, пока не нажмут снова или не сменится
-   отзыв. Звук, включённый рукой, остаётся и для следующего видео. reduced-motion / ?nomotion=1 — только по клику. */
+   отзыв. Браузер может запретить звук, пока человек ни разу не нажал на странице (политика автозапуска): тогда видео
+   идёт без звука, а звук включается при первом нажатии или клавише где угодно на странице. reduced-motion /
+   ?nomotion=1 — только по клику. */
 export const VIDEO_VISIBLE = 0.6;
 
 function videoStage(root, { onPlaying, onEnded, onProgress }) {
@@ -52,7 +54,7 @@ function videoStage(root, { onPlaying, onEnded, onProgress }) {
   let img = null;
   let active = false; // видно и вкладка открыта — можно играть само
   let userPaused = false; // поставили на паузу рукой
-  let soundOn = false; // звук включили рукой
+  let soundOn = true; // играть со звуком (пользователь: «сразу со звуком»); браузер может разрешить только без звука
   let raf = 0;
 
   const file = () => reviewVideo(item(index, 'video'));
@@ -106,7 +108,7 @@ function videoStage(root, { onPlaying, onEnded, onProgress }) {
   function ensureVideo() {
     if (video || !has()) return video;
     video = el('video', { class: 'reviews__video', attrs: { src: publicUrl(file()), playsinline: true, preload: 'auto' } });
-    video.muted = true; // сначала без звука: так браузеры разрешают играть самому
+    video.muted = !soundOn;
     on(video, 'play', () => {
       label();
       tick();
@@ -127,7 +129,7 @@ function videoStage(root, { onPlaying, onEnded, onProgress }) {
     const v = video;
     v.muted = !soundOn;
     v.play()?.catch?.(() => {
-      // браузер не дал играть со звуком без жеста — пробуем без звука
+      // браузер не дал играть со звуком без нажатия на странице — играем без звука; звук включит первое нажатие
       if (video !== v) return;
       if (!v.muted) {
         v.muted = true;
@@ -185,6 +187,16 @@ function videoStage(root, { onPlaying, onEnded, onProgress }) {
     }
     label();
   }
+
+  // первое нажатие или клавиша на странице включает звук видео, которое браузер запустил без звука
+  // (клик по самому видео и кнопке обрабатывает toggle — иначе он сразу поставил бы паузу)
+  const unmuteOnGesture = (e) => {
+    if (!soundOn || !playing() || !video.muted || circle.contains(e.target)) return;
+    video.muted = false;
+    label();
+  };
+  on(document, 'pointerdown', unmuteOnGesture, { capture: true });
+  on(document, 'keydown', unmuteOnGesture, { capture: true });
 
   on(button, 'click', (e) => {
     e.stopPropagation();
