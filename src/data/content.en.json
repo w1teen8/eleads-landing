@@ -57,7 +57,7 @@
     "cta": "Discuss a project",
     "facts": {
       "budgets": {
-        "label": "Ad budgets under management",
+        "label": "Ad budget spent",
         "value": "$2M+"
       },
       "years": {
