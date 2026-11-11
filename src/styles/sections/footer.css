@@ -95,10 +95,27 @@
   color: var(--text);
 }
 
+/* подпись студии: пользователь — «надо сделать крупнее чтобы заметно было» */
 .footer__credit {
   display: inline-flex;
   flex-wrap: wrap;
+  align-items: baseline;
   gap: 0.4em;
+  font-size: var(--fs-lg);
+  color: var(--text);
+}
+
+.footer__credit a {
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.footer__credit a:hover {
+  opacity: 0.8;
 }
 
 .footer__top {
