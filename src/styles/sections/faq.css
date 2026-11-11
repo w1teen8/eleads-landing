@@ -309,9 +309,16 @@
     height: 100%;
   }
 
+  /* тот же размер, что у телефона блока 04 (formats.js пишет --formats-phone-h) */
+  .faq__stage {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+  }
+
   .faq__stage .phone {
     width: auto;
-    height: 100%;
+    height: var(--formats-phone-h, 100%);
     max-height: 46rem;
     min-height: 22rem;
   }

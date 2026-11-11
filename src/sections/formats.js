@@ -141,4 +141,18 @@ function initTabs(root) {
 export function init(root) {
   accentTitles(root);
   initTabs(root);
+  sharePhoneHeight(root);
+}
+
+/** Высота телефона блока 04 — в переменную --formats-phone-h на всей странице: телефон FAQ берёт тот же размер
+ *  («сделать телефон меньше … такого же размера, как и первый телефон»). */
+function sharePhoneHeight(root) {
+  const phone = $('.formats__stage .phone', root);
+  if (!phone || !('ResizeObserver' in window)) return;
+  const set = () => {
+    const h = phone.getBoundingClientRect().height;
+    if (h > 0) document.documentElement.style.setProperty('--formats-phone-h', `${Math.round(h)}px`);
+  };
+  new ResizeObserver(set).observe(phone);
+  set();
 }

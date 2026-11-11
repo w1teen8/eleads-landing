@@ -150,7 +150,13 @@
 .formats__text {
   font-size: clamp(0.9375rem, 0.85rem + 0.25vw, 1.0625rem);
   line-height: 1.45;
-  color: color-mix(in srgb, currentColor 78%, transparent);
+  /* явные цвета, а не currentColor: Safari не пересчитывал color-mix(currentColor) при смене вкладки — у бывшей
+     активной оставался тёмный текст на тёмном, у новой — светлый на жёлтом («Цвет текста») */
+  color: color-mix(in srgb, var(--text) 78%, transparent);
+}
+
+.formats__tab[aria-selected='true'] .formats__text {
+  color: color-mix(in srgb, var(--accent-ink) 78%, transparent);
 }
 
 /* описание выбранного формата под пилюлями — только на узком экране */
@@ -596,8 +602,6 @@
     grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     grid-template-rows: auto minmax(0, 1fr) auto;
     column-gap: var(--formats-gap);
-    /* не выше телефона (max-height 46rem): иначе под ним пустая полоса и промежуток до следующего блока больше */
-    min-height: min(calc(100svh - var(--header-h) - 2 * var(--screen-pad)), 46rem);
   }
 
   .formats__body {
@@ -616,9 +620,12 @@
     gap: clamp(0.75rem, 2.4svh, 1.75rem);
   }
 
+  /* телефон ровно по высоте левой колонки — от верха заголовка до низа последней вкладки («подогнать размеры
+     телефона под элементы»): высоту блока задаёт колонка, телефон лишь растягивается в неё */
   .formats__stage {
     grid-area: 1 / 2 / 3 / 3;
-    height: 100%;
+    position: relative;
+    align-self: stretch;
   }
 
 
@@ -639,9 +646,12 @@
   }
 
   .formats__stage .phone {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    translate: -50% 0;
     width: auto;
     height: 100%;
-    max-height: 46rem;
     min-height: 22rem;
   }
 

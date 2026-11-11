@@ -191,7 +191,8 @@ test('13 — не выше телефона, 14 — ровно экран на �
     // 2026-11-11 равные промежутки: FAQ — не выше телефона (46rem), финальный экран — по-прежнему во всё окно
     if (id === 'faq') assert.match(wide, /min-height:\s*min\(calc\(100svh - var\(--header-h\) - 2 \* var\(--screen-pad\)\), 46rem\)/, id);
     else assert.match(wide, /min-height:\s*calc\(100svh - var\(--header-h\) - 2 \* var\(--screen-pad\)\)/, id);
-    if (id === 'faq') assert.match(wide, /\.faq__stage \.phone\s*\{[^}]*height:\s*100%/, 'faq: по высоте');
+    // 2026-11-11: телефон FAQ того же размера, что телефон блока 04 («такого же размера, как и первый телефон»)
+    if (id === 'faq') assert.match(wide, /\.faq__stage \.phone\s*\{[^}]*height:\s*var\(--formats-phone-h, 100%\)/, 'faq: размер как у 04');
     // 2026-11-11: фото 14 привязано к самому блоку и выше его — на всю высоту
     else assert.match(wide, /\.cta__stage\s*\{[^}]*position:\s*absolute;\s*inset:\s*0/, 'cta: фото на всю высоту блока');
     assert.doesNotMatch(c, /#[0-9a-f]{3,8}\b|rgba?\(/i, `${id}: цвета`);
