@@ -29,10 +29,12 @@
   white-space: nowrap;
 }
 
+/* «Сделай две полоски серыми» (2026-11-11): обе ленты серые, как тёмная; между ними тонкая линия */
 .ribbons__band--accent {
   z-index: 2;
-  background: var(--grad);
-  color: var(--accent-ink);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  color: color-mix(in srgb, var(--text) 80%, transparent);
 }
 
 .ribbons__band--muted {
