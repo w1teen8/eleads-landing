@@ -67,15 +67,15 @@ test('цифр клиента ещё нет — «уточнити», а не п
   }
 });
 
-test('3 ключові показники: подпись и значение на двух языках; подписи по умолчанию — Бюджет, Охоплення, CPA / CPS (клиент 2026-11-11)', () => {
+test('3 ключові показники: подпись и значение на двух языках; подписи по умолчанию — Бюджет, CPM за 1000, Ціна підписника (клиент 2026-11-11)', () => {
   for (const c of cases) {
     assert.ok(Array.isArray(c.metrics) && c.metrics.length === 3, `${c.name.ua}: metrics ×3`);
     for (const m of c.metrics) {
       assert.deepEqual(Object.keys(m), ['label', 'value'], c.name.ua);
       assert.ok(bilingual(m.label) && bilingual(m.value), c.name.ua);
     }
-    assert.deepEqual(c.metrics.map((m) => m.label.ua), ['Бюджет', 'Охоплення', 'CPA / CPS'], c.name.ua);
-    assert.deepEqual(c.metrics.map((m) => m.label.en), ['Budget', 'Reach', 'CPA / CPS'], c.name.ua);
+    assert.deepEqual(c.metrics.map((m) => m.label.ua), ['Бюджет', 'CPM за 1000', 'Ціна підписника'], c.name.ua);
+    assert.deepEqual(c.metrics.map((m) => m.label.en), ['Budget', 'CPM per 1000', 'Cost per subscriber'], c.name.ua);
     // прежние отдельные поля перенесены в metrics — данных в двух местах нет
     for (const old of ['budget', 'result', 'cpa']) assert.equal(c[old], undefined, `${c.name.ua}: ${old}`);
   }

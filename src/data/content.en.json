@@ -214,16 +214,19 @@
       {
         "num": "01",
         "title": "In Telegram channels",
+        "short": "Channels",
         "text": "The ad message is shown to the audience right while they browse Telegram channels."
       },
       {
         "num": "02",
         "title": "In video / media content",
+        "short": "Video",
         "text": "A visual format with a creative, headline, text and CTA inside media content."
       },
       {
         "num": "03",
         "title": "In bots",
+        "short": "Bots",
         "text": "Ads can be shown to users while they interact with Telegram bots."
       }
     ],

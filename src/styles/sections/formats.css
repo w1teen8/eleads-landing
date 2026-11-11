@@ -165,6 +165,11 @@
   display: none;
 }
 
+/* короткое название формата — только в пилюлях на узком экране */
+.formats__short {
+  display: none;
+}
+
 /* — телефон: рамка, экран, шапка чата, лента и низ — общий компонент src/styles/phone.css (шаблон src/core/phone.js);
      здесь — только то, что есть у блока 04: панели вкладок, скелетоны чужих постов, метка «Спонсороване», макеты — */
 .formats__stage {
@@ -692,5 +697,45 @@
 
   .formats__stage {
     padding-top: 0.5rem;
+  }
+}
+
+/* телефон (клиент 2026-11-11): «кнопки … сделать в 1 рядок и поместить над телефоном», описание выбранного формата
+   убрать, телефон меньше — заголовок, кнопки и телефон на одном экране. Кнопки — три равные пилюли с коротким
+   названием (Канали · Відео · Боти) */
+@media (max-width: 899px) {
+  .formats__tabs {
+    flex-wrap: nowrap;
+  }
+
+  .formats__tab {
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    padding-inline: 0.75rem;
+  }
+
+  .formats__title {
+    display: none;
+  }
+
+  .formats__short {
+    display: block;
+    font-family: var(--font-head);
+    font-size: 1.25rem;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .formats__note,
+  .formats__note:not(:empty) {
+    display: none;
+  }
+
+  /* высота телефона — остаток экрана под шапкой, заголовком, текстом и кнопками */
+  .formats__stage .phone {
+    width: min(18.75rem, calc((100svh - var(--header-h) - 20.5rem) * 300 / 620));
   }
 }
