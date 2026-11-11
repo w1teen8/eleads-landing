@@ -8,6 +8,8 @@
 .ribbons {
   position: relative;
   z-index: 1;
+  /* «Полоски еще выше поставь»: заезжают на низ фото, кнопку и карточку не закрывают (подъём считает ribbons.js) */
+  margin-top: calc(-1 * var(--rb-lift, 0px));
   display: flex;
   flex-direction: column;
   overflow: clip;

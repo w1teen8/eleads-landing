@@ -40,6 +40,13 @@ test('ленты: бегут через motion.marquee в разные стор�
   assert.doesNotMatch(css, /rotate\(/, 'полосы не наклонены');
   assert.match(css, /\.ribbons \{[^}]*flex-direction: column/, 'одна под другой');
   assert.doesNotMatch(css, /\.ribbons \{[^}]*min-height/, 'без пустых полей под концы наклонных полос');
+  // «Полоски еще выше поставь»: подъём на низ фото — на свободное место под кнопкой и карточкой минус зазор
+  assert.match(css, /margin-top: calc\(-1 \* var\(--rb-lift, 0px\)\)/);
+  const { liftFor, LIFT_GAP } = await import('../src/sections/ribbons.js');
+  assert.equal(LIFT_GAP, 20);
+  assert.equal(liftFor(937, [864, 860]), 53, 'по самому нижнему элементу');
+  assert.equal(liftFor(720, [705]), 0, 'места нет — не поднимаем');
+  assert.equal(liftFor(900, []), 0);
 });
 
 test('подвал (T31): компактный — логотип словом, ссылки, Telegram, ©, UA/EN, строка автора', () => {
