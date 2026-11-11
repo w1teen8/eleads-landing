@@ -1,8 +1,10 @@
 /* 12 Матеріали (T36, H49): картки-пости, як у каналі Telegram — вариант A
    (reference/run3/materials-A-chosen.png, стили макета — reference/run3/rest-mock.cjs, materials.A).
    Четыре превью постов канала: обложка сверху (у первого — жёлто-оранжевая с крупным заголовком шрифтом канала,
-   у остальных — тёмная с «Пост»), под ней строка канала (круглый значок, «eLeads», «пост»), заголовок поста
-   («уточнити» — приглушённо) и кнопка «Читати в Telegram ↗» во всю ширину.
+   у остальных — тёмная с «Пост»), под ней строка канала (круглое фото, «єЛіди! → [маркетинг]», «пост»), заголовок
+   поста, опис 1–3 речення («уточнити» — приглушённо) и кнопка «Читати в Telegram ↗» во всю ширину.
+   T40: зображення поста ложится поверх обложки, фото канала — поверх круга (materials.js, .has-image); пока файлов
+   нет — заглушки.
    Лента в духе showcase-scroll (H07): на широком альбомном экране блок закреплён под шапкой, полоса .mat__grid едет
    влево на величину переполнения (transform из motion-kit → showcaseScroll), справа от заголовка — линия прогресса
    (scaleX). На узком/портретном экране и при reduced-motion лента — горизонтальная прокрутка пальцем со snap.
@@ -114,8 +116,10 @@
   transform: translateY(-5px);
 }
 
-/* обложка поста */
+/* обложка поста; зображення поста (materials.js) ложится поверх и закрывает её целиком */
 .mat__cover {
+  position: relative;
+  overflow: hidden;
   display: grid;
   place-items: center;
   flex: none;
@@ -141,6 +145,21 @@
   text-wrap: balance;
 }
 
+.mat__cover-img,
+.mat__avatar-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+
+.mat__cover.has-image .mat__cover-img,
+.mat__avatar.has-image .mat__avatar-img {
+  opacity: 1;
+}
+
 /* тело поста */
 .mat__body {
   display: flex;
@@ -158,6 +177,8 @@
 }
 
 .mat__avatar {
+  position: relative;
+  overflow: hidden;
   flex: none;
   width: 1.875rem;
   height: 1.875rem;
@@ -166,8 +187,12 @@
 }
 
 .mat__channel-name {
+  min-width: 0;
   font-size: var(--fs-sm);
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mat__kind {
@@ -190,8 +215,21 @@
   hyphens: manual;
 }
 
-/* названия поста ещё нет — заглушка «уточнити», приглушённо */
-.mat__title.is-tbd {
+/* опис: 1–3 коротких предложения о содержании и пользе — не длиннее трёх строк */
+.mat__text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--text) 78%, transparent);
+}
+
+/* названия или описания поста ещё нет — заглушка «уточнити», приглушённо */
+.mat__title.is-tbd,
+.mat__text.is-tbd {
   font-style: italic;
   color: var(--text-muted);
 }
@@ -284,6 +322,10 @@
 
   .mat__title {
     font-size: clamp(1rem, 2svh, 1.25rem);
+  }
+
+  .mat__text {
+    font-size: clamp(0.8125rem, 1.6svh, 1rem);
   }
 
   .mat__link {

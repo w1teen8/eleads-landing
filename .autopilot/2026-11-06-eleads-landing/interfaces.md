@@ -363,3 +363,27 @@ export function forecast(input, rates): Forecast
 - `build/i18n-prerender.js`: замены атрибутов — функцией (иначе «$&», «$1» в тексте ломали HTML при сборке).
 - Новый ключ/текст на сайте: добавлять в оба словаря — админка покажет его автоматически.
 
+## T39 — калькулятор по таблице клиента
+
+- `calculator.json`: `spread: 0.2`, `budget {min 1, max 10000, default 1993}`, `segments` (ниша → строка таблицы; `business: "saas_b2b"`), `table.<row>.<ua|worldwide> = {imp, clk, sub}` на 1 €; нет строки → `nodata`. `niches` 5, `goals` только subscribers.
+- `calculator-model.js`: `forecast(input, rates)` → `{impressions, clicks, conversions, cpc, cpa: {lo, hi, mid}|null, ctr: {mid}|null, nodata, issues}`; `unitRates`, `clampBudget`, `budgetScale` (73 значения).
+- Разметка: `select#calc-{niche|geo|goal}[data-calc-select]`, `input#calc-amount[data-calc-amount]`, `[data-calc-mid]`, `[data-calc-spread]`, `.calc__nodata[data-calc-nodata]` (место `calculator_nodata`), `p.calc__note`.
+
+## T40 — блоки 3, 6, 12 по обратной связи
+
+- `cases.json`: у кейса `geo {ua,en}`, `goal {ua,en}`, `metrics: [{label, value} ×3]` (старые budget/result/cpa удалены); `cases.js`: `metricsOf(item, lang)`, `METRICS = 3`; слоты `[data-metric]`, `[data-m-metric]`. Линия роста удалена.
+- `content.*.json` `materials`: `channel`, `channelImage`, у пункта `text`, `image` (`img/posts/…`), `url` (`https://t.me/…`); `materials.js` проверяет их как админка (`postUrl`, `imagePath`), иначе — заглушка и общий `config.telegramUrl`. Слоты `[data-mat-image]`, `[data-mat-channel-image]`, `[data-mat-url]`.
+- Админка: виды полей `post` и `image`.
+
+## T41 — блок 4, FAQ, CTA
+
+- 04: video — `.tg-ad--video` (обложка + `.tg-ad__card`, без кнопки); bot — `.tg-ad--bot > .tg-ad__pin` (закреплённая плашка: `.tg-ad__pin-label` + `.tg-ad__what`, `.tg-ad__pin-text`, `.tg-ad__close`); ключи `formats.phone.pinAd`/`whatIs`.
+- FAQ: 8 вопросов, q9 удалён.
+- 14: `figure.cta__photo[data-cta-photo]`, ключ `cta.photoAlt`; `cta.chat*`, место `final_cta_chat`, `.phone__send`/`.phone__link`/`.phone__bottom--send` удалены; телефонов на странице 2.
+
+## T42 — блоки 8, 10, 11
+
+- `geo-dots.json` regions: `ukraine`, `europe`, `america` (`pins` США и Канады), `worldwide` (`world: true`); `geo-globe.js`: `regionPins(regions)`, `spinView(view, dt, k)`, `GLOBE.spin`. Ключи `geo.regions.<id>.{name, usersLabel, users, ukrainiansLabel, ukrainians, moreLabel, more}`; 4.43M удалена.
+- Відгуки: 2 отзыва, `reviews.items.*.video` (путь в `public/video/reviews/`), `reviews.player.*`; `reviews-model.js`: `reviewVideo(value)`; раздел `founder.*` удалён.
+- Екосистема: `ecosystem.steps[0..4].{name, items[]}`; `STEP_SERVICES`, `flow`, `services` удалены.
+

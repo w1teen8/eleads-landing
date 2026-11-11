@@ -380,14 +380,11 @@
   color: var(--tg-link);
 }
 
-/* 02 медиа: вертикальный пост — обложка креатива и карточка с кнопкой под ней */
+/* 02 медиа (T41 — пример, что раньше был у ботов): видео в ленте канала, поверх его низа — компактная карточка,
+   как реклама в плеере Telegram: круглый логотип, заголовок, метка Ad, текст */
 .tg-ad--video {
-  max-width: 19em;
-  gap: 0.5em;
-  padding: 0.55em;
-  border-radius: 1.4em;
-  background: var(--tg-bubble);
-  box-shadow: 0 0.8em 2.2em color-mix(in srgb, var(--accent-ink) 40%, transparent);
+  --tg-bubble: color-mix(in srgb, var(--text) 8%, var(--bg));
+  max-width: 26em;
 }
 
 .tg-ad__cover {
@@ -396,9 +393,9 @@
   align-content: start;
   justify-items: center;
   gap: 0.4em;
-  min-height: 9em;
+  min-height: 14.5em;
   padding: 0.6em 0.8em 0.8em;
-  border-radius: 1em;
+  border-radius: 1.15em;
   background:
     radial-gradient(70% 60% at 50% 110%, color-mix(in srgb, var(--accent-2) 55%, transparent), transparent 70%),
     linear-gradient(170deg, color-mix(in srgb, var(--accent-2) 22%, var(--bg)), var(--bg));
@@ -460,39 +457,27 @@
 }
 
 .tg-ad--video .tg-ad__card {
-  gap: 0.35em;
-  padding: 0.65em 0.8em 0.7em;
-  border: 0;
-  border-left: 0.2em solid var(--tg-link);
-  border-radius: 0.6em;
-  background: color-mix(in srgb, var(--text) 6%, var(--bg));
-  box-shadow: none;
-  font-size: 0.86em;
+  gap: 0.65em;
+  margin-top: -4.6em;
+  margin-inline: 0.55em;
+  padding: 0.95em 1.05em 1.05em;
+  border-color: color-mix(in srgb, var(--text) 10%, transparent);
+  background: color-mix(in srgb, var(--tg-bubble) 94%, transparent);
+  box-shadow: 0 0.6em 1.8em color-mix(in srgb, var(--bg) 60%, transparent);
 }
 
-/* 03 бот: пузырь чата с ботом */
-.tg-ad--bot {
-  --tg-bubble: color-mix(in srgb, var(--text) 8%, var(--bg));
-  max-width: 26em;
-}
-
-.tg-ad--bot .tg-ad__card {
-  gap: 0.75em;
-  padding: 1.1em 1.25em 1.25em;
-}
-
-.tg-ad--bot .tg-ad__head {
+.tg-ad--video .tg-ad__head {
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
 }
 
-.tg-ad--bot .tg-ad__logo {
+.tg-ad--video .tg-ad__logo {
   width: 5.2em;
   height: 5.2em;
   border-radius: 50%;
 }
 
-.tg-ad--bot .tg-ad__ad {
+.tg-ad--video .tg-ad__ad {
   align-self: start;
   padding: 0.05em 0.5em;
   border-radius: 0.4em;
@@ -500,9 +485,90 @@
   font-size: 0.85em;
 }
 
-.tg-ad--bot .tg-ad__body {
-  font-size: 1.08em;
-  line-height: 1.6;
+.tg-ad--video .tg-ad__body {
+  font-size: 1.02em;
+  line-height: 1.55;
+}
+
+/* 03 бот (T41, скриншот клиента): закреплённая плашка рекламы вверху чата бота — строка «Реклама MONOLIT» с пилюлей
+   «що це?», жирный акцент-заголовок и текст не длиннее трёх строк, справа крестик. Лента бота идёт от верха:
+   плашка под шапкой, переписка прижата к полю ввода; если места мало, срезается переписка, а не плашка */
+[data-formats-panel='bot'] .phone__feed {
+  justify-content: flex-start;
+}
+
+.tg-ad--bot + .phone__skel {
+  margin-top: auto;
+}
+
+.phone .tg-ad--bot {
+  font-size: 3.95cqw;
+}
+
+.tg-ad__pin {
+  position: relative;
+  display: grid;
+  gap: 0.35em;
+  padding: 0.75em 2.7em 0.85em 1em;
+  border: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  border-radius: 1.1em;
+  background: color-mix(in srgb, var(--text) 9%, var(--bg));
+  box-shadow: 0 0.5em 1.4em color-mix(in srgb, var(--bg) 55%, transparent);
+}
+
+.tg-ad__pin-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2em 0.45em;
+  font-weight: 700;
+  font-size: 1.04em;
+  line-height: 1.25;
+}
+
+.tg-ad__what {
+  padding: 0.08em 0.5em 0.12em;
+  border-radius: 1em;
+  background: color-mix(in srgb, var(--text) 12%, transparent);
+  font-weight: 500;
+  font-size: 0.78em;
+  color: var(--tg-muted);
+}
+
+.tg-ad__pin-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  line-height: 1.4;
+  color: var(--tg-text);
+}
+
+.tg-ad__pin-accent {
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.tg-ad__pin-text .tg-ad__brand {
+  color: inherit;
+}
+
+.tg-ad__close {
+  position: absolute;
+  top: 50%;
+  right: 0.75em;
+  display: grid;
+  place-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  color: var(--tg-muted);
+  transform: translateY(-50%);
+}
+
+.tg-ad__close svg {
+  width: 100%;
+  height: 100%;
 }
 
 /* — широкий экран: слева заголовок, подводка и вкладки (≈ 3/5), справа телефон на всю высоту блока — */

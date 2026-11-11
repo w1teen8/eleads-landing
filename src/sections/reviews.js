@@ -1,12 +1,14 @@
-// 10 Відгуки + засновник (T35, H48): кружки, как видео-сообщения Telegram. Выбор пользователя: «Рев С»
-// (reference/run3/reviews-C-chosen.png). Слева Володимир в большом круге с жёлто-оранжевым кольцом; справа — ряд круглых
-// аватаров клиентов (вкладки), под ним отзыв выбранного и цифры. Отзывы сами листаются раз в STEP_MS (как диск блока 09):
-// вокруг выбранного кружка кольцо прогресса — две половины, крутятся transform-ом (Web Animations API); конец — следующий
-// отзыв. Пауза — только пока курсор на самом кружке (блок во весь экран: пауза на всём блоке почти всегда стояла бы), на
-// фокусе с клавиатуры, вне окна и на скрытой вкладке. Клик, наведение мышью, стрелки — выбор и новый отсчёт; смена текста —
-// табло (flipSwap). Отзыв объявляется скринридером только при ручном выборе (aria-live). reduced-motion / ?nomotion=1 —
-// без автолистания. Аватар — фото кейса (reviews.items.*.case → cases.json), иначе первая буква имени.
-// Круг засновника: если в founder.video есть файл — кнопка ▶, по клику видео без звука, второй клик — со звуком.
+// 10 Відгуки (T35, H48; T42 — правка клиента, reference/client-feedback/page-10.png): кружки, как видео-сообщения
+// Telegram. Облик — «Рев С» (reference/run3/reviews-C-chosen.png). Заголовок «Що говорять підприємці»; фото и текста
+// засновника больше нет: слева большой круг с жёлто-оранжевым кольцом — видео-отзыв выбранного клиента
+// (reviews.items.*.video, файл в public/video/reviews/; пусто — аватар клиента и «відео-відгук скоро»). Клик по кругу
+// или по кнопке ▶: без звука → со звуком → пауза (как видео-кружок в Telegram). Справа — ряд круглых аватаров клиентов
+// (вкладки), под ним отзыв выбранного и цифры. Отзывы сами листаются раз в STEP_MS (как диск блока 09): вокруг
+// выбранного кружка кольцо прогресса — две половины, крутятся transform-ом (Web Animations API); конец — следующий
+// отзыв. Пауза — пока курсор на самом кружке, на фокусе с клавиатуры, вне окна, на скрытой вкладке и пока играет
+// видео-отзыв. Клик, наведение мышью, стрелки — выбор и новый отсчёт; смена текста — табло (flipSwap). Отзыв
+// объявляется скринридером только при ручном выборе (aria-live). reduced-motion / ?nomotion=1 — без автолистания.
+// Аватар — фото кейса (reviews.items.*.case → cases.json), иначе первая буква имени.
 import { $, $$, el, on } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
 import { t, onLangChange } from '../core/i18n.js';
@@ -14,7 +16,7 @@ import { reduced } from '../core/motion.js';
 import { flipSwap } from '../core/motion-kit.js';
 import { publicUrl } from '../core/public-url.js';
 import { avatarPath, initial } from './cases.js';
-import { reviewAvatar, isTbd, STEP_MS } from './reviews-model.js';
+import { reviewAvatar, reviewVideo, isTbd, STEP_MS } from './reviews-model.js';
 import { nextIndex } from './targeting-model.js';
 import data from '../data/cases.json';
 
@@ -23,48 +25,102 @@ const HOVER_MS = 140;
 
 export function init(root) {
   accentTitles(root);
-  initFounder(root);
   initReviews(root);
 }
 
-/* ——— засновник: видео-кружок, когда есть файл ——— */
-function initFounder(root) {
-  const circle = $('[data-founder-circle]', root);
-  const button = $('[data-founder-play]', root);
-  const figure = circle && $('.founder__photo', circle);
-  if (!circle || !button || !figure) return;
-  let video = null;
+const item = (i, f) => t(`reviews.items.${i}.${f}`);
+const avatarOf = (i) => reviewAvatar(item(i, 'case'), data.cases, (id, retina) => publicUrl(avatarPath(id, retina)));
 
-  const file = () => String(t('founder.video') ?? '').trim();
+/* ——— большой круг: аватар выбранного клиента и его видео-отзыв, когда есть файл ——— */
+function videoStage(root, onPlaying) {
+  const circle = $('[data-rv-circle]', root);
+  const screen = $('[data-rv-screen]', root);
+  const button = $('[data-rv-play]', root);
+  const soon = $('[data-rv-soon]', root);
+  const letter = $('[data-rv-big-letter]', root);
+  if (!circle || !screen || !button) return { show() {}, pause() {}, sync() {} };
+  let index = 0;
+  let video = null;
+  let img = null;
+
+  const file = () => reviewVideo(item(index, 'video'));
+  const playing = () => Boolean(video && !video.paused);
   // состояние кнопки: idle — ▶, muted — «включить звук», sound — пауза (иконку выбирает CSS по data-video)
   const label = () => {
     let state = 'idle';
-    if (video && !video.paused) state = video.muted ? 'muted' : 'sound';
+    if (playing()) state = video.muted ? 'muted' : 'sound';
     circle.dataset.video = state;
-    button.setAttribute('aria-label', t({ idle: 'founder.play', muted: 'founder.sound', sound: 'founder.pause' }[state]));
+    button.setAttribute('aria-label', t(`reviews.player.${{ idle: 'play', muted: 'sound', sound: 'pause' }[state]}`));
+    onPlaying(playing());
   };
-  const sync = () => {
-    const has = Boolean(file()) && file() !== 'founder.video';
+
+  function stop() {
+    if (!video) return;
+    video.pause();
+    video.remove();
+    video = null;
+    circle.classList.remove('is-playing');
+    label();
+  }
+
+  // аватар клиента: фото кейса (крупный файл — круг большой), без фото и при сбое — буква
+  function paintAvatar() {
+    const found = avatarOf(index);
+    if (letter) letter.textContent = initial(item(index, 'name'));
+    circle.style.setProperty('--rv-accent', found?.accent || '');
+    const src = found ? (found.srcset ? publicUrl(avatarPath(String(item(index, 'case')).trim(), true)) : found.src) : '';
+    if (img && img.dataset.src === src) return;
+    img?.remove();
+    img = null;
+    screen.classList.remove('has-image');
+    if (!src) return;
+    const next = el('img', { class: 'reviews__shot', attrs: { src, alt: '', decoding: 'async' }, dataset: { src } });
+    on(next, 'load', () => img === next && screen.classList.add('has-image'), { once: true });
+    on(next, 'error', () => next.remove(), { once: true });
+    img = next;
+    screen.prepend(next);
+  }
+
+  // вкладка скрыта — видео на паузе (кадр остаётся в круге, следующий клик продолжит)
+  function pause() {
+    if (playing()) video.pause();
+  }
+
+  function sync() {
+    const has = Boolean(file());
     button.hidden = !has;
     circle.classList.toggle('has-video', has);
+    if (soon) soon.hidden = has;
+    paintAvatar();
     label();
-  };
+  }
+
+  function show(i) {
+    if (i === index && video) return;
+    stop();
+    index = i;
+    sync();
+  }
 
   function toggle() {
     if (button.hidden) return;
     if (!video) {
-      video = el('video', { class: 'founder__video', attrs: { src: publicUrl(file()), playsinline: true, preload: 'auto' } });
+      video = el('video', { class: 'reviews__video', attrs: { src: publicUrl(file()), playsinline: true, preload: 'auto' } });
       video.muted = true; // как кружок в Telegram: сначала без звука
       on(video, 'ended', () => {
         circle.classList.remove('is-playing');
         video.muted = true;
         label();
       });
-      figure.append(video);
+      on(video, 'pause', label);
+      screen.append(video);
     }
     if (video.paused) {
       circle.classList.add('is-playing');
-      video.play()?.catch?.(() => circle.classList.remove('is-playing'));
+      video.play()?.catch?.(() => {
+        circle.classList.remove('is-playing');
+        label();
+      });
     } else if (video.muted) {
       video.muted = false;
     } else {
@@ -74,10 +130,12 @@ function initFounder(root) {
     label();
   }
 
-  on(button, 'click', toggle);
-  on(figure, 'click', toggle);
-  onLangChange(sync);
-  sync();
+  on(button, 'click', (e) => {
+    e.stopPropagation();
+    toggle();
+  });
+  on(screen, 'click', toggle);
+  return { show, pause, sync };
 }
 
 /* ——— отзывы: кружки-вкладки с автолистанием ——— */
@@ -95,15 +153,20 @@ function initReviews(root) {
   let current = 0;
   let timers = [];
   let hoverTimer = 0;
-  const state = { hovered: false, focused: false, inView: false, hidden: document.hidden };
+  const state = { hovered: false, focused: false, inView: false, hidden: document.hidden, playing: false };
   if (reduced) root.classList.add('is-static');
 
-  const item = (i, f) => t(`reviews.items.${i}.${f}`);
+  // пока играет видео-отзыв, листание стоит: следующий отзыв не сменит круг посреди видео
+  const stage = videoStage(root, (playing) => {
+    if (state.playing === playing) return;
+    state.playing = playing;
+    sync();
+  });
 
   /* аватары: фото кейса через publicUrl, цвет бренда — инлайн-переменная; без фото и при сбое — буква */
   tabs.forEach((tab, i) => {
     const box = $('[data-rv-avatar]', tab);
-    const found = reviewAvatar(item(i, 'case'), data.cases, (id, retina) => publicUrl(avatarPath(id, retina)));
+    const found = avatarOf(i);
     if (!box || !found) return;
     if (found.accent) tab.style.setProperty('--rv-accent', found.accent);
     const img = el('img', { class: 'reviews__img', attrs: { src: found.src, srcset: found.srcset, alt: '', decoding: 'async' } });
@@ -141,9 +204,9 @@ function initReviews(root) {
     sync();
   }
 
-  // идёт только в окне, на видимой вкладке, без курсора на кружке и без фокуса с клавиатуры
+  // идёт только в окне, на видимой вкладке, без курсора на кружке, без фокуса с клавиатуры и пока видео не играет
   function sync() {
-    const run = state.inView && !state.hidden && !state.hovered && !state.focused;
+    const run = state.inView && !state.hidden && !state.hovered && !state.focused && !state.playing;
     for (const a of timers) {
       if (run && a.playState === 'paused') a.play();
       if (!run && a.playState === 'running') a.pause();
@@ -184,6 +247,7 @@ function initReviews(root) {
     if (focus) tabs[i].focus();
     if (changed) {
       paint(i, true);
+      stage.show(i);
       bringIntoRow(tabs[i]);
     }
     startTimers();
@@ -238,6 +302,7 @@ function initReviews(root) {
   });
   on(document, 'visibilitychange', () => {
     state.hidden = document.hidden;
+    if (state.hidden) stage.pause();
     sync();
   });
   if ('IntersectionObserver' in window) {
@@ -255,9 +320,11 @@ function initReviews(root) {
   onLangChange(() => {
     paintLetters();
     paint(current, false);
+    stage.sync();
   });
   paintLetters();
   paint(current, false);
+  stage.show(current);
 
   if (reduced) return; // без автолистания: выбор только кликом и клавишами
   startTimers();

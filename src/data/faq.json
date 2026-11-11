@@ -51,8 +51,8 @@
         "en": "Which countries are available?"
       },
       "a": {
-        "ua": "Україна, Європа, United Kingdom, USA, Canada, Australia; Asia — окремі GEO за задачею.",
-        "en": "Ukraine, Europe, United Kingdom, USA, Canada, Australia; Asia — separate GEOs depending on the task."
+        "ua": "Україна, Європа, США та Канада, а також інші країни світу за задачею.",
+        "en": "Ukraine, Europe, the USA and Canada, as well as other countries worldwide depending on the task."
       }
     },
     {
@@ -69,12 +69,12 @@
     {
       "id": "q7",
       "q": {
-        "ua": "Чи можете створити канал з нуля?",
-        "en": "Can you create a channel from scratch?"
+        "ua": "Чи можете створити Telegram-канал з нуля?",
+        "en": "Can you create a Telegram channel from scratch?"
       },
       "a": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Так, можемо створити та підготувати Telegram-канал до запуску реклами.",
+        "en": "Yes, we can create a Telegram channel and get it ready for launching ads."
       }
     },
     {
@@ -84,19 +84,8 @@
         "en": "Do you work with international projects?"
       },
       "a": {
-        "ua": "Так, працюю з рекламними кампаніями в Україні та по всьому світу.",
-        "en": "Yes, I run ad campaigns in Ukraine and all over the world."
-      }
-    },
-    {
-      "id": "q9",
-      "q": {
-        "ua": "Чи є гарантія результату?",
-        "en": "Is the result guaranteed?"
-      },
-      "a": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Так, працюємо з українськими та міжнародними проєктами, налаштовуючи рекламу на потрібні країни й аудиторії.",
+        "en": "Yes, we work with Ukrainian and international projects, setting up ads for the countries and audiences you need."
       }
     }
   ]

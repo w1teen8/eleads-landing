@@ -3,11 +3,13 @@
 // карточки едут влево по мере прокрутки страницы (showcaseScroll из core/motion-kit.js). Стрелок и перетаскивания нет.
 // Узкий экран, reduced-motion, ?nomotion=1 или GSAP не загрузился — обычная горизонтальная прокрутка пальцем
 // (класс is-static, scroll-snap в CSS). Полоса под лентой — пройденный путь (scaleX).
-// Карточка (вариант F, выбор пользователя): на фоне «линия роста» — декоративная кривая с заливкой в цвет бренда
-// (не данные: без осей и цифр; три заготовки формы по индексу карточки); шапка — круглый аватар и справа имя
-// с нишей; акценты — в цвет бренда кейса (cases.json → accent, инлайн-переменная --case-accent). Фото — только у кейсов с avatar: true:
+// Карточка (вариант F, выбор пользователя; T40 — по документу клиента, блок 6): шапка — круглый аватар и справа имя
+// с нишей; под ней GEO и ціль кампанії, затем 3 ключові показники (подпись + значение крупно цветом бренда) из
+// cases.json → metrics. «Линию роста» клиент убрал («графік без змістовного пояснення»). Акценты — в цвет бренда
+// кейса (cases.json → accent, инлайн-переменная --case-accent). Фото — только у кейсов с avatar: true:
 // /img/cases/<id>.webp через publicUrl; иначе (и при сбое загрузки) — круг с первой буквой имени и акцент сайта.
-// Модалка — нативный <dialog>: Esc, клик вне, кнопка; фокус заперт и возвращается на карточку;
+// Модалка — те же поля + «Детальна інформація» (task, done, review); нативный <dialog>: Esc, клик вне, кнопка;
+// фокус заперт и возвращается на карточку;
 // фон не скроллится (lockScroll ставит Lenis на паузу).
 import { $, $$, el, on, trapFocus } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
@@ -18,8 +20,10 @@ import { publicUrl } from '../core/public-url.js';
 import { track } from '../core/analytics.js';
 import data from '../data/cases.json';
 
-const CARD_FIELDS = ['niche', 'name', 'result'];
-const MODAL_FIELDS = ['name', 'niche', 'task', 'geo', 'budget', 'result', 'cpa', 'review'];
+const CARD_FIELDS = ['niche', 'name', 'geo', 'goal'];
+const MODAL_FIELDS = ['name', 'niche', 'geo', 'goal', 'task', 'review'];
+/** Сколько ключевых показателей на карточке и в модалке (документ клиента: «3 ключові показники»). */
+export const METRICS = 3;
 const CLOSE_MS = 260;
 
 /** Путь к аватару клиента в public/: /img/cases/<id>.webp (256 px); retina — /img/cases/<id>@2x.webp (512 px). */
@@ -28,32 +32,6 @@ export const avatarPath = (id, retina = false) => `/img/cases/${id}${retina ? '@
 export const initial = (name) => (String(name ?? '').trim().match(/[\p{L}\p{N}]/u)?.[0] ?? '').toUpperCase();
 /** Цвет бренда кейса из cases.json (accent) — только #rgb / #rrggbb; иначе null, и карточка берёт акцент сайта. */
 export const accentOf = (item) => (typeof item?.accent === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(item.accent) ? item.accent : null);
-
-/**
- * «Линия роста» на фоне карточки — украшение, не данные: три заготовки кривой слева-снизу вправо-вверх в рамке 300×200.
- * d — сама кривая (под ней заливка до низа рамки), end — высота её правого конца (там круглая точка).
- */
-export const CHART_SHAPES = [
-  { d: 'M0 170 C40 160 60 150 90 130 S140 140 170 95 S230 70 300 20', end: 20 },
-  { d: 'M0 180 C50 176 80 140 120 138 S170 120 200 78 S260 52 300 30', end: 30 },
-  { d: 'M0 160 C35 158 70 120 105 124 S150 100 185 104 S250 40 300 14', end: 14 },
-];
-
-/** Разметка кривой для карточки с номером index (форма — по кругу, детерминированно). Цвет — currentColor. */
-export function chartSvg(index) {
-  const i = Math.abs(Math.trunc(Number(index) || 0));
-  const { d, end } = CHART_SHAPES[i % CHART_SHAPES.length];
-  const id = `cases-chart-${i}`;
-  return (
-    `<svg viewBox="0 0 300 200" preserveAspectRatio="none" focusable="false">` +
-    `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">` +
-    `<stop offset="0" stop-color="currentColor" stop-opacity="0.45"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/>` +
-    `</linearGradient></defs>` +
-    `<path class="cases__chart-fill" d="${d} V200 H0Z" fill="url(#${id})"/>` +
-    `<path class="cases__chart-line" d="${d}" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"/>` +
-    `</svg><span class="cases__chart-dot" style="top:${(end / 2).toFixed(1)}%"></span>`
-  );
-}
 
 /** Красит узел в цвет кейса: инлайн-переменная --case-accent (в CSS секции hex нет). */
 function tint(node, item) {
@@ -78,12 +56,39 @@ function paintAvatar(avatar, item) {
 }
 
 const text = (value, lang) => (value && typeof value === 'object' ? value[lang] ?? value.ua ?? '' : String(value ?? ''));
+
+/**
+ * Ключевые показатели кейса → ровно METRICS пар { label, value } на языке lang (cases.json → metrics[]).
+ * Лишние отбрасываются; недостающий или пустой — null (слот скрыт). Тексты — только из данных.
+ */
+export function metricsOf(item, lang) {
+  const list = Array.isArray(item?.metrics) ? item.metrics : [];
+  return Array.from({ length: METRICS }, (_, i) => {
+    const m = list[i];
+    const label = m ? text(m.label, lang).trim() : '';
+    const value = m ? text(m.value, lang).trim() : '';
+    return label || value ? { label, value } : null;
+  });
+}
+
 const isTbd = (value) => value === t('common.tbd') || value === 'уточнити' || value === 'TBD';
 
 function fill(node, value) {
   if (!node) return;
   node.textContent = value;
   node.classList.toggle('is-tbd', isTbd(value));
+}
+
+/** Слоты показателей (карточка: [data-metric], модалка: [data-m-metric]) ← metricsOf; пустой слот скрыт. */
+function paintMetrics(slots, item, lang) {
+  const list = metricsOf(item, lang);
+  slots.forEach((slot, i) => {
+    const m = list[i];
+    slot.hidden = !m;
+    if (!m) return;
+    fill($('[data-metric-label]', slot), m.label);
+    fill($('[data-metric-value]', slot), m.value);
+  });
 }
 
 export function init(root) {
@@ -95,7 +100,7 @@ export function init(root) {
   if (!grid || !tpl || !cases.length) return;
 
   // карточки создаются один раз; смена языка меняет только тексты
-  const cards = cases.map((item, i) => {
+  const cards = cases.map((item) => {
     const li = tpl.content.firstElementChild.cloneNode(true);
     applyTranslations(li);
     tint(li, item);
@@ -103,9 +108,6 @@ export function init(root) {
     button.dataset.case = item.id;
     on(button, 'click', () => open(item, button));
     paintAvatar($('[data-case-avatar]', li), item);
-    // декор: разметка — строка из констант этого модуля (форма по номеру карточки), данных кейса в ней нет
-    const chart = $('[data-case-chart]', li);
-    if (chart) chart.innerHTML = chartSvg(i);
     return { item, li };
   });
   grid.replaceChildren(...cards.map((c) => c.li));
@@ -114,6 +116,7 @@ export function init(root) {
   const paintCards = (lang) => {
     for (const { item, li } of cards) {
       for (const f of CARD_FIELDS) fill($(`[data-f="${f}"]`, li), text(item[f], lang));
+      paintMetrics($$('[data-metric]', li), item, lang);
       for (const letter of $$('[data-case-letter]', li)) letter.textContent = initial(text(item.name, lang));
     }
   };
@@ -126,6 +129,7 @@ export function init(root) {
 
   const paintModal = (item, lang) => {
     for (const f of MODAL_FIELDS) fill($(`[data-m="${f}"]`, modal), text(item[f], lang));
+    paintMetrics($$('[data-m-metric]', modal), item, lang);
     const letter = $('[data-m-letter]', modal);
     if (letter) letter.textContent = initial(text(item.name, lang));
     const list = $('[data-m-list="done"]', modal);

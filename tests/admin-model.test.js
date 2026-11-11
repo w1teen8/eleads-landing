@@ -125,7 +125,7 @@ test('поля: FAQ, кейсы, калькулятор — только пар�
   ]);
 });
 
-test('разделы: в порядке страницы, с человеческими названиями; founder — в «Відгуках», незнакомый ключ — в «Інше»', () => {
+test('разделы: в порядке страницы, с человеческими названиями; видео-отзывы — в «Відгуках», незнакомый ключ — в «Інше»', () => {
   const sections = groupBySection(fields);
   const ids = sections.map((s) => s.id);
   const order = SECTIONS.map((s) => s.id);
@@ -134,8 +134,22 @@ test('разделы: в порядке страницы, с человечес�
   assert.ok(ids.indexOf('hero') < ids.indexOf('faq') && ids.indexOf('faq') < ids.indexOf('footer'));
   assert.equal(sections.find((s) => s.id === 'hero').title, 'Перший екран');
   assert.equal(sections.reduce((n, s) => n + s.fields.length, 0), fields.length, 'каждое поле — ровно в одном разделе');
-  assert.equal(fieldOf('founder.title').section, 'reviews');
-  assert.equal(fieldOf('founder.video').kind, 'file');
+  // T42: блока засновника нет — founder.* удалён; видео-отзыв клиента — путь к файлу, правится в «Відгуках»
+  assert.ok(!fields.some((f) => f.keyPath.startsWith('founder.')), 'founder.* нет');
+  assert.equal(sections.find((s) => s.id === 'reviews').title, 'Відгуки');
+  for (const i of [0, 1]) {
+    const video = fieldOf(`reviews.items.${i}.video`);
+    assert.equal(video.section, 'reviews');
+    assert.equal(video.kind, 'file');
+    assert.deepEqual(video.slots.map((s) => [s.lang, s.value]), [['ua', ''], ['en', '']]);
+  }
+  // T42: цифры GEO и шаги экосистемы — строки словарей, админка их показывает
+  for (const key of ['geo.regions.europe.users', 'geo.regions.europe.ukrainians', 'geo.regions.america.ukrainians', 'geo.regions.worldwide.users']) {
+    assert.equal(fieldOf(key).section, 'geo', key);
+  }
+  assert.equal(fieldOf('ecosystem.steps.4.items.0').section, 'ecosystem');
+  assert.equal(fieldOf('geo.regions.europe.users').group, 'Регіони');
+  assert.equal(fieldOf('geo.regions.europe.users').label, 'europe · Користувачів Telegram');
   const extra = contentFields('ua', '{"zzz": {"x": "a"}}\n', 'en', '{"zzz": {"x": "b"}}\n');
   assert.equal(extra[0].section, 'other');
 });
@@ -209,7 +223,10 @@ test('validate: пусто, пробелы, переносы, служебные
   assert.equal(validate('@Kucherflow', { kind: 'handle' }), null);
   assert.match(validate('Kucherflow', { kind: 'handle' }), /@/);
   assert.equal(validate('/video/founder.mp4', { kind: 'file' }), null);
+  assert.equal(validate('video/reviews/mukhin.mp4', { kind: 'file', original: '' }), null);
   assert.equal(validate('', { kind: 'file', original: '' }), null);
+  assert.equal(validate('', { kind: 'file', original: 'video/reviews/mukhin.mp4' }), null, 'видео-отзыв можно убрать');
+  assert.match(validate('   ', { kind: 'file', original: 'video/reviews/mukhin.mp4' }), /Порожнім/);
   assert.match(validate('https://evil.example/a.mp4', { kind: 'file' }), /public/);
   assert.match(validate('/video/../../x.mp4', { kind: 'file' }), /public/);
 });

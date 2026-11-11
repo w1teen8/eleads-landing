@@ -15,10 +15,11 @@ const count = (s, re) => (s.match(re) || []).length;
 const QUESTIONS_UA = [
   'Скільки потрібно для старту?', 'Скільки коштують послуги?', 'Чи підійде Telegram Ads моїй ніші?',
   'Чи можна рекламувати сайт?', 'Які країни доступні?', 'Як швидко можна запуститися?',
-  'Чи можете створити канал з нуля?', 'Чи працюєте з міжнародними проєктами?', 'Чи є гарантія результату?',
+  // T41 (документ клиента, стр. 13): «Telegram-канал» в q7, вопрос о гарантии убран
+  'Чи можете створити Telegram-канал з нуля?', 'Чи працюєте з міжнародними проєктами?',
 ];
 
-test('faq.json: 9 питань брифа по порядку, відповідь на перше — €650, у кожного UA та EN', () => {
+test('faq.json: 8 питань брифа по порядку, відповідь на перше — €650, у кожного UA та EN', () => {
   assert.deepEqual(faq.items.map((i) => i.q.ua), QUESTIONS_UA);
   assert.match(faq.items[0].a.ua, /€650/);
   assert.match(faq.items[0].a.en, /€650/);
@@ -26,17 +27,17 @@ test('faq.json: 9 питань брифа по порядку, відповід�
     assert.ok(item.a.ua && item.a.en && item.q.en, item.id);
   }
   // чего нет у клиента — заглушка, а не выдумка
-  assert.equal(faq.items[8].a.ua, 'уточнити');
-  assert.equal(faq.items[8].a.en, 'TBD');
+  assert.equal(faq.items[5].a.ua, 'уточнити');
+  assert.equal(faq.items[5].a.en, 'TBD');
 });
 
-test('geo-dots.json: сетка суши согласована с размерами, 7 регионов внутри карты', () => {
+test('geo-dots.json: сетка суши согласована с размерами, 4 региона (T42) и их метки внутри карты', () => {
   assert.equal(geo.rowsData.length, geo.rows);
   for (const row of geo.rowsData) assert.equal(row.length, geo.cols);
   const land = geo.rowsData.join('').split('1').length - 1;
   assert.ok(land > 600 && land < 3000, `точек суши: ${land}`);
-  assert.deepEqual(geo.regions.map((r) => r.id), ['ukraine', 'europe', 'uk', 'usa', 'canada', 'australia', 'asia']);
-  for (const r of geo.regions) {
+  assert.deepEqual(geo.regions.map((r) => r.id), ['ukraine', 'europe', 'america', 'worldwide']);
+  for (const r of [...geo.regions, ...geo.regions.flatMap((x) => x.pins ?? [])]) {
     const col = Math.floor((r.lon - geo.lon0) / geo.step);
     const row = Math.floor((geo.lat0 - r.lat) / geo.step);
     assert.ok(col >= 0 && col < geo.cols && row >= 0 && row < geo.rows, r.id);
@@ -51,14 +52,14 @@ test('на странице один <canvas> — глобус GEO, которы
   assert.match(read('src/sections/geo.js'), /IntersectionObserver/);
 });
 
-test('раскладка секций: 8 ниш, 3 формата, 7 шагов, 7 регионов, 6 таргетингов, 6 этапов и 9 услуг', () => {
+test('раскладка секций: 8 ниш, 3 формата, 7 шагов, 4 региона, 6 таргетингов, 5 этапов и 10 услуг', () => {
   assert.equal(count(section('niches'), /class="niches__item"/g), 8);
   assert.equal(count(section('formats'), /class="formats__item"/g), 3);
   assert.equal(count(section('process'), /class="process__step[ "]/g), 7);
-  assert.equal(count(section('geo'), /data-region="/g), 7);
+  assert.equal(count(section('geo'), /data-region="/g), 4);
   assert.equal(count(section('targeting'), /class="tg__item"/g), 6);
-  assert.equal(count(section('ecosystem'), /class="eco__step[ "]/g), 6);
-  assert.equal(count(section('ecosystem'), /class="eco__service"/g), 9);
+  assert.equal(count(section('ecosystem'), /class="eco__step[ "]/g), 5);
+  assert.equal(count(section('ecosystem'), /class="eco__service"/g), 10);
   assert.equal(count(section('materials'), /class="mat__item"/g), 4);
 });
 
@@ -74,9 +75,8 @@ test('ссылки в Telegram этих секций размечены мест
   const places = (id) => [...section(id).matchAll(/data-place="([a-z_]+)"/g)].map((m) => m[1]);
   assert.deepEqual(places('niches'), ['niches_other']);
   assert.deepEqual(places('materials'), ['materials', 'materials', 'materials', 'materials']);
-  // T37: кнопка и экран телефона с чатом — обе ссылки в Telegram, место клика у каждой своё
-  assert.deepEqual(places('cta'), ['final_cta', 'final_cta_chat']);
-  assert.match(section('cta'), /\{\{config\.telegramHandle\}\}/);
+  // T41: телефон с чатом (вторая ссылка, final_cta_chat) заменён фото — в блоке одна кнопка в Telegram
+  assert.deepEqual(places('cta'), ['final_cta']);
 });
 
 test('тексты: ключевые дословные строки UA и EN-черновик заполнены', () => {
@@ -89,11 +89,11 @@ test('тексты: ключевые дословные строки UA и EN-ч
   // T29: текст о подходе — не подпись под блоком, а текст рядом с заголовком (process.lead вместо process.note)
   assert.match(ua.process.lead, /^Клієнту не потрібно самостійно розбиратися в Telegram Ads/);
   assert.equal(ua.process.note, undefined);
-  assert.equal(ua.ecosystem.services.length, 9);
-  assert.deepEqual(ua.ecosystem.flow, ['Traffic', 'Telegram', 'Content', 'Funnel', 'Lead', 'Sale']);
+  // T42: шлях клієнта — пять шагов из документа клиента
+  assert.deepEqual(ua.ecosystem.steps.map((s) => s.name), ['Трафік', 'Посадкові', 'Контент', 'Лід', 'Sales']);
   assert.equal(ua.targeting.items.length, 6);
   assert.equal(ua.cta.title, 'Обговоримо ваш проєкт?');
-  assert.equal(ua.geo.regions.europe.figure, '4.43M');
+  assert.equal(ua.geo.regions.worldwide.users, '1B+ MAU');
   assert.equal(en.draft, true);
   assert.notEqual(en.stats.ua.main.label, ua.stats.ua.main.label);
 });
@@ -102,7 +102,9 @@ test('нет выдуманных фактов: отзывы и посты бе�
   for (const item of ua.reviews.items) assert.equal(item.quote, 'уточнити');
   for (const item of en.reviews.items) assert.equal(item.quote, 'TBD');
   assert.deepEqual(ua.materials.items.slice(1).map((i) => i.title), ['уточнити', 'уточнити', 'уточнити']);
-  assert.equal(ua.reviews.items[2].name, 'Відгук 3');
+  // T42: два слота видео-отзывов (клиент: «Додати два відеовідгуки») — третьего нет, видео пока нет
+  assert.equal(ua.reviews.items.length, 2);
+  for (const item of [...ua.reviews.items, ...en.reviews.items]) assert.equal(item.video, '');
 });
 
 // T27: лайтбокс форматов убран по правке пользователя — телефон не кликабелен (tests/formats-phone.test.js)

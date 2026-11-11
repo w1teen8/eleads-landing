@@ -1,7 +1,8 @@
 /* 06 Кейси (T29): облик блоков 02–05 — заголовок шрифтом канала заглавными со второй строкой акцентом; под ним лента
    карточек в один экран. Карточка — вариант F (выбор пользователя, reference/run3/cases-F-*.png): тёмная поверхность,
-   на фоне «линия роста» — декоративная кривая с заливкой в цвет бренда кейса; вверху круглый аватар в кольце этого цвета и
-   справа от него имя с нишей; внизу «Результат», значение крупно цветом бренда, линия, «Детальніше» с круглой стрелкой.
+   вверху круглый аватар в кольце цвета бренда и справа от него имя с нишей. T40 (документ клиента, блок 6): «линии роста»
+   больше нет; под шапкой GEO и ціль кампанії, затем 3 ключові показники — подпись слева, значение крупно цветом бренда
+   справа, между ними тонкие линии; внизу линия и «Детальніше» с круглой стрелкой.
    Цвет бренда — данные (cases.json → accent), в CSS приходит инлайн-переменной --case-accent; hex здесь нет.
    Лента — как на блоках 11–12: на широком альбомном экране блок закрепляется под шапкой и карточки едут влево
    по прокрутке страницы (cases.js → showcaseScroll, transform). Узкий экран, reduced-motion, ?nomotion=1
@@ -98,7 +99,6 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: clamp(0.4rem, 1svh, 0.6rem);
   width: 100%;
   min-height: min(clamp(20rem, 16rem + 10vw, 26.875rem), 58svh);
   padding: var(--cases-pad);
@@ -120,43 +120,11 @@
   outline-offset: 3px;
 }
 
-/* «линия роста» на фоне (вариант 5, выбор пользователя): плавная кривая слева-снизу вправо-вверх цветом бренда,
-   под ней заливка в прозрачность, на правом конце круглая точка. Украшение: без осей и цифр, aria-hidden.
-   Занимает среднюю часть карточки между шапкой и «Результат»; текст лежит поверх */
-.cases__chart {
-  position: absolute;
-  z-index: -1;
-  top: 21%;
-  right: 0;
-  left: 0;
-  height: 40%;
-  color: var(--case-accent);
-  pointer-events: none;
-}
-
-.cases__chart svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.cases__chart-dot {
-  position: absolute;
-  right: 0;
-  width: 14px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: currentColor;
-  transform: translate(50%, -50%);
-}
-
 /* шапка: аватар и справа — кто это (имя, под ним ниша) */
 .cases__top-row {
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  margin-bottom: auto;
   padding: 6px 0 0 6px; /* под кольцо аватара */
 }
 
@@ -221,30 +189,83 @@
   color: color-mix(in srgb, var(--text) 78%, transparent);
 }
 
-/* низ карточки: «Результат», значение крупно цветом бренда, линия, «Детальніше» со стрелкой */
-.cases__figure {
+/* GEO и ціль кампанії — два столбца под шапкой: подпись мелко заглавными, значение обычным текстом (до двух строк) */
+.cases__facts {
   display: grid;
-  gap: 0.35rem;
-  margin-top: clamp(1.25rem, 3.4svh, 2.25rem); /* воздух между шапкой и низом и на самой низкой карточке */
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr); /* GEO короче цели */
+  gap: 0.75rem;
+  margin: clamp(1rem, 2.6svh, 1.5rem) 0 clamp(1rem, 2.6svh, 1.75rem);
 }
 
-.cases__figure-label {
+.cases__fact {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.cases__fact-label,
+.cases__metric-label {
   font-size: var(--fs-xs);
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--text) 72%, transparent);
 }
 
-.cases__figure-value {
-  width: fit-content;
-  max-width: 100%;
+.cases__fact-value {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* 3 ключові показники — внизу карточки (у соседних карточек на одной высоте): подпись слева,
+   значение крупно шрифтом канала цветом бренда справа; строки разделены тонкой линией */
+.cases__metrics {
+  display: grid;
+  margin-top: auto;
+}
+
+.cases__metric {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  padding-block: clamp(0.35rem, 1.1svh, 0.6rem);
+  border-top: 1px solid var(--line-strong);
+}
+
+.cases__metric[hidden] {
+  display: none;
+}
+
+.cases__metric-label {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.cases__metric-value {
+  min-width: 0;
   font-family: var(--font-head);
-  font-size: clamp(2.25rem, 1.5rem + 3.4svh, 3.5rem);
+  font-size: clamp(1.625rem, 1rem + 2.6svh, 2.375rem);
   font-weight: 900;
-  line-height: 0.9;
+  line-height: 1;
   letter-spacing: 0;
+  text-align: right;
+  text-transform: uppercase;
+  overflow-wrap: normal; /* число или слово целиком; перенос — только по пробелам */
   color: var(--case-tone);
+}
+
+/* «уточнити» вместо цифры — мельче цифры, курсивом (.cases__card .is-tbd): видно, что данных ещё нет */
+.cases__metric-value.is-tbd {
+  font-size: clamp(1.25rem, 0.8rem + 2svh, 1.75rem);
+  text-transform: none;
 }
 
 /* заглушка «уточнити» — курсивом: видно, что данных ещё нет */
@@ -257,7 +278,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-top: clamp(0.35rem, 1svh, 0.6rem);
   padding-top: clamp(0.6rem, 1.5svh, 0.85rem);
   border-top: 1.5px solid var(--text);
   font-size: var(--fs-sm);
@@ -302,18 +322,6 @@
   transform: scaleX(0);
   transform-origin: 0 50%;
   transition: transform var(--dur-fast) linear;
-}
-
-/* телефон: карточка выше, чтобы линия роста помещалась между шапкой и «Результат» */
-@media (max-width: 599px) {
-  .cases__card {
-    min-height: 24rem;
-  }
-
-  .cases__chart {
-    top: 30%;
-    height: 30%;
-  }
 }
 
 /* — ширина карточек по ширине окна — */
@@ -484,18 +492,30 @@
   border-block: 1px solid var(--line-strong);
 }
 
+/* GEO и ціль кампанії — по половине ряда; три ключевых показателя — по трети ряда (на телефоне — строками) */
+.case-modal__metric--fact {
+  grid-column: span 1;
+}
+
+.case-modal__metric--accent {
+  grid-column: 1 / -1;
+}
+
+.case-modal__metric[hidden] {
+  display: none;
+}
+
 @media (min-width: 600px) {
   .case-modal__metrics {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
-  .case-modal__metric {
-    grid-column: span 2;
+  .case-modal__metric--fact {
+    grid-column: span 3;
   }
 
-  .case-modal__metric:nth-child(4),
-  .case-modal__metric:nth-child(5) {
-    grid-column: span 3;
+  .case-modal__metric--accent {
+    grid-column: span 2;
   }
 }
 
@@ -550,9 +570,26 @@
   color: var(--text);
 }
 
+/* «Детальна інформація»: задача и что сделано — подпись мелко, текст обычным кеглем */
+.case-modal__details {
+  display: grid;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.case-modal__details dd {
+  font-size: var(--fs-base);
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
 .case-modal__done {
   display: grid;
   gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   color: var(--text-muted);
 }
 

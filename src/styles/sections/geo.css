@@ -1,7 +1,9 @@
 /* 08 GEO (T33, H45): раскладка «Л 4» (reference/run3/geo-L4-chosen.png), строки просторнее образца — «расстояние
    должно быть больше между ними». Заголовок шрифтом канала со второй строкой акцентом; слева список регионов на всю
    высоту глобуса (строка — только название шрифтом канала заглавными, тонкая линия между строками; подписей справа нет —
-   «убрать эти текста»; выбранная — карточка: название крупнее жёлтым, у Європи — пояснение и цифра градиентом); справа точечный 3D-глобус
+   «убрать эти текста»; выбранная — карточка: название крупнее жёлтым, под ним число пользователей Telegram и «з них
+   українців» — подпись слева, значение градиентом справа, «уточнити» — приглушённо; T42: четыре переключателя
+   Україна / Європа / Америка/Канада / Worldwide); справа точечный 3D-глобус
    (холст рисует geo.js). Сносок и подписей под блоком нет (правка клиента). Появления по прокрутке нет (H11).
    На широком экране блок — ровно экран под шапкой (layout.css): глобус, строки и кегли — от высоты окна (svh).
    Двигаются только transform и opacity. */
@@ -118,18 +120,16 @@
   opacity: 0.9;
 }
 
-/* свёрнутая строка — только название; пояснение к цифре и цифра — в раскрытой карточке (у Європи) */
-.geo__row-info,
-.geo__row-figure {
+/* свёрнутая строка — только название; цифры региона — в раскрытой карточке */
+.geo__row-info {
   display: none;
 }
 
 /* раскрытая карточка выбранного региона */
 .geo__row[aria-pressed='true'] {
   grid-template-areas:
-    'name figure'
-    'info figure';
-  grid-template-columns: minmax(0, 1fr) auto;
+    'name'
+    'info';
   margin-block: 0.4rem;
   padding: clamp(1rem, 2.6svh, 1.625rem) clamp(1.1rem, 1.5vw, 1.625rem);
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
@@ -143,30 +143,56 @@
 }
 
 .geo__row[aria-pressed='true'] .geo__row-info {
-  display: block;
+  display: grid;
   grid-area: info;
-  margin-top: 0.5rem;
+  gap: clamp(0.5rem, 1.2svh, 0.875rem);
+  margin-top: clamp(0.75rem, 1.8svh, 1.25rem);
+}
+
+/* строка цифры: подпись слева, значение справа по одной базовой линии */
+.geo__stat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1.5rem;
+  padding-top: clamp(0.5rem, 1.2svh, 0.875rem);
+  border-top: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.geo__stat-label {
+  min-width: 0;
   font-size: clamp(0.875rem, 0.8rem + 0.3vw, 1.0625rem);
   line-height: 1.4;
   color: color-mix(in srgb, var(--text) 75%, transparent);
 }
 
-.geo__row[aria-pressed='true'] .geo__row-figure {
-  display: block;
-  grid-area: figure;
+.geo__stat-value {
   font-family: var(--font-head);
-  font-size: clamp(3rem, 0.5rem + 6.6svh, 5.5rem);
+  font-size: clamp(2rem, 0.4rem + 4.6svh, 3.5rem);
   font-weight: 900;
-  line-height: 0.85;
+  line-height: 0.9;
   letter-spacing: 0;
+  white-space: nowrap;
   background: var(--grad);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+/* «уточнити» — цифры от клиента ещё нет (geo.js ставит is-tbd): курсивом, приглушённо */
+.geo__stat-value.is-tbd {
+  font-family: inherit;
+  font-size: clamp(0.9375rem, 0.85rem + 0.3vw, 1.125rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.4;
+  background: none;
+  color: var(--text-muted);
+}
+
 /* барабаны цифры (stats-odometer.js; маски и срезы градиента — stats.css) */
-.geo__row-figure > .odo {
+.geo__stat-value > .odo {
   position: relative;
   display: inline-flex;
   background: none;

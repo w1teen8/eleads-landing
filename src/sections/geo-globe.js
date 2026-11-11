@@ -20,6 +20,7 @@ export const GLOBE = {
   dragDeg: 0.9, // во сколько раз долгота под пальцем отстаёт от пальца (1 — точка «прилипает»)
   regionDeg: 9, // точки суши ближе этого к метке региона — его цвета
   swell: 0.16, // радиус «вспухания» у курсора — доля радиуса шара
+  spin: 0.006, // Worldwide: непрерывное автовращение, °/мс (оборот за минуту)
 };
 
 /** Долгота в (-180, 180]. */
@@ -80,6 +81,20 @@ export const isVisible = (z) => z > 0;
 /** Куда повернуть глобус, чтобы регион встал к центру: его долгота и наклон к нему, не больше tiltMax. */
 export function focusView(region) {
   return { lon: wrapLon(region.lon), lat: clamp(region.lat * GLOBE.focusTilt, -GLOBE.tiltMax, GLOBE.tiltMax) };
+}
+
+/**
+ * Метки регионов (T42): у региона свои pins — у «Америка/Канада» две, США и Канада, подсвечиваются вместе; без pins —
+ * одна метка в центре региона; у Worldwide (world: true, pins: []) своей метки нет — он показывает весь мир.
+ * → [{ id, region (индекс региона), lon, lat }]; по ним же красятся точки суши (nearestRegion).
+ */
+export function regionPins(regions) {
+  return regions.flatMap((r, region) => (Array.isArray(r.pins) ? r.pins : [r]).map((p) => ({ id: r.id, region, lon: p.lon, lat: p.lat })));
+}
+
+/** Worldwide: непрерывное автовращение — вид через dt мс (поверхность едет на восток, вправо); k — разгон 0…1. */
+export function spinView(view, dt, k = 1) {
+  return { lon: wrapLon(view.lon - GLOBE.spin * clamp(k, 0, 1) * dt), lat: view.lat };
 }
 
 /** Ближайший регион к точке суши в пределах maxDeg (широта весит 1.2, как в макете), иначе -1. */

@@ -32,19 +32,22 @@ test('разметка: заголовок с акцентной строкой,
   }
 });
 
-// Вариант F (выбор пользователя) + уточнение: «надо аватарка и справа надпись кто это»
-test('карточка F: линия роста на фоне — шапка «аватар + имя и ниша», внизу «Результат», значение, «Детальніше» со стрелкой', () => {
-  const order = ['class="cases__chart" data-case-chart aria-hidden="true"', 'data-case-avatar', 'class="cases__name" data-f="name"', 'class="cases__niche" data-f="niche"',
-    'data-i18n="cases.labels.result"', 'class="cases__figure-value" data-f="result"', 'data-i18n="cases.more"', 'class="cases__go"'].map((s) => tpl.indexOf(s));
+// Вариант F (выбор пользователя) + уточнение: «надо аватарка и справа надпись кто это».
+// T40 (документ клиента, блок 6): «Лого, назва клієнта та ніша; GEO; ціль кампанії; 3 ключові показники»
+test('карточка: шапка «аватар + имя и ниша», GEO и ціль кампанії, 3 ключевых показателя, «Детальніше» со стрелкой', () => {
+  const order = ['data-case-avatar', 'class="cases__name" data-f="name"', 'class="cases__niche" data-f="niche"',
+    'data-i18n="cases.labels.geo"', 'class="cases__fact-value" data-f="geo"', 'data-i18n="cases.labels.goal"', 'class="cases__fact-value" data-f="goal"',
+    'data-metric="0"', 'data-metric="1"', 'data-metric="2"', 'data-i18n="cases.more"', 'class="cases__go"'].map((s) => tpl.indexOf(s));
   for (const i of order) assert.ok(i > -1, 'нет части карточки');
   assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок частей карточки');
   assert.equal((tpl.match(/data-f="name"/g) || []).length, 1, 'имя — один раз, в шапке (внизу не дублируется)');
-  const who = tpl.split('class="cases__top-row"')[1].split('class="cases__figure"')[0];
+  const who = tpl.split('class="cases__top-row"')[1].split('class="cases__facts"')[0];
   assert.match(who, /data-case-avatar[^>]*aria-hidden="true"[\s\S]*class="cases__who"[\s\S]*data-f="name"[\s\S]*data-f="niche"/);
   // правки пользователя: большую букву заменили иконкой ниши, потом «Убери иконки ниш», потом «давай 5 вариант» — линия роста
   assert.doesNotMatch(section, /cases__letter|cases__icon|data-case-icon|data-icon/, 'ни буквы, ни иконки на фоне — на карточке и в модалке');
   assert.equal((tpl.match(/data-case-letter/g) || []).length, 1, 'буква — только запасной аватар в круге');
-  assert.doesNotMatch(tpl, /cases__tag|data-case-num|data-f="(cpa|budget)"/, 'плашки ниши, номера, CPA и бюджета на карточке нет — они в модалке');
+  assert.doesNotMatch(tpl, /cases__tag|data-case-num|data-f="(cpa|budget|result)"/, 'плашки ниши и номера нет; бюджет, результат, CPA — среди показателей');
+  assert.equal((tpl.match(/class="cases__metric" data-metric="\d"><span class="cases__metric-label" data-metric-label><\/span><span class="cases__metric-value" data-metric-value><\/span><\/span>/g) || []).length, 3);
   assert.match(tpl, /<button\b/, 'карточка — кнопка: Enter и Space открывают модалку');
   // то же расположение — в шапке модалки
   const head = section.split('class="case-modal__who"')[1].split('<dl')[0];
@@ -84,7 +87,7 @@ test('цвет бренда — данные: в CSS приходит инлай
   assert.doesNotMatch(css, /cases__letter|cases__icon/);
   assert.doesNotMatch(js, /iconSvg|icons\.js|data-case-icon/);
   for (const c of cases) assert.equal(c.icon, undefined, `${c.id}: поле icon больше не нужно`);
-  assert.match(css, /\.cases__figure-value\s*\{[^}]*color:\s*var\(--case-tone\)/, 'значение — осветлённым цветом бренда (AA для крупного текста)');
+  assert.match(css, /\.cases__metric-value\s*\{[^}]*color:\s*var\(--case-tone\)/, 'значение — осветлённым цветом бренда (AA для крупного текста)');
   assert.match(css, /\.cases__go\s*\{[^}]*background:\s*var\(--case-accent\)[^}]*color:\s*var\(--accent-ink\)/);
   // контраст: осветлённый цвет бренда на поверхности карточки — не меньше 3:1 (крупный текст, AA)
   const mixP = Number(css.match(/--case-tone:\s*color-mix\(in srgb, var\(--case-accent\) (\d+)%/)[1]) / 100;
@@ -134,7 +137,7 @@ test('облик: шрифт канала у заголовка, цифр и и�
     const esc = sel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     assert.match(css, new RegExp(`${esc}\\s*\\{[^}]*font-family:\\s*var\\(--font-head\\)[^}]*text-transform:\\s*uppercase`), sel);
   }
-  assert.match(css, /\.cases__figure-value\s*\{[^}]*font-family:\s*var\(--font-head\)/);
+  assert.match(css, /\.cases__metric-value\s*\{[^}]*font-family:\s*var\(--font-head\)/);
   assert.doesNotMatch(css, /--font-display|--font-mono/, 'прежних шрифтов (Unbounded, моно) в блоке нет');
   assert.match(css, /\.cases__card\s*\{[^}]*background:\s*var\(--surface\)/);
   assert.doesNotMatch(css, /cases__item--featured/, 'отдельной акцентной карточки нет — все тёмные, цвет даёт бренд кейса');
@@ -181,32 +184,38 @@ test('иконки ниш: в разметке блока 03 — только к
   assert.doesNotMatch(iconSvg('car', '"><script>'), /script/, 'имя класса не из букв — отбрасывается');
 });
 
-// Вариант 5 (выбор пользователя): фон карточки — «линия роста». Украшение, не данные
-test('линия роста: три заготовки кривой по номеру карточки, цвет бренда, без осей и цифр; в модалке её нет', async () => {
-  const src = read('src/sections/cases.js');
-  const body = src.slice(src.indexOf('export const CHART_SHAPES'), src.indexOf('/** Красит узел'));
-  const { CHART_SHAPES, chartSvg } = new Function(`${body.replace(/export /g, '')}; return { CHART_SHAPES, chartSvg };`)();
-  assert.ok(CHART_SHAPES.length >= 2 && CHART_SHAPES.length <= 3);
-  assert.equal(new Set(CHART_SHAPES.map((sh) => sh.d)).size, CHART_SHAPES.length, 'формы разные');
-  for (const { d, end } of CHART_SHAPES) {
-    const nums = d.match(/-?\d+(?:\.\d+)?/g).map(Number);
-    assert.match(d, /^M0 (\d+) /, 'начинается у левого края');
-    assert.deepEqual(nums.slice(-2), [300, end], 'кончается у правого края на высоте end');
-    assert.ok(nums[1] - end >= 120, 'слева-снизу вправо-вверх');
-    assert.ok(nums.every((n) => n >= 0 && n <= 300));
+// T40: «Прибрати графік без змістовного пояснення. Замість нього показати основні факти й результати з кейсу»
+test('линии роста нет; показатели — из cases.json → metrics (ровно 3, пустой слот скрыт), модалка — те же поля + детали', async () => {
+  assert.doesNotMatch(section, /cases__chart|data-case-chart|cases__figure/);
+  assert.doesNotMatch(js, /CHART_SHAPES|chartSvg|innerHTML/);
+  assert.doesNotMatch(css, /cases__chart|cases__figure/);
+  for (const dict of [ua, en]) {
+    for (const k of ['geo', 'goal', 'details', 'task', 'done', 'review']) assert.ok(dict.cases.labels[k], k);
+    for (const k of ['budget', 'result', 'cpa']) assert.equal(dict.cases.labels[k], undefined, `${k}: подпись теперь в cases.json`);
   }
-  // детерминированно и по кругу; соседние карточки — разные формы; id градиентов не повторяются
-  assert.equal(chartSvg(0), chartSvg(0));
-  assert.notEqual(chartSvg(0).replace(/cases-chart-\d+/g, ''), chartSvg(1).replace(/cases-chart-\d+/g, ''));
-  assert.equal(chartSvg(0).replace(/cases-chart-\d+/g, ''), chartSvg(CHART_SHAPES.length).replace(/cases-chart-\d+/g, ''));
-  assert.equal(new Set(cases.map((_, i) => chartSvg(i).match(/id="([^"]+)"/)[1])).size, cases.length);
-  const svg = chartSvg(4);
-  assert.match(svg, /stroke="currentColor" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"/);
-  assert.match(svg, /stop-color="currentColor" stop-opacity="0\.45"[\s\S]*stop-opacity="0"/, 'заливка в прозрачность');
-  assert.match(svg, /class="cases__chart-dot" style="top:[\d.]+%"/, 'круглая точка на конце');
-  assert.doesNotMatch(svg, /<text|<tspan|<line\b|<rect|#[0-9a-f]{3,8}\b/i, 'ни осей, ни цифр, ни hex');
-  assert.match(js, /chart\.innerHTML = chartSvg\(i\)/);
-  assert.match(css, /\.cases__chart\s*\{[^}]*z-index:\s*-1[^}]*color:\s*var\(--case-accent\)[^}]*pointer-events:\s*none/);
+  // чистый помощник metricsOf — без DOM
+  const src = read('src/sections/cases.js');
+  const body = src.slice(src.indexOf('const text = '), src.indexOf('const isTbd'));
+  const { metricsOf } = new Function(`const METRICS = 3; ${body.replace(/export /g, '')}; return { metricsOf };`)();
+  const item = cases[0];
+  assert.deepEqual(metricsOf(item, 'ua'), [
+    { label: 'Бюджет', value: 'уточнити' },
+    { label: 'Результат', value: 'уточнити' },
+    { label: 'CPA / CPS', value: 'уточнити' },
+  ]);
+  assert.deepEqual(metricsOf(item, 'en').map((m) => m.label), ['Budget', 'Result', 'CPA / CPS']);
+  assert.deepEqual(metricsOf({}, 'ua'), [null, null, null]);
+  assert.deepEqual(metricsOf({ metrics: [{ label: { ua: 'A', en: 'A' }, value: { ua: '1', en: '1' } }, { label: { ua: '' }, value: { ua: ' ' } }] }, 'ua'), [{ label: 'A', value: '1' }, null, null]);
+  assert.equal(metricsOf({ metrics: Array(5).fill(item.metrics[0]) }, 'ua').length, 3, 'лишние отбрасываются');
+  assert.match(js, /export const METRICS = 3;/);
+  assert.match(js, /paintMetrics\(\$\$\('\[data-metric\]', li\), item, lang\)/);
+  assert.match(js, /paintMetrics\(\$\$\('\[data-m-metric\]', modal\), item, lang\)/);
+  assert.match(css, /\.cases__metric\[hidden\]\s*\{\s*display:\s*none/);
+  // модалка: шапка, GEO и ціль, 3 показателя, «Детальна інформація» — задача, что сделано; справа отзыв
   const modal = section.split('<dialog')[1];
-  assert.doesNotMatch(modal, /cases__chart|data-case-chart/);
+  const parts = ['data-m="name"', 'data-m="niche"', 'data-m="geo"', 'data-m="goal"', 'data-m-metric="0"', 'data-m-metric="1"', 'data-m-metric="2"',
+    'data-i18n="cases.labels.details"', 'data-m="task"', 'data-m-list="done"', 'data-m="review"'].map((p) => modal.indexOf(p));
+  for (const i of parts) assert.ok(i > -1, 'нет части модалки');
+  assert.deepEqual([...parts].sort((a, b) => a - b), parts, 'порядок частей модалки');
+  assert.doesNotMatch(modal, /data-m="(budget|result|cpa)"/);
 });

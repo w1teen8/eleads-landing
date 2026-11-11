@@ -4,7 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
-import { STEP_SERVICES, PULSE_MS, nextStep } from '../src/sections/ecosystem-model.js';
+import { PULSE_MS, nextStep } from '../src/sections/ecosystem-model.js';
 
 const html = read('index.html');
 const ua = readJson('src/data/content.ua.json');
@@ -21,25 +21,41 @@ const matCss = strip(read('src/styles/sections/materials.css'));
 
 /* ——— 11 Екосистема ——— */
 
-test('11: раскладка услуг по шагам — каждая из девяти ровно под одним шагом, по порядку словаря', () => {
-  assert.equal(STEP_SERVICES.length, ua.ecosystem.flow.length);
-  assert.deepEqual(STEP_SERVICES.flat(), ua.ecosystem.services.map((_, i) => i));
-  // раскладка из макета: Traffic — три рекламы, Telegram — упаковка, … Sale — консультации
-  assert.deepEqual(STEP_SERVICES, [[0, 1, 2], [3], [4], [5, 6], [7], [8]]);
-  assert.equal(ua.ecosystem.services[3].name, 'Упаковка каналу');
-  assert.equal(ua.ecosystem.services[8].name, 'Консультації');
+// T42 (правка клиента, reference/client-feedback/page-11.png): «Послідовність: Трафік → Посадкові → Контент → Лід →
+// Sales» и услуги под шагами — дословно; привязка услуг к шагам — в данных (ecosystem.steps[].{ name, items[] })
+test('11: шаги и услуги — дословно из документа клиента, привязка к шагам в словаре; прежних flow/services нет', () => {
+  const doc = [
+    ['Трафік', ['Telegram Ads', 'Meta Ads', 'посіви / закупи реклами', 'органічний / UBT-трафік']],
+    ['Посадкові', ['упаковка й оформлення Telegram-каналу під цілі просування', 'Telegram-боти та воронки', 'сайти / лендинги']],
+    ['Контент', ['матеріали, які прогрівають підписників у Telegram-каналі або боті']],
+    ['Лід', ['заявка з сайту, з боту або звернення в особисті повідомлення Telegram']],
+    ['Sales', ['консультації щодо обробки лідів та знайомство зі спеціалістами, які допоможуть налагодити роботу з ними']],
+  ];
+  assert.deepEqual(ua.ecosystem.steps.map((st) => [st.name, st.items]), doc);
+  assert.deepEqual(en.ecosystem.steps.map((st) => st.name), ['Traffic', 'Landing', 'Content', 'Lead', 'Sales']);
+  en.ecosystem.steps.forEach((st, i) => {
+    assert.deepEqual(Object.keys(st), ['name', 'items']);
+    assert.equal(st.items.length, doc[i][1].length, `EN шаг ${i}: столько же услуг`);
+    for (const item of st.items) assert.ok(typeof item === 'string' && item.trim());
+  });
+  for (const dict of [ua, en]) {
+    assert.equal(dict.ecosystem.flow, undefined, 'flow заменён steps');
+    assert.equal(dict.ecosystem.services, undefined, 'services заменён steps');
+  }
+  assert.doesNotMatch(read('src/sections/ecosystem-model.js'), /STEP_SERVICES/);
 });
 
-test('11: шесть шагов 01–06 в ряд, под каждым — его услуги (название + текст); первый горит без JS', () => {
+test('11: пять шагов 01–05 в ряд, под каждым — его услуги из словаря; первый горит без JS', () => {
   const steps = eco.split(/<li class="eco__step[^"]*" data-eco-step="/).slice(1);
-  assert.equal(steps.length, 6);
+  assert.equal(steps.length, 5);
   steps.forEach((step, i) => {
     assert.ok(step.startsWith(`${i}"`), `шаг ${i}: data-eco-step`);
-    assert.match(step, new RegExp(`<h3 class="eco__face"><span class="eco__num">0${i + 1}</span> <span class="eco__name" data-i18n="ecosystem\\.flow\\.${i}">`));
+    assert.match(step, new RegExp(`<h3 class="eco__face"><span class="eco__num">0${i + 1}</span> <span class="eco__name" data-i18n="ecosystem\\.steps\\.${i}\\.name">`));
     // горящая грань — дубль для глаза, скринридер её не читает
-    assert.match(step, new RegExp(`<span class="eco__face eco__face--on" aria-hidden="true"><span class="eco__num">0${i + 1}</span> <span class="eco__name" data-i18n="ecosystem\\.flow\\.${i}">`));
-    const services = [...step.matchAll(/data-i18n="ecosystem\.services\.(\d)\.name"><\/span> <span class="eco__service-text" data-i18n="ecosystem\.services\.\1\.text"/g)].map((m) => Number(m[1]));
-    assert.deepEqual(services, STEP_SERVICES[i], `шаг ${i}: услуги`);
+    assert.match(step, new RegExp(`<span class="eco__face eco__face--on" aria-hidden="true"><span class="eco__num">0${i + 1}</span> <span class="eco__name" data-i18n="ecosystem\\.steps\\.${i}\\.name">`));
+    const items = [...step.matchAll(/<li class="eco__service"><span class="eco__service-text" data-i18n="ecosystem\.steps\.(\d)\.items\.(\d)"><\/span><\/li>/g)];
+    assert.ok(items.every((m) => Number(m[1]) === i), `шаг ${i}: только свои услуги`);
+    assert.deepEqual(items.map((m) => Number(m[2])), ua.ecosystem.steps[i].items.map((_, j) => j), `шаг ${i}: услуги`);
   });
   assert.match(eco, /<li class="eco__step is-on" data-eco-step="0">/);
   assert.equal(count(eco, /is-on/g), 1);
@@ -55,7 +71,7 @@ test('11: прежней ленты нет — ни плиток, ни карт�
 
 test('11: бегущий импульс — шаг за шагом слева направо, ~2,5 с на шаг, по кругу', () => {
   assert.ok(PULSE_MS >= 2000 && PULSE_MS <= 3000, `PULSE_MS = ${PULSE_MS}`);
-  assert.deepEqual([0, 1, 2, 3, 4, 5].map((i) => nextStep(i, 6)), [1, 2, 3, 4, 5, 0]);
+  assert.deepEqual([0, 1, 2, 3, 4].map((i) => nextStep(i, 5)), [1, 2, 3, 4, 0]);
   assert.match(ecoJs, /import \{ PULSE_MS, nextStep \} from '\.\/ecosystem-model\.js'/);
   assert.match(ecoJs, /setTimeout\(/);
   assert.match(ecoJs, /classList\.toggle\('is-on', n === i\)/);
@@ -83,21 +99,27 @@ test('11: свечение шага — только opacity слоёв (гра�
   assert.doesNotMatch(ecoCss, /@keyframes|animation:/);
   assert.match(ecoCss, /\.eco__card::after\s*\{/, 'стрелка к следующему шагу');
   assert.match(ecoCss, /\.eco__step:last-child \.eco__card::after\s*\{\s*display:\s*none/);
-  assert.match(ecoCss, /grid-template-columns:\s*repeat\(6, minmax\(0, 1fr\)\)/, 'шесть шагов в ряд');
+  assert.match(ecoCss, /grid-template-columns:\s*repeat\(5, minmax\(0, 1fr\)\)/, 'пять шагов в ряд');
+  assert.doesNotMatch(ecoCss, /repeat\(6,|eco__service-name/, 'шести шагов и «название + текст» услуги больше нет');
+  assert.match(ecoCss, /\.eco__service-text::first-letter\s*\{\s*text-transform:\s*uppercase/, 'текст услуги — с заглавной');
 });
 
 /* ——— 12 Матеріали ——— */
 
-test('12: четыре карточки-поста — обложка, строка канала, заголовок, «Читати в Telegram ↗» с местом клика', () => {
+// T40 (документ клиента, блок 12): зображення, назва, опис, джерело — фото и название канала, «Читати в Telegram» на пост
+test('12: четыре карточки-поста — обложка-слот картинки, строка канала с фото, заголовок, опис, «Читати в Telegram ↗» на пост', () => {
   const posts = mat.split('<li class="mat__item">').slice(1);
   assert.equal(posts.length, 4);
   posts.forEach((post, i) => {
     assert.match(post, new RegExp(`<article class="mat__card mat__card--${i === 0 ? 'accent' : 'dark'}">`));
     const cover = i === 0 ? 'materials\\.items\\.0\\.cover' : 'materials\\.post';
-    assert.match(post, new RegExp(`<div class="mat__cover" aria-hidden="true"><span class="mat__cover-title" data-i18n="${cover}">`));
-    assert.match(post, /<p class="mat__channel"><span class="mat__avatar" aria-hidden="true"><\/span><span class="mat__channel-name" data-i18n="materials\.channel"><\/span><span class="mat__kind" data-i18n="materials\.post"><\/span><\/p>/);
+    assert.match(post, new RegExp(`<div class="mat__cover" aria-hidden="true" data-mat-image="${i}"><span class="mat__cover-title" data-i18n="${cover}">`));
+    assert.match(post, /<p class="mat__channel"><span class="mat__avatar" aria-hidden="true" data-mat-channel-image><\/span><span class="mat__channel-name" data-i18n="materials\.channel"><\/span><span class="mat__kind" data-i18n="materials\.post"><\/span><\/p>/);
     assert.match(post, new RegExp(`<h3 class="mat__title${i === 0 ? '' : ' is-tbd'}" data-i18n="materials\\.items\\.${i}\\.title">`));
-    assert.match(post, /<a class="mat__link" href="\{\{config\.telegramUrl\}\}" target="_blank" rel="noopener" data-place="materials"><span data-i18n="materials\.read"><\/span><svg/);
+    assert.match(post, new RegExp(`<p class="mat__text is-tbd" data-i18n="materials\\.items\\.${i}\\.text">`));
+    assert.match(post, new RegExp(`<a class="mat__link" href="\\{\\{config\\.telegramUrl\\}\\}" target="_blank" rel="noopener" data-place="materials" data-mat-url="${i}"><span data-i18n="materials\\.read"><\\/span><svg`));
+    const order = ['mat__cover', 'mat__channel', 'mat__title', 'mat__text', 'mat__link'].map((c) => post.indexOf(`class="${c}`));
+    assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок частей поста');
   });
   // свечения за курсором и самолётиков прежнего облика нет
   assert.doesNotMatch(mat, /mat__glow|mat__icon|mat__badge|mat__arrow/);
@@ -107,7 +129,13 @@ test('12: четыре карточки-поста — обложка, стро�
 test('12: тексты обложек и строки канала — из словарей, без выдуманного: обложка первого — начало его заголовка', () => {
   for (const dict of [ua, en]) {
     const m = dict.materials;
-    assert.equal(m.channel, 'eLeads');
+    assert.equal(m.channel, 'єЛіди! → [маркетинг]', '«фото та назва Telegram-каналу «єЛіди! → [маркетинг]»»');
+    assert.equal(m.channelImage, '', 'фото канала ещё нет — круг-заглушка');
+    for (const item of m.items) {
+      assert.equal(item.text, dict === ua ? 'уточнити' : 'TBD', 'опис поста — от клиента');
+      assert.equal(item.image, '', 'зображення поста — от клиента (public/img/posts/)');
+      assert.equal(item.url, '', 'ссылки на пост ещё нет — кнопка ведёт на общий telegramUrl');
+    }
     assert.ok(m.post && m.read);
     assert.ok(m.items[0].title.startsWith(m.items[0].cover), `${m.items[0].cover} ⊂ ${m.items[0].title}`);
     for (const item of m.items.slice(1)) assert.equal(item.cover, undefined, 'у постов без данных обложка — «Пост»');
@@ -120,7 +148,10 @@ test('12: лента едет по прокрутке через showcaseScroll;
   assert.match(matJs, /classList\.toggle\('is-static', !ok\)/);
   assert.match(matCss, /\.section--materials\.is-static \.mat__item\s*\{[^}]*flex:\s*1 1 0/);
   assert.match(matCss, /\.mat__card--accent \.mat__cover\s*\{[^}]*background:\s*var\(--grad\)/);
-  assert.match(matCss, /\.mat__title\.is-tbd\s*\{[^}]*color:\s*var\(--text-muted\)/, '«уточнити» — приглушённо');
+  assert.match(matCss, /\.mat__title\.is-tbd,\s*\.mat__text\.is-tbd\s*\{[^}]*color:\s*var\(--text-muted\)/, '«уточнити» — приглушённо');
+  // T40: картинка поста и фото канала ложатся поверх заглушек только после загрузки; опис — не длиннее трёх строк
+  assert.match(matCss, /\.mat__cover\.has-image \.mat__cover-img,\s*\.mat__avatar\.has-image \.mat__avatar-img\s*\{\s*opacity:\s*1/);
+  assert.match(matCss, /\.mat__text\s*\{[^}]*-webkit-line-clamp:\s*3/);
   for (const [, prop] of matCss.matchAll(/transition:\s*([a-z-]+)/g)) assert.ok(['opacity', 'transform'].includes(prop), `transition ${prop}`);
   assert.doesNotMatch(matCss, /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/i, 'цвета — только переменные');
   assert.doesNotMatch(ecoCss, /#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/i, 'цвета — только переменные');

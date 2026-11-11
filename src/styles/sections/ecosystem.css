@@ -1,7 +1,8 @@
 /* 11 Екосистема (T36, H49): шлях клієнта з послугами під кожним кроком — вариант A
    (reference/run3/ecosystem-A-chosen.png, стили макета — reference/run3/rest-mock.cjs, ecosystem.A).
-   Шесть шагов в ряд: карточка с номером 01–06 и названием шрифтом канала, между карточками — жёлтая стрелка;
-   под каждой карточкой — её услуги (название + текст) в тонкой рамке. «Бегущий импульс» (ecosystem.js): у горящего
+   T42 (правка клиента): пять шагов в ряд — Трафік → Посадкові → Контент → Лід → Sales: карточка с номером 01–05 и
+   названием шрифтом канала, между карточками — жёлтая стрелка; под каждой карточкой — её услуги (одна строка текста
+   из документа клиента, первая буква заглавная) в тонкой рамке. «Бегущий импульс» (ecosystem.js): у горящего
    шага (.is-on) проявляется градиентная грань карточки (.eco__face--on, тёмный текст) и акцентные рамки его услуг —
    только opacity. На широком экране блок — ровно экран под шапкой: кегли и отступы — от высоты окна (svh).
    Планшет — три шага в ряд, телефон — шаги столбцом. Двигаются только transform и opacity. */
@@ -31,7 +32,7 @@
   color: var(--text);
 }
 
-/* ——— путь: телефон — столбец, планшет — 3 в ряд, широкий экран — 6 в ряд ——— */
+/* ——— путь: телефон — столбец, планшет — 3 в ряд, широкий экран — 5 в ряд ——— */
 .eco__path {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -159,18 +160,17 @@
   opacity: 1;
 }
 
-.eco__service-name {
-  position: relative;
-  font-size: 0.9375rem;
-  font-weight: 700;
-  line-height: 1.25;
-}
-
 .eco__service-text {
   position: relative;
-  font-size: 0.8125rem;
-  line-height: 1.4;
-  color: var(--text-muted);
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* тексты услуг в словаре — дословно из документа клиента, со строчной буквы; в рамке — с заглавной */
+.eco__service-text::first-letter {
+  text-transform: uppercase;
 }
 
 /* — планшет: три шага в ряд, стрелка — между соседями в ряду — */
@@ -193,10 +193,10 @@
   }
 }
 
-/* — широкий экран: шесть шагов в ряд; блок — ровно экран, размеры от высоты окна — */
+/* — широкий экран: пять шагов в ряд; блок — ровно экран, размеры от высоты окна — */
 @media (min-width: 1100px), (min-width: 900px) and (orientation: landscape) {
   .eco__path {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .eco__step:nth-child(3n) .eco__card::after {
@@ -245,12 +245,8 @@
     padding: clamp(0.625rem, 1.4svh, 0.875rem) clamp(0.75rem, 0.8vw, 1rem);
   }
 
-  .eco__service-name {
-    font-size: clamp(0.875rem, 1.75svh, 1.0625rem);
-  }
-
   .eco__service-text {
-    font-size: clamp(0.75rem, 1.45svh, 0.9375rem);
+    font-size: clamp(0.875rem, 1.75svh, 1.0625rem);
   }
 }
 

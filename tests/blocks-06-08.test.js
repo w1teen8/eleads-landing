@@ -32,7 +32,7 @@ test('правила клиента: без меток, сносок и нижн
   }
   for (const dict of [ua, en]) {
     assert.equal(dict.geo.mapLabel, undefined, 'подпись «Інтерактивна карта»');
-    assert.doesNotMatch(dict.geo.regions.europe.figureText, /\*/, 'звёздочка без сноски');
+    assert.doesNotMatch(JSON.stringify(dict.geo.regions), /\*/, 'звёздочка без сноски');
   }
 });
 

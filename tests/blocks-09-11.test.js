@@ -34,7 +34,7 @@ test('правила клиента: нет меток блоков, подск�
     for (const key of ['hint', 'note']) assert.equal(dict.targeting[key], undefined, `targeting.${key}`);
     for (const key of ['shot', 'shotCaption']) assert.equal(dict.reviews[key], undefined, `reviews.${key}`);
     assert.equal(dict.ecosystem.caption, undefined, 'ecosystem.caption');
-    assert.equal(dict.founder.photoCaption, undefined, 'founder.photoCaption');
+    assert.equal(dict.founder, undefined, 'founder.* — фото и текст засновника клиент убрал (T42)');
   }
 });
 
@@ -65,11 +65,10 @@ test('H18/H15: заголовки — шрифт канала заглавным
 // T34: сетка 3×2 блока 09 заменена диском, который сам листает способы, — tests/targeting-dial.test.js
 
 // T35: слайдер отзывов блока 10 заменён кружками, как видео-сообщения Telegram, — tests/reviews-circles.test.js
-test('10: засновник с фото и «50+ проєктів», цифры блока — из первого экрана', () => {
+// T42: клиент — «Прибрати мою фотографію та текст поруч із нею»: засновника в блоке 10 нет, цифры остались
+test('10: без фото и текста засновника; цифры блока — из первого экрана', () => {
   const s = section('reviews');
-  assert.match(s, /\/img\/photo\/volodymyr-founder-480\.jpg/);
-  assert.match(ua.founder.text, /50\+ проєктів/);
-  assert.match(en.founder.text, /50\+ projects/);
+  assert.doesNotMatch(s, /volodymyr|founder/);
   assert.match(s, /data-i18n="hero\.stats\.projects\.value"/);
   assert.equal(count(s, /class="reviews__tab"/g), ua.reviews.items.length);
 });

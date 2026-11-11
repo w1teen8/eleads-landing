@@ -18,7 +18,7 @@ export const SECTIONS = [
   ['process', 'Процес роботи'],
   ['geo', 'GEO'],
   ['targeting', 'Таргетинг'],
-  ['reviews', 'Відгуки й засновник'],
+  ['reviews', 'Відгуки'],
   ['ecosystem', 'Екосистема'],
   ['materials', 'Матеріали'],
   ['faq', 'FAQ'],
@@ -30,8 +30,8 @@ export const SECTIONS = [
 ].map(([id, title]) => ({ id, title }));
 
 const SECTION_IDS = new Set(SECTIONS.map((s) => s.id));
-// ключи словаря, которые живут на экране другого раздела
-const SECTION_ALIAS = { founder: 'reviews' };
+// ключи словаря, которые живут на экране другого раздела (founder.* убран вместе с блоком засновника — T42)
+const SECTION_ALIAS = {};
 
 // слова в путях ключей → подписи по-украински; чего нет — показывается как есть
 const WORDS = {
@@ -45,6 +45,13 @@ const WORDS = {
   telegramUrl: 'Посилання на Telegram', telegramHandle: 'Нік у Telegram',
   facts: 'Факти', stats: 'Цифри', trusted: 'Нам довіряють', ad: 'Рекламний пост', photo: 'Фото', sections: 'Пункти меню',
   tabs: 'Вкладки', top: 'Верхня стрічка', chat: 'Чат',
+  goal: 'Ціль кампанії', metrics: 'Ключові показники', cover: 'Обкладинка', channel: 'Канал',
+  image: 'Зображення (файл)', channelImage: 'Фото каналу (файл)', url: 'Посилання на пост',
+  // T42: GEO — цифри регіонів, відгуки — відеокружок, екосистема — кроки
+  regions: 'Регіони', users: 'Користувачів Telegram', usersLabel: 'Підпис до користувачів', ukrainians: 'З них українців',
+  ukrainiansLabel: 'Підпис до українців', more: 'Інша статистика', moreLabel: 'Підпис до статистики',
+  player: 'Відеокружок', soon: 'Підпис, поки відео немає', play: 'Кнопка «Відтворити»', sound: 'Кнопка «Звук»',
+  pause: 'Кнопка «Пауза»', case: 'Кейс (аватар)', steps: 'Кроки', role: 'Роль', quote: 'Цитата',
 };
 
 const word = (part) => (typeof part === 'number' ? `№${part + 1}` : WORDS[part] || part);
@@ -58,6 +65,8 @@ function kindOf(path) {
   if (last === 'telegramUrl') return 'url';
   if (last === 'telegramHandle') return 'handle';
   if (last === 'video') return 'file';
+  if (last === 'url') return 'post';
+  if (last === 'image' || last === 'channelImage') return 'image';
   return 'text';
 }
 

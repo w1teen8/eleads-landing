@@ -1,6 +1,7 @@
-// T37 (H49, H50): общий телефон (src/core/phone.js + src/styles/phone.css) в блоках 04, 13, 14.
-// 13 «FAQ» — вариант A «переписка» (reference/run3/faq-A-chosen.png), 14 «Фінальний CTA» — вариант B «чат з Володимиром»
-// (reference/run3/cta-B-chosen.png). Пользователь: «если ты делаешь копию телеграмм … сделай экран телефона».
+// T37 (H49, H50): общий телефон (src/core/phone.js + src/styles/phone.css) в блоках 04 и 13.
+// 13 «FAQ» — вариант A «переписка» (reference/run3/faq-A-chosen.png). Пользователь: «если ты делаешь копию телеграмм …
+// сделай экран телефона». T41 (H54): в 14 «Фінальний CTA» телефона больше нет — клиент: «Прибрати зображення телефону,
+// оскільки воно вже повторюється на сайті. Замість телефону додати мою фотографію».
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
@@ -19,21 +20,23 @@ const count = (s, re) => (s.match(re) || []).length;
 const phoneCss = strip(read('src/styles/phone.css'));
 const faqJs = strip(read('src/sections/faq.js'));
 const ctaJs = strip(read('src/sections/cta.js'));
+const ctaCss = strip(read('src/styles/sections/cta.css'));
 
 // кадры WAAPI: все ключи объектов внутри .animate([...]) — только transform и opacity
 const animatedProps = (code) =>
   [...code.matchAll(/\.animate\(\s*(\[[\s\S]*?\])\s*,/g)].flatMap(([, frames]) => [...frames.matchAll(/\b([a-zA-Z]+)\s*:/g)].map((m) => m[1]));
 
-test('общий телефон: шаблон <phone-frame> в трёх блоках, рамка разворачивается сборкой, копий рамки в разметке нет', () => {
-  for (const id of ['formats', 'faq', 'cta']) assert.equal(count(section(raw, id), /<phone-frame\b/g), 1, `${id}: один телефон`);
-  assert.equal(count(raw, /<phone-frame\b/g), 3, 'телефонов на странице три');
+test('общий телефон: шаблон <phone-frame> в блоках 04 и 13, рамка разворачивается сборкой, копий рамки в разметке нет', () => {
+  for (const id of ['formats', 'faq']) assert.equal(count(section(raw, id), /<phone-frame\b/g), 1, `${id}: один телефон`);
+  assert.equal(count(section(raw, 'cta'), /<phone-frame\b|class="phone\b/g), 0, 'cta: телефона нет');
+  assert.equal(count(raw, /<phone-frame\b/g), 2, 'телефонов на странице два');
   for (const part of ['phone__island', 'phone__status', 'phone__glare', 'phone__key']) {
     assert.doesNotMatch(raw, new RegExp(part), `${part} — только в шаблоне src/core/phone.js`);
   }
   const built = prerender(raw, ua, config);
   assert.doesNotMatch(built, /<phone-frame\b/, 'сборка разворачивает все шаблоны');
-  assert.equal(count(built, /class="phone__screen"/g), 3);
-  assert.equal(count(built, /<span class="phone__time" data-i18n="formats\.phone\.time">9:41<\/span>/g), 3, 'время — из словаря');
+  assert.equal(count(built, /class="phone__screen"/g), 2);
+  assert.equal(count(built, /<span class="phone__time" data-i18n="formats\.phone\.time">9:41<\/span>/g), 2, 'время — из словаря');
 });
 
 test('шаблон: класс phone первым, свои классы и data-атрибуты сохраняются, содержимое экрана — под строкой состояния', () => {
@@ -58,10 +61,12 @@ test('стили телефона — в общем файле до стилей
   assert.match(formats, /\.formats__stage \.phone\s*\{[^}]*height:\s*100%/, 'размер телефона 04 — у блока');
   assert.doesNotMatch(phoneCss, /#[0-9a-f]{3,8}\b|rgba?\(/i, 'цвета — только переменные');
   assert.match(phoneCss, /container-type:\s*size/);
-  // чат 13/14: пузыри, «друкує…», кнопка отправки, ссылка на весь экран
-  for (const cls of ['phone__view', 'phone__thread', 'phone__msg', 'phone__msg--out', 'phone__typing', 'phone__send', 'phone__link', 'phone__avatar--photo']) {
+  // чат 13: пузыри, «друкує…», фото в шапке
+  for (const cls of ['phone__view', 'phone__thread', 'phone__msg', 'phone__msg--out', 'phone__typing', 'phone__avatar--photo']) {
     assert.match(phoneCss, new RegExp(`\\.${cls}\\b`), cls);
   }
+  // кнопка отправки и ссылка на весь экран были только у телефона 14 — убраны вместе с ним
+  for (const cls of ['phone__send', 'phone__link', 'phone__bottom--send']) assert.doesNotMatch(phoneCss, new RegExp(`\\.${cls}\\b`), cls);
   assert.match(phoneCss, /\.phone__msg--out\s*\{[^}]*background:\s*var\(--grad\)/, 'исходящее — жёлто-оранжевое');
   for (const [, body] of phoneCss.matchAll(/@keyframes [\w-]+\s*\{([\s\S]*?\n)\}/g)) {
     for (const [, prop] of body.matchAll(/([a-z-]+):/g)) assert.ok(['opacity', 'transform'].includes(prop), `кадр: ${prop}`);
@@ -85,7 +90,7 @@ test('13 FAQ: слева заголовок, «Не знайшли відпов�
   assert.equal(ua.faq.chat.status, 'у мережі');
   assert.equal(ua.faq.chat.typing, 'друкує…');
   assert.match(faqJs, /import data from '\.\.\/data\/faq\.json'/, 'вопросы — из faq.json');
-  assert.equal(faqData.items.length, 9);
+  assert.equal(faqData.items.length, 8, 'вопрос «Чи є гарантія результату?» убран (T41)');
 });
 
 test('13 FAQ: выбор «отправляет» вопрос, «друкує…» ~0,7 с, затем ответ; автолистание ~8 с с паузой только на списке', async () => {
@@ -121,45 +126,68 @@ test('13 FAQ: выбор «отправляет» вопрос, «друкує�
   assert.equal(nextIndex(2, 9), 3);
 });
 
-test('14 CTA: заголовок, текст, кнопка в Telegram; телефон с чатом @Kucherflow — одно приглашение, поле ввода и отправка', () => {
+test('14 CTA: заголовок, текст и кнопка без изменений; вместо телефона — фото Володимира (<picture> AVIF/WebP/JPG)', () => {
   const s = section(html, 'cta');
   assert.match(s, /class="btn btn--primary[^"]*cta__btn"[^>]*href="\{\{config\.telegramUrl\}\}"[^>]*data-place="final_cta"/);
+  assert.match(s, /data-i18n="cta\.title" data-title-accent="cta\.titleAccent"/);
   assert.match(s, /data-i18n="cta\.text"/);
-  assert.match(s, /class="phone cta__phone" data-cta-phone/);
-  assert.match(s, /\{\{config\.telegramHandle\}\}<\/span> · <span data-cta-status data-i18n="cta\.chat\.status">/);
-  assert.match(s, /\/img\/photo\/volodymyr-founder-480\.webp/);
-  assert.equal(count(s, /class="phone__msg /g), 1, 'одно сообщение');
-  assert.match(s, /class="phone__msg phone__msg--in" data-cta-hello><span class="phone__msg-text" data-i18n="cta\.chatHello">/);
-  assert.match(s, /class="phone__placeholder" data-i18n="formats\.phone\.message"/);
-  assert.match(s, /class="phone__send"/);
-  // весь экран телефона — ссылка в Telegram; не второй стоп табуляции
-  assert.match(s, /<a class="phone__link" href="\{\{config\.telegramUrl\}\}"[^>]*tabindex="-1" aria-hidden="true" data-place="final_cta_chat">/);
-  assert.doesNotMatch(s, /cta__photo|cta__handle|data-cta-photo/, 'прежнего фото и пилюли @handle нет');
-  for (const dict of [ua, en]) {
-    assert.ok(dict.cta.chatHello && dict.cta.chatHello.length < dict.cta.text.length, 'приглашение — короче cta.text');
-    for (const key of ['name', 'status', 'typing']) assert.equal(typeof dict.cta.chat[key], 'string', `cta.chat.${key}`);
+  assert.match(s, /data-i18n="cta\.button"/);
+  assert.doesNotMatch(s, /phone|data-cta-(thread|hello|status)|final_cta_chat|telegramHandle/, 'телефона с чатом нет');
+  const photo = s.match(/<figure class="cta__photo" data-cta-photo>([\s\S]*?)<\/figure>/);
+  assert.ok(photo, 'фото на месте телефона');
+  const pic = photo[1];
+  for (const [type, ext] of [['image/avif', 'avif'], ['image/webp', 'webp']]) {
+    assert.match(pic, new RegExp(`<source type="${type}" srcset="/img/photo/volodymyr-cta-480\\.${ext} 480w, /img/photo/volodymyr-cta-900\\.${ext} 900w"`), ext);
   }
-  // без новых фактов: цифр в приглашении нет
-  for (const dict of [ua, en]) assert.doesNotMatch(dict.cta.chatHello, /\d/);
+  assert.match(pic, /<img class="photo-img" src="\/img\/photo\/volodymyr-cta-480\.jpg" srcset="\/img\/photo\/volodymyr-cta-480\.jpg 480w, \/img\/photo\/volodymyr-cta-900\.jpg 900w"/);
+  assert.match(pic, /width="480" height="703"/, 'размеры исходника — без сдвига вёрстки');
+  assert.match(pic, /data-i18n-attr="alt:cta\.photoAlt"/, 'alt — из словаря');
+  assert.match(pic, /loading="lazy"/);
+  // ключи чата больше не используются
+  for (const dict of [ua, en]) {
+    assert.equal(dict.cta.chatHello, undefined, 'cta.chatHello удалён');
+    assert.equal(dict.cta.chat, undefined, 'cta.chat удалён');
+    assert.match(dict.cta.photoAlt, /Kucher|Кучер/, 'alt фото — свой ключ блока (founder.* может исчезнуть с блоком 10)');
+  }
+  assert.doesNotMatch(ctaJs, /phone|typing|IntersectionObserver|setTimeout/, 'cta.js — без чата');
 });
 
-test('14 CTA: сообщение приходит после «друкує…» один раз при появлении блока; reduced — видно сразу', () => {
-  assert.match(ctaJs, /if \(reduced \|\|[^;]*\) return;/, 'reduced-motion / ?nomotion=1 — сообщение из разметки, без анимации');
-  assert.match(ctaJs, /io\.disconnect\(\)/, 'один раз');
-  assert.match(ctaJs, /cta\.chat\.typing/);
-  assert.match(ctaJs, /phone__typing/);
-  const typing = Number(ctaJs.match(/TYPING_MS\s*=\s*(\d+)/)[1]);
-  assert.ok(typing >= 500 && typing <= 1500);
-  for (const prop of animatedProps(ctaJs)) assert.ok(['transform', 'opacity'].includes(prop), `cta.js: ${prop}`);
-  assert.doesNotMatch(ctaJs, /\b(stagger|stackReveal|gsap|ScrollTrigger|pointermove)\b/);
+test('14 CTA: фото крупно, скругление, тонкая жёлто-оранжевая рамка и тёплое свечение; переходы — только transform/opacity', () => {
+  const photo = ctaCss.match(/\.cta__photo\s*\{([^}]*)\}/)[1];
+  assert.match(photo, /border-radius:\s*var\(--r-card-lg\)/);
+  assert.match(photo, /aspect-ratio:\s*3 \/ 4/);
+  // рамка — градиент палитры (--grad) по краю: слой ::after с маской-кольцом; свечение — --glow позади
+  assert.match(ctaCss, /\.cta__photo::after\s*\{[^}]*background:\s*var\(--grad\)/, 'рамка — жёлто-оранжевая');
+  assert.match(ctaCss, /\.cta__photo::after\s*\{[^}]*mask-composite:\s*exclude/, 'только кольцо по краю');
+  assert.match(ctaCss, /\.cta__stage::before\s*\{[^}]*var\(--glow\)/, 'тёплое свечение позади');
+  assert.match(ctaCss, /\.cta__photo \.photo-img\s*\{[^}]*object-position/, 'кадр — лицо и плечи');
+  for (const [, prop] of ctaCss.matchAll(/transition:\s*([a-z-]+)/g)) assert.ok(['transform', 'opacity'].includes(prop), prop);
+  assert.doesNotMatch(ctaCss, /@keyframes|animation:/);
 });
 
-test('13 и 14 — ровно экран на широком; телефон на всю высоту блока', () => {
+test('13 и 14 — ровно экран на широком; телефон 13 и фото 14 — на всю высоту блока', () => {
   for (const id of ['faq', 'cta']) {
     const c = strip(read(`src/styles/sections/${id}.css`));
     const wide = c.slice(c.indexOf('@media (min-width: 900px) and (orientation: landscape)'));
     assert.match(wide, /min-height:\s*calc\(100svh - var\(--header-h\) - 2 \* var\(--screen-pad\)\)/, id);
-    assert.match(wide, new RegExp(`\\.${id}__stage \\.phone\\s*\\{[^}]*height:\\s*100%`), `${id}: телефон по высоте`);
+    const media = id === 'faq' ? '\\.phone' : '\\.cta__photo';
+    assert.match(wide, new RegExp(`\\.${id}__stage ${media}\\s*\\{[^}]*height:\\s*100%`), `${id}: по высоте`);
     assert.doesNotMatch(c, /#[0-9a-f]{3,8}\b|rgba?\(/i, `${id}: цвета`);
   }
+});
+
+test('13 FAQ: ответы из документа клиента (стр. 13) — q7, q8; q5 — GEO блока 08; «гарантія» убрана', () => {
+  const byId = Object.fromEntries(faqData.items.map((item) => [item.id, item]));
+  assert.equal(byId.q9, undefined, 'q9 «Чи є гарантія результату?» удалён');
+  assert.ok(!faqData.items.some((item) => /гаранті/i.test(item.q.ua)), 'вопроса о гарантии нет');
+  assert.equal(byId.q7.q.ua, 'Чи можете створити Telegram-канал з нуля?');
+  assert.equal(byId.q7.a.ua, 'Так, можемо створити та підготувати Telegram-канал до запуску реклами.');
+  assert.equal(byId.q8.a.ua, 'Так, працюємо з українськими та міжнародними проєктами, налаштовуючи рекламу на потрібні країни й аудиторії.');
+  assert.equal(byId.q5.a.ua, 'Україна, Європа, США та Канада, а також інші країни світу за задачею.');
+  for (const id of ['q5', 'q7', 'q8']) {
+    assert.ok(byId[id].a.en && !/TBD/.test(byId[id].a.en), `${id}: EN-перевод`);
+    assert.doesNotMatch(byId[id].a.en, /[а-яіїєґ]/i, `${id}: EN без кириллицы`);
+  }
+  // id остальных вопросов не сдвинуты — админка и аналитика ссылаются на них
+  assert.deepEqual(faqData.items.map((item) => item.id), ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8']);
 });

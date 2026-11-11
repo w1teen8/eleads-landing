@@ -1,7 +1,11 @@
 // 08 GEO (T33, H45): точечный 3D-глобус (образец глобуса — reference/run3/geo-A-chosen.png, раскладка — «Л 4»
 // reference/run3/geo-L4-chosen.png с просторными строками), поведение — как Framer «3D Dot Globe Map».
-// Слева список регионов: строка — кнопка (aria-pressed), выбранная раскрыта в карточку (название крупнее, описание,
-// цифра — rollTo; цифра есть только там, где она в словаре — у Європи 4.43M). Выбор — клик, наведение мышью (с
+// T42 (правка клиента, reference/client-feedback/page-08.png): четыре переключателя — Україна, Європа, Америка/Канада,
+// Worldwide; у Америки/Канады две метки (США и Канада) подсвечиваются вместе; Worldwide — весь мир: суша вся светится,
+// горят метки всех регионов, глобус непрерывно вращается. В раскрытой карточке — число пользователей Telegram и
+// «з них українців» (geo.regions.<id>.users / .ukrainians; у Worldwide — 1B+ MAU и .more); значение с цифрами
+// докручивается барабанами (rollTo), «уточнити» — приглушённо (цифр клиент ещё не дал).
+// Слева список регионов: строка — кнопка (aria-pressed), выбранная раскрыта в карточку. Выбор — клик, наведение мышью (с
 // задержкой, чтобы проход курсора по списку не дёргал глобус), фокус, стрелки ↑/↓, Home/End; клик по метке на глобусе.
 // Справа глобус на единственном <canvas> страницы (2000+ точек суши на каждом кадре SVG не тянет): выбранный регион
 // всегда к зрителю лицом — после поворота к нему и ~6 с бездействия глобус медленно покачивается вокруг него (правка
@@ -13,10 +17,11 @@
 // Математика (проекция, видимость, выбор метки, инерция) — geo-globe.js.
 import { $, $$, on } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
-import { t } from '../core/i18n.js';
+import { t, onLangChange } from '../core/i18n.js';
 import { reduced } from '../core/motion.js';
 import { FLIP } from '../core/motion-kit.js';
 import { rollTo } from './stats-odometer.js';
+import { isTbd } from './reviews-model.js';
 import grid from '../data/geo-dots.json';
 import {
   GLOBE,
@@ -30,6 +35,8 @@ import {
   nearestRegion,
   project,
   regionAt,
+  regionPins,
+  spinView,
   swayView,
   swell,
   toVector,
@@ -38,7 +45,7 @@ import {
   wrapLon,
 } from './geo-globe.js';
 
-/** Регион по умолчанию — с цифрой. */
+/** Регион по умолчанию — Європа (раскрыта и без JS). */
 const DEFAULT = 'europe';
 /** Уровней яркости точек: точки одного цвета и уровня рисуются одним путём. */
 const LEVELS = 10;
@@ -81,11 +88,14 @@ export function init(root) {
   const count = dots.length;
   const vec = new Float32Array(count * 3);
   const owner = new Int8Array(count); // индекс региона точки или -1
+  const marks = regionPins(regions); // у Америки/Канады — две метки, у Worldwide — ни одной
   dots.forEach((d, i) => {
     vec.set(toVector(d.lon, d.lat), i * 3);
-    owner[i] = nearestRegion(d.lon, d.lat, regions);
+    const k = nearestRegion(d.lon, d.lat, marks);
+    owner[i] = k < 0 ? -1 : marks[k].region;
   });
-  const pins = regions.map((r) => ({ id: r.id, v: toVector(r.lon, r.lat), big: r.id === 'ukraine' }));
+  const pins = marks.map((m) => ({ id: m.id, v: toVector(m.lon, m.lat), big: m.id === 'ukraine' }));
+  const isWorld = (id) => Boolean(regions.find((r) => r.id === id)?.world);
   const sx = new Float32Array(count);
   const sy = new Float32Array(count);
   const sr = new Float32Array(count);
@@ -166,6 +176,7 @@ export function init(root) {
     // точки суши: проекция, размер и яркость от глубины (у края — темнее и мельче), у курсора — вспухают
     const reach = GLOBE.swell * R;
     const activeIndex = regions.findIndex((r) => r.id === active);
+    const world = isWorld(active); // Worldwide: светится вся суша, регионы — ярче
     const { sl, cl, sf, cf } = basis;
     for (let i = 0; i < count; i += 1) {
       // project() без выделения памяти на каждую точку
@@ -181,7 +192,7 @@ export function init(root) {
       const x = c + R * (vx * cl - vz * sl);
       const y = cy - R * (vy * cf - zr * sf);
       const s = cursor && hoverK > 0 ? swell(Math.hypot(x - cursor.x, y - cursor.y), reach) * hoverK : 0;
-      const tone = owner[i] < 0 ? 0 : owner[i] === activeIndex ? 2 : 1;
+      const tone = owner[i] < 0 ? (world ? 1 : 0) : owner[i] === activeIndex || world ? 2 : 1;
       const alpha = tone === 0 ? 0.12 + z * 0.3 + s * 0.45 : 0.45 + z * 0.5 + s * 0.2;
       sx[i] = x;
       sy[i] = y;
@@ -211,7 +222,7 @@ export function init(root) {
       const fade = clamp(p.z / 0.2, 0, 1);
       const x = c + R * p.x;
       const y = cy - R * p.y;
-      const on = pin.id === active;
+      const on = pin.id === active || world;
       const r = R * (pin.big ? SIZE.pinBig : SIZE.pin) * (on ? 1.15 : 1);
       const ring = R * (pin.big ? SIZE.ringBig : SIZE.ring);
       shownPins.push({ id: pin.id, x, y, z: p.z });
@@ -271,7 +282,8 @@ export function init(root) {
       } else {
         if (swayK === 0) swayT0 = now;
         swayK = Math.min(1, swayK + dt / GLOBE.swayRamp);
-        view = swayView(home, now - swayT0, swayK);
+        // Worldwide — непрерывное вращение (весь мир), регион — покачивание вокруг него
+        view = isWorld(active) ? spinView(view, dt, swayK) : swayView(home, now - swayT0, swayK);
       }
     }
     hoverK = clamp(hoverK + (cursor ? dt : -dt) / 220, 0, 1);
@@ -325,9 +337,10 @@ export function init(root) {
         { opacity: [0, 1], transform: ['translateY(0.4em)', 'translateY(0)'] },
         { duration: 450, easing: FLIP.easing },
       );
-      const figure = $('[data-geo-figure]', row);
-      const value = figure && t(figure.dataset.i18n);
-      if (typeof value === 'string' && value !== figure.dataset.i18n) rollTo(figure, value, { from: zeros(value) });
+      for (const figure of $$('[data-geo-figure]', row)) {
+        const value = t(figure.dataset.i18n);
+        if (typeof value === 'string' && /\d/.test(value) && !isTbd(value)) rollTo(figure, value, { from: zeros(value) });
+      }
     }
     // строки доезжают на новые места (FLIP, только transform): раскрытая карточка выше свёрнутой строки
     items.forEach((item, i) => {
@@ -339,6 +352,8 @@ export function init(root) {
 
   /** Плавный поворот лицом к home; длительность — от расстояния. Возвращает время окончания. */
   function goHome(now) {
+    // Worldwide: «лица» у мира нет — вращение продолжается с той долготы, где глобус сейчас, выравнивается только наклон
+    if (isWorld(active) && !atHome) home = { lon: view.lon, lat: home.lat };
     const far = Math.max(Math.abs(lonDelta(view.lon, home.lon)), Math.abs(home.lat - view.lat));
     const ms = GLOBE.focusMs * clamp(far / 120, 0.45, 1);
     tween = { from: { ...view }, to: { ...home }, start: now, ms };
@@ -358,8 +373,9 @@ export function init(root) {
       tween = null;
       atHome = true;
     } else {
-      // поворот к региону, потом пауза бездействия ~6 с, потом покачивание вокруг него
-      holdUntil = goHome(performance.now()) + GLOBE.idleMs;
+      // поворот к региону, потом пауза бездействия ~6 с, потом покачивание вокруг него; Worldwide вращается сразу
+      const done = goHome(performance.now());
+      holdUntil = isWorld(id) ? done : done + GLOBE.idleMs;
     }
     if (changed) paint({ animate: true });
     requestDraw();
@@ -486,6 +502,13 @@ export function init(root) {
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(box);
   else on(window, 'resize', resize);
   resize();
+
+  /* значения без цифр от клиента («уточнити» / «TBD») — приглушённо; поле правится в админке текстов */
+  const markTbd = () => {
+    for (const figure of $$('[data-geo-figure]', root)) figure.classList.toggle('is-tbd', isTbd(t(figure.dataset.i18n)));
+  };
+  onLangChange(markTbd);
+  markTbd();
 
   paint({ animate: false });
 }

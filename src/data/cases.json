@@ -1,5 +1,5 @@
 {
-  "_note": "Цифр і текстів по кейсах ще немає: «уточнити» / «TBD» — заглушки. «done» — шаблон з вайрфрейму клієнта, підтвердити по кожному кейсу. avatar: true — є аватар /img/cases/<id>.webp (+ <id>@2x.webp; avatarRetina: false — файлу @2x немає, вихідник малий); accent — колір бренду з аватара (дані, не оформлення), без нього — акцент сайту. screenshot — шлях до скриншота відгуку, коли буде. Аватар-жабка у Cryptonite — припущення за нішею Crypto, підтвердити.",
+  "_note": "Цифр і текстів по кейсах ще немає: «уточнити» / «TBD» — заглушки, клієнт заповнює їх в адмінці сайту («ЗІБРАТИ ПОКАЗНИКИ + ДОДАТИ ДЕТАЛЬНУ ІНФОРМАЦІЮ ПО КОЖНОМУ КЕЙСУ»). Картка: geo — GEO, goal — ціль кампанії, metrics — 3 ключові показники (label — підпис, value — значення; підписи за замовчуванням: Бюджет, Результат, CPA / CPS). Модалка — ті самі поля + детальна інформація: task, done, review. «done» — шаблон з вайрфрейму клієнта, підтвердити по кожному кейсу. avatar: true — є аватар /img/cases/<id>.webp (+ <id>@2x.webp; avatarRetina: false — файлу @2x немає, вихідник малий); accent — колір бренду з аватара (дані, не оформлення), без нього — акцент сайту. screenshot — шлях до скриншота відгуку, коли буде. Аватар-жабка у Cryptonite — припущення за нішею Crypto, підтвердити.",
   "cases": [
     {
       "id": "cryptonite",
@@ -14,23 +14,47 @@
         "ua": "Cryptonite",
         "en": "Cryptonite"
       },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
       "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "goal": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "Результат",
+            "en": "Result"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPA / CPS",
+            "en": "CPA / CPS"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        }
+      ],
+      "task": {
         "ua": "уточнити",
         "en": "TBD"
       },
@@ -70,23 +94,47 @@
         "ua": "Monolit",
         "en": "Monolit"
       },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
       "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "goal": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "Результат",
+            "en": "Result"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPA / CPS",
+            "en": "CPA / CPS"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        }
+      ],
+      "task": {
         "ua": "уточнити",
         "en": "TBD"
       },
@@ -126,23 +174,47 @@
         "ua": "Global Auto Logistic",
         "en": "Global Auto Logistic"
       },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
       "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "goal": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "Результат",
+            "en": "Result"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPA / CPS",
+            "en": "CPA / CPS"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        }
+      ],
+      "task": {
         "ua": "уточнити",
         "en": "TBD"
       },
@@ -182,23 +254,47 @@
         "ua": "Trackdesk",
         "en": "Trackdesk"
       },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
       "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "goal": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "Результат",
+            "en": "Result"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPA / CPS",
+            "en": "CPA / CPS"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        }
+      ],
+      "task": {
         "ua": "уточнити",
         "en": "TBD"
       },
@@ -238,23 +334,47 @@
         "ua": "Олександр Мухін",
         "en": "Oleksandr Mukhin"
       },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
       "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "goal": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "Результат",
+            "en": "Result"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPA / CPS",
+            "en": "CPA / CPS"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        }
+      ],
+      "task": {
         "ua": "уточнити",
         "en": "TBD"
       },
@@ -285,6 +405,7 @@
     {
       "id": "dombovetskyi",
       "avatar": true,
+      "accent": "#5BE84A",
       "niche": {
         "ua": "Expert",
         "en": "Expert"
@@ -293,23 +414,47 @@
         "ua": "Віктор Домбовецький",
         "en": "Viktor Dombovetskyi"
       },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
       "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "goal": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "Результат",
+            "en": "Result"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPA / CPS",
+            "en": "CPA / CPS"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        }
+      ],
+      "task": {
         "ua": "уточнити",
         "en": "TBD"
       },
@@ -335,38 +480,61 @@
         "ua": "уточнити",
         "en": "TBD"
       },
-      "screenshot": "",
-      "accent": "#5BE84A"
+      "screenshot": ""
     },
     {
       "id": "finmap",
       "avatar": true,
       "accent": "#74E3A8",
       "niche": {
-        "ua": "Finance / B2B",
-        "en": "Finance / B2B"
+        "ua": "SaaS / B2B",
+        "en": "SaaS / B2B"
       },
       "name": {
         "ua": "Finmap",
         "en": "Finmap"
       },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
       "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "goal": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "Результат",
+            "en": "Result"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPA / CPS",
+            "en": "CPA / CPS"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        }
+      ],
+      "task": {
         "ua": "уточнити",
         "en": "TBD"
       },
@@ -407,23 +575,47 @@
         "ua": "Князєв",
         "en": "Kniaziev"
       },
-      "budget": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "result": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "cpa": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
       "geo": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "goal": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "Результат",
+            "en": "Result"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPA / CPS",
+            "en": "CPA / CPS"
+          },
+          "value": {
+            "ua": "уточнити",
+            "en": "TBD"
+          }
+        }
+      ],
+      "task": {
         "ua": "уточнити",
         "en": "TBD"
       },

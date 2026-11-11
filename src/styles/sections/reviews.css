@@ -1,9 +1,9 @@
-/* 10 Відгуки + засновник (T35, H48): кружки, как видео-сообщения Telegram — выбор пользователя «Рев С»
-   (reference/run3/reviews-C-chosen.png). Слева Володимир в большом круге с жёлто-оранжевым кольцом (и кнопкой ▶, когда
-   есть видео), рядом метка, имя и текст; справа — метка, ряд круглых аватаров клиентов (выбранный — с кольцом прогресса
-   до следующего отзыва), карточка отзыва выбранного и три цифры. На широком экране блок — ровно экран под шапкой:
-   размеры — от высоты окна (svh). На телефоне круг засновника сверху (220px), кружки клиентов прокручиваются внутри ряда.
-   Двигаются только transform и opacity. */
+/* 10 Відгуки (T35, H48; T42 — правка клиента): кружки, как видео-сообщения Telegram — выбор пользователя «Рев С»
+   (reference/run3/reviews-C-chosen.png). Слева большой круг с жёлто-оранжевым кольцом — видео-отзыв выбранного клиента
+   (пока файла нет — его аватар и «відео-відгук скоро»; есть файл — кнопка ▶); фото и текста засновника больше нет.
+   Справа — метка, ряд круглых аватаров клиентов (выбранный — с кольцом прогресса до следующего отзыва), карточка отзыва
+   выбранного и три цифры. На широком экране блок — ровно экран под шапкой: размеры — от высоты окна (svh). На телефоне
+   большой круг сверху (220px), кружки клиентов прокручиваются внутри ряда. Двигаются только transform и opacity. */
 
 .section--reviews {
   --rv-gap: clamp(1rem, 2.4svh, 1.375rem);
@@ -35,49 +35,44 @@
   align-items: center;
 }
 
-/* ——— засновник: видео-кружок ——— */
-.founder {
+/* ——— видео-отзыв выбранного клиента: большой круг ——— */
+.reviews__stage {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: clamp(1.25rem, 1.6vw, 1.75rem);
+  gap: clamp(0.75rem, 1.8svh, 1.125rem);
   min-width: 0;
 }
 
-/* кольцо: градиент жёлтый → оранжевый снаружи, полоса фона между кольцом и фото */
-.founder__circle {
-  --fd-d: clamp(13.75rem, 10rem + 8vw, 18.75rem);
-  --fd-ring: 3px;
-  --fd-gap: 6px;
+/* кольцо: градиент жёлтый → оранжевый снаружи, полоса фона между кольцом и кадром */
+.reviews__circle {
+  --vd-d: clamp(13.75rem, 10rem + 8vw, 18.75rem);
+  --vd-ring: 3px;
+  --vd-gap: 6px;
   position: relative;
   flex: none;
-  width: var(--fd-d);
+  width: var(--vd-d);
   aspect-ratio: 1;
-  padding: var(--fd-ring);
+  padding: var(--vd-ring);
   border-radius: 50%;
   background: var(--grad);
 }
 
-.founder__photo {
+.reviews__screen {
   position: relative;
+  display: grid;
+  place-items: center;
   width: 100%;
   height: 100%;
-  margin: 0;
   overflow: hidden;
-  border: var(--fd-gap) solid var(--bg);
+  border: var(--vd-gap) solid var(--bg);
   border-radius: 50%;
-  background: var(--surface-2);
+  background: var(--surface);
 }
 
-/* photos.css затемняет низ фото под --block: в круге затемнения нет */
-.founder__photo::after {
-  display: none;
-}
-
-.founder__photo .photo-img {
-  object-position: 50% 18%;
-}
-
-.founder__video {
+/* аватар клиента (фото кейса) — пока видео нет или оно не играет; без фото — буква в цвет бренда */
+.reviews__shot,
+.reviews__video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -87,21 +82,36 @@
   transition: opacity var(--dur) var(--ease-out);
 }
 
-.founder__circle.is-playing .founder__video {
+.reviews__screen.has-image .reviews__shot,
+.reviews__circle.is-playing .reviews__video {
   opacity: 1;
 }
 
-.founder__circle.has-video .founder__photo {
+.reviews__big-letter {
+  font-family: var(--font-head);
+  font-size: calc(var(--vd-d) * 0.42);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: opacity var(--dur) var(--ease-out);
+}
+
+.reviews__screen.has-image .reviews__big-letter {
+  opacity: 0;
+}
+
+.reviews__circle.has-video .reviews__screen {
   cursor: pointer;
 }
 
-.founder__play {
+.reviews__play {
   position: absolute;
   right: 5%;
   bottom: 5%;
   display: grid;
   place-items: center;
-  width: calc(var(--fd-d) * 0.19);
+  width: calc(var(--vd-d) * 0.19);
   aspect-ratio: 1;
   padding: 0;
   border: 0;
@@ -112,62 +122,48 @@
   transition: transform var(--dur-fast) var(--ease-out);
 }
 
-.founder__icon {
+.reviews__play[hidden] {
+  display: none;
+}
+
+.reviews__icon {
   display: none;
   width: 38%;
   height: 38%;
 }
 
-.founder__icon--play {
+.reviews__icon--play {
   transform: translateX(8%);
 }
 
 /* иконка по состоянию видео (reviews.js → data-video): ▶ · включить звук · пауза */
-.founder__circle:not([data-video='muted']):not([data-video='sound']) .founder__icon--play,
-.founder__circle[data-video='muted'] .founder__icon--sound,
-.founder__circle[data-video='sound'] .founder__icon--pause {
+.reviews__circle:not([data-video='muted']):not([data-video='sound']) .reviews__icon--play,
+.reviews__circle[data-video='muted'] .reviews__icon--sound,
+.reviews__circle[data-video='sound'] .reviews__icon--pause {
   display: block;
 }
 
-.founder__play:hover {
+.reviews__play:hover {
   transform: scale(1.08);
 }
 
-.founder__play:focus-visible {
+.reviews__play:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
-.founder__body {
-  display: grid;
-  gap: 0.75rem;
-  min-width: 0;
-}
-
-.founder__badge {
+/* «відео-відгук скоро» — файла ещё нет (поле reviews.items.*.video пустое) */
+.reviews__soon {
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
   letter-spacing: var(--tracking-mono);
   line-height: 1.3;
   text-transform: uppercase;
-  color: var(--accent);
+  color: color-mix(in srgb, var(--text) 50%, transparent);
 }
 
-.founder__name {
-  font-family: var(--font-head);
-  font-size: clamp(2rem, 1.6rem + 0.8vw, 2.5rem);
-  font-weight: 900;
-  line-height: 0.92;
-  letter-spacing: 0;
-  text-transform: uppercase;
-  color: var(--text);
-}
-
-.founder__text {
-  max-width: 46ch;
-  font-size: clamp(0.875rem, 0.82rem + 0.2vw, 0.9375rem);
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--text) 75%, transparent);
+.reviews__soon[hidden] {
+  display: none;
 }
 
 /* ——— отзывы ——— */
@@ -415,7 +411,7 @@ html:not(.js-anim) .reviews__arc {
   color: color-mix(in srgb, var(--text) 60%, transparent);
 }
 
-/* — широкий экран: засновник слева, отзывы справа — */
+/* — широкий экран: видео-отзыв слева, отзывы справа — */
 @media (min-width: 1000px) {
   .reviews__body {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
@@ -436,8 +432,8 @@ html:not(.js-anim) .reviews__arc {
     font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
   }
 
-  .founder__circle {
-    --fd-d: clamp(12rem, min(17vw, 32svh), 18.75rem);
+  .reviews__circle {
+    --vd-d: clamp(12rem, min(20vw, 40svh), 24rem);
   }
 
   .reviews__tab {
@@ -449,16 +445,10 @@ html:not(.js-anim) .reviews__arc {
   }
 }
 
-/* — телефон: круг засновника сверху, текст под ним — */
+/* — телефон: большой круг сверху, отзывы под ним — */
 @media (max-width: 599px) {
-  .founder {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .founder__circle {
-    --fd-d: 13.75rem;
-    align-self: center;
+  .reviews__circle {
+    --vd-d: 13.75rem;
   }
 
   .reviews__tab {

@@ -1,25 +1,7 @@
-/* фото Володимира: блок засновника (в финальном CTA фото — аватар в телефоне, T37) */
-.founder__photo picture {
-  position: absolute;
-  inset: 0;
-}
-
+/* фото Володимира (<picture> → .photo-img): финальный CTA; блок засновника в «Відгуках» убран по правке клиента (T42) */
 .photo-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-.founder__photo .photo-img {
-  object-position: 50% 15%;
-}
-
-/* низ фото растворяется в фоне — фото «садится» в тёмный блок темы, а не висит прямоугольником */
-.founder__photo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(to top, color-mix(in srgb, var(--block) 60%, transparent) 0%, transparent 34%);
 }

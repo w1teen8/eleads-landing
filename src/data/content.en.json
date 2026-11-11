@@ -196,7 +196,7 @@
         "name": "Finance / Investments"
       },
       {
-        "name": "SaaS / B2B"
+        "name": "SaaS"
       }
     ],
     "other": {
@@ -247,7 +247,9 @@
       "bot": "bot",
       "sponsored": "Sponsored",
       "join": "Join",
-      "message": "Message"
+      "message": "Message",
+      "pinAd": "Ad",
+      "whatIs": "what's this?"
     }
   },
   "calculator": {
@@ -296,11 +298,10 @@
     "titleAccent": "across niches and GEOs",
     "listLabel": "Cases — swipe sideways",
     "labels": {
-      "budget": "Budget",
-      "result": "Result",
-      "cpa": "CPA / CPS",
-      "task": "Task",
       "geo": "GEO",
+      "goal": "Campaign goal",
+      "details": "Case details",
+      "task": "Task",
       "done": "What was done",
       "review": "Review / screenshot"
     },
@@ -331,31 +332,34 @@
   "geo": {
     "title": "Audiences in Ukraine and all over the world",
     "titleAccent": "and all over the world",
-    "mapAlt": "Dot globe with ad delivery regions: Ukraine, Europe, United Kingdom, USA, Canada, Australia, Asia",
+    "mapAlt": "Dot globe with ad delivery regions: Ukraine, Europe, the USA and Canada, the whole world",
     "listTitle": "Main directions",
     "regions": {
       "ukraine": {
-        "name": "Ukraine"
+        "name": "Ukraine",
+        "usersLabel": "Telegram users in Ukraine",
+        "users": "TBD"
       },
       "europe": {
         "name": "Europe",
-        "figure": "4.43M",
-        "figureText": "people who left Ukraine under temporary protection in the EU"
+        "usersLabel": "Telegram users in Europe",
+        "users": "TBD",
+        "ukrainiansLabel": "of them Ukrainians",
+        "ukrainians": "TBD"
       },
-      "uk": {
-        "name": "United Kingdom"
+      "america": {
+        "name": "America/Canada",
+        "usersLabel": "Telegram users in the USA and Canada",
+        "users": "TBD",
+        "ukrainiansLabel": "of them Ukrainians",
+        "ukrainians": "TBD"
       },
-      "usa": {
-        "name": "USA"
-      },
-      "canada": {
-        "name": "Canada"
-      },
-      "australia": {
-        "name": "Australia"
-      },
-      "asia": {
-        "name": "Asia"
+      "worldwide": {
+        "name": "Worldwide",
+        "usersLabel": "Telegram audience worldwide",
+        "users": "1B+ MAU",
+        "moreLabel": "Other audience statistics",
+        "more": "TBD"
       }
     }
   },
@@ -404,27 +408,29 @@
     ]
   },
   "reviews": {
-    "title": "What clients say",
-    "titleAccent": "clients say",
+    "title": "What entrepreneurs say",
+    "titleAccent": "entrepreneurs say",
     "kicker": "Client reviews",
+    "player": {
+      "soon": "video review coming soon",
+      "play": "Play video review",
+      "sound": "Turn sound on",
+      "pause": "Pause"
+    },
     "items": [
       {
         "name": "Oleksandr Mukhin",
         "role": "Expert",
         "quote": "TBD",
-        "case": "mukhin"
+        "case": "mukhin",
+        "video": ""
       },
       {
         "name": "Viktor Dombovetskyi",
         "role": "Expert",
         "quote": "TBD",
-        "case": "dombovetskyi"
-      },
-      {
-        "name": "Review 3",
-        "role": "TBD",
-        "quote": "TBD",
-        "case": ""
+        "case": "dombovetskyi",
+        "video": ""
       }
     ]
   },
@@ -432,50 +438,41 @@
     "title": "We can cover the whole path to a lead",
     "titleAccent": "the whole path to a lead",
     "flowLabel": "Customer path",
-    "flow": [
-      "Traffic",
-      "Telegram",
-      "Content",
-      "Funnel",
-      "Lead",
-      "Sale"
-    ],
-    "services": [
+    "steps": [
       {
-        "name": "Telegram Ads",
-        "text": "Advertising in the official Telegram ad cabinet."
+        "name": "Traffic",
+        "items": [
+          "Telegram Ads",
+          "Meta Ads",
+          "seeding / ad buying in channels",
+          "organic / UBT traffic"
+        ]
       },
       {
-        "name": "Meta Ads",
-        "text": "Advertising on Facebook and Instagram."
-      },
-      {
-        "name": "Placements / ad buying",
-        "text": "Buying ads in Telegram channels directly."
-      },
-      {
-        "name": "Channel packaging",
-        "text": "Channel design that convinces a newcomer to subscribe."
+        "name": "Landing",
+        "items": [
+          "packaging and design of the Telegram channel for promotion goals",
+          "Telegram bots and funnels",
+          "websites / landing pages"
+        ]
       },
       {
         "name": "Content",
-        "text": "Posts and materials that warm up the subscriber."
+        "items": [
+          "materials that warm up subscribers in the Telegram channel or bot"
+        ]
       },
       {
-        "name": "Bots",
-        "text": "Telegram bots that collect and handle leads."
+        "name": "Lead",
+        "items": [
+          "a request from the website or the bot, or a direct message on Telegram"
+        ]
       },
       {
-        "name": "Funnels",
-        "text": "The path from subscription to lead and sale."
-      },
-      {
-        "name": "Organic / UBT traffic",
-        "text": "Free traffic from content and other platforms."
-      },
-      {
-        "name": "Consultations",
-        "text": "A review of your project and suggested next steps."
+        "name": "Sales",
+        "items": [
+          "consultations on handling leads and introductions to specialists who will help set up work with them"
+        ]
       }
     ]
   },
@@ -483,21 +480,34 @@
     "title": "Useful materials on Telegram",
     "titleAccent": "on Telegram",
     "post": "POST",
-    "channel": "eLeads",
+    "channel": "єЛіди! → [маркетинг]",
+    "channelImage": "",
     "read": "Read on Telegram",
     "items": [
       {
         "title": "8 ways to promote a business via Telegram",
-        "cover": "8 ways"
+        "cover": "8 ways",
+        "text": "TBD",
+        "image": "",
+        "url": ""
       },
       {
-        "title": "TBD"
+        "title": "TBD",
+        "text": "TBD",
+        "image": "",
+        "url": ""
       },
       {
-        "title": "TBD"
+        "title": "TBD",
+        "text": "TBD",
+        "image": "",
+        "url": ""
       },
       {
-        "title": "TBD"
+        "title": "TBD",
+        "text": "TBD",
+        "image": "",
+        "url": ""
       }
     ]
   },
@@ -522,23 +532,7 @@
     "text": "Write to me on Telegram. I will review your project, task and GEO and suggest which promotion format on Telegram will be the best.",
     "button": "Write to Volodymyr on Telegram",
     "arrow": "→",
-    "chatHello": "Hi! Tell me briefly about your project, task and GEO — I will suggest the best format.",
-    "chat": {
-      "name": "Volodymyr Kucher",
-      "status": "online",
-      "typing": "typing…"
-    }
-  },
-  "founder": {
-    "badge": "eLeads FOUNDER",
-    "title": "Personal expertise stands behind eLeads.",
-    "text": "Hi, I am Volodymyr, founder of eLeads. 7+ years in digital marketing, $2M+ in ad budgets and 50+ projects in different niches and GEOs. I personally take part in strategy and in running clients’ ad campaigns.",
-    "photoAlt": "Volodymyr Kucher, founder of eLeads",
-    "name": "Volodymyr Kucher",
-    "video": "",
-    "play": "Play video",
-    "sound": "Turn sound on",
-    "pause": "Pause"
+    "photoAlt": "Volodymyr Kucher, founder of eLeads"
   },
   "ribbons": {
     "label": "eLeads in short",

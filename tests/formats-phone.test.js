@@ -109,6 +109,44 @@ test('экран как Telegram: строка состояния с иконк�
   assert.ok(ch.lastIndexOf('phone__skel') < ch.indexOf('formats.phone.sponsored'), 'скелетоны выше рекламы');
 });
 
+// T41 (H54, документ клиента, стр. 4): «У відео / медіаконтенті» — пример, который раньше был у ботов (компактная
+// карточка: логотип, заголовок, метка Ad, текст) поверх видео; «У ботах» — закреплённая плашка рекламы вверху чата бота
+// по скриншоту клиента: «Реклама <назва> · що це?», жирный заголовок-акцент + текст в 2–3 строки, справа крестик
+test('02 медиа: компактная карточка (лого, заголовок, Ad, текст) поверх видео; кнопки и подписи «Спонсороване» нет', () => {
+  const p = panel('video');
+  const ad = p.slice(p.indexOf('class="tg-ad tg-ad--video'));
+  assert.match(ad, /class="tg-ad__cover"[\s\S]*class="tg-ad__time"/, 'видео с таймером');
+  const card = ad.slice(ad.indexOf('class="tg-ad__card'));
+  const head = card.match(/class="tg-ad__head">([\s\S]*?)<span class="tg-ad__body/)[1];
+  const order = ['tg-ad__logo', 'tg-ad__title', 'tg-ad__ad'].map((c) => head.indexOf(c));
+  assert.ok(order.every((i) => i > -1), 'лого, заголовок и метка Ad — в шапке карточки');
+  assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок как у прежнего примера ботов');
+  assert.match(card, /class="tg-ad__body"><span data-i18n="formats\.mock\.body"><\/span> <b class="tg-ad__brand" data-i18n="formats\.mock\.brand"><\/b><span data-i18n="formats\.mock\.bodyEnd">/);
+  assert.doesNotMatch(p, /tg-ad__btn|formats\.mock\.button|formats\.phone\.sponsored/, 'без кнопки и метки канала');
+  assert.match(css, /\.tg-ad--video \.tg-ad__card\s*\{[^}]*margin-top:\s*-/, 'карточка наезжает на низ видео, как в плеере Telegram');
+});
+
+test('03 бот: закреплённая плашка рекламы вверху чата — «Реклама MONOLIT · що це?», акцент + текст, крестик; ниже чат', () => {
+  const p = panel('bot');
+  const feed = p.slice(p.indexOf('class="phone__feed'));
+  const pin = feed.match(/<span class="tg-ad tg-ad--bot">([\s\S]*?)<\/span>\s*<span class="phone__skel/);
+  assert.ok(pin, 'плашка — первой в ленте, над сообщениями чата');
+  const s = pin[1];
+  assert.match(s, /class="tg-ad__pin-label"><span data-i18n="formats\.phone\.pinAd"><\/span> <b data-i18n="formats\.mock\.brand"><\/b><\/span>/, '«Реклама MONOLIT»');
+  assert.match(s, /class="tg-ad__what" data-i18n="formats\.phone\.whatIs"/, '«що це?»');
+  assert.match(s, /class="tg-ad__pin-text"><strong class="tg-ad__pin-accent" data-i18n="formats\.mock\.title"><\/strong> <span data-i18n="formats\.mock\.body"><\/span> <b class="tg-ad__brand" data-i18n="formats\.mock\.brand"><\/b><span data-i18n="formats\.mock\.bodyEnd">/);
+  assert.match(s, /class="tg-ad__close" aria-hidden="true"><svg\b/, 'крестик — иконка');
+  assert.doesNotMatch(s, /tg-ad__logo|tg-ad__btn|tg-ad__cover/, 'прежней карточки нет');
+  assert.ok(count(feed, /class="phone__skel/g) >= 3, 'под плашкой — переписка с ботом');
+  assert.match(css, /\.tg-ad__pin-text\s*\{[^}]*-webkit-line-clamp:\s*3/, 'текст — не больше 3 строк');
+  // плашка прижата к верху ленты, переписка — к низу; если не влезает, срезается низ переписки, а не плашка
+  assert.match(css, /\[data-formats-panel='bot'\] \.phone__feed\s*\{[^}]*justify-content:\s*flex-start/, 'лента бота — от верха');
+  assert.match(css, /\.tg-ad--bot \+ \.phone__skel\s*\{[^}]*margin-top:\s*auto/, 'переписка — у поля ввода');
+  assert.equal(ua.formats.phone.pinAd, 'Реклама');
+  assert.equal(ua.formats.phone.whatIs, 'що це?');
+  assert.equal(en.formats.phone.pinAd, 'Ad');
+});
+
 test('в ленте телефона нет придуманных текстов и цифр: всё видимое — из словаря или скелетоны', () => {
   for (const kind of KINDS) {
     const text = panel(kind)
@@ -126,7 +164,7 @@ test('в ленте телефона нет придуманных тексто�
 });
 
 test('ключи интерфейса телефона в обоих словарях; UA — как в Telegram', () => {
-  const keys = ['time', 'avatar', 'channel', 'bot', 'sponsored', 'join', 'message', 'tabsLabel'];
+  const keys = ['time', 'avatar', 'channel', 'bot', 'sponsored', 'join', 'message', 'tabsLabel', 'pinAd', 'whatIs'];
   for (const [lang, dict] of [['ua', ua], ['en', en]]) {
     for (const key of keys) assert.equal(typeof dict.formats.phone[key], 'string', `${lang}: formats.phone.${key}`);
   }

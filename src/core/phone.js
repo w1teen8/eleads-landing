@@ -2,7 +2,7 @@
 // В index.html телефон пишется коротко: <phone-frame class="faq__phone" data-faq-phone> …экран… </phone-frame>.
 // Сборка (build/i18n-prerender.js) разворачивает его в полную разметку раньше подстановки текстов — время на экране
 // берётся из словаря (formats.phone.time). Внутри — только содержимое экрана под строкой состояния
-// (панели блока 04 или .phone__view с чатом в блоках 13, 14). Стили — src/styles/phone.css.
+// (панели блока 04 или .phone__view с чатом в блоке 13). Стили — src/styles/phone.css.
 
 const STATUS_ICONS = [
   '<svg class="phone__icon" viewBox="0 0 18 12" fill="currentColor" aria-hidden="true"><rect x="0" y="8" width="3" height="4" rx="0.8" /><rect x="5" y="5.5" width="3" height="6.5" rx="0.8" /><rect x="10" y="3" width="3" height="9" rx="0.8" /><rect x="15" y="0" width="3" height="12" rx="0.8" /></svg>',

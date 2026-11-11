@@ -16,6 +16,8 @@ import {
   nearestRegion,
   project,
   regionAt,
+  regionPins,
+  spinView,
   swayView,
   swell,
   toVector,
@@ -96,12 +98,38 @@ test('автовращение — покачивание вокруг выбр�
     assert.deepEqual(swayView(home, 3000, 0), { lon: home.lon, lat: home.lat }, 'без разгона — стоит на месте');
   }
   const europe = grid.regions.find((r) => r.id === 'europe');
-  const usa = grid.regions.find((r) => r.id === 'usa');
+  const usa = grid.regions.find((r) => r.id === 'america').pins[0];
   for (let ms = 0; ms <= GLOBE.swayPeriod; ms += 500) {
     const v = swayView(focusView(europe), ms);
     const z = at(usa.lon, usa.lat, v).z;
     assert.ok(z < 0.5 && z < at(europe.lon, europe.lat, v).z - 0.4, `USA далеко от центра: ${z}`);
   }
+});
+
+// T42 (правка клиента, reference/client-feedback/page-08.png): четыре переключателя вместо семи регионов
+test('регионы: Україна, Європа, Америка/Канада (метки США и Канады вместе), Worldwide (весь мир, без своей метки)', () => {
+  assert.deepEqual(ids, ['ukraine', 'europe', 'america', 'worldwide']);
+  const pins = regionPins(grid.regions);
+  assert.deepEqual(pins.map((p) => p.id), ['ukraine', 'europe', 'america', 'america']);
+  assert.deepEqual(pins.map((p) => p.region), [0, 1, 2, 2]);
+  const america = grid.regions.find((r) => r.id === 'america');
+  // поворот к «Америка/Канада» — обе метки на лицевой стороне
+  for (const p of america.pins) assert.ok(at(p.lon, p.lat, focusView(america)).z > 0.75, `${p.lon},${p.lat}`);
+  // точки суши красятся по ближайшей метке: США и Канада — один регион
+  assert.equal(pins[nearestRegion(-98, 40, pins)].id, 'america');
+  assert.equal(pins[nearestRegion(-104, 56, pins)].id, 'america');
+  assert.equal(pins[nearestRegion(31, 49, pins)].id, 'ukraine');
+  assert.equal(nearestRegion(134, -25, pins), -1, 'Австралии среди регионов больше нет');
+  const world = grid.regions.find((r) => r.id === 'worldwide');
+  assert.equal(world.world, true);
+  assert.deepEqual(world.pins, []);
+  // Worldwide: непрерывное вращение — оборот за минуту, наклон не меняется; без разгона стоит
+  const v0 = focusView(world);
+  assert.ok(near(Math.abs(lonDelta(v0.lon, spinView(v0, 15000).lon)), 90, 1e-6));
+  assert.equal(spinView(v0, 15000).lat, v0.lat);
+  assert.deepEqual(spinView(v0, 15000, 0), v0);
+  assert.match(js, /isWorld\(active\) \? spinView\(view, dt, swayK\) : swayView\(home/);
+  assert.match(js, /const on = pin\.id === active \|\| world;/, 'Worldwide — горят метки всех регионов');
 });
 
 test('плавный поворот — кратчайшей дорогой через 180°; перетаскивание, инерция, вспухание', () => {
@@ -137,21 +165,41 @@ test('регион точки суши и метка под курсором', (
   assert.equal(regionAt([pins[2]], 101, 100, 20), null, 'метка на обратной стороне не кликается');
 });
 
-test('словари: регионы UA/EN — только названия (подписи «Tier-1» и т.п. убраны); цифра только у Європи', () => {
-  for (const dict of [ua, en]) {
+test('словари: у региона — название, пользователи Telegram и «з них українців»; цифр клиент не дал — «уточнити», кроме 1B+', () => {
+  const tbd = { ua: 'уточнити', en: 'TBD' };
+  for (const [lang, dict] of [['ua', ua], ['en', en]]) {
     assert.ok(dict.geo.mapAlt && dict.geo.listTitle);
     assert.equal(dict.geo.footnote, undefined);
+    assert.deepEqual(Object.keys(dict.geo.regions), ids);
+    const keys = {
+      ukraine: ['name', 'usersLabel', 'users'],
+      europe: ['name', 'usersLabel', 'users', 'ukrainiansLabel', 'ukrainians'],
+      america: ['name', 'usersLabel', 'users', 'ukrainiansLabel', 'ukrainians'],
+      worldwide: ['name', 'usersLabel', 'users', 'moreLabel', 'more'],
+    };
     for (const id of ids) {
       const r = dict.geo.regions[id];
-      assert.ok(r.name, id);
+      assert.deepEqual(Object.keys(r), keys[id], id);
+      for (const [k, v] of Object.entries(r)) assert.ok(typeof v === 'string' && v.trim(), `${id}.${k}`);
       // пользователь: «убрать эти текста» — мелкие подписи справа в строках списка
       assert.equal(r.text, undefined, `${id}: подписи нет`);
-      if (id === 'europe') assert.deepEqual(Object.keys(r).sort(), ['figure', 'figureText', 'name']);
-      else assert.deepEqual(Object.keys(r), ['name'], `${id}: только название, цифры нет`);
     }
-    assert.equal(dict.geo.regions.europe.figure, '4.43M');
-    assert.doesNotMatch(dict.geo.regions.europe.figureText, /\*/);
+    // не выдумываем: чисел от клиента ещё нет — заглушки, которые он заполнит в админке
+    for (const k of ['ukraine.users', 'europe.users', 'europe.ukrainians', 'america.users', 'america.ukrainians', 'worldwide.more']) {
+      const [id, f] = k.split('.');
+      assert.equal(dict.geo.regions[id][f], tbd[lang], k);
+    }
+    assert.equal(dict.geo.regions.worldwide.users, '1B+ MAU', 'уже есть на сайте (блок 02, источник — Telegram)');
+    assert.equal(dict.stats.ww.main.value, '1B+');
+    // 4.43M — украинцы под временной защитой в ЕС, не «скільки з них українців» среди пользователей Telegram
+    assert.doesNotMatch(JSON.stringify(dict.geo), /4\.43M|temporary protection|figure/);
   }
+  assert.equal(ua.geo.regions.america.name, 'Америка/Канада');
+  assert.equal(ua.geo.regions.ukraine.usersLabel, 'Користувачів Telegram в Україні');
+  assert.equal(ua.geo.regions.europe.usersLabel, 'Користувачів Telegram у Європі');
+  assert.equal(ua.geo.regions.america.usersLabel, 'Користувачів Telegram у США та Канаді');
+  assert.equal(ua.geo.regions.europe.ukrainiansLabel, 'з них українців');
+  assert.equal(ua.geo.regions.worldwide.usersLabel, 'Аудиторія Telegram у світі');
 });
 
 test('разметка: один <canvas> с подписью; строки списка — кнопки по geo.regions, раскрыта Європа', () => {
@@ -162,10 +210,15 @@ test('разметка: один <canvas> с подписью; строки сп
   assert.deepEqual(rows.map((m) => m[1]), ids);
   assert.deepEqual(rows.filter((m) => m[2] === 'true').map((m) => m[1]), ['europe']);
   for (const id of ids) assert.match(block, new RegExp(`data-i18n="geo\\.regions\\.${id}\\.name"`));
-  assert.doesNotMatch(block, /geo\.regions\.[a-z]+\.text|geo__row-text/, 'подписей справа в строках нет');
-  // в строке — только название; у Європи ещё пояснение к цифре и цифра (видны в раскрытой карточке)
-  const extra = [...block.matchAll(/data-i18n="geo\.regions\.([a-z]+)\.(figure|figureText)"/g)].map((m) => `${m[1]}.${m[2]}`);
-  assert.deepEqual(extra, ['europe.figureText', 'europe.figure']);
+  assert.doesNotMatch(block, /geo\.regions\.[a-z]+\.text|geo__row-text|figureText|geo__row-figure/, 'подписей справа и прежней цифры нет');
+  // в строке — название и цифры региона (видны в раскрытой карточке): подпись + значение (data-geo-figure)
+  const stats = [
+    ...block.matchAll(/<span class="geo__stat-label" data-i18n="geo\.regions\.([a-z]+)\.(\w+)Label"><\/span> <span class="geo__stat-value" data-geo-figure data-i18n="geo\.regions\.\1\.\2"><\/span>/g),
+  ].map((m) => `${m[1]}.${m[2]}`);
+  assert.deepEqual(stats, ['ukraine.users', 'europe.users', 'europe.ukrainians', 'america.users', 'america.ukrainians', 'worldwide.users', 'worldwide.more']);
+  // «уточнити» — приглушённо (класс ставит geo.js по словарю: клиент впишет цифру в админке — станет градиентом)
+  assert.match(js, /classList\.toggle\('is-tbd', isTbd\(/);
+  assert.match(css, /\.geo__stat-value\.is-tbd\s*\{[^}]*font-style:\s*italic/);
   assert.doesNotMatch(block, /eyebrow|footnote|__note|__hint|__caption|data-reveal|<svg|geo__pill/);
 });
 

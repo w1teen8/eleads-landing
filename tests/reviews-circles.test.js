@@ -1,10 +1,13 @@
-// T35 (H48): блок 10 «Відгуки + засновник» — кружки, как видео-сообщения Telegram (выбор пользователя «Рев С»;
-// образец reference/run3/reviews-C-chosen.png). Слева Володимир в большом круге с жёлто-оранжевым кольцом, справа ряд
-// круглых аватаров клиентов, карточка отзыва выбранного и цифры. Отзывы сами листаются раз в 10 с.
+// T35 (H48): блок 10 «Відгуки» — кружки, как видео-сообщения Telegram (выбор пользователя «Рев С»; образец
+// reference/run3/reviews-C-chosen.png). T42 (правка клиента, reference/client-feedback/page-10.png): заголовок «Що
+// говорять підприємці», фото и текста засновника нет — слева большой круг с жёлто-оранжевым кольцом показывает
+// видео-отзыв выбранного клиента (reviews.items.*.video; пусто — аватар и «відео-відгук скоро»), два слота отзывов.
+// Справа ряд круглых аватаров клиентов, карточка отзыва выбранного и цифры. Отзывы сами листаются раз в 10 с.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { read, readJson } from './helpers.js';
-import { reviewAvatar, isTbd } from '../src/sections/reviews-model.js';
+import { reviewAvatar, reviewVideo, isTbd } from '../src/sections/reviews-model.js';
+import { validate } from '../src/admin/validate.js';
 
 const html = read('index.html');
 const ua = readJson('src/data/content.ua.json');
@@ -24,28 +27,59 @@ test('прежнего слайдера нет — ни в разметке, н�
   assert.doesNotMatch(html, /reviews\.(prev|next|sliderLabel)/);
 });
 
-test('засновник слева: круг с фото, «Засновник eLeads», имя, текст; кнопка ▶ скрыта, пока нет видео', () => {
-  const order = ['founder', 'reviews'].map((cls) => s.search(new RegExp(`class="${cls}\\b`)));
-  assert.ok(order[0] > -1 && order[0] < order[1], 'засновник — первым (слева)');
-  assert.match(s, /class="founder__circle"[^>]*data-founder-circle/);
-  assert.match(s, /\/img\/photo\/volodymyr-founder-480\.jpg/);
-  assert.match(s, /data-i18n-attr="alt:founder\.photoAlt"/);
-  assert.match(s, /data-i18n="founder\.badge"/);
-  assert.match(s, /class="founder__name" data-i18n="founder\.name"/);
-  assert.match(s, /data-i18n="founder\.text"/);
-  assert.match(s, /<button type="button" class="founder__play" data-founder-play hidden/, 'без видео кнопка скрыта уже в HTML');
+test('T42: заголовок «Що говорять підприємці»; засновника (фото, имя, текст) в блоке нет, founder.* удалён', () => {
+  assert.equal(ua.reviews.title, 'Що говорять підприємці');
+  assert.equal(ua.reviews.titleAccent, 'підприємці');
+  assert.equal(en.reviews.title, 'What entrepreneurs say');
   for (const dict of [ua, en]) {
-    assert.equal(dict.founder.video, '', 'видео-кружка пока нет: пустое поле = кнопки нет');
-    for (const key of ['name', 'play', 'sound', 'pause']) assert.ok(dict.founder[key], `founder.${key}`);
+    assert.ok(dict.reviews.title.endsWith(dict.reviews.titleAccent), 'акцент — хвост заголовка');
+    assert.equal(dict.founder, undefined, 'founder.* не нужен');
   }
-  assert.equal(ua.founder.name, 'Володимир Кучер');
-  assert.equal(en.founder.name, 'Volodymyr Kucher');
-  // видео: по клику, без звука по умолчанию, со звуком — по второму клику; файл — через publicUrl
-  assert.match(js, /t\('founder\.video'\)/);
+  assert.doesNotMatch(s, /founder|volodymyr|photo-img|<picture/);
+  assert.doesNotMatch(html, /data-i18n(?:-attr)?="[^"]*founder\./, 'на странице нет ключей founder.*');
+  assert.doesNotMatch(css + js, /founder/);
+});
+
+test('большой круг слева — видео-отзыв выбранного клиента: аватар, «відео-відгук скоро», кнопка ▶ скрыта без файла', () => {
+  const order = ['reviews__stage', 'reviews'].map((cls) => s.search(new RegExp(`class="${cls}\\b`)));
+  assert.ok(order[0] > -1 && order[0] < order[1], 'круг — первым (слева)');
+  assert.match(s, /class="reviews__circle" data-rv-circle/);
+  assert.match(s, /class="reviews__screen" data-rv-screen/);
+  assert.match(s, /<button type="button" class="reviews__play" data-rv-play hidden data-i18n-attr="aria-label:reviews\.player\.play">/, 'без видео кнопка скрыта уже в HTML');
+  assert.match(s, /<p class="reviews__soon" data-rv-soon data-i18n="reviews\.player\.soon"><\/p>/);
+  assert.equal(ua.reviews.player.soon, 'відео-відгук скоро');
+  for (const dict of [ua, en]) for (const key of ['soon', 'play', 'sound', 'pause']) assert.ok(dict.reviews.player[key], `reviews.player.${key}`);
+  // видео: по клику на круг или кнопку, без звука → со звуком → пауза; файл — через publicUrl; круг — аватар клиента
+  assert.match(js, /reviewVideo\(item\(index, 'video'\)\)/);
   assert.match(js, /\.muted = true/);
   assert.match(js, /\.muted = false/);
-  assert.match(js, /publicUrl\(/);
+  assert.match(js, /publicUrl\(file\(\)\)/);
   assert.match(js, /playsinline/);
+  assert.match(js, /on\(screen, 'click', toggle\)/);
+  assert.match(js, /stage\.show\(i\)/, 'смена отзыва меняет и большой круг');
+});
+
+test('видео-отзывы: два слота, путь к файлу — строка словаря (правится в админке), пока пусто', () => {
+  for (const dict of [ua, en]) {
+    assert.equal(dict.reviews.items.length, 2, 'клиент: «Додати два відеовідгуки»');
+    for (const item of dict.reviews.items) {
+      assert.deepEqual(Object.keys(item), ['name', 'role', 'quote', 'case', 'video']);
+      assert.equal(item.video, '', 'видео клиент ещё не прислал');
+    }
+  }
+  // формат пути — тот же, что проверяет админка
+  for (const path of ['video/reviews/mukhin.mp4', '/video/reviews/dombovetskyi.webm']) {
+    assert.equal(reviewVideo(path), path);
+    assert.equal(validate(path, { kind: 'file' }), null);
+  }
+  for (const bad of ['', '   ', 'reviews.items.0.video', 'https://evil.example/a.mp4', 'video/../x.mp4', 'video/a.mov']) {
+    assert.equal(reviewVideo(bad), '', bad);
+  }
+  assert.equal(reviewVideo(' video/reviews/mukhin.mp4 '), 'video/reviews/mukhin.mp4');
+  const readme = read('public/video/reviews/README.md');
+  assert.match(readme, /Як додати відеовідгук/);
+  assert.match(readme, /reviews\.items/);
+  assert.match(read('README.md'), /Як додати відеовідгук/);
 });
 
 test('отзывы справа: метка, tablist из кружков, карточка-tabpanel, цифры 7+ / $2M+ / 50+', () => {
@@ -56,6 +90,7 @@ test('отзывы справа: метка, tablist из кружков, кар
   assert.match(s, /<div class="reviews__row" role="tablist" aria-labelledby="rv-kicker" data-rv-list>/);
   const tabs = [...s.matchAll(/<button type="button" class="reviews__tab" role="tab"[^>]*>/g)].map((m) => m[0]);
   assert.equal(tabs.length, ua.reviews.items.length);
+  assert.equal(tabs.length, 2);
   tabs.forEach((tab, i) => {
     assert.match(tab, new RegExp(`id="rv-tab-${i}"`));
     assert.match(tab, new RegExp(`aria-selected="${i === 0}"`));
@@ -71,12 +106,12 @@ test('отзывы справа: метка, tablist из кружков, кар
   assert.doesNotMatch(s.replace(/<svg[\s\S]*?<\/svg>/g, ''), />\s*[^\s<{][^<]*</, 'текст в разметке мимо словаря');
 });
 
-test('данные не выдуманы: тексты — заглушки, аватары — только подтверждённых кейсов, третий — буква', () => {
+test('данные не выдуманы: тексты — заглушки, авторы — Мухін и Домбовецький, аватары — только подтверждённых кейсов', () => {
   for (const item of ua.reviews.items) assert.equal(item.quote, 'уточнити');
   for (const item of en.reviews.items) assert.equal(item.quote, 'TBD');
-  assert.deepEqual(ua.reviews.items.map((i) => i.case), ['mukhin', 'dombovetskyi', '']);
-  assert.deepEqual(en.reviews.items.map((i) => i.case), ['mukhin', 'dombovetskyi', '']);
-  assert.deepEqual(ua.reviews.items.map((i) => i.name), ['Олександр Мухін', 'Віктор Домбовецький', 'Відгук 3']);
+  assert.deepEqual(ua.reviews.items.map((i) => i.case), ['mukhin', 'dombovetskyi']);
+  assert.deepEqual(en.reviews.items.map((i) => i.case), ['mukhin', 'dombovetskyi']);
+  assert.deepEqual(ua.reviews.items.map((i) => i.name), ['Олександр Мухін', 'Віктор Домбовецький']);
   for (const id of ['mukhin', 'dombovetskyi']) {
     const c = cases.find((x) => x.id === id);
     assert.ok(c && c.avatar === true, `кейс ${id} с аватаром`);
@@ -108,9 +143,10 @@ test('доступность: стрелки, Home/End; aria-live включае
   assert.match(js, /setAttribute\('aria-live', manual \? 'polite' : 'off'\)/);
   for (const key of ['ArrowRight', 'ArrowLeft', 'Home', 'End']) assert.match(js, new RegExp(`\\b${key}\\b`));
   assert.match(css, /\.reviews__tab:focus-visible\s*\{[^}]*outline/);
+  assert.match(css, /\.reviews__play:focus-visible\s*\{[^}]*outline/);
 });
 
-test('автолистание: раз в 10 с; пауза только на самом кружке, на фокусе с клавиатуры, вне окна и на скрытой вкладке', () => {
+test('автолистание: раз в 10 с; пауза на самом кружке, на фокусе с клавиатуры, вне окна, на скрытой вкладке и пока играет видео', () => {
   const step = Number(read('src/sections/reviews-model.js').match(/export const STEP_MS = (\d+);/)?.[1]);
   assert.equal(step, 10000, `шаг ${step}`);
   for (const ev of ['pointerenter', 'pointerleave', 'focusin', 'focusout', 'visibilitychange']) assert.match(js, new RegExp(`'${ev}'`));
@@ -121,18 +157,19 @@ test('автолистание: раз в 10 с; пауза только на с
   assert.match(js, /if \(reduced\)/, 'reduced-motion / ?nomotion=1 — без автолистания');
   assert.match(js, /\.pause\(\)/);
   assert.match(js, /\.play\(\)/);
+  assert.match(js, /!state\.focused && !state\.playing/, 'во время видео-отзыва листание стоит');
   assert.match(js, /import \{ flipSwap \} from '\.\.\/core\/motion-kit\.js'/);
   assert.doesNotMatch(js, /ScrollTrigger|stagger\(|reveal\(/, 'появления по прокрутке нет');
 });
 
 test('облик: кольца — box-shadow/border, движение — только transform и opacity; телефон — круг ≈220px, кружки листаются в ряду', () => {
-  assert.match(css, /\.founder__circle\s*\{[^}]*--fd-d:/, 'диаметр круга засновника — переменная');
-  assert.match(css, /\.founder__circle\s*\{[^}]*background:\s*var\(--grad\)/, 'жёлто-оранжевое кольцо');
+  assert.match(css, /\.reviews__circle\s*\{[^}]*--vd-d:/, 'диаметр большого круга — переменная');
+  assert.match(css, /\.reviews__circle\s*\{[^}]*background:\s*var\(--grad\)/, 'жёлто-оранжевое кольцо');
   assert.match(css, /\.reviews__tab\s*\{[^}]*--rv-c:/, 'диаметр кружка клиента — переменная');
   assert.match(css, /\.reviews__row\s*\{[^}]*overflow-x:\s*auto/, 'кружки прокручиваются внутри ряда');
   assert.match(css, /\.reviews__name\s*\{[^}]*font-weight/);
   assert.match(css, /\.reviews__text\.is-tbd[^{]*\{[^}]*font-style:\s*italic/, 'заглушка — курсивом, приглушённо');
-  assert.match(css, /@media \(max-width: 599px\)\s*\{[\s\S]*?--fd-d:\s*13\.75rem/, 'телефон: круг 220px');
+  assert.match(css, /@media \(max-width: 599px\)\s*\{[\s\S]*?--vd-d:\s*13\.75rem/, 'телефон: круг 220px');
   assert.doesNotMatch(css, /stroke-dash/);
   for (const m of css.matchAll(/transition:\s*([^;]+);/g)) {
     for (const part of m[1].split(',')) assert.match(part.trim(), /^(transform|opacity)\b/, `transition: ${part}`);
