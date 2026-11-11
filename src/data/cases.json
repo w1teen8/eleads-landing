@@ -1,5 +1,5 @@
 {
-  "_note": "Цифр і текстів по кейсах ще немає: «уточнити» / «TBD» — заглушки, клієнт заповнює їх в адмінці сайту («ЗІБРАТИ ПОКАЗНИКИ + ДОДАТИ ДЕТАЛЬНУ ІНФОРМАЦІЮ ПО КОЖНОМУ КЕЙСУ»). Картка: geo — GEO, goal — ціль кампанії, metrics — 3 ключові показники (label — підпис, value — значення; підписи за замовчуванням: Бюджет, Результат, CPA / CPS). Модалка — ті самі поля + детальна інформація: task, done, review. «done» — шаблон з вайрфрейму клієнта, підтвердити по кожному кейсу. avatar: true — є аватар /img/cases/<id>.webp (+ <id>@2x.webp; avatarRetina: false — файлу @2x немає, вихідник малий); accent — колір бренду з аватара (дані, не оформлення), без нього — акцент сайту. screenshot — шлях до скриншота відгуку, коли буде. Аватар-жабка у Cryptonite — припущення за нішею Crypto, підтвердити.",
+  "_note": "Дані кейсів — від клієнта 2026-11-11 (повідомлення з таблицею по кожному кейсу), порядок — як у повідомленні. Картка: geo — GEO, goal — ціль кампанії, metrics — 3 ключові показники (label — підпис, value — значення: Бюджет, CPM за 1000, Ціна підписника; n/a — клієнт не розкриває, невідомо — так у клієнта). Модалка — ті самі поля + formats (що просуваємо / канал реклами, під назвою) і детальна інформація: task, done, review. review / screenshot — ще «уточнити»: відгуків по кейсах клієнт не надсилав. avatar: true — є аватар /img/cases/<id>.webp (+ <id>@2x.webp; avatarRetina: false — файлу @2x немає, вихідник малий); без аватара — буква. accent — колір бренду з аватара (дані, не оформлення), без нього — акцент сайту. Анна Хаустова замінила Trackdesk; аватара й ніші ще немає — «уточнити».",
   "cases": [
     {
       "id": "cryptonite",
@@ -15,12 +15,16 @@
         "en": "Cryptonite"
       },
       "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Україна, весь світ",
+        "en": "Ukraine, Worldwide"
+      },
+      "formats": {
+        "ua": "Канал, бот / Telegram Ads",
+        "en": "Channel, Bot / Telegram Ads"
       },
       "goal": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Підписники на воронку в боті",
+        "en": "Subscribers to the bot funnel"
       },
       "metrics": [
         {
@@ -29,8 +33,8 @@
             "en": "Budget"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "n/a",
+            "en": "n/a"
           }
         },
         {
@@ -39,8 +43,8 @@
             "en": "CPM per 1000"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "$0,56",
+            "en": "$0.56"
           }
         },
         {
@@ -49,111 +53,31 @@
             "en": "Cost per subscriber"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "$1,72",
+            "en": "$1.72"
           }
         }
       ],
       "task": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Залучення цільової аудиторії в Telegram-воронку та канал із подальшим масштабуванням реклами.",
+        "en": "Bringing the target audience into the Telegram funnel and channel, then scaling the ads."
       },
       "done": [
         {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
+          "ua": "Проаналізували проєкт і розробили стратегію просування.",
+          "en": "Analysed the project and built the promotion strategy."
         },
         {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
+          "ua": "Надали рекомендації щодо покращення воронки та переведення аудиторії в Telegram-канал уже з першого кроку.",
+          "en": "Advised on improving the funnel and moving the audience into the Telegram channel from the very first step."
         },
         {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
+          "ua": "Підготували рекламні матеріали, протестували кампанії та масштабували ефективні зв’язки.",
+          "en": "Prepared the ad creatives, tested the campaigns and scaled the combinations that worked."
         },
         {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
-        }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
-    },
-    {
-      "id": "monolit",
-      "avatar": true,
-      "accent": "#19B5E0",
-      "niche": {
-        "ua": "Finance / Investments",
-        "en": "Finance / Investments"
-      },
-      "name": {
-        "ua": "Monolit",
-        "en": "Monolit"
-      },
-      "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "goal": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "metrics": [
-        {
-          "label": {
-            "ua": "Бюджет",
-            "en": "Budget"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        },
-        {
-          "label": {
-            "ua": "CPM за 1000",
-            "en": "CPM per 1000"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        },
-        {
-          "label": {
-            "ua": "Ціна підписника",
-            "en": "Cost per subscriber"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        }
-      ],
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "done": [
-        {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
-        },
-        {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
-        },
-        {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
-        },
-        {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
+          "ua": "Провели глибинну аналітику проходження воронки та якості залученої аудиторії.",
+          "en": "Ran in-depth analytics of the funnel journey and the quality of the acquired audience."
         }
       ],
       "review": {
@@ -175,12 +99,16 @@
         "en": "Global Auto Logistic"
       },
       "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Україна, весь світ",
+        "en": "Ukraine, Worldwide"
+      },
+      "formats": {
+        "ua": "Канал / Telegram Ads, UBT",
+        "en": "Channel / Telegram Ads, UBT"
       },
       "goal": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Підписники на канал",
+        "en": "Channel subscribers"
       },
       "metrics": [
         {
@@ -189,8 +117,8 @@
             "en": "Budget"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "n/a",
+            "en": "n/a"
           }
         },
         {
@@ -199,8 +127,8 @@
             "en": "CPM per 1000"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "невідомо",
+            "en": "unknown"
           }
         },
         {
@@ -209,271 +137,31 @@
             "en": "Cost per subscriber"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "$0,27",
+            "en": "$0.27"
           }
         }
       ],
       "task": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Системне залучення цільової аудиторії в Telegram-канал із фокусом на якість потенційних клієнтів.",
+        "en": "Steady acquisition of the target audience for the Telegram channel, focused on the quality of potential clients."
       },
       "done": [
         {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
+          "ua": "Регулярно консультували щодо контент-плану та ведення Telegram-каналу.",
+          "en": "Consulted regularly on the content plan and running the Telegram channel."
         },
         {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
+          "ua": "Налаштували Telegram Ads та систему залучення аудиторії через UBT-трафік.",
+          "en": "Set up Telegram Ads and an audience acquisition system through UBT traffic."
         },
         {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
+          "ua": "Тестували різні гіпотези й підходи до залучення підписників.",
+          "en": "Tested different hypotheses and approaches to getting subscribers."
         },
         {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
-        }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
-    },
-    {
-      "id": "trackdesk",
-      "avatar": true,
-      "accent": "#12B76A",
-      "niche": {
-        "ua": "SaaS / B2B",
-        "en": "SaaS / B2B"
-      },
-      "name": {
-        "ua": "Trackdesk",
-        "en": "Trackdesk"
-      },
-      "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "goal": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "metrics": [
-        {
-          "label": {
-            "ua": "Бюджет",
-            "en": "Budget"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        },
-        {
-          "label": {
-            "ua": "CPM за 1000",
-            "en": "CPM per 1000"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        },
-        {
-          "label": {
-            "ua": "Ціна підписника",
-            "en": "Cost per subscriber"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        }
-      ],
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "done": [
-        {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
-        },
-        {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
-        },
-        {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
-        },
-        {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
-        }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
-    },
-    {
-      "id": "mukhin",
-      "avatar": true,
-      "accent": "#7B4DFF",
-      "niche": {
-        "ua": "Expert · ПроSales",
-        "en": "Expert · ProSales"
-      },
-      "name": {
-        "ua": "Олександр Мухін",
-        "en": "Oleksandr Mukhin"
-      },
-      "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "goal": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "metrics": [
-        {
-          "label": {
-            "ua": "Бюджет",
-            "en": "Budget"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        },
-        {
-          "label": {
-            "ua": "CPM за 1000",
-            "en": "CPM per 1000"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        },
-        {
-          "label": {
-            "ua": "Ціна підписника",
-            "en": "Cost per subscriber"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        }
-      ],
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "done": [
-        {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
-        },
-        {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
-        },
-        {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
-        },
-        {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
-        }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
-    },
-    {
-      "id": "dombovetskyi",
-      "avatar": true,
-      "accent": "#5BE84A",
-      "niche": {
-        "ua": "Expert",
-        "en": "Expert"
-      },
-      "name": {
-        "ua": "Віктор Домбовецький",
-        "en": "Viktor Dombovetskyi"
-      },
-      "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "goal": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "metrics": [
-        {
-          "label": {
-            "ua": "Бюджет",
-            "en": "Budget"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        },
-        {
-          "label": {
-            "ua": "CPM за 1000",
-            "en": "CPM per 1000"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        },
-        {
-          "label": {
-            "ua": "Ціна підписника",
-            "en": "Cost per subscriber"
-          },
-          "value": {
-            "ua": "уточнити",
-            "en": "TBD"
-          }
-        }
-      ],
-      "task": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "done": [
-        {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
-        },
-        {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
-        },
-        {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
-        },
-        {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
+          "ua": "Проводили глибинну аналітику трафіку та якості лідів спільно з відділом продажів.",
+          "en": "Ran in-depth analytics of traffic and lead quality together with the sales team."
         }
       ],
       "review": {
@@ -495,12 +183,16 @@
         "en": "Finmap"
       },
       "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Україна, весь світ",
+        "en": "Ukraine, Worldwide"
+      },
+      "formats": {
+        "ua": "Канал, сайт / Telegram Ads",
+        "en": "Channel, Site / Telegram Ads"
       },
       "goal": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Впізнаваність, підписники на канал",
+        "en": "Awareness, channel subscribers"
       },
       "metrics": [
         {
@@ -509,8 +201,8 @@
             "en": "Budget"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "n/a",
+            "en": "n/a"
           }
         },
         {
@@ -519,8 +211,8 @@
             "en": "CPM per 1000"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "$0,65",
+            "en": "$0.65"
           }
         },
         {
@@ -529,31 +221,283 @@
             "en": "Cost per subscriber"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "$2,67",
+            "en": "$2.67"
           }
         }
       ],
       "task": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Залучення підприємців і власників бізнесу в Telegram-канал Finmap.",
+        "en": "Bringing entrepreneurs and business owners into the Finmap Telegram channel."
       },
       "done": [
         {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
+          "ua": "Проаналізували цільову аудиторію та визначили стратегію просування.",
+          "en": "Analysed the target audience and set the promotion strategy."
         },
         {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
+          "ua": "Надали рекомендації щодо контенту та ведення Telegram-каналу.",
+          "en": "Advised on content and running the Telegram channel."
         },
         {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
+          "ua": "Підібрали релевантні канали та аудиторії для рекламних кампаній.",
+          "en": "Picked relevant channels and audiences for the ad campaigns."
         },
         {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
+          "ua": "Підготували рекламні матеріали, налаштували та оптимізували Telegram Ads.",
+          "en": "Prepared the ad creatives, set up and optimised Telegram Ads."
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "dombovetskyi",
+      "avatar": true,
+      "accent": "#5BE84A",
+      "niche": {
+        "ua": "Expert",
+        "en": "Expert"
+      },
+      "name": {
+        "ua": "Віктор Домбовецький",
+        "en": "Viktor Dombovetskyi"
+      },
+      "geo": {
+        "ua": "Україна",
+        "en": "Ukraine"
+      },
+      "formats": {
+        "ua": "Канал / Telegram Ads",
+        "en": "Channel / Telegram Ads"
+      },
+      "goal": {
+        "ua": "Впізнаваність, підписники на канал",
+        "en": "Awareness, channel subscribers"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "n/a",
+            "en": "n/a"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPM за 1000",
+            "en": "CPM per 1000"
+          },
+          "value": {
+            "ua": "$0,61",
+            "en": "$0.61"
+          }
+        },
+        {
+          "label": {
+            "ua": "Ціна підписника",
+            "en": "Cost per subscriber"
+          },
+          "value": {
+            "ua": "$1,16",
+            "en": "$1.16"
+          }
+        }
+      ],
+      "task": {
+        "ua": "Розвиток особистого бренду та залучення цільової аудиторії в Telegram.",
+        "en": "Growing a personal brand and bringing the target audience into Telegram."
+      },
+      "done": [
+        {
+          "ua": "Надали рекомендації щодо упаковки, ведення каналу та контент-стратегії.",
+          "en": "Advised on channel packaging, running the channel and the content strategy."
+        },
+        {
+          "ua": "Розробили лід-магніти та рекламні матеріали з акцентом на впізнаваність і унікальність особистого бренду.",
+          "en": "Created lead magnets and ad creatives that stress the recognisability and uniqueness of the personal brand."
+        },
+        {
+          "ua": "Запропонували додаткові способи залучення аудиторії: спільні ефіри, колаборації та переливання трафіку з інших каналів.",
+          "en": "Suggested extra ways to grow the audience: joint live streams, collaborations and moving traffic over from other channels."
+        },
+        {
+          "ua": "Протестували рекламні гіпотези та масштабували ефективні кампанії.",
+          "en": "Tested ad hypotheses and scaled the campaigns that worked."
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "mukhin",
+      "avatar": true,
+      "accent": "#7B4DFF",
+      "niche": {
+        "ua": "Expert · ПроSales",
+        "en": "Expert · ProSales"
+      },
+      "name": {
+        "ua": "Олександр Мухін",
+        "en": "Oleksandr Mukhin"
+      },
+      "geo": {
+        "ua": "Україна",
+        "en": "Ukraine"
+      },
+      "formats": {
+        "ua": "Канал / Telegram Ads",
+        "en": "Channel / Telegram Ads"
+      },
+      "goal": {
+        "ua": "Впізнаваність, підписники на канал",
+        "en": "Awareness, channel subscribers"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "n/a",
+            "en": "n/a"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPM за 1000",
+            "en": "CPM per 1000"
+          },
+          "value": {
+            "ua": "$0,71",
+            "en": "$0.71"
+          }
+        },
+        {
+          "label": {
+            "ua": "Ціна підписника",
+            "en": "Cost per subscriber"
+          },
+          "value": {
+            "ua": "$2,44",
+            "en": "$2.44"
+          }
+        }
+      ],
+      "task": {
+        "ua": "Відновлення активності Telegram-каналу, розвиток особистого бренду та залучення цільової аудиторії в Telegram.",
+        "en": "Reviving the Telegram channel, growing the personal brand and bringing the target audience into Telegram."
+      },
+      "done": [
+        {
+          "ua": "Надали консультації щодо відновлення та упаковки Telegram-каналу.",
+          "en": "Consulted on reviving and packaging the Telegram channel."
+        },
+        {
+          "ua": "Розробили стратегію контенту з акцентом на залучення аудиторії.",
+          "en": "Built a content strategy focused on audience growth."
+        },
+        {
+          "ua": "Продумали лід-магніти для залучення потенційних клієнтів.",
+          "en": "Designed lead magnets to attract potential clients."
+        },
+        {
+          "ua": "Налаштували рекламу на лід-магніти, протестували та масштабували ефективні кампанії.",
+          "en": "Set up ads for the lead magnets, tested them and scaled the campaigns that worked."
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "monolit",
+      "avatar": true,
+      "accent": "#19B5E0",
+      "niche": {
+        "ua": "Finance / Investments",
+        "en": "Finance / Investments"
+      },
+      "name": {
+        "ua": "Monolit",
+        "en": "Monolit"
+      },
+      "geo": {
+        "ua": "Україна",
+        "en": "Ukraine"
+      },
+      "formats": {
+        "ua": "Канал / Telegram Ads",
+        "en": "Channel / Telegram Ads"
+      },
+      "goal": {
+        "ua": "Впізнаваність, підписники на канал",
+        "en": "Awareness, channel subscribers"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "n/a",
+            "en": "n/a"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPM за 1000",
+            "en": "CPM per 1000"
+          },
+          "value": {
+            "ua": "$0,72",
+            "en": "$0.72"
+          }
+        },
+        {
+          "label": {
+            "ua": "Ціна підписника",
+            "en": "Cost per subscriber"
+          },
+          "value": {
+            "ua": "$8,50",
+            "en": "$8.50"
+          }
+        }
+      ],
+      "task": {
+        "ua": "Залучення цільової аудиторії із Софіївської Борщагівки в Telegram-канал.",
+        "en": "Bringing the target audience from Sofiivska Borshchahivka into the Telegram channel."
+      },
+      "done": [
+        {
+          "ua": "Проаналізували проєкт і надали рекомендації щодо ведення Telegram-каналу.",
+          "en": "Analysed the project and advised on running the Telegram channel."
+        },
+        {
+          "ua": "Розробили дизайн та рекламні матеріали.",
+          "en": "Created the design and the ad creatives."
+        },
+        {
+          "ua": "Побудували локальну стратегію просування з фокусом на Софіївську Борщагівку.",
+          "en": "Built a local promotion strategy focused on Sofiivska Borshchahivka."
+        },
+        {
+          "ua": "Протестували рекламні кампанії та масштабували ефективні зв’язки.",
+          "en": "Tested the ad campaigns and scaled the combinations that worked."
         }
       ],
       "review": {
@@ -565,8 +509,8 @@
     {
       "id": "kniaziev",
       "avatar": true,
-      "accent": "#4F6BFF",
       "avatarRetina": false,
+      "accent": "#4F6BFF",
       "niche": {
         "ua": "Auto / Korea",
         "en": "Auto / Korea"
@@ -576,12 +520,16 @@
         "en": "Kniaziev"
       },
       "geo": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Україна",
+        "en": "Ukraine"
+      },
+      "formats": {
+        "ua": "Канал, бот / Telegram Ads",
+        "en": "Channel, Bot / Telegram Ads"
       },
       "goal": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Підписники на воронку в боті та на канал",
+        "en": "Subscribers to the bot funnel and the channel"
       },
       "metrics": [
         {
@@ -590,8 +538,8 @@
             "en": "Budget"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "n/a",
+            "en": "n/a"
           }
         },
         {
@@ -600,8 +548,8 @@
             "en": "CPM per 1000"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "$0,43",
+            "en": "$0.43"
           }
         },
         {
@@ -610,31 +558,118 @@
             "en": "Cost per subscriber"
           },
           "value": {
-            "ua": "уточнити",
-            "en": "TBD"
+            "ua": "$1,02",
+            "en": "$1.02"
           }
         }
       ],
       "task": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Залучення цільової аудиторії в Telegram-канал через рекламні кампанії.",
+        "en": "Bringing the target audience into the Telegram channel through ad campaigns."
       },
       "done": [
         {
-          "ua": "Запит клієнта: уточнити",
-          "en": "Client request: TBD"
+          "ua": "Проаналізували проєкт і визначили стратегію просування.",
+          "en": "Analysed the project and set the promotion strategy."
         },
         {
-          "ua": "Побудовано стратегію, підготовлено рекламні матеріали",
-          "en": "Built the strategy and prepared the ad creatives"
+          "ua": "Надали рекомендації щодо ведення Telegram-каналу та покращення воронки в боті.",
+          "en": "Advised on running the Telegram channel and improving the bot funnel."
         },
         {
-          "ua": "Протестовано: уточнити",
-          "en": "Tested: TBD"
+          "ua": "Підготували рекламні матеріали під цільову аудиторію.",
+          "en": "Prepared ad creatives for the target audience."
         },
         {
-          "ua": "Масштабовано зв’язки з найкращою економікою",
-          "en": "Scaled the combinations with the best unit economics"
+          "ua": "Протестували різні рекламні підходи та масштабували ефективні кампанії.",
+          "en": "Tested different ad approaches and scaled the campaigns that worked."
+        },
+        {
+          "ua": "Провели глибинний аналіз залученої аудиторії спільно з відділом продажів для оцінки якості лідів.",
+          "en": "Ran an in-depth analysis of the acquired audience together with the sales team to assess lead quality."
+        }
+      ],
+      "review": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "screenshot": ""
+    },
+    {
+      "id": "khaustova",
+      "avatar": false,
+      "niche": {
+        "ua": "уточнити",
+        "en": "TBD"
+      },
+      "name": {
+        "ua": "Анна Хаустова",
+        "en": "Anna Khaustova"
+      },
+      "geo": {
+        "ua": "Україна",
+        "en": "Ukraine"
+      },
+      "formats": {
+        "ua": "Канал, бот / Telegram Ads",
+        "en": "Channel, Bot / Telegram Ads"
+      },
+      "goal": {
+        "ua": "Підписники на воронку в боті",
+        "en": "Subscribers to the bot funnel"
+      },
+      "metrics": [
+        {
+          "label": {
+            "ua": "Бюджет",
+            "en": "Budget"
+          },
+          "value": {
+            "ua": "n/a",
+            "en": "n/a"
+          }
+        },
+        {
+          "label": {
+            "ua": "CPM за 1000",
+            "en": "CPM per 1000"
+          },
+          "value": {
+            "ua": "$0,69",
+            "en": "$0.69"
+          }
+        },
+        {
+          "label": {
+            "ua": "Ціна підписника",
+            "en": "Cost per subscriber"
+          },
+          "value": {
+            "ua": "$1,66",
+            "en": "$1.66"
+          }
+        }
+      ],
+      "task": {
+        "ua": "Залучення потенційних клієнтів через Telegram-канал і бот із фокусом на якість аудиторії.",
+        "en": "Attracting potential clients through the Telegram channel and bot, focused on audience quality."
+      },
+      "done": [
+        {
+          "ua": "Проаналізували воронку та надали рекомендації щодо її покращення.",
+          "en": "Analysed the funnel and advised on improving it."
+        },
+        {
+          "ua": "Протестували різні гіпотези залучення аудиторії в Telegram-канал і бот.",
+          "en": "Tested different hypotheses for bringing the audience into the Telegram channel and bot."
+        },
+        {
+          "ua": "Підготували та налаштували рекламні кампанії.",
+          "en": "Prepared and set up the ad campaigns."
+        },
+        {
+          "ua": "Провели глибинний аналіз залученої аудиторії спільно з відділом продажів для оцінки якості лідів.",
+          "en": "Ran an in-depth analysis of the acquired audience together with the sales team to assess lead quality."
         }
       ],
       "review": {

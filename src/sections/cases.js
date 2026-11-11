@@ -21,7 +21,7 @@ import { track } from '../core/analytics.js';
 import data from '../data/cases.json';
 
 const CARD_FIELDS = ['niche', 'name', 'geo', 'goal'];
-const MODAL_FIELDS = ['name', 'niche', 'geo', 'goal', 'task', 'review'];
+const MODAL_FIELDS = ['name', 'niche', 'formats', 'geo', 'goal', 'task', 'review'];
 /** Сколько ключевых показателей на карточке и в модалке (документ клиента: «3 ключові показники»). */
 export const METRICS = 3;
 const CLOSE_MS = 260;

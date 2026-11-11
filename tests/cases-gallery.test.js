@@ -69,7 +69,7 @@ test('аватар: фото только при avatar: true (лишних за
   const accentOf = pick('accentOf');
   assert.equal(avatarPath('finmap'), '/img/cases/finmap.webp');
   assert.equal(avatarPath('finmap', true), '/img/cases/finmap@2x.webp');
-  assert.deepEqual(cases.map((c) => initial(c.name.ua)), ['C', 'M', 'G', 'T', 'О', 'В', 'F', 'К']);
+  assert.deepEqual(cases.map((c) => initial(c.name.ua)), ['C', 'G', 'F', 'В', 'О', 'M', 'К', 'А']);
   assert.equal(initial('  «Monolit»'), 'M');
   assert.equal(initial(''), '');
   assert.equal(accentOf({ accent: '#12B76A' }), '#12B76A');
@@ -199,9 +199,9 @@ test('линии роста нет; показатели — из cases.json →
   const { metricsOf } = new Function(`const METRICS = 3; ${body.replace(/export /g, '')}; return { metricsOf };`)();
   const item = cases[0];
   assert.deepEqual(metricsOf(item, 'ua'), [
-    { label: 'Бюджет', value: 'уточнити' },
-    { label: 'CPM за 1000', value: 'уточнити' },
-    { label: 'Ціна підписника', value: 'уточнити' },
+    { label: 'Бюджет', value: 'n/a' },
+    { label: 'CPM за 1000', value: '$0,56' },
+    { label: 'Ціна підписника', value: '$1,72' },
   ]);
   assert.deepEqual(metricsOf(item, 'en').map((m) => m.label), ['Budget', 'CPM per 1000', 'Cost per subscriber']);
   assert.deepEqual(metricsOf({}, 'ua'), [null, null, null]);
@@ -213,7 +213,7 @@ test('линии роста нет; показатели — из cases.json →
   assert.match(css, /\.cases__metric\[hidden\]\s*\{\s*display:\s*none/);
   // модалка: шапка, GEO и ціль, 3 показателя, «Детальна інформація» — задача, что сделано; справа отзыв
   const modal = section.split('<dialog')[1];
-  const parts = ['data-m="name"', 'data-m="niche"', 'data-m="geo"', 'data-m="goal"', 'data-m-metric="0"', 'data-m-metric="1"', 'data-m-metric="2"',
+  const parts = ['data-m="name"', 'data-m="niche"', 'data-m="formats"', 'data-m="geo"', 'data-m="goal"', 'data-m-metric="0"', 'data-m-metric="1"', 'data-m-metric="2"',
     'data-i18n="cases.labels.details"', 'data-m="task"', 'data-m-list="done"', 'data-m="review"'].map((p) => modal.indexOf(p));
   for (const i of parts) assert.ok(i > -1, 'нет части модалки');
   assert.deepEqual([...parts].sort((a, b) => a - b), parts, 'порядок частей модалки');
