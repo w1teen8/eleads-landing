@@ -181,9 +181,9 @@ test('13 FAQ: ответы из документа клиента (стр. 13) �
   assert.equal(byId.q9, undefined, 'q9 «Чи є гарантія результату?» удалён');
   assert.ok(!faqData.items.some((item) => /гаранті/i.test(item.q.ua)), 'вопроса о гарантии нет');
   assert.equal(byId.q7.q.ua, 'Чи можете створити Telegram-канал з нуля?');
-  assert.equal(byId.q7.a.ua, 'Так, можемо створити та підготувати Telegram-канал до запуску реклами.');
+  assert.equal(byId.q7.a.ua, 'Так, можемо створити, оформити та підготувати Telegram-канал до запуску реклами.');
   assert.equal(byId.q8.a.ua, 'Так, працюємо з українськими та міжнародними проєктами, налаштовуючи рекламу на потрібні країни й аудиторії.');
-  assert.equal(byId.q5.a.ua, 'Україна, Європа, США та Канада, а також інші країни світу за задачею.');
+  assert.equal(byId.q5.a.ua, 'Telegram Ads охоплює понад 200 GEO — практично весь світ, окрім росії та України.');
   for (const id of ['q5', 'q7', 'q8']) {
     assert.ok(byId[id].a.en && !/TBD/.test(byId[id].a.en), `${id}: EN-перевод`);
     assert.doesNotMatch(byId[id].a.en, /[а-яіїєґ]/i, `${id}: EN без кириллицы`);

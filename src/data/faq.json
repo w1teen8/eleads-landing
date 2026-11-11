@@ -3,12 +3,12 @@
     {
       "id": "q1",
       "q": {
-        "ua": "Скільки потрібно для старту?",
-        "en": "How much is needed to start?"
+        "ua": "Який мінімальний рекламний бюджет?",
+        "en": "What is the minimum ad budget?"
       },
       "a": {
-        "ua": "Мінімальний рекламний бюджет — €650.",
-        "en": "The minimum ad budget is €650."
+        "ua": "Мінімальний бюджет для запуску Telegram Ads — від €650–780 залежно від способу оплати.",
+        "en": "The minimum budget to launch Telegram Ads is €650–780, depending on the payment method."
       }
     },
     {
@@ -18,19 +18,19 @@
         "en": "How much do the services cost?"
       },
       "a": {
-        "ua": "Вартість послуг — індивідуально.",
-        "en": "The cost of services is individual."
+        "ua": "Вартість розраховується індивідуально залежно від потреб, завдань та обсягу робіт для вашого проєкту.",
+        "en": "The cost is calculated individually based on your project’s needs, tasks and scope of work."
       }
     },
     {
       "id": "q3",
       "q": {
-        "ua": "Чи підійде Telegram Ads моїй ніші?",
-        "en": "Will Telegram Ads suit my niche?"
+        "ua": "Чи підійде Telegram для моєї ніші?",
+        "en": "Will Telegram work for my niche?"
       },
       "a": {
-        "ua": "Особливо сильний у нішах, де рішення приймається не за один контакт. Напишіть мені — оціню потенціал для вашого проєкту.",
-        "en": "Especially strong in niches where the decision takes more than one contact. Write to me and I will assess the potential for your project."
+        "ua": "Якщо не знайшли свою нішу серед представлених на сайті, зверніться до мене. Проконсультую та допоможу оцінити перспективи просування вашого бізнесу в Telegram.",
+        "en": "If you didn’t find your niche among those on the site, contact me. I’ll consult you and help assess the prospects of promoting your business in Telegram."
       }
     },
     {
@@ -40,30 +40,30 @@
         "en": "Can I advertise a website?"
       },
       "a": {
-        "ua": "Так: рекламуємо Telegram-канали, боти, сайти та застосунки.",
-        "en": "Yes: we advertise Telegram channels, bots, websites and apps."
+        "ua": "Так, Telegram Ads дозволяє спрямовувати рекламу безпосередньо на сайт, Telegram-канал, бот, особисті повідомлення або App/Google Store.",
+        "en": "Yes, Telegram Ads lets you send traffic directly to a website, a Telegram channel, a bot, direct messages or the App/Google Store."
       }
     },
     {
       "id": "q5",
       "q": {
-        "ua": "Які країни доступні?",
-        "en": "Which countries are available?"
+        "ua": "Які країни доступні для реклами?",
+        "en": "Which countries are available for ads?"
       },
       "a": {
-        "ua": "Україна, Європа, США та Канада, а також інші країни світу за задачею.",
-        "en": "Ukraine, Europe, the USA and Canada, as well as other countries worldwide depending on the task."
+        "ua": "Telegram Ads охоплює понад 200 GEO — практично весь світ, окрім росії та України.",
+        "en": "Telegram Ads covers over 200 GEOs — practically the whole world except russia and Ukraine."
       }
     },
     {
       "id": "q6",
       "q": {
-        "ua": "Як швидко можна запуститися?",
-        "en": "How fast can we launch?"
+        "ua": "Як швидко можна запустити рекламу?",
+        "en": "How fast can ads be launched?"
       },
       "a": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Якщо потрібен лише запуск Telegram Ads — протягом кількох днів. Якщо необхідно підготувати контент, канал або посадкові сторінки — зазвичай до 2 тижнів.",
+        "en": "If you only need Telegram Ads launched — within a few days. If content, a channel or landing pages need to be prepared — usually up to 2 weeks."
       }
     },
     {
@@ -73,8 +73,8 @@
         "en": "Can you create a Telegram channel from scratch?"
       },
       "a": {
-        "ua": "Так, можемо створити та підготувати Telegram-канал до запуску реклами.",
-        "en": "Yes, we can create a Telegram channel and get it ready for launching ads."
+        "ua": "Так, можемо створити, оформити та підготувати Telegram-канал до запуску реклами.",
+        "en": "Yes, we can create, design and prepare a Telegram channel for launching ads."
       }
     },
     {
