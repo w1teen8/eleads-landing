@@ -101,13 +101,15 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.4em;
-  font-size: var(--fs-lg);
-  color: var(--text);
+  /* «меньше акцента … как серый шрифт, поменьше, но чтобы был жирным» */
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--text-muted);
 }
 
 .footer__credit a {
   font-weight: 700;
-  color: var(--accent);
+  color: inherit;
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.25em;

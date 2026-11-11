@@ -42,7 +42,9 @@ test('разметка: H1, огромное «eLeads» из JSON, пилюля 
   assert.match(section, /data-i18n="hero\.word"/);
   assert.match(section, /class="[^"]*\bmono-label\b[^"]*"[^>]*data-i18n="hero\.eyebrow"/);
   assert.match(section, /<a\b[^>]*href="\{\{config\.telegramUrl\}\}"[^>]*data-place="hero"[^>]*>[\s\S]*?data-i18n="hero\.cta"/);
-  assert.match(section, /<a\b[^>]*href="\{\{config\.telegramUrl\}\}"[^>]*data-place="hero_ad"[^>]*>[\s\S]*?data-i18n="hero\.ad\.button"/);
+  // «убрать возможность нажимать на кнопку "переглянути"» — это часть макета рекламы, не ссылка
+  assert.match(section, /<span class="hero__ad-btn"><span data-i18n="hero\.ad\.button"><\/span>/);
+  assert.doesNotMatch(section, /data-place="hero_ad"/);
   const keys = [
     'eyebrow', 'subtitle', 'titleLine1', 'titleLine2', 'titleAccent', 'cta', 'photo.alt',
     'facts.budgets.label', 'facts.budgets.value', 'facts.years.label', 'facts.years.value', 'facts.projects.label', 'facts.projects.value',

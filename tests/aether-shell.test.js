@@ -70,3 +70,11 @@ test('подвал (T31): без «подъёма букв», огромного
   const css = strip(read('src/styles/sections/footer.css'));
   assert.doesNotMatch(css, /footer__char|\.is-in|translate3d\(0,\s*1\d\d%/);
 });
+
+// «на этой бегущей строке сделать меньше шрифт и остановить ее. На моб версии пускай бежит»
+test('ленты бегут только на узком экране; шрифт меньше', () => {
+  const js = read('src/sections/ribbons.js');
+  assert.match(js, /export const RUN_MEDIA = '\(max-width: 899px\)';/);
+  assert.match(js, /if \(reduced \|\| !window\.matchMedia\?\.\(RUN_MEDIA\)\.matches\) return;/);
+  assert.match(read('src/styles/sections/ribbons.css'), /font-size: clamp\(1rem, 0\.75rem \+ 0\.6vw, 1\.375rem\)/);
+});

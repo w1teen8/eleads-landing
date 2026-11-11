@@ -43,9 +43,12 @@ function lift(root) {
   document.fonts?.ready?.then(update);
 }
 
+/** Где ленты бегут: только на узком экране («остановить ее; на моб версии пускай бежит»). */
+export const RUN_MEDIA = '(max-width: 899px)';
+
 export function init(root) {
   lift(root);
-  if (reduced) return;
+  if (reduced || !window.matchMedia?.(RUN_MEDIA).matches) return;
   for (const band of $$('[data-ribbon]', root)) {
     const track = $('.ribbons__track', band);
     const group = track?.firstElementChild;

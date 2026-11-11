@@ -210,11 +210,6 @@
 }
 
 .hero__cta:focus-visible,
-.hero__ad-btn:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
-}
-
 /* ——— цифры строкой с тонкими разделителями и реклама — сообщением Telegram ——— */
 .hero__side {
   grid-area: side;
