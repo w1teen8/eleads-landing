@@ -23,7 +23,7 @@
 .section--geo .display.section__title {
   max-width: none;
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-size: var(--t-h2);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
@@ -162,7 +162,7 @@
 
 .geo__stat-label {
   min-width: 0;
-  font-size: clamp(0.875rem, 0.8rem + 0.3vw, 1.0625rem);
+  font-size: var(--t-body);
   line-height: 1.4;
   color: color-mix(in srgb, var(--text) 75%, transparent);
 }
@@ -224,7 +224,7 @@
   }
 
   .section--geo .display.section__title {
-    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 9svh), 6rem);
+    font-size: var(--t-h2);
   }
 
   .geo__head {

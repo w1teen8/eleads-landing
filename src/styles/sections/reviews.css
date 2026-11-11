@@ -23,7 +23,7 @@
 .section--reviews .display.section__title {
   max-width: none;
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-size: var(--t-h2);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
@@ -357,7 +357,7 @@ html:not(.js-anim) .reviews__arc {
 }
 
 .reviews__name {
-  font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+  font-size: var(--t-title);
   font-weight: 700;
   line-height: 1.2;
 }
@@ -368,14 +368,14 @@ html:not(.js-anim) .reviews__arc {
 }
 
 .reviews__role {
-  font-size: clamp(1rem, 0.94rem + 0.25vw, 1.125rem);
+  font-size: var(--t-small);
   font-weight: 600;
   line-height: 1.2;
   color: color-mix(in srgb, var(--text) 50%, transparent);
 }
 
 .reviews__text {
-  font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  font-size: var(--t-body);
   line-height: 1.5;
   color: color-mix(in srgb, var(--text) 80%, transparent);
 }
@@ -415,7 +415,7 @@ html:not(.js-anim) .reviews__arc {
 }
 
 .reviews__label {
-  font-size: var(--fs-sm);
+  font-size: var(--t-small);
   color: color-mix(in srgb, var(--text) 60%, transparent);
 }
 
@@ -437,7 +437,7 @@ html:not(.js-anim) .reviews__arc {
   }
 
   .section--reviews .display.section__title {
-    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
+    font-size: var(--t-h2);
   }
 
   /* высота карточки ≈ 86% высоты блока — между полной и 72% («что-то среднее»): ширина = высота × 9/16 */
@@ -475,7 +475,7 @@ html:not(.js-anim) .reviews__arc {
   }
 
   .reviews__label {
-    font-size: var(--fs-xs);
+    font-size: var(--t-small);
   }
 }
 

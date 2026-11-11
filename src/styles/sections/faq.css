@@ -36,7 +36,7 @@
 .section--faq .display.section__title {
   max-width: none;
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-size: var(--t-h2);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
@@ -68,14 +68,14 @@
 
 .faq__ask-title {
   font-family: var(--font-head);
-  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  font-size: var(--t-h3);
   font-weight: 900;
   line-height: 0.95;
   text-transform: uppercase;
 }
 
 .faq__ask-text {
-  font-size: var(--fs-sm);
+  font-size: var(--t-body);
   line-height: 1.4;
   color: color-mix(in srgb, var(--accent-ink) 78%, transparent);
 }
@@ -132,7 +132,7 @@
   overflow: hidden;
   text-align: left;
   font-family: var(--font-body);
-  font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  font-size: var(--t-title);
   font-weight: 700;
   line-height: 1.25;
   color: var(--text);
@@ -324,7 +324,7 @@
   }
 
   .section--faq .display.section__title {
-    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.5svh), 6rem);
+    font-size: var(--t-h2);
   }
 
   .faq__ask {
@@ -332,13 +332,13 @@
   }
 
   .faq__ask-title {
-    font-size: clamp(1.375rem, min(1.2rem + 1vw, 4svh), 2.25rem);
+    font-size: var(--t-h3);
   }
 
   .faq__q {
     min-height: clamp(40px, 5svh, 56px);
     padding-block: clamp(0.4rem, 1.1svh, 0.8rem);
-    font-size: clamp(0.875rem, min(0.9rem + 0.2vw, 2svh), 1.0625rem);
+    font-size: var(--t-title);
   }
 }
 
@@ -363,7 +363,7 @@
 }
 
 .faq__a-text {
-  font-size: var(--fs-base);
+  font-size: var(--t-body);
   line-height: 1.5;
   color: var(--text-muted);
 }

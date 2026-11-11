@@ -19,7 +19,7 @@
 .section--targeting .display.section__title {
   max-width: none;
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-size: var(--t-h2);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
@@ -111,13 +111,13 @@
 }
 
 .tg__name {
-  font-size: var(--fs-lg);
+  font-size: var(--t-title);
   font-weight: 700;
   line-height: 1.25;
 }
 
 .tg__text {
-  font-size: var(--fs-sm);
+  font-size: var(--t-body);
   line-height: 1.5;
   color: var(--text-muted);
 }
@@ -182,7 +182,7 @@
   }
 
   .section--targeting .display.section__title {
-    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
+    font-size: var(--t-h2);
   }
 
   .tg__formula {

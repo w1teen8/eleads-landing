@@ -24,7 +24,7 @@
 .section--ecosystem .display.section__title {
   max-width: none;
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-size: var(--t-h2);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
@@ -101,7 +101,7 @@
 
 .eco__name {
   font-family: var(--font-head);
-  font-size: 2rem;
+  font-size: var(--t-h3);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
@@ -163,7 +163,7 @@
 .eco__service-text {
   position: relative;
   display: block;
-  font-size: 0.9375rem;
+  font-size: var(--t-body);
   font-weight: 600;
   line-height: 1.3;
 }
@@ -218,7 +218,7 @@
   }
 
   .section--ecosystem .display.section__title {
-    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
+    font-size: var(--t-h2);
   }
 
   .eco__step {
@@ -238,7 +238,7 @@
   }
 
   .eco__name {
-    font-size: clamp(1.625rem, min(0.9rem + 1.2vw, 4.3svh), 2.875rem);
+    font-size: var(--t-h3);
   }
 
   .eco__service {
@@ -246,7 +246,7 @@
   }
 
   .eco__service-text {
-    font-size: clamp(0.875rem, 1.75svh, 1.0625rem);
+    font-size: var(--t-body);
   }
 }
 
@@ -261,6 +261,6 @@
   }
 
   .eco__name {
-    font-size: 1.75rem;
+    font-size: var(--t-h3);
   }
 }

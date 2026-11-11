@@ -27,7 +27,7 @@
 .section--niches .display.section__title {
   max-width: none;
   font-family: var(--font-head);
-  font-size: clamp(2.5rem, 1.6rem + 3.6vw, 6rem);
+  font-size: var(--t-h2);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
@@ -143,7 +143,7 @@
 .niches__examples {
   position: relative;
   z-index: 1;
-  font-size: clamp(0.875rem, 0.8rem + 0.25vw, 1.0625rem);
+  font-size: var(--t-body);
   font-weight: 600;
   line-height: 1.35;
   color: color-mix(in srgb, currentColor 78%, transparent);
@@ -282,7 +282,7 @@
   }
 
   .niches__examples {
-    font-size: 0.875rem;
+    font-size: var(--t-body);
   }
 }
 
@@ -309,7 +309,7 @@
   }
 
   .section--niches .display.section__title {
-    font-size: clamp(2.5rem, min(1.6rem + 3.6vw, 8.8svh), 6rem);
+    font-size: var(--t-h2);
   }
 
   .niches__card {
