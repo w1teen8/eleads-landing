@@ -2,7 +2,7 @@
 // Telegram. Облик — «Рев С» (reference/run3/reviews-C-chosen.png). Заголовок «Що говорять підприємці»; фото и текста
 // засновника больше нет: слева большой круг с жёлто-оранжевым кольцом — видео-отзыв выбранного клиента
 // (reviews.items.*.video, файл в public/video/reviews/; пусто — аватар клиента и «відео-відгук скоро»). Клик по кругу
-// или по кнопке ▶: без звука → со звуком → пауза (как видео-кружок в Telegram). Справа — ряд круглых аватаров клиентов
+// или по кнопке ▶: без звука → со звуком → пауза. С 2026-11-11 видео 9:16 играет само, пока его видно (videoStage). Справа — ряд круглых аватаров клиентов
 // (вкладки), под ним отзыв выбранного и цифры. Отзывы сами листаются раз в STEP_MS (как диск блока 09): вокруг
 // выбранного кружка кольцо прогресса — две половины, крутятся transform-ом (Web Animations API); конец — следующий
 // отзыв. Пауза — пока курсор на самом кружке, на фокусе с клавиатуры, вне окна, на скрытой вкладке и пока играет
@@ -31,19 +31,32 @@ export function init(root) {
 const item = (i, f) => t(`reviews.items.${i}.${f}`);
 const avatarOf = (i) => reviewAvatar(item(i, 'case'), data.cases, (id, retina) => publicUrl(avatarPath(id, retina)));
 
-/* ——— большой круг: аватар выбранного клиента и его видео-отзыв, когда есть файл ——— */
-function videoStage(root, onPlaying) {
+/* ——— видео-отзыв 9:16 выбранного клиента ———
+   2026-11-11, пользователь: «видео должно само проигрываться, по окончанию переходит на следующее. Если человек листает
+   назад или дальше вниз, то видео останавливается … видео проигрывается только если его видно». Пока карточка видна
+   (не меньше VIDEO_VISIBLE) и вкладка браузера открыта — видео играет само (без звука, как разрешают браузеры); ушла из
+   окна — пауза, вернулась — продолжает с того же места; закончилось — onEnded (следующий отзыв). Кнопка ▶ и клик по
+   видео: без звука → со звуком → пауза; после паузы рукой само не продолжает, пока не нажмут снова или не сменится
+   отзыв. Звук, включённый рукой, остаётся и для следующего видео. reduced-motion / ?nomotion=1 — только по клику. */
+export const VIDEO_VISIBLE = 0.6;
+
+function videoStage(root, { onPlaying, onEnded, onProgress }) {
   const circle = $('[data-rv-circle]', root);
   const screen = $('[data-rv-screen]', root);
   const button = $('[data-rv-play]', root);
   const soon = $('[data-rv-soon]', root);
   const letter = $('[data-rv-big-letter]', root);
-  if (!circle || !screen || !button) return { show() {}, pause() {}, sync() {} };
+  if (!circle || !screen || !button) return { show() {}, pause() {}, sync() {}, setActive() {}, has: () => false };
   let index = 0;
   let video = null;
   let img = null;
+  let active = false; // видно и вкладка открыта — можно играть само
+  let userPaused = false; // поставили на паузу рукой
+  let soundOn = false; // звук включили рукой
+  let raf = 0;
 
   const file = () => reviewVideo(item(index, 'video'));
+  const has = () => Boolean(file());
   const playing = () => Boolean(video && !video.paused);
   // состояние кнопки: idle — ▶, muted — «включить звук», sound — пауза (иконку выбирает CSS по data-video)
   const label = () => {
@@ -51,19 +64,28 @@ function videoStage(root, onPlaying) {
     if (playing()) state = video.muted ? 'muted' : 'sound';
     circle.dataset.video = state;
     button.setAttribute('aria-label', t(`reviews.player.${{ idle: 'play', muted: 'sound', sound: 'pause' }[state]}`));
+    circle.classList.toggle('is-playing', playing());
     onPlaying(playing());
   };
 
+  // прогресс видео — кольцу выбранного кружка (каждый кадр, пока играет)
+  const tick = () => {
+    cancelAnimationFrame(raf);
+    if (!playing()) return;
+    if (video.duration > 0) onProgress(video.currentTime / video.duration);
+    raf = requestAnimationFrame(tick);
+  };
+
   function stop() {
+    cancelAnimationFrame(raf);
     if (!video) return;
     video.pause();
     video.remove();
     video = null;
-    circle.classList.remove('is-playing');
     label();
   }
 
-  // аватар клиента: фото кейса (крупный файл — круг большой), без фото и при сбое — буква
+  // аватар клиента: фото кейса (крупный файл), без фото и при сбое — буква; виден, пока видео не играет
   function paintAvatar() {
     const found = avatarOf(index);
     if (letter) letter.textContent = initial(item(index, 'name'));
@@ -81,16 +103,60 @@ function videoStage(root, onPlaying) {
     screen.prepend(next);
   }
 
-  // вкладка скрыта — видео на паузе (кадр остаётся в круге, следующий клик продолжит)
+  function ensureVideo() {
+    if (video || !has()) return video;
+    video = el('video', { class: 'reviews__video', attrs: { src: publicUrl(file()), playsinline: true, preload: 'auto' } });
+    video.muted = true; // сначала без звука: так браузеры разрешают играть самому
+    on(video, 'play', () => {
+      label();
+      tick();
+    });
+    on(video, 'pause', label);
+    on(video, 'ended', () => {
+      cancelAnimationFrame(raf);
+      onProgress(1);
+      label();
+      onEnded();
+    });
+    screen.append(video);
+    return video;
+  }
+
+  function play() {
+    if (!ensureVideo()) return;
+    const v = video;
+    v.muted = !soundOn;
+    v.play()?.catch?.(() => {
+      // браузер не дал играть со звуком без жеста — пробуем без звука
+      if (video !== v) return;
+      if (!v.muted) {
+        v.muted = true;
+        v.play()?.catch?.(label);
+      } else label();
+    });
+  }
+
+  // само играет только видимое видео; ушло из окна или вкладка скрыта — пауза
+  function apply() {
+    if (!has()) return;
+    if (active && !userPaused && !reduced) play();
+    else if (playing()) video.pause();
+  }
+
+  function setActive(value) {
+    if (active === value) return;
+    active = value;
+    apply();
+  }
+
   function pause() {
     if (playing()) video.pause();
   }
 
   function sync() {
-    const has = Boolean(file());
-    button.hidden = !has;
-    circle.classList.toggle('has-video', has);
-    if (soon) soon.hidden = has;
+    button.hidden = !has();
+    circle.classList.toggle('has-video', has());
+    if (soon) soon.hidden = has();
     paintAvatar();
     label();
   }
@@ -99,33 +165,23 @@ function videoStage(root, onPlaying) {
     if (i === index && video) return;
     stop();
     index = i;
+    userPaused = false;
     sync();
+    onProgress(0);
+    apply();
   }
 
   function toggle() {
     if (button.hidden) return;
-    if (!video) {
-      video = el('video', { class: 'reviews__video', attrs: { src: publicUrl(file()), playsinline: true, preload: 'auto' } });
-      video.muted = true; // как кружок в Telegram: сначала без звука
-      on(video, 'ended', () => {
-        circle.classList.remove('is-playing');
-        video.muted = true;
-        label();
-      });
-      on(video, 'pause', label);
-      screen.append(video);
-    }
-    if (video.paused) {
-      circle.classList.add('is-playing');
-      video.play()?.catch?.(() => {
-        circle.classList.remove('is-playing');
-        label();
-      });
+    if (!playing()) {
+      userPaused = false;
+      play();
     } else if (video.muted) {
       video.muted = false;
+      soundOn = true;
     } else {
+      userPaused = true;
       video.pause();
-      circle.classList.remove('is-playing');
     }
     label();
   }
@@ -135,7 +191,7 @@ function videoStage(root, onPlaying) {
     toggle();
   });
   on(screen, 'click', toggle);
-  return { show, pause, sync };
+  return { show, pause, sync, setActive, has };
 }
 
 /* ——— отзывы: кружки-вкладки с автолистанием ——— */
@@ -153,14 +209,21 @@ function initReviews(root) {
   let current = 0;
   let timers = [];
   let hoverTimer = 0;
-  const state = { hovered: false, focused: false, inView: false, hidden: document.hidden, playing: false };
+  const state = { hovered: false, focused: false, inView: false, videoInView: false, hidden: document.hidden, playing: false };
   if (reduced) root.classList.add('is-static');
 
-  // пока играет видео-отзыв, листание стоит: следующий отзыв не сменит круг посреди видео
-  const stage = videoStage(root, (playing) => {
-    if (state.playing === playing) return;
-    state.playing = playing;
-    sync();
+  // у отзыва с видео листание задаёт само видео: кольцо кружка — его прогресс, конец видео — следующий отзыв;
+  // 10-секундный таймер — только у отзывов без видео (и он стоит, пока видео играет)
+  const stage = videoStage(root, {
+    onPlaying(playing) {
+      if (state.playing === playing) return;
+      state.playing = playing;
+      sync();
+    },
+    onEnded: () => select(nextIndex(current, total), false),
+    onProgress(p) {
+      for (const a of timers) a.currentTime = Math.min(1, Math.max(0, p)) * STEP_MS;
+    },
   });
 
   /* аватары: фото кейса через publicUrl, цвет бренда — инлайн-переменная; без фото и при сбое — буква */
@@ -197,6 +260,12 @@ function initReviews(root) {
       r?.animate([{ transform: 'rotate(-45deg)' }, { transform: 'rotate(135deg)', offset: 0.5 }, { transform: 'rotate(135deg)' }], timing),
       l?.animate([{ transform: 'rotate(-45deg)' }, { transform: 'rotate(-45deg)', offset: 0.5 }, { transform: 'rotate(135deg)' }], timing),
     ].filter(Boolean);
+    if (stage.has()) {
+      // кольцо идёт за видео: стоит на паузе, положение задаёт onProgress
+      for (const a of timers) a.pause();
+      sync();
+      return;
+    }
     timers[timers.length - 1]?.finished.then(
       () => select(nextIndex(current, total), false),
       () => {}, // отменён — новый выбор уже запустил свой отсчёт
@@ -206,6 +275,8 @@ function initReviews(root) {
 
   // идёт только в окне, на видимой вкладке, без курсора на кружке, без фокуса с клавиатуры и пока видео не играет
   function sync() {
+    stage.setActive(state.videoInView && !state.hidden);
+    if (stage.has()) return; // у отзыва с видео кольцо идёт за видео
     const run = state.inView && !state.hidden && !state.hovered && !state.focused && !state.playing;
     for (const a of timers) {
       if (run && a.playState === 'paused') a.play();
@@ -313,8 +384,20 @@ function initReviews(root) {
       },
       { threshold: 0.35 },
     ).observe(list);
+    // видео играет, только пока его видно: не меньше VIDEO_VISIBLE карточки в окне
+    const card = $('[data-rv-circle]', root);
+    if (card) {
+      new IntersectionObserver(
+        ([entry]) => {
+          state.videoInView = entry.intersectionRatio >= VIDEO_VISIBLE;
+          sync();
+        },
+        { threshold: [0, VIDEO_VISIBLE, 1] },
+      ).observe(card);
+    }
   } else {
     state.inView = true;
+    state.videoInView = true;
   }
 
   onLangChange(() => {
@@ -326,6 +409,6 @@ function initReviews(root) {
   paint(current, false);
   stage.show(current);
 
-  if (reduced) return; // без автолистания: выбор только кликом и клавишами
+  if (reduced) return; // без автолистания и автозапуска видео: выбор и ▶ только кликом и клавишами
   startTimers();
 }

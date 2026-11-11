@@ -192,3 +192,15 @@ test('видео-отзыв — вертикальная карточка 9:16, 
   assert.ok(col > -1 && head > col, 'заголовок внутри правой колонки');
   assert.ok(sec.indexOf('reviews__stage') < col, 'видео — слева');
 });
+
+// 2026-11-11: «видео должно само проигрываться, по окончанию переходит на следующее … проигрывается только если его видно»
+test('видео-отзыв играет сам, пока карточку видно; закончилось — следующий отзыв; ушло из окна — пауза', () => {
+  assert.match(js, /export const VIDEO_VISIBLE = 0\.6;/);
+  assert.match(js, /intersectionRatio >= VIDEO_VISIBLE/, 'видимость — по самой карточке видео');
+  assert.match(js, /stage\.setActive\(state\.videoInView && !state\.hidden\)/);
+  assert.match(js, /if \(active && !userPaused && !reduced\) play\(\);\s*else if \(playing\(\)\) video\.pause\(\);/);
+  assert.match(js, /onEnded: \(\) => select\(nextIndex\(current, total\), false\)/);
+  assert.match(js, /on\(video, 'ended'/);
+  assert.match(js, /video\.muted = true; \/\/ сначала без звука/);
+  assert.match(js, /userPaused = true;/, 'пауза рукой — само не продолжает');
+});
