@@ -156,11 +156,17 @@ h3 {
   color: var(--accent-ink);
   font-weight: 600;
   transform: translateY(-160%);
-  transition: transform var(--dur-fast) var(--ease-out);
+  /* во встроенном браузере Telegram верх страницы виден над шапкой — ссылку прячем ещё и прозрачностью
+     («Под шапкой прячется кнопка»), появляется только при фокусе с клавиатуры */
+  opacity: 0;
+  pointer-events: none;
+  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
 }
 
 .skip-link:focus-visible {
   transform: none;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* — градиентный текст: только ключевые слова и цифры — */

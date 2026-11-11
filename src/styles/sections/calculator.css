@@ -12,7 +12,7 @@
 .section--calculator {
   --calc-gap: clamp(1rem, 1.8vw, 1.75rem);
   --calc-soft: color-mix(in srgb, var(--text) 55%, transparent);
-  --calc-key: color-mix(in srgb, var(--text) 8%, transparent); /* поле списка, строка бюджета, поле суммы */
+  --calc-key: color-mix(in srgb, var(--text) 8%, var(--bg)); /* поле списка, строка бюджета, поле суммы — сплошной фон («не нравится, что полупрозрачные поля») */
   --calc-key-h: clamp(48px, 3.4vw, 56px);
   --calc-r: 14px;
   overflow-x: clip;

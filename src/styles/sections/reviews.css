@@ -110,10 +110,12 @@
   cursor: pointer;
 }
 
+/* кнопка — по центру низа карточки («не по центру. И плей и кнопка сама») */
 .reviews__play {
   position: absolute;
-  right: 5%;
-  bottom: 5%;
+  left: 50%;
+  bottom: 6%;
+  translate: -50% 0;
   display: grid;
   place-items: center;
   width: calc(var(--vd-d) * 0.19);
@@ -137,8 +139,9 @@
   height: 38%;
 }
 
+/* треугольник в самой иконке уже чуть смещён вправо (оптический центр) — без дополнительного сдвига */
 .reviews__icon--play {
-  transform: translateX(8%);
+  transform: none;
 }
 
 /* иконка по состоянию видео (reviews.js → data-video): ▶ · включить звук · пауза */

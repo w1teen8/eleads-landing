@@ -208,7 +208,9 @@ test('движение блока — только transform и opacity, без 
 test('появление блока: один раз при входе в окно; до него скрыто только при .js-anim; лесенка — только здесь', () => {
   const js = code['stats.js'];
   assert.match(js, /import \{[^}]*\bstagger\b[^}]*\} from '\.\.\/core\/motion-kit\.js'/);
-  assert.match(js, /stagger\(items, \{ trigger: root, start: ENTER_START, onEach \}\)/);
+  // весь блок — вместе и на телефоне: одна лесенка от входа блока, без отдельного входа каждой строки
+  assert.match(js, /stagger\(items, \{ trigger: root, start: startAt, onEach \}\)/);
+  assert.doesNotMatch(js, /ENTER_START_EACH/);
   assert.match(js, /map\?\.ignite\(gridPoint\(uaGrid, KYIV\.lon, KYIV\.lat\)\)/, 'карта зажигается от Киева');
   assert.match(js, /rollTo\(value, finalText\(value\), \{ from: '', turns: 1 \}\)/, 'цифры докручиваются от нуля');
   assert.match(js, /if \(entered\) return;/, 'один раз');

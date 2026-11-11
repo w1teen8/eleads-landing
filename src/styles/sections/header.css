@@ -10,6 +10,18 @@
   pointer-events: none;
 }
 
+/* «шапка полностью все закрывала, а не чтобы было пространство»: во встроенном браузере Telegram (iOS) над шапкой
+   виден кусок страницы — закрываем его фоном шапки, вверх на целый экран (за пределами окна это не видно) */
+.header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 100vh;
+  background: var(--bg);
+}
+
 .header__bar {
   position: relative;
   z-index: 2;

@@ -1,8 +1,8 @@
 // 13 FAQ (T37, вариант A «переписка»): вопросы из src/data/faq.json — кнопки-вкладки слева, справа общий телефон
 // с чатом Володимира. Выбор вопроса «отправляет» его сообщением посетителя, в шапке и ленте — «друкує…» (TYPING_MS),
 // затем приходит ответ; переписка копится, старые сообщения уезжают вверх за край экрана (как в Telegram).
-// Вопросы сами перебираются раз в STEP_MS, пока блок в окне и вкладка видима; пауза — только пока курсор на самом
-// списке вопросов или фокус с клавиатуры в нём (урок блока 09: не весь блок). Ручной выбор перезапускает отсчёт.
+// Вопросы сами не перебираются (2026-11-11: «пускай оно само не пишет вопросы и не выдает ответы»): вопрос уходит
+// в чат только по клику или клавише. AUTO = false выключает прежнее автолистание раз в STEP_MS.
 // reduced-motion / ?nomotion=1 — первый вопрос и ответ сразу, без автолистания, смены мгновенные.
 // Только transform и opacity (Web Animations API).
 import { $, el, on } from '../core/dom.js';
@@ -12,7 +12,9 @@ import { reduced, scrollToTarget } from '../core/motion.js';
 import { pickText, isTbd, nextIndex } from './faq-model.js';
 import data from '../data/faq.json';
 
-/** Шаг автолистания, мс. */
+/** Автолистание вопросов: выключено по просьбе пользователя. */
+export const AUTO = false;
+/** Шаг автолистания, мс (если AUTO включат снова). */
 export const STEP_MS = 8000;
 /** Сколько Володимир «друкує» перед ответом, мс. */
 export const TYPING_MS = 700;
@@ -136,6 +138,7 @@ export function init(root) {
   function startTimer() {
     timer?.cancel();
     timer = null;
+    if (!AUTO) return; // автолистание выключено
     if (reduced || typeof tabs[current].bar.animate !== 'function') return;
     timer = tabs[current].bar.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }], {
       duration: STEP_MS,

@@ -27,7 +27,6 @@ const KYIV = { lon: 30.5, lat: 50.45 };
  *  заголовок с вкладками появляются, когда блок показался, а каждая часть ниже — когда сама доходит до низа окна. */
 const ENTER_START = 'top 55%';
 const ENTER_START_NARROW = 'top 80%';
-const ENTER_START_EACH = 'top 88%';
 const WIDE = '(min-width: 900px)';
 /** Заголовок: строка выезжает из-под маски; вторая — с задержкой. */
 const TITLE = { duration: 760, step: 90 };
@@ -188,12 +187,10 @@ function enter(root, panel, map) {
     });
   };
 
+  // весь блок появляется вместе, и на телефоне тоже («Появление этого блока сделать вместе с остальным блоком»):
+  // раньше на узком экране каждая строка ждала, пока сама доедет до низа окна
   const bar = $('.stats__tabs', root);
-  if (reduced || window.matchMedia?.(WIDE).matches) {
-    stagger([bar], { trigger: root, start: ENTER_START, onEach: start });
-    stagger(items, { trigger: root, start: ENTER_START, onEach });
-  } else {
-    stagger([bar], { trigger: root, start: ENTER_START_NARROW, onEach: start });
-    for (const item of items) stagger([item], { trigger: item, start: ENTER_START_EACH, onEach });
-  }
+  const startAt = reduced || window.matchMedia?.(WIDE).matches ? ENTER_START : ENTER_START_NARROW;
+  stagger([bar], { trigger: root, start: startAt, onEach: start });
+  stagger(items, { trigger: root, start: startAt, onEach });
 }
