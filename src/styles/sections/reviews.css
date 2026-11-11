@@ -478,3 +478,24 @@ html:not(.js-anim) .reviews__arc {
     font-size: var(--fs-xs);
   }
 }
+
+/* узкий экран: сначала заголовок, потом видео, потом клиенты, отзыв и цифры («Тут надо местами поменять»).
+   Колонка отзывов «растворяется» в сетке блока, заголовок встаёт первым */
+@media (max-width: 999px) {
+  .reviews {
+    display: contents;
+  }
+
+  .reviews__body {
+    gap: var(--rv-gap);
+  }
+
+  .reviews .reviews__head {
+    order: -1;
+    margin-bottom: 0;
+  }
+
+  .reviews__stage {
+    margin-bottom: 0.75rem;
+  }
+}
