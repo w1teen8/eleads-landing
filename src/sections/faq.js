@@ -22,6 +22,8 @@ export const TYPING_MS = 700;
 const KEEP = 8;
 
 const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+/** Где вместо телефона — выпадающий список. */
+export const ACCORDION_MEDIA = '(max-width: 899px), (orientation: portrait)';
 const KEYS = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
 const ARROW =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>';
@@ -51,9 +53,25 @@ export function init(root) {
       el('span', { class: 'faq__mark', html: ARROW, attrs: { 'aria-hidden': 'true' } }),
       bar,
     );
-    list.append(el('li', { attrs: { role: 'presentation' } }, btn));
-    return { item, btn, text, bar };
+    // ответ под вопросом — для узкого экрана (выпадающий список вместо телефона)
+    const ans = el('div', { class: 'faq__a', attrs: { id: `faq-a-${i}`, hidden: '' } }, el('p', { class: 'faq__a-text' }));
+    list.append(el('li', { attrs: { role: 'presentation' } }, btn, ans));
+    return { item, btn, text, bar, ans };
   });
+
+  // телефон: «может сделать просто выпадающий список? А то каждый раз перекидывает на телефон» — вопрос раскрывает
+  // ответ прямо под собой, телефон с чатом скрыт (CSS по классу is-accordion)
+  const narrow = window.matchMedia?.(ACCORDION_MEDIA);
+  const accordion = () => Boolean(narrow?.matches);
+  const mode = () => root.classList.toggle('is-accordion', accordion());
+  mode();
+  narrow?.addEventListener?.('change', mode);
+  const toggle = (i) => {
+    const { btn, ans } = tabs[i];
+    const open = ans.hidden;
+    ans.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+  };
 
   let current = -1;
   let timer = null; // полоска отсчёта (WAAPI) — её конец выбирает следующий вопрос
@@ -187,6 +205,7 @@ export function init(root) {
 
   tabs.forEach(({ btn }, i) => {
     on(btn, 'click', () => {
+      if (accordion()) return toggle(i);
       select(i, true);
       showPhone();
     });
@@ -244,12 +263,18 @@ export function init(root) {
 
   /* ——— язык: подписи вопросов и переписка заново, без анимации ——— */
   const paint = () => {
-    for (const { text, item } of tabs) text.textContent = pickText(item.q, lang());
+    for (const { text, item, ans } of tabs) {
+      text.textContent = pickText(item.q, lang());
+      ans.firstChild.textContent = pickText(item.a, lang());
+    }
     if (current >= 0) send(current, false);
   };
   onLangChange(paint);
 
   // первый вопрос и ответ видны сразу (без «печати»): блок не пустой, пока до него докручивают
-  for (const { text, item } of tabs) text.textContent = pickText(item.q, lang());
+  for (const { text, item, ans } of tabs) {
+    text.textContent = pickText(item.q, lang());
+    ans.firstChild.textContent = pickText(item.a, lang());
+  }
   select(0, false, false, false);
 }

@@ -221,3 +221,14 @@ test('14 CTA: шёлк лёгкий — 30 кадров, разрешение д
   assert.doesNotMatch(ctaCss, /mix-blend-mode/);
   assert.match(ctaCss, /\.cta__scene\s*\{[^}]*will-change:\s*transform/);
 });
+
+// клиент 2026-11-11: «В моб версии может сделать просто выпадающий список? А то каждый раз перекидывает на телефон»
+test('13 FAQ на узком экране — выпадающий список: ответ под вопросом, телефон скрыт', () => {
+  const faq = read('src/sections/faq.js');
+  const css = read('src/styles/sections/faq.css');
+  assert.match(faq, /export const ACCORDION_MEDIA = '\(max-width: 899px\), \(orientation: portrait\)';/);
+  assert.match(faq, /if \(accordion\(\)\) return toggle\(i\);/);
+  assert.match(faq, /class: 'faq__a', attrs: \{ id: `faq-a-\$\{i\}`, hidden: '' \}/);
+  assert.match(css, /\.is-accordion \.faq__stage\s*\{\s*display: none;/);
+  assert.match(css, /\.is-accordion \.faq__q\[aria-expanded='true'\] \.faq__mark\s*\{\s*transform: rotate\(45deg\);/);
+});

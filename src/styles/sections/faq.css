@@ -345,3 +345,46 @@
     column-gap: clamp(1.5rem, 3vw, 3rem);
   }
 }
+
+/* — телефон: выпадающий список вместо телефона с чатом (клиент 2026-11-11) — */
+.faq__a {
+  padding: 0.75rem 1.15rem 1rem;
+}
+
+.faq__a[hidden] {
+  display: none;
+}
+
+.faq__a-text {
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.is-accordion .faq__stage {
+  display: none;
+}
+
+/* в списке нет «выбранного» вопроса — только раскрытые; плюс поворачивается в крестик */
+.is-accordion .faq__q[aria-selected='true'] {
+  color: var(--text);
+}
+
+.is-accordion .faq__q[aria-selected='true']::before,
+.is-accordion .faq__q[aria-selected='true'] .faq__bar,
+.is-accordion .faq__q .faq__mark svg {
+  opacity: 0;
+}
+
+.is-accordion .faq__q[aria-selected='true'] .faq__mark::before,
+.is-accordion .faq__q[aria-selected='true'] .faq__mark::after {
+  opacity: 1;
+}
+
+.is-accordion .faq__mark {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.is-accordion .faq__q[aria-expanded='true'] .faq__mark {
+  transform: rotate(45deg);
+}
