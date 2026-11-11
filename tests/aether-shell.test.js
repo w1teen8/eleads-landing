@@ -32,12 +32,14 @@ test('ленты: тексты из content.*.json — ribbons.top и hero.trust
   assert.ok(ua.ribbons.top.includes('TELEGRAM ADS'));
 });
 
-test('ленты: бегут через motion.marquee в разные стороны, полосы наклонены ±3–4°', async () => {
+test('ленты: бегут через motion.marquee в разные стороны; две в ряд ровно, без наклона (выбор P1)', async () => {
   const js = read('src/sections/ribbons.js');
   assert.match(js, /import\s*\{[^}]*\bmarquee\b[^}]*\}\s*from\s*'\.\.\/core\/motion\.js'/);
   const css = strip(read('src/styles/sections/ribbons.css'));
-  const angles = [...css.matchAll(/rotate\((-?\d+(?:\.\d+)?)deg\)/g)].map((m) => Number(m[1]));
-  assert.ok(angles.some((a) => a <= -3 && a >= -4) && angles.some((a) => a >= 3 && a <= 4), `углы: ${angles}`);
+  // 2026-11-11: «А если просто две линии в ряд поставить … прям под руки владимиру»
+  assert.doesNotMatch(css, /rotate\(/, 'полосы не наклонены');
+  assert.match(css, /\.ribbons \{[^}]*flex-direction: column/, 'одна под другой');
+  assert.doesNotMatch(css, /\.ribbons \{[^}]*min-height/, 'без пустых полей под концы наклонных полос');
 });
 
 test('подвал (T31): компактный — логотип словом, ссылки, Telegram, ©, UA/EN, строка автора', () => {

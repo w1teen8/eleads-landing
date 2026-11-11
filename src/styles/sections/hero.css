@@ -497,12 +497,12 @@
     margin: 0;
   }
 
-  /* низ свитера к краю сцены гаснет в фон страницы — жёсткого среза над лентами нет */
+  /* низ фигуры — срез по краю сцены без затухания: сразу под ним стоит жёлтая лента («прям под руки владимиру») */
   .hero__person-img {
     width: auto;
     height: 100%;
-    -webkit-mask-image: linear-gradient(to bottom, black 88%, transparent 97%);
-    mask-image: linear-gradient(to bottom, black 88%, transparent 97%);
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   /* левая колонка: целиком под буквами; заголовок шрифтом канала выше прежнего — колонка поднята до 56% */
