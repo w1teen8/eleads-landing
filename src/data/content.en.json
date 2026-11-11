@@ -1,7 +1,7 @@
 {
   "draft": true,
   "meta": {
-    "title": "eLeads — Volodymyr Kucher · Growth with Telegram Ads",
+    "title": "eLeads — Volodymyr Strokach · Growth with Telegram Ads",
     "description": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide. Message me on Telegram — @Kucherflow.",
     "ogTitle": "Growth with Telegram Ads — eLeads",
     "ogDescription": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide.",
@@ -42,7 +42,7 @@
     "searching": "Searching",
     "found": "Found",
     "loading": "Loading",
-    "resultTitle": "eLeads — Telegram Ads · Volodymyr Kucher",
+    "resultTitle": "eLeads — Telegram Ads · Volodymyr Strokach",
     "resultUrl": "t.me/Kucherflow",
     "resultText": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide.",
     "next": "Next section"
@@ -77,7 +77,7 @@
       "button": "View"
     },
     "photo": {
-      "alt": "Volodymyr Kucher, founder of eLeads"
+      "alt": "Volodymyr Strokach, founder of eLeads"
     },
     "stats": {
       "years": {
@@ -156,7 +156,7 @@
     "ww": {
       "main": {
         "value": "1B+",
-        "label": "monthly active users worldwide; Telegram passed 1 billion MAU in 2025"
+        "label": "monthly active users worldwide"
       },
       "mapLabel": "Dotted world map",
       "top": {
@@ -169,7 +169,7 @@
       },
       "what": {
         "title": "What we advertise",
-        "text": "Telegram channels · bots · websites · apps"
+        "text": "Telegram channels · bots"
       }
     }
   },
@@ -255,7 +255,7 @@
   "calculator": {
     "title": "Estimate your Telegram Ads potential",
     "titleAccent": "Telegram Ads potential",
-    "paramsTitle": "Pick the settings — the bot will do the math",
+    "paramsTitle": "Pick the settings",
     "niche": "Topic",
     "geo": "GEO",
     "goal": "Goal",
@@ -511,7 +511,7 @@
     },
     "listLabel": "Questions",
     "chat": {
-      "name": "Volodymyr Kucher",
+      "name": "Volodymyr Strokach",
       "short": "Volodymyr",
       "status": "online",
       "typing": "typing…"
@@ -523,7 +523,7 @@
     "text": "You don’t need a ready project or an ad launch plan. We can simply get to know each other, talk about Telegram and exchange ideas.",
     "button": "Write to Volodymyr on Telegram",
     "arrow": "→",
-    "photoAlt": "Volodymyr Kucher, founder of eLeads"
+    "photoAlt": "Volodymyr Strokach, founder of eLeads"
   },
   "ribbons": {
     "label": "eLeads in short",

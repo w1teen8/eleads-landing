@@ -200,10 +200,10 @@ test('линии роста нет; показатели — из cases.json →
   const item = cases[0];
   assert.deepEqual(metricsOf(item, 'ua'), [
     { label: 'Бюджет', value: 'уточнити' },
-    { label: 'Результат', value: 'уточнити' },
+    { label: 'Охоплення', value: 'уточнити' },
     { label: 'CPA / CPS', value: 'уточнити' },
   ]);
-  assert.deepEqual(metricsOf(item, 'en').map((m) => m.label), ['Budget', 'Result', 'CPA / CPS']);
+  assert.deepEqual(metricsOf(item, 'en').map((m) => m.label), ['Budget', 'Reach', 'CPA / CPS']);
   assert.deepEqual(metricsOf({}, 'ua'), [null, null, null]);
   assert.deepEqual(metricsOf({ metrics: [{ label: { ua: 'A', en: 'A' }, value: { ua: '1', en: '1' } }, { label: { ua: '' }, value: { ua: ' ' } }] }, 'ua'), [{ label: 'A', value: '1' }, null, null]);
   assert.equal(metricsOf({ metrics: Array(5).fill(item.metrics[0]) }, 'ua').length, 3, 'лишние отбрасываются');

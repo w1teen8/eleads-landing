@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "eLeads — Володимир Кучер · просування через Telegram Ads",
+    "title": "eLeads — Володимир Строкач · просування через Telegram Ads",
     "description": "Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу. Напишіть у Telegram — @Kucherflow.",
     "ogTitle": "Просування через Telegram Ads — eLeads",
     "ogDescription": "Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу.",
@@ -41,7 +41,7 @@
     "searching": "Шукаємо",
     "found": "Знайдено",
     "loading": "Завантаження",
-    "resultTitle": "eLeads — Telegram Ads · Володимир Кучер",
+    "resultTitle": "eLeads — Telegram Ads · Володимир Строкач",
     "resultUrl": "t.me/Kucherflow",
     "resultText": "Залучаю підписників, лідів і клієнтів через офіційну рекламу Telegram в Україні та по всьому світу.",
     "next": "Наступний розділ"
@@ -76,7 +76,7 @@
       "button": "Переглянути"
     },
     "photo": {
-      "alt": "Володимир Кучер, засновник eLeads"
+      "alt": "Володимир Строкач, засновник eLeads"
     },
     "stats": {
       "years": {
@@ -155,7 +155,7 @@
     "ww": {
       "main": {
         "value": "1B+",
-        "label": "monthly active users у світі; Telegram перетнув 1 млрд MAU у 2025 році"
+        "label": "щомісячних активних користувачів у світі"
       },
       "mapLabel": "Мапа світу з точок",
       "top": {
@@ -168,7 +168,7 @@
       },
       "what": {
         "title": "Що рекламуємо",
-        "text": "Telegram-канали · боти · сайти · застосунки"
+        "text": "Telegram-канали · боти"
       }
     }
   },
@@ -254,7 +254,7 @@
   "calculator": {
     "title": "Розрахуйте потенціал Telegram Ads",
     "titleAccent": "Telegram Ads",
-    "paramsTitle": "Оберіть параметри — бот порахує",
+    "paramsTitle": "Оберіть параметри",
     "niche": "Тематика",
     "geo": "GEO",
     "goal": "Ціль",
@@ -510,7 +510,7 @@
     },
     "listLabel": "Питання",
     "chat": {
-      "name": "Володимир Кучер",
+      "name": "Володимир Строкач",
       "short": "Володимир",
       "status": "у мережі",
       "typing": "друкує…"
@@ -522,7 +522,7 @@
     "text": "Не обов’язково мати готовий проєкт чи план запуску реклами. Можемо просто познайомитися, поспілкуватися про Telegram та обмінятися ідеями.",
     "button": "Написати Володимиру в Telegram",
     "arrow": "→",
-    "photoAlt": "Володимир Кучер, засновник eLeads"
+    "photoAlt": "Володимир Строкач, засновник eLeads"
   },
   "ribbons": {
     "label": "Коротко про eLeads",

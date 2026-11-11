@@ -150,7 +150,7 @@ test('14 CTA: заголовок, текст и кнопка без измене
   for (const dict of [ua, en]) {
     assert.equal(dict.cta.chatHello, undefined, 'cta.chatHello удалён');
     assert.equal(dict.cta.chat, undefined, 'cta.chat удалён');
-    assert.match(dict.cta.photoAlt, /Kucher|Кучер/, 'alt фото — свой ключ блока (founder.* может исчезнуть с блоком 10)');
+    assert.match(dict.cta.photoAlt, /Strokach|Строкач/, 'alt фото — свой ключ блока (founder.* может исчезнуть с блоком 10)');
   }
   assert.doesNotMatch(ctaJs, /phone|typing/, 'cta.js — без чата');
 });
