@@ -337,28 +337,28 @@
       "ukraine": {
         "name": "Україна",
         "usersLabel": "Користувачів Telegram в Україні",
-        "users": "уточнити"
+        "users": "25M+"
       },
       "europe": {
         "name": "Європа",
-        "usersLabel": "Користувачів Telegram у Європі",
-        "users": "уточнити",
-        "ukrainiansLabel": "з них українців",
-        "ukrainians": "уточнити"
+        "usersLabel": "Користувачів Telegram у ЄС",
+        "users": "41M+",
+        "ukrainiansLabel": "Українців у ЄС",
+        "ukrainians": "4.38M"
       },
       "america": {
         "name": "Америка/Канада",
-        "usersLabel": "Користувачів Telegram у США та Канаді",
-        "users": "уточнити",
-        "ukrainiansLabel": "з них українців",
-        "ukrainians": "уточнити"
+        "usersLabel": "Користувачів Telegram у США",
+        "users": "≈30M",
+        "ukrainiansLabel": "Українців за походженням у США та Канаді",
+        "ukrainians": "2.3M+"
       },
       "worldwide": {
         "name": "Worldwide",
         "usersLabel": "Аудиторія Telegram у світі",
         "users": "1B+ MAU",
-        "moreLabel": "Інша статистика аудиторії",
-        "more": "уточнити"
+        "moreLabel": "Місце серед месенджерів світу",
+        "more": "№2 після WhatsApp"
       }
     }
   },

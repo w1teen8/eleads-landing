@@ -184,21 +184,23 @@ test('словари: у региона — название, пользоват
       // пользователь: «убрать эти текста» — мелкие подписи справа в строках списка
       assert.equal(r.text, undefined, `${id}: подписи нет`);
     }
-    // не выдумываем: чисел от клиента ещё нет — заглушки, которые он заполнит в админке
+    // 2026-11-11, пользователь: «сам возьми какие-то цифры» — публичные данные (источники в PROGRESS.md), заглушек нет
     for (const k of ['ukraine.users', 'europe.users', 'europe.ukrainians', 'america.users', 'america.ukrainians', 'worldwide.more']) {
       const [id, f] = k.split('.');
-      assert.equal(dict.geo.regions[id][f], tbd[lang], k);
+      assert.notEqual(dict.geo.regions[id][f], tbd[lang], k);
     }
+    assert.equal(dict.geo.regions.ukraine.users, '25M+');
+    assert.equal(dict.geo.regions.europe.ukrainians, '4.38M');
     assert.equal(dict.geo.regions.worldwide.users, '1B+ MAU', 'уже есть на сайте (блок 02, источник — Telegram)');
     assert.equal(dict.stats.ww.main.value, '1B+');
-    // 4.43M — украинцы под временной защитой в ЕС, не «скільки з них українців» среди пользователей Telegram
-    assert.doesNotMatch(JSON.stringify(dict.geo), /4\.43M|temporary protection|figure/);
+    // украинцы в ЕС считаются все, а не среди пользователей Telegram — подпись не должна говорить «з них»
+    assert.doesNotMatch(JSON.stringify(dict.geo), /4\.43M|з них|of them|figure/);
   }
   assert.equal(ua.geo.regions.america.name, 'Америка/Канада');
   assert.equal(ua.geo.regions.ukraine.usersLabel, 'Користувачів Telegram в Україні');
-  assert.equal(ua.geo.regions.europe.usersLabel, 'Користувачів Telegram у Європі');
-  assert.equal(ua.geo.regions.america.usersLabel, 'Користувачів Telegram у США та Канаді');
-  assert.equal(ua.geo.regions.europe.ukrainiansLabel, 'з них українців');
+  assert.equal(ua.geo.regions.europe.usersLabel, 'Користувачів Telegram у ЄС');
+  assert.equal(ua.geo.regions.america.usersLabel, 'Користувачів Telegram у США');
+  assert.equal(ua.geo.regions.europe.ukrainiansLabel, 'Українців у ЄС');
   assert.equal(ua.geo.regions.worldwide.usersLabel, 'Аудиторія Telegram у світі');
 });
 

@@ -338,28 +338,28 @@
       "ukraine": {
         "name": "Ukraine",
         "usersLabel": "Telegram users in Ukraine",
-        "users": "TBD"
+        "users": "25M+"
       },
       "europe": {
         "name": "Europe",
-        "usersLabel": "Telegram users in Europe",
-        "users": "TBD",
-        "ukrainiansLabel": "of them Ukrainians",
-        "ukrainians": "TBD"
+        "usersLabel": "Telegram users in the EU",
+        "users": "41M+",
+        "ukrainiansLabel": "Ukrainians in the EU",
+        "ukrainians": "4.38M"
       },
       "america": {
         "name": "America/Canada",
-        "usersLabel": "Telegram users in the USA and Canada",
-        "users": "TBD",
-        "ukrainiansLabel": "of them Ukrainians",
-        "ukrainians": "TBD"
+        "usersLabel": "Telegram users in the USA",
+        "users": "≈30M",
+        "ukrainiansLabel": "People of Ukrainian descent in the USA and Canada",
+        "ukrainians": "2.3M+"
       },
       "worldwide": {
         "name": "Worldwide",
         "usersLabel": "Telegram audience worldwide",
         "users": "1B+ MAU",
-        "moreLabel": "Other audience statistics",
-        "more": "TBD"
+        "moreLabel": "Rank among messaging apps worldwide",
+        "more": "#2 after WhatsApp"
       }
     }
   },
