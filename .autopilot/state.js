@@ -13,7 +13,7 @@ window.STATE =
   "skillDir": "C:/Users/admin/.claude/skills/autopilot",
   "baseCommit": "0f2eb78",
   "startedAt": "2026-11-06T11:50:20+02:00",
-  "updatedAt": "2026-11-11T12:49:05+02:00",
+  "updatedAt": "2026-11-11T12:55:36+02:00",
   "finishedAt": null,
   "stages": [
     {
@@ -1709,10 +1709,16 @@ window.STATE =
       ],
       "review": null,
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-11T12:33:27+02:00"
+      "startedAt": "2026-11-11T12:33:27+02:00",
+      "finishedAt": "2026-11-11T12:55:35+02:00",
+      "tests": {
+        "passed": 281,
+        "failed": 0
+      },
+      "commit": "b909bfa"
     },
     {
       "id": "41",
@@ -1742,10 +1748,16 @@ window.STATE =
       ],
       "review": null,
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-11T12:33:28+02:00"
+      "startedAt": "2026-11-11T12:33:28+02:00",
+      "finishedAt": "2026-11-11T12:55:35+02:00",
+      "tests": {
+        "passed": 281,
+        "failed": 0
+      },
+      "commit": "b909bfa"
     },
     {
       "id": "42",
@@ -1775,10 +1787,16 @@ window.STATE =
       ],
       "review": null,
       "model": "сильная",
-      "status": "in-progress",
+      "status": "done",
       "retries": 0,
       "repairs": 0,
-      "startedAt": "2026-11-11T12:33:28+02:00"
+      "startedAt": "2026-11-11T12:33:28+02:00",
+      "finishedAt": "2026-11-11T12:55:36+02:00",
+      "tests": {
+        "passed": 281,
+        "failed": 0
+      },
+      "commit": "b909bfa"
     },
     {
       "id": "F1",
@@ -1825,7 +1843,7 @@ window.STATE =
     }
   ],
   "tests": {
-    "passed": 270,
+    "passed": 281,
     "failed": 0
   },
   "debt": {
@@ -2069,9 +2087,11 @@ window.STATE =
     "2026-11-11T12:33:26+02:00",
     "2026-11-11T12:33:27+02:00",
     "2026-11-11T12:33:28+02:00",
-    "2026-11-11T12:49:05+02:00"
+    "2026-11-11T12:49:05+02:00",
+    "2026-11-11T12:55:35+02:00",
+    "2026-11-11T12:55:36+02:00"
   ],
-  "rev": 198,
+  "rev": 201,
   "waiting": null,
   "waits": [
     {
@@ -3607,6 +3627,42 @@ window.STATE =
       "act": "done",
       "tests": {
         "passed": 270,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-11T12:55:35+02:00",
+      "k": "ticket",
+      "ids": [
+        "40"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 281,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-11T12:55:35+02:00",
+      "k": "ticket",
+      "ids": [
+        "41"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 281,
+        "failed": 0
+      }
+    },
+    {
+      "t": "2026-11-11T12:55:36+02:00",
+      "k": "ticket",
+      "ids": [
+        "42"
+      ],
+      "act": "done",
+      "tests": {
+        "passed": 281,
         "failed": 0
       }
     }
