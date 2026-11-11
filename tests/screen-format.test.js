@@ -96,7 +96,8 @@ test('H13: ленты крест-накрест включены сразу по
   for (const dict of [ua, en]) assert.equal(dict.ribbons.bottom, undefined, 'неиспользуемые ribbons.bottom');
   const css = strip(read('src/styles/sections/ribbons.css'));
   // 2026-11-11: «Сделай две полоски серыми» — обе ленты серые (фон --surface), без градиента
-  for (const band of ['accent', 'muted']) assert.match(css, new RegExp(`\.ribbons__band--${band}\s*\{[^}]*background:\s*var\(--surface\)`), band);
+  assert.match(css, /\.ribbons__band--accent\s*\{[^}]*background:\s*var\(--surface\)/, 'верхняя серая');
+  assert.match(css, /\.ribbons__band--muted\s*\{[^}]*background:\s*var\(--surface\)/, 'нижняя серая');
   // дополнение 4: «Давай поменяем это на значок телеграмма и сделаем сами линии тоньше» — разделитель — значок Telegram
   // (круг с вырезанным самолётиком) цветом текста своей ленты, без синего; планеты с орбитой больше нет
   assert.doesNotMatch(ribbons, /<ellipse\b/, 'планета с орбитой');
