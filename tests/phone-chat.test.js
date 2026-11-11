@@ -161,8 +161,8 @@ test('14 CTA: фото без рамки — улица растворяется
   assert.match(ctaCss, /\.cta__scene-bg\s*\{[^}]*brightness/, 'улица притемнена');
   assert.match(ctaCss, /\.cta__scene-cut\s*\{[^}]*drop-shadow/, 'тёплый контур фигуры');
   assert.match(ctaCss, /\.cta__glow\s*\{[^}]*var\(--accent-2\)/, 'свечение за головой');
-  // широкий экран: кадр выше блока в 1,58 раза — забор (≈66% кадра) уходит ниже края
-  assert.match(ctaCss, /height:\s*calc\(var\(--cta-h\) \* 1\.58\)/);
+  // широкий экран: кадр выше блока в 1,25 раза — сложенные руки (≈74% кадра) видны
+  assert.match(ctaCss, /height:\s*calc\(var\(--cta-h\) \* 1\.25\)/);
   for (const [, prop] of ctaCss.matchAll(/transition:\s*([a-z-]+)/g)) assert.ok(['transform', 'opacity'].includes(prop), prop);
   assert.doesNotMatch(ctaCss, /@keyframes|animation:/, 'движение — только на холсте');
 });

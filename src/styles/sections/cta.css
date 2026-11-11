@@ -2,7 +2,7 @@
    огромный заголовок шрифтом канала с акцентным хвостом, текст Onest и акцентная кнопка-пилюля в Telegram. Справа —
    Володимир крупно, без рамки: внизу слоем — исходный кадр с улицей, притемнён и плавно растворяется в фон («немного
    фона … чтобы был плавный переход»), поверх — вырезанная фигура того же размера, чёткая, с тёплым контуром. Кадр
-   приближен так, что забор уходит ниже края блока («приблизить фото … чтобы не было видно забора»). За всем —
+   по пояс — видно сложенные руки («Так чтобы руки тоже было видно»). За всем —
    топографические линии с медленной волной света (холст .cta__lines из cta.js). На широком экране — ровно один экран
    (H15); на телефоне — фото под текстом, квадратом. Движение — только на холсте. */
 
@@ -83,21 +83,21 @@
 .cta__stage {
   position: relative;
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 4 / 5;
   overflow: hidden;
   pointer-events: none;
   /* края квадрата растворяются в фон — без жёсткой рамки (низ фигуры тоже уходит в фон) */
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 16%, black 72%, transparent), linear-gradient(to right, transparent, black 18%, black 82%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 82%, transparent), linear-gradient(to right, transparent, black 14%, black 86%, transparent);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(to bottom, transparent, black 16%, black 72%, transparent), linear-gradient(to right, transparent, black 18%, black 82%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 10%, black 82%, transparent), linear-gradient(to right, transparent, black 14%, black 86%, transparent);
   mask-composite: intersect;
 }
 
 .cta__scene {
   position: absolute;
   top: 0;
-  left: -20%;
-  width: 140%;
+  left: 0;
+  width: 100%;
   aspect-ratio: 800 / 1020;
 }
 
@@ -148,7 +148,8 @@
     max-width: 50%;
   }
 
-  /* сцена привязана к блоку, а не к колонке: кадр выше блока в 1,58 раза — забор (≈66% кадра) ниже нижнего края */
+  /* сцена привязана к блоку, а не к колонке: кадр выше блока в 1,25 раза — сложенные руки (≈74% кадра) в кадре
+     («Так чтобы руки тоже было видно») */
   .cta__stage {
     position: absolute;
     inset: 0;
@@ -162,7 +163,7 @@
     right: calc(var(--cta-h) * -0.065);
     left: auto;
     width: auto;
-    height: calc(var(--cta-h) * 1.58);
+    height: calc(var(--cta-h) * 1.25);
   }
 
   .section--cta .display.section__title {
