@@ -29,7 +29,7 @@
   white-space: nowrap;
 }
 
-/* «Сделай две полоски серыми» (2026-11-11): обе ленты серые, как тёмная; между ними тонкая линия */
+/* «Сделай две полоски серыми» (2026-11-11): верхняя лента серая, под ней тонкая линия */
 .ribbons__band--accent {
   z-index: 2;
   border-bottom: 1px solid var(--line);
@@ -37,11 +37,11 @@
   color: color-mix(in srgb, var(--text) 80%, transparent);
 }
 
+/* «Сделай нижнюю ленту желтой»: нижняя — жёлто-оранжевая с тёмным текстом, верхняя остаётся серой */
 .ribbons__band--muted {
   z-index: 1;
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
-  color: color-mix(in srgb, var(--text) 80%, transparent);
+  background: var(--grad);
+  color: var(--accent-ink);
 }
 
 .ribbons__viewport {

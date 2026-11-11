@@ -95,9 +95,10 @@ test('H13: ленты крест-накрест включены сразу по
   assert.doesNotMatch(ribbons, /ribbons\.bottom/);
   for (const dict of [ua, en]) assert.equal(dict.ribbons.bottom, undefined, 'неиспользуемые ribbons.bottom');
   const css = strip(read('src/styles/sections/ribbons.css'));
-  // 2026-11-11: «Сделай две полоски серыми» — обе ленты серые (фон --surface), без градиента
+  // 2026-11-11: «Сделай две полоски серыми» → «Сделай нижнюю ленту желтой»: верхняя серая, нижняя жёлтая
   assert.match(css, /\.ribbons__band--accent\s*\{[^}]*background:\s*var\(--surface\)/, 'верхняя серая');
-  assert.match(css, /\.ribbons__band--muted\s*\{[^}]*background:\s*var\(--surface\)/, 'нижняя серая');
+  // «Сделай нижнюю ленту желтой»
+  assert.match(css, /\.ribbons__band--muted\s*\{[^}]*background:\s*var\(--grad\)[^}]*color:\s*var\(--accent-ink\)/, 'нижняя жёлтая');
   // дополнение 4: «Давай поменяем это на значок телеграмма и сделаем сами линии тоньше» — разделитель — значок Telegram
   // (круг с вырезанным самолётиком) цветом текста своей ленты, без синего; планеты с орбитой больше нет
   assert.doesNotMatch(ribbons, /<ellipse\b/, 'планета с орбитой');
