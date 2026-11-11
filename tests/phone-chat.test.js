@@ -213,3 +213,11 @@ test('13 FAQ: ответы из документа клиента (стр. 13) �
   // id остальных вопросов не сдвинуты — админка и аналитика ссылаются на них
   assert.deepEqual(faqData.items.map((item) => item.id), ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8']);
 });
+
+// «Лагает экран»: шёлк не чаще 30 кадров и не выше 1,25 пикселя на точку; без режимов смешивания
+test('14 CTA: шёлк лёгкий — 30 кадров, разрешение до 1,25, без mix-blend-mode; фигура на своём слое', () => {
+  assert.match(ctaJs, /const FPS = 30;/);
+  assert.match(ctaJs, /const DPR_MAX = 1\.25;/);
+  assert.doesNotMatch(ctaCss, /mix-blend-mode/);
+  assert.match(ctaCss, /\.cta__scene\s*\{[^}]*will-change:\s*transform/);
+});

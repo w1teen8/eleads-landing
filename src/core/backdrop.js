@@ -5,7 +5,7 @@
 // Рисуется не чаще 30 раз в секунду, на скрытой вкладке стоит, при reduced-motion (и ?nomotion=1) — один кадр.
 
 const FPS = 30;
-const DPR_MAX = 1.5;
+const DPR_MAX = 1; // пыль мелкая — высокое разрешение не видно, а весь экран перерисовывается каждый кадр
 
 function rgbOf(value, fallback) {
   const hex = String(value || '').trim().replace('#', '');

@@ -93,6 +93,8 @@
 
 .cta__scene {
   position: absolute;
+  /* свой слой: фигура с тенью растрируется один раз и не перерисовывается вместе с шёлком под ней («Лагает экран») */
+  will-change: transform;
   top: -2%;
   left: -14%;
   width: 128%;
@@ -116,7 +118,6 @@
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(closest-side, color-mix(in srgb, var(--accent-2) 32%, transparent), color-mix(in srgb, var(--accent) 8%, transparent) 60%, transparent);
-  mix-blend-mode: screen;
 }
 
 /* фигура: тонкий тёплый контур, чтобы тёмное пальто не сливалось с фоном */

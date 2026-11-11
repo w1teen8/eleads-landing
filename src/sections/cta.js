@@ -7,6 +7,10 @@ import { accentTitles } from '../core/title-accent.js';
 import { reduced } from '../core/motion.js';
 import { SILK, UNIT_H, silkY, sheenOf, lineCount, hexRgb } from './cta-silk.js';
 
+/** «Лагает экран»: шёлк рисуется не чаще 30 раз в секунду и в разрешении не выше 1,25 пикселя на точку. */
+const FPS = 30;
+const DPR_MAX = 1.25;
+
 export function init(root) {
   accentTitles(root);
   silk(root);
@@ -33,7 +37,7 @@ function silk(root) {
   const start = performance.now();
 
   function size() {
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const dpr = Math.min(DPR_MAX, window.devicePixelRatio || 1);
     const w = Math.round(canvas.clientWidth * dpr);
     const h = Math.round(canvas.clientHeight * dpr);
     if (!w || !h) return false;
@@ -66,10 +70,14 @@ function silk(root) {
     }
   }
 
+  let last = 0;
   function loop(now) {
     raf = 0;
     if (!visible || document.hidden || reduced) return;
-    draw(now);
+    if (now - last >= 1000 / FPS - 1) {
+      last = now;
+      draw(now);
+    }
     raf = requestAnimationFrame(loop);
   }
   const kick = () => {
