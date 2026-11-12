@@ -104,3 +104,18 @@ test('3 ключові показники: подпись и значение н
     for (const old of ['budget', 'result', 'cpa']) assert.equal(c[old], undefined, `${c.name.ua}: ${old}`);
   }
 });
+
+// 2026-11-12: ссылки клиента на каналы — по порядку кейсов; у Анни Хаустової ссылки нет
+test('каналы клиентов: ссылки из сообщения клиента, по порядку кейсов', () => {
+  assert.deepEqual(Object.fromEntries(cases.map((c) => [c.id, c.link ?? null])), {
+    cryptonite: 'https://t.me/cryptonite_ua',
+    'global-auto-logistic': 'https://t.me/+s-RnfWlZtRNhOTI6',
+    finmap: 'https://t.me/finmap_online',
+    dombovetskyi: 'https://t.me/Viktor_Dombovetskyi_channel',
+    mukhin: 'https://t.me/channelprosales',
+    monolit: 'https://t.me/obmen_kiev_sophia',
+    kniaziev: 'https://t.me/Drive_Ukraine',
+    khaustova: null,
+  });
+});
+

@@ -63,6 +63,7 @@
 }
 
 .cases__item {
+  position: relative;
   flex: 0 0 var(--card-w);
   display: flex;
   min-width: 0;
@@ -168,6 +169,46 @@
   display: grid;
   gap: 0.2rem;
   min-width: 0;
+}
+
+/* канал клиента (2026-11-12, «добавить ссылки на моих клиентов там где кейсы» → «И на карточке, и в окне»):
+   кружок со значком Telegram в правом верхнем углу карточки — отдельная ссылка рядом с кнопкой карточки
+   (ссылку внутрь <button> не вложить), имя не заходит под него */
+.cases__link {
+  position: absolute;
+  top: calc(var(--cases-pad) + 6px);
+  right: var(--cases-pad);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: var(--case-tone);
+  background: color-mix(in srgb, var(--case-accent) 14%, var(--surface));
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.cases__link[hidden] {
+  display: none;
+}
+
+.cases__link svg {
+  width: 62%;
+  height: 62%;
+}
+
+.cases__link:hover {
+  transform: scale(1.08);
+}
+
+.cases__link:focus-visible {
+  outline: 2px solid var(--case-accent);
+  outline-offset: 3px;
+}
+
+.cases__item:has(.cases__link:not([hidden])) .cases__top-row {
+  padding-right: 2.75rem;
 }
 
 /* имя — Onest жирно, до двух строк; переносы только по пробелам */
@@ -468,6 +509,32 @@
 .case-modal__sub {
   font-size: var(--t-small);
   color: var(--text-muted);
+}
+
+/* канал клиента под названием: «t.me/имя ↗» цветом бренда кейса */
+.case-modal__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  justify-self: start;
+  font-size: var(--t-small);
+  font-weight: 700;
+  color: var(--case-tone);
+  text-decoration: none;
+}
+
+.case-modal__link[hidden] {
+  display: none;
+}
+
+.case-modal__link svg {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+.case-modal__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .case-modal__metrics {

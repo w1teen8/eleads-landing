@@ -244,3 +244,19 @@ test('13 FAQ на узком экране — выпадающий список:
   assert.match(css, /\.is-accordion \.faq__stage\s*\{\s*display: none;/);
   assert.match(css, /\.is-accordion \.faq__q\[aria-expanded='true'\] \.faq__mark\s*\{\s*transform: rotate\(45deg\);/);
 });
+
+// 2026-11-12 клиент о тексте под заголовком: «Якось дуже простенько. Наче не на своєму місці він» → «Крупно с акцентом»
+test('14 CTA: текст крупно, светлый, с жёлтой чертой; ключевая фраза из словаря — жёлтым', () => {
+  assert.match(section(raw, 'cta'), /<p class="cta__text" data-i18n="cta\.text" data-text-accent="cta\.textAccent"><\/p>/);
+  for (const dict of [ua, en]) assert.ok(dict.cta.text.includes(dict.cta.textAccent), 'фраза — часть текста');
+  assert.equal(ua.cta.textAccent, 'Можемо просто познайомитися');
+  assert.match(ctaCss, /\.cta__text\s*\{[^}]*border-left:\s*3px solid var\(--accent\)[^}]*color:\s*var\(--text\)/);
+  assert.match(ctaCss, /\.cta__text-accent\s*\{[^}]*color:\s*var\(--accent\)/);
+  const src = read('src/sections/cta.js');
+  const fnSrc = src.slice(src.indexOf('export function splitPhrase'), src.indexOf('\n}\n', src.indexOf('export function splitPhrase')) + 2).replace('export ', '');
+  const splitPhrase = new Function(`${fnSrc}; return splitPhrase;`)();
+  assert.deepEqual(splitPhrase('a b c', 'b'), { before: 'a ', accent: 'b', after: ' c' });
+  assert.equal(splitPhrase('a b c', 'x'), null, 'фразы нет в тексте (поправили в админке) — текст как есть');
+  assert.equal(splitPhrase('a b c', ''), null);
+});
+

@@ -9,6 +9,7 @@
 // грузится, только когда блок подъезжает к экрану, играет, пока виден, и встаёт, когда вкладка скрыта.
 // reduced-motion / ?nomotion=1 — только заставка (первый кадр), видео не грузится.
 import { accentTitles } from '../core/title-accent.js';
+import { t, onLangChange } from '../core/i18n.js';
 import { reduced } from '../core/motion.js';
 import { publicUrl } from '../core/public-url.js';
 
@@ -20,7 +21,33 @@ export const silkFile = (wide) => `/video/silk-${wide ? 1920 : 720}`;
 
 export function init(root) {
   accentTitles(root);
+  accentPhrase(root);
   silk(root);
+}
+
+/** «…реклами. Можемо просто познайомитися, поспілкуватися…» + «Можемо просто познайомитися» → три части; фразы нет → null. */
+export function splitPhrase(full, phrase) {
+  if (typeof full !== 'string' || typeof phrase !== 'string' || !phrase.trim()) return null;
+  const at = full.indexOf(phrase.trim());
+  if (at < 0) return null;
+  return { before: full.slice(0, at), accent: phrase.trim(), after: full.slice(at + phrase.trim().length) };
+}
+
+/** 2026-11-12 клиент о тексте под заголовком: «Якось дуже простенько. Наче не на своєму місці він» — пользователь выбрал
+ *  «Крупно с акцентом»: текст крупнее и светлее, с жёлтой чертой слева (cta.css), ключевая фраза (cta.textAccent) —
+ *  жёлтым. Текст пре-рендерится целиком; здесь фраза оборачивается в span. Смена языка — заново. */
+function accentPhrase(root) {
+  const nodes = [...root.querySelectorAll('[data-text-accent]')];
+  const apply = (node) => {
+    const parts = splitPhrase(t(node.dataset.i18n), t(node.dataset.textAccent));
+    if (!parts) return;
+    const accent = document.createElement('span');
+    accent.className = 'cta__text-accent';
+    accent.textContent = parts.accent;
+    node.replaceChildren(document.createTextNode(parts.before), accent, document.createTextNode(parts.after));
+  };
+  nodes.forEach(apply);
+  onLangChange(() => nodes.forEach(apply));
 }
 
 function silk(root) {

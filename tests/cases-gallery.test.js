@@ -222,3 +222,23 @@ test('линии роста нет; показатели — из cases.json →
   assert.deepEqual([...parts].sort((a, b) => a - b), parts, 'порядок частей модалки');
   assert.doesNotMatch(modal, /data-m="(budget|result|cpa)"/);
 });
+
+// 2026-11-12 «добавить ссылки на моих клиентов там где кейсы» → «И на карточке, и в окне»
+test('канал клиента: кружок Telegram в углу карточки (рядом с кнопкой, не внутри) и строка под названием в окне', () => {
+  const tpl = html.split('<template data-case-card>')[1].split('</template>')[0];
+  assert.match(tpl, /<\/button>\s*<a class="cases__link" href="#" target="_blank" rel="noopener" data-case-link hidden><svg/, 'ссылка — соседка кнопки');
+  const modal = html.split('<dialog')[1];
+  assert.match(modal, /data-m="formats"><\/span><\/p>\s*<a class="case-modal__link"[^>]*data-m-link hidden><span data-m-link-text><\/span>/);
+  const src = read('src/sections/cases.js');
+  const fnSrc = src.slice(src.indexOf('export function channelOf'), src.indexOf('\n}\n', src.indexOf('export function channelOf')) + 2).replace('export ', '');
+  const channelOf = new Function(`${fnSrc}; return channelOf;`)();
+  assert.deepEqual(channelOf('https://t.me/cryptonite_ua'), { href: 'https://t.me/cryptonite_ua', label: 't.me/cryptonite_ua' });
+  assert.deepEqual(channelOf('https://t.me/+s-RnfWlZtRNhOTI6'), { href: 'https://t.me/+s-RnfWlZtRNhOTI6', label: null }, 'приглашение — подпись из словаря');
+  for (const bad of ['', 'javascript:alert(1)', 'http://t.me/x_channel', 'https://evil.com/t.me/abc', undefined]) assert.equal(channelOf(bad), null, String(bad));
+  assert.match(js, /paintLink\(\$\('\[data-case-link\]', li\), item\);/);
+  assert.match(js, /paintLink\(\$\('\[data-m-link\]', modal\), item, \$\('\[data-m-link-text\]', modal\)\);/);
+  assert.match(css, /\.cases__link\s*\{[^}]*position:\s*absolute/);
+  assert.match(css, /\.cases__link\[hidden\]\s*\{\s*display:\s*none/);
+  for (const dict of [ua, en]) assert.ok(dict.cases.link && dict.cases.linkPrivate);
+});
+

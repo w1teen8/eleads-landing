@@ -71,6 +71,30 @@ export function metricsOf(item, lang) {
   });
 }
 
+/** Канал клиента (cases.json → link): только https://t.me/<имя> или приглашение t.me/+…; иначе null.
+ *  label — «t.me/имя» для открытого канала, для приглашения — null (подпись из словаря). */
+export function channelOf(url) {
+  const s = typeof url === 'string' ? url.trim() : '';
+  const open = s.match(/^https:\/\/t\.me\/([A-Za-z0-9_]{3,64})\/?$/);
+  if (open) return { href: s, label: `t.me/${open[1]}` };
+  if (/^https:\/\/t\.me\/\+[A-Za-z0-9_-]{8,40}\/?$/.test(s)) return { href: s, label: null };
+  return null;
+}
+
+/** Ссылка на канал клиента: есть — адрес и подпись, нет — ссылка скрыта. */
+function paintLink(a, item, labelNode) {
+  if (!a) return;
+  const ch = channelOf(item.link);
+  a.hidden = !ch;
+  if (!ch) {
+    a.removeAttribute('href');
+    return;
+  }
+  a.href = ch.href;
+  a.setAttribute('aria-label', `${t('cases.link')}: ${text(item.name, getLang())}`);
+  if (labelNode) labelNode.textContent = ch.label || t('cases.linkPrivate');
+}
+
 const isTbd = (value) => value === t('common.tbd') || value === 'уточнити' || value === 'TBD';
 
 function fill(node, value) {
@@ -108,6 +132,7 @@ export function init(root) {
     button.dataset.case = item.id;
     on(button, 'click', () => open(item, button));
     paintAvatar($('[data-case-avatar]', li), item);
+    paintLink($('[data-case-link]', li), item);
     return { item, li };
   });
   grid.replaceChildren(...cards.map((c) => c.li));
@@ -117,6 +142,7 @@ export function init(root) {
     for (const { item, li } of cards) {
       for (const f of CARD_FIELDS) fill($(`[data-f="${f}"]`, li), text(item[f], lang));
       paintMetrics($$('[data-metric]', li), item, lang);
+      paintLink($('[data-case-link]', li), item);
       for (const letter of $$('[data-case-letter]', li)) letter.textContent = initial(text(item.name, lang));
     }
   };
@@ -130,6 +156,7 @@ export function init(root) {
   const paintModal = (item, lang) => {
     for (const f of MODAL_FIELDS) fill($(`[data-m="${f}"]`, modal), text(item[f], lang));
     paintMetrics($$('[data-m-metric]', modal), item, lang);
+    paintLink($('[data-m-link]', modal), item, $('[data-m-link-text]', modal));
     const letter = $('[data-m-letter]', modal);
     if (letter) letter.textContent = initial(text(item.name, lang));
     const list = $('[data-m-list="done"]', modal);

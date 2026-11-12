@@ -309,6 +309,8 @@
       "task": "Task",
       "done": "What was done"
     },
+    "link": "Client’s Telegram channel",
+    "linkPrivate": "Telegram channel",
     "more": "Details",
     "badge": "CASE STUDY",
     "cta": {
@@ -523,6 +525,7 @@
     "title": "Shall we discuss your project?",
     "titleAccent": "your project?",
     "text": "You don’t need a ready project or an ad launch plan. We can simply get to know each other, talk about Telegram and exchange ideas.",
+    "textAccent": "We can simply get to know each other",
     "button": "Write to Volodymyr on Telegram",
     "arrow": "→",
     "photoAlt": "Volodymyr Strokach, founder of eLeads"

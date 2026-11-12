@@ -61,10 +61,19 @@
 /* хвост заголовка — второй строкой, жёлтый → оранжевый (components.css .display__accent) */
 
 .cta__text {
+  /* «Крупно с акцентом» (2026-11-12): крупнее и светлее, жёлтая черта слева, ключевая фраза — жёлтым (cta.js) */
   max-width: 44ch;
-  font-size: var(--fs-lg);
-  line-height: 1.45;
-  color: var(--text-muted);
+  padding-left: clamp(1rem, 1.4vw, 1.5rem);
+  border-left: 3px solid var(--accent);
+  font-size: clamp(1.1875rem, 1rem + 0.9vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.42;
+  color: var(--text);
+}
+
+.cta__text-accent {
+  font-weight: 700;
+  color: var(--accent);
 }
 
 .cta__actions {
@@ -170,8 +179,8 @@
   }
 
   .cta__text {
-    max-width: 40ch;
-    font-size: clamp(1.125rem, min(1.7vw, 3.3svh), 1.75rem);
+    max-width: 38ch;
+    font-size: clamp(1.25rem, min(1.95vw, 3.7svh), 2rem);
   }
 
   .cta__btn {
