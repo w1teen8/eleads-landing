@@ -8,7 +8,7 @@
 // cases.json → metrics. «Линию роста» клиент убрал («графік без змістовного пояснення»). Акценты — в цвет бренда
 // кейса (cases.json → accent, инлайн-переменная --case-accent). Фото — только у кейсов с avatar: true:
 // /img/cases/<id>.webp через publicUrl; иначе (и при сбое загрузки) — круг с первой буквой имени и акцент сайта.
-// Модалка — те же поля + «Детальна інформація» (task, done, review); нативный <dialog>: Esc, клик вне, кнопка;
+// Модалка — те же поля + «Детальна інформація» (task, done); нативный <dialog>: Esc, клик вне, кнопка;
 // фокус заперт и возвращается на карточку;
 // фон не скроллится (lockScroll ставит Lenis на паузу).
 import { $, $$, el, on, trapFocus } from '../core/dom.js';
@@ -21,7 +21,7 @@ import { track } from '../core/analytics.js';
 import data from '../data/cases.json';
 
 const CARD_FIELDS = ['niche', 'name', 'geo', 'goal'];
-const MODAL_FIELDS = ['name', 'niche', 'formats', 'geo', 'goal', 'task', 'review'];
+const MODAL_FIELDS = ['name', 'niche', 'formats', 'geo', 'goal', 'task'];
 /** Сколько ключевых показателей на карточке и в модалке (документ клиента: «3 ключові показники»). */
 export const METRICS = 3;
 const CLOSE_MS = 260;
@@ -144,21 +144,6 @@ export function init(root) {
         return li;
       }),
     );
-    const shot = $('[data-m-shot]', modal);
-    if (shot) {
-      shot.replaceChildren();
-      shot.classList.remove('has-image');
-      if (item.screenshot) {
-        const img = el('img', {
-          attrs: { src: publicUrl(item.screenshot), alt: text(item.name, lang), loading: 'lazy', decoding: 'async' },
-        });
-        img.addEventListener('load', () => shot.classList.add('has-image'), { once: true });
-        img.addEventListener('error', () => img.remove(), { once: true });
-        shot.append(img);
-      } else {
-        shot.append(el('span', { class: 'case-modal__shot-empty', text: t('cases.reviewEmpty') }));
-      }
-    }
   };
 
   function open(item, trigger) {

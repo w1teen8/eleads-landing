@@ -190,7 +190,9 @@ test('линии роста нет; показатели — из cases.json →
   assert.doesNotMatch(js, /CHART_SHAPES|chartSvg|innerHTML/);
   assert.doesNotMatch(css, /cases__chart|cases__figure/);
   for (const dict of [ua, en]) {
-    for (const k of ['geo', 'goal', 'details', 'task', 'done', 'review']) assert.ok(dict.cases.labels[k], k);
+    for (const k of ['geo', 'goal', 'details', 'task', 'done']) assert.ok(dict.cases.labels[k], k);
+    assert.equal(dict.cases.labels.review, undefined, 'поля отзыва в модалке нет');
+    assert.equal(dict.cases.reviewEmpty, undefined);
     for (const k of ['budget', 'result', 'cpa']) assert.equal(dict.cases.labels[k], undefined, `${k}: подпись теперь в cases.json`);
   }
   // чистый помощник metricsOf — без DOM
@@ -214,7 +216,8 @@ test('линии роста нет; показатели — из cases.json →
   // модалка: шапка, GEO и ціль, 3 показателя, «Детальна інформація» — задача, что сделано; справа отзыв
   const modal = section.split('<dialog')[1];
   const parts = ['data-m="name"', 'data-m="niche"', 'data-m="formats"', 'data-m="geo"', 'data-m="goal"', 'data-m-metric="0"', 'data-m-metric="1"', 'data-m-metric="2"',
-    'data-i18n="cases.labels.details"', 'data-m="task"', 'data-m-list="done"', 'data-m="review"'].map((p) => modal.indexOf(p));
+    'data-i18n="cases.labels.details"', 'data-m="task"', 'data-m-list="done"'].map((p) => modal.indexOf(p));
+  assert.doesNotMatch(modal, /case-modal__review|data-m-shot|data-m="review"/, 'поле отзыва / скриншота убрано (клиент 2026-11-12)');
   for (const i of parts) assert.ok(i > -1, 'нет части модалки');
   assert.deepEqual([...parts].sort((a, b) => a - b), parts, 'порядок частей модалки');
   assert.doesNotMatch(modal, /data-m="(budget|result|cpa)"/);

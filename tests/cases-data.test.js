@@ -14,15 +14,17 @@ const { cases } = readJson('src/data/cases.json');
 // 2026-11-10: «Это и есть Олександр» — аватар ПроSales принадлежит Олександру Мухіну, его отдельная карточка с буквой удалена;
 // фото Віктора Домбовецького пользователь добавил в Photos/
 const ORDER = ['Cryptonite', 'Global Auto Logistic', 'Finmap', 'Віктор Домбовецький', 'Олександр Мухін', 'Monolit', 'Князєв', 'Анна Хаустова'];
-const ACCENTS = { cryptonite: '#F2596B', monolit: '#19B5E0', 'global-auto-logistic': '#DCE21C', mukhin: '#7B4DFF', dombovetskyi: '#5BE84A', finmap: '#74E3A8', kniaziev: '#4F6BFF' };
-const FIELDS = ['niche', 'name', 'geo', 'formats', 'goal', 'task', 'review'];
+const ACCENTS = { cryptonite: '#F2596B', monolit: '#19B5E0', 'global-auto-logistic': '#DCE21C', khaustova: '#EE3B45', mukhin: '#7B4DFF', dombovetskyi: '#5BE84A', finmap: '#74E3A8', kniaziev: '#4F6BFF' };
+const FIELDS = ['niche', 'name', 'geo', 'formats', 'goal', 'task'];
 const bilingual = (v) => v && typeof v.ua === 'string' && v.ua.trim() && typeof v.en === 'string' && v.en.trim();
 
 test('8 кейсов в порядке из сообщения клиента; id уникальны', () => {
   assert.deepEqual(cases.map((c) => c.name.ua), ORDER);
   assert.equal(new Set(cases.map((c) => c.id)).size, cases.length);
   const flags = cases.map((c) => c.avatar);
-  assert.deepEqual(flags, [true, true, true, true, true, true, true, false], 'у Анни Хаустової аватара ще немає — буква');
+  assert.deepEqual(flags, [true, true, true, true, true, true, true, true]);
+  // 2026-11-12: «Фото анни хаустовой», «ніша: EDUCATION»
+  assert.deepEqual(cases.find((c) => c.id === 'khaustova').niche, { ua: 'Education', en: 'Education' });
   assert.ok(!cases.some((c) => c.id === 'trackdesk'), 'Trackdesk заменён на Анну Хаустову');
   assert.equal(cases.find((c) => c.id === 'mukhin').name.en, 'Oleksandr Mukhin');
   assert.ok(!cases.some((c) => c.id === 'prosales'), 'ПроSales — это Мухін, отдельной карточки нет');
@@ -45,7 +47,7 @@ test('аватар и цвет бренда: accent только у кейсов
       assert.ok(!existsSync(join(root, 'public/img/cases', `${c.id}.webp`)), `${c.id}: файл есть, а avatar: false`);
     }
   }
-  assert.deepEqual(cases.filter((c) => c.avatarRetina === false).map((c) => c.id), ['kniaziev']);
+  assert.deepEqual(cases.filter((c) => c.avatarRetina === false).map((c) => c.id), ['kniaziev', 'khaustova']);
   // аватар без хозяина в public не кладётся — не публикуем чужое фото без кейса
   assert.ok(!existsSync(join(root, 'public/img/cases/_unassigned-red.webp')));
   assert.ok(!cases.some((c) => c.id.includes('unassigned')));
@@ -59,12 +61,13 @@ test('у каждого кейса все поля, на двух языках; 
   }
 });
 
-test('данные клиента 2026-11-11: GEO, формат, ціль, показники, задача и сделанное — дословно; отзывов ещё нет', () => {
+test('данные клиента 2026-11-11: GEO, формат, ціль, показники, задача и сделанное — дословно; поля отзыва нет', () => {
   const ua = (id) => cases.find((c) => c.id === id);
   const W = 'Україна, весь світ';
   const rows = {
     cryptonite: [W, 'Канал, бот / Telegram Ads', 'Підписники на воронку в боті', '$0,56', '$1,72', 4],
-    'global-auto-logistic': [W, 'Канал / Telegram Ads, UBT', 'Підписники на канал', 'невідомо', '$0,27', 4],
+    // 2026-11-12: «весь світ» зачёркнуто, «Європа»
+    'global-auto-logistic': ['Україна, Європа', 'Канал / Telegram Ads, UBT', 'Підписники на канал', 'невідомо', '$0,27', 4],
     finmap: [W, 'Канал, сайт / Telegram Ads', 'Впізнаваність, підписники на канал', '$0,65', '$2,67', 4],
     dombovetskyi: ['Україна', 'Канал / Telegram Ads', 'Впізнаваність, підписники на канал', '$0,61', '$1,16', 4],
     mukhin: ['Україна', 'Канал / Telegram Ads', 'Впізнаваність, підписники на канал', '$0,71', '$2,44', 4],
@@ -78,8 +81,9 @@ test('данные клиента 2026-11-11: GEO, формат, ціль, по�
     assert.deepEqual(c.metrics.map((m) => m.value.ua), ['n/a', cpm, cps], id);
     assert.equal(c.done.length, done, id);
     assert.ok(c.task.ua.endsWith('.') && c.task.ua !== 'уточнити', id);
-    // отзывов по кейсам клиент не присылал — заглушка, а не выдуманная цитата
-    assert.deepEqual(c.review, { ua: 'уточнити', en: 'TBD' }, id);
+    // 2026-11-12: «Це поле можна прибрати» — отзыв / скриншот в модалке убраны вместе с данными
+    assert.equal(c.review, undefined, id);
+    assert.equal(c.screenshot, undefined, id);
   }
   assert.equal(ua('cryptonite').task.ua, 'Залучення цільової аудиторії в Telegram-воронку та канал із подальшим масштабуванням реклами.');
   assert.equal(ua('khaustova').done[3].ua, 'Провели глибинний аналіз залученої аудиторії спільно з відділом продажів для оцінки якості лідів.');

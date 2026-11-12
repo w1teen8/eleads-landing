@@ -111,7 +111,7 @@ test('поля: FAQ, кейсы, калькулятор — только пар�
 
   const caseFields = fields.filter((f) => f.slots[0].file === 'src/data/cases.json');
   const casePaths = caseFields.map((f) => f.keyPath);
-  assert.ok(casePaths.includes('cases.0.name') && casePaths.includes('cases.0.done.0') && casePaths.includes('cases.0.review'));
+  assert.ok(casePaths.includes('cases.0.name') && casePaths.includes('cases.0.done.0') && casePaths.includes('cases.0.task'));
   assert.ok(!casePaths.some((p) => /\.(id|accent|screenshot)$|^_note/.test(p)), casePaths.join(' '));
   assert.match(caseFields[0].group, /^Кейс: /);
 

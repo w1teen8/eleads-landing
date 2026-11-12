@@ -305,12 +305,10 @@
       "goal": "Campaign goal",
       "details": "Case details",
       "task": "Task",
-      "done": "What was done",
-      "review": "Review / screenshot"
+      "done": "What was done"
     },
     "more": "Details",
     "badge": "CASE STUDY",
-    "reviewEmpty": "placeholder",
     "cta": {
       "label": "Message Volodymyr",
       "arrow": "→"

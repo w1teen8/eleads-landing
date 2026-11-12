@@ -1,5 +1,5 @@
 {
-  "_note": "Дані кейсів — від клієнта 2026-11-11 (повідомлення з таблицею по кожному кейсу), порядок — як у повідомленні. Картка: geo — GEO, goal — ціль кампанії, metrics — 3 ключові показники (label — підпис, value — значення: Бюджет, CPM за 1000, Ціна підписника; n/a — клієнт не розкриває, невідомо — так у клієнта). Модалка — ті самі поля + formats (що просуваємо / канал реклами, під назвою) і детальна інформація: task, done, review. review / screenshot — ще «уточнити»: відгуків по кейсах клієнт не надсилав. avatar: true — є аватар /img/cases/<id>.webp (+ <id>@2x.webp; avatarRetina: false — файлу @2x немає, вихідник малий); без аватара — буква. accent — колір бренду з аватара (дані, не оформлення), без нього — акцент сайту. Анна Хаустова замінила Trackdesk; аватара й ніші ще немає — «уточнити».",
+  "_note": "Дані кейсів — від клієнта 2026-11-11 (повідомлення з таблицею по кожному кейсу), порядок — як у повідомленні. Картка: geo — GEO, goal — ціль кампанії, metrics — 3 ключові показники (label — підпис, value — значення: Бюджет, CPM за 1000, Ціна підписника; n/a — клієнт не розкриває, невідомо — так у клієнта). Модалка — ті самі поля + formats (що просуваємо / канал реклами, під назвою) і детальна інформація: task, done. Поля відгуку / скриншота в модалці немає (клієнт 2026-11-12: «Це поле можна прибрати»). avatar: true — є аватар /img/cases/<id>.webp (+ <id>@2x.webp; avatarRetina: false — файлу @2x немає, вихідник малий); без аватара — буква. accent — колір бренду з аватара (дані, не оформлення), без нього — акцент сайту. Анна Хаустова замінила Trackdesk; ніша Education, аватар з фото від клієнта (вихідник 640 px — без @2x).",
   "cases": [
     {
       "id": "cryptonite",
@@ -79,12 +79,7 @@
           "ua": "Провели глибинну аналітику проходження воронки та якості залученої аудиторії.",
           "en": "Ran in-depth analytics of the funnel journey and the quality of the acquired audience."
         }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
+      ]
     },
     {
       "id": "global-auto-logistic",
@@ -99,8 +94,8 @@
         "en": "Global Auto Logistic"
       },
       "geo": {
-        "ua": "Україна, весь світ",
-        "en": "Ukraine, Worldwide"
+        "ua": "Україна, Європа",
+        "en": "Ukraine, Europe"
       },
       "formats": {
         "ua": "Канал / Telegram Ads, UBT",
@@ -163,12 +158,7 @@
           "ua": "Проводили глибинну аналітику трафіку та якості лідів спільно з відділом продажів.",
           "en": "Ran in-depth analytics of traffic and lead quality together with the sales team."
         }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
+      ]
     },
     {
       "id": "finmap",
@@ -247,12 +237,7 @@
           "ua": "Підготували рекламні матеріали, налаштували та оптимізували Telegram Ads.",
           "en": "Prepared the ad creatives, set up and optimised Telegram Ads."
         }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
+      ]
     },
     {
       "id": "dombovetskyi",
@@ -331,12 +316,7 @@
           "ua": "Протестували рекламні гіпотези та масштабували ефективні кампанії.",
           "en": "Tested ad hypotheses and scaled the campaigns that worked."
         }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
+      ]
     },
     {
       "id": "mukhin",
@@ -415,12 +395,7 @@
           "ua": "Налаштували рекламу на лід-магніти, протестували та масштабували ефективні кампанії.",
           "en": "Set up ads for the lead magnets, tested them and scaled the campaigns that worked."
         }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
+      ]
     },
     {
       "id": "monolit",
@@ -499,12 +474,7 @@
           "ua": "Протестували рекламні кампанії та масштабували ефективні зв’язки.",
           "en": "Tested the ad campaigns and scaled the combinations that worked."
         }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
+      ]
     },
     {
       "id": "kniaziev",
@@ -588,19 +558,16 @@
           "ua": "Провели глибинний аналіз залученої аудиторії спільно з відділом продажів для оцінки якості лідів.",
           "en": "Ran an in-depth analysis of the acquired audience together with the sales team to assess lead quality."
         }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
+      ]
     },
     {
       "id": "khaustova",
-      "avatar": false,
+      "avatar": true,
+      "avatarRetina": false,
+      "accent": "#EE3B45",
       "niche": {
-        "ua": "уточнити",
-        "en": "TBD"
+        "ua": "Education",
+        "en": "Education"
       },
       "name": {
         "ua": "Анна Хаустова",
@@ -671,12 +638,7 @@
           "ua": "Провели глибинний аналіз залученої аудиторії спільно з відділом продажів для оцінки якості лідів.",
           "en": "Ran an in-depth analysis of the acquired audience together with the sales team to assess lead quality."
         }
-      ],
-      "review": {
-        "ua": "уточнити",
-        "en": "TBD"
-      },
-      "screenshot": ""
+      ]
     }
   ]
 }
