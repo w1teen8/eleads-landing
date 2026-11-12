@@ -200,7 +200,10 @@ test('видео-отзыв играет сам, пока карточку ви�
   assert.match(js, /export const VIDEO_VISIBLE = 0\.6;/);
   assert.match(js, /intersectionRatio >= VIDEO_VISIBLE/, 'видимость — по самой карточке видео');
   assert.match(js, /stage\.setActive\(state\.videoInView && !state\.hidden\)/);
-  assert.match(js, /if \(active && !userPaused && !reduced\) play\(\);\s*else if \(playing\(\)\) video\.pause\(\);/);
+  // 2026-11-12 клиент: «можете отключить самовоспроизведение видео отзывов» — сам не стартует, первый запуск — нажатием
+  assert.match(js, /export const AUTOPLAY = false;/);
+  assert.match(js, /if \(active && !userPaused && !reduced && \(AUTOPLAY \|\| started\)\) play\(\);\s*else if \(playing\(\)\) video\.pause\(\);/);
+  assert.match(js, /userPaused = false;\s*started = true;\s*play\(\);/, 'нажатие ▶ — запуск');
   assert.match(js, /onEnded: \(\) => select\(nextIndex\(current, total\), false\)/);
   assert.match(js, /on\(video, 'ended'/);
   // «сразу со звуком»; браузер без нажатия на странице разрешает только без звука — звук включит первое нажатие

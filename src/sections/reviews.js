@@ -39,8 +39,14 @@ const avatarOf = (i) => reviewAvatar(item(i, 'case'), data.cases, (id, retina) =
    видео: без звука → со звуком → пауза; после паузы рукой само не продолжает, пока не нажмут снова или не сменится
    отзыв. Браузер может запретить звук, пока человек ни разу не нажал на странице (политика автозапуска): тогда видео
    идёт без звука, а звук включается при первом нажатии или клавише где угодно на странице. reduced-motion /
-   ?nomotion=1 — только по клику. */
+   ?nomotion=1 — только по клику.
+   2026-11-12 клиент: «можете отключить самовоспроизведение видео отзывов. Я быстро пролистал сайт, видео включилось,
+   а я уже внизу. Человек может не понять и просто закрыть сайт» — само видео больше не стартует (AUTOPLAY = false):
+   первый запуск — только нажатием (сразу со звуком). После этого всё как раньше: ушло из окна — пауза, вернулось —
+   продолжает, закончилось — следующий отзыв играет дальше. */
 export const VIDEO_VISIBLE = 0.6;
+/** Видео-отзыв запускается сам, когда карточку видно. Выключено по просьбе клиента (2026-11-12). */
+export const AUTOPLAY = false;
 
 function videoStage(root, { onPlaying, onEnded, onProgress }) {
   const circle = $('[data-rv-circle]', root);
@@ -54,6 +60,7 @@ function videoStage(root, { onPlaying, onEnded, onProgress }) {
   let img = null;
   let active = false; // видно и вкладка открыта — можно играть само
   let userPaused = false; // поставили на паузу рукой
+  let started = false; // человек сам запустил видео (без AUTOPLAY само не стартует)
   let soundOn = true; // играть со звуком (пользователь: «сразу со звуком»); браузер может разрешить только без звука
   let raf = 0;
 
@@ -154,7 +161,7 @@ function videoStage(root, { onPlaying, onEnded, onProgress }) {
   // само играет только видимое видео; ушло из окна или вкладка скрыта — пауза
   function apply() {
     if (!has()) return;
-    if (active && !userPaused && !reduced) play();
+    if (active && !userPaused && !reduced && (AUTOPLAY || started)) play();
     else if (playing()) video.pause();
   }
 
@@ -190,6 +197,7 @@ function videoStage(root, { onPlaying, onEnded, onProgress }) {
     if (button.hidden) return;
     if (!playing()) {
       userPaused = false;
+      started = true;
       play();
     } else if (video.muted) {
       video.muted = false;
