@@ -162,22 +162,34 @@ test('14 CTA: фото без рамки — улица растворяется
   // широкий экран: кадр выше блока в 1,5 раза — Володимир крупно («Давай приблизм владимира»)
   assert.match(ctaCss, /height:\s*calc\(var\(--cta-h\) \* 1\.3\)/);
   for (const [, prop] of ctaCss.matchAll(/transition:\s*([a-z-]+)/g)) assert.ok(['transform', 'opacity'].includes(prop), prop);
-  assert.doesNotMatch(ctaCss, /@keyframes|animation:/, 'движение — только на холсте');
+  assert.doesNotMatch(ctaCss, /@keyframes|animation:/, 'движение — только в видео шёлка');
 });
 
-test('14 CTA: фон «Silk» на весь блок — шёлковая ткань из линий; холст из JS, только пока блок виден', async () => {
-  assert.doesNotMatch(section(html, 'cta'), /<canvas/, 'в HTML холста нет — его добавляет cta.js');
-  assert.match(ctaJs, /document\.createElement\('canvas'\)/);
-  assert.match(ctaJs, /canvas\.className = 'cta__silk'/);
-  assert.match(ctaCss, /\.cta__silk\s*\{[^}]*position:\s*absolute[^}]*inset:\s*0/, 'на весь блок');
+// 2026-11-12 «Сделай чтобы не лагало» → «сделай как видео на фоне»: шёлк — заранее отрисованная видео-петля
+test('14 CTA: фон «Silk» на весь блок — видео-петля из JS, грузится у блока, играет только пока он виден', async () => {
+  assert.doesNotMatch(section(html, 'cta'), /<canvas|<video/, 'в HTML фона нет — его добавляет cta.js');
+  assert.match(ctaJs, /document\.createElement\('video'\)/);
+  assert.match(ctaJs, /video\.className = 'cta__silk'/);
+  assert.doesNotMatch(ctaJs, /getContext|requestAnimationFrame/, 'в браузере ткань больше не рисуется');
+  assert.match(ctaJs, /video\.muted = true;/);
+  assert.match(ctaJs, /video\.preload = 'none';/);
+  assert.match(ctaJs, /if \(reduced\) return;/, 'reduced-motion — только заставка');
+  assert.match(ctaCss, /\.cta__silk\s*\{[^}]*position:\s*absolute[^}]*inset:\s*0[^}]*object-fit:\s*cover[^}]*mix-blend-mode:\s*screen/, 'на весь блок, чёрное убирает screen');
+  assert.doesNotMatch(ctaCss.match(/\.section--cta\s*\{[^}]*\}/)[0], /isolation/, 'screen смешивается с фоном страницы, а не с пустым блоком');
   assert.match(ctaJs, /IntersectionObserver/);
   assert.match(ctaJs, /visibilitychange/);
+  for (const n of ['silk-1920', 'silk-720']) for (const ext of ['mp4', 'jpg']) {
+    assert.ok(existsSync(new URL(`../public/video/${n}.${ext}`, import.meta.url)), `${n}.${ext}`);
+  }
   assert.doesNotMatch(ctaJs, /cta-lines|contourSegments/, 'топографических линий больше нет');
   const { SILK, UNIT_H, silkY, sheenOf, lineCount, hexRgb } = await import('../src/sections/cta-silk.js');
   assert.equal(UNIT_H, 877);
   assert.ok(lineCount() * SILK.gap >= UNIT_H + 60, 'линии закрывают всю высоту');
   assert.equal(silkY(5, 100, 2), silkY(5, 100, 2), 'один и тот же рисунок');
   assert.notEqual(silkY(5, 100, 2), silkY(5, 100, 3), 'ткань движется');
+  // петля бесшовная: кадр LOOP совпадает с кадром 0
+  const { LOOP } = await import('../src/sections/cta-silk.js');
+  for (const i of [0, 9, 40]) for (const x of [0, 777]) assert.ok(Math.abs(silkY(i, x, 0) - silkY(i, x, LOOP)) < 1e-6 && Math.abs(sheenOf(i, 0) - sheenOf(i, LOOP)) < 1e-6);
   for (const t of [0, 1.3, 7]) for (const i of [0, 10, 40]) { const s = sheenOf(i, t); assert.ok(s >= 0 && s <= 1); }
   assert.ok(SILK.base + SILK.sheen <= 0.4, 'ткань не перебивает текст');
   assert.deepEqual(hexRgb('#FFD23F'), [255, 210, 63]);
@@ -215,11 +227,9 @@ test('13 FAQ: ответы из документа клиента (стр. 13) �
   assert.deepEqual(faqData.items.map((item) => item.id), ['q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8']);
 });
 
-// «Лагает экран»: шёлк не чаще 30 кадров и не выше 1,25 пикселя на точку; без режимов смешивания
-test('14 CTA: шёлк лёгкий — 30 кадров, разрешение до 1,25, без mix-blend-mode; фигура на своём слое', () => {
-  assert.match(ctaJs, /const FPS = 30;/);
-  assert.match(ctaJs, /const DPR_MAX = 1\.25;/);
-  assert.doesNotMatch(ctaCss, /mix-blend-mode/);
+// «Лагает экран» → «Сделай чтобы не лагало»: шёлк — видео (декодирует видеокарта); screen — только у видео; фигура на своём слое
+test('14 CTA: шёлк лёгкий — видео вместо рисования, режим смешивания только у шёлка; фигура на своём слое', () => {
+  assert.equal((ctaCss.match(/mix-blend-mode/g) || []).length, 1);
   assert.match(ctaCss, /\.cta__scene\s*\{[^}]*will-change:\s*transform/);
 });
 

@@ -102,8 +102,9 @@ test('motion-kit: pinScrub — общий помощник: pin + pinSpacing + s
   for (const key of ['ready', 'refresh', 'destroy']) assert.match(fn, new RegExp(`\\b${key}\\b`), key);
 });
 
-test('блок 07: закрепление выключено (PINNED = false); если включить — pinScrub на путь pinLength(7) окна', () => {
-  assert.match(js, /export const PINNED = false;/);
+// 2026-11-12 «теперь не поднимается при скроле» → «Вернуть как было»
+test('блок 07: закрепление включено (PINNED = true) — pinScrub на путь pinLength(7) окна', () => {
+  assert.match(js, /export const PINNED = true;/);
   assert.match(js, /if \(!PINNED\) return;\n  pinScrub\(/);
   assert.match(js, /import \{ pinScrub \} from '\.\.\/core\/motion-kit\.js'/);
   assert.match(js, /pinScrub\(root, \{\s*length: \(\) => window\.innerHeight \* pinLength\(n\),/);

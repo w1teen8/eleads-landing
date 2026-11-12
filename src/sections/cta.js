@@ -1,15 +1,22 @@
 // 14 Фінальний CTA (T37; T41 — документ клиента, стр. 14; 2026-11-11): слева заголовок, текст и кнопка в Telegram,
 // справа — вырезанная фигура Володимира с тёплым свечением за головой. Фон всего блока — «Silk» (выбор пользователя
 // «silk сделай на весь блок»): тонкие линии складываются в шёлковую ткань, которая медленно волнуется, по ней
-// пробегает тёплый отблеск (cta-silk.js). Холст создаётся здесь (в HTML его нет — без JS блок просто без ткани).
-// Рисует только пока блок виден и вкладка открыта; reduced-motion / ?nomotion=1 — ткань стоит, один кадр.
+// пробегает тёплый отблеск.
+// 2026-11-12 «Сделай чтобы не лагало» → «сделай как видео на фоне»: ткань, которую браузер рисовал каждый кадр
+// (12 кадров/с при 4× замедлении процессора, без неё — 30), заранее отрисована в бесшовную петлю (build/render-silk.cjs)
+// и здесь только проигрывается: декодирует видеокарта, страница ничего не считает. Чёрный фон кадра убирает режим
+// screen (cta.css) — сквозь ткань видна пыль. Видео создаётся здесь (в HTML его нет — без JS блок просто без ткани),
+// грузится, только когда блок подъезжает к экрану, играет, пока виден, и встаёт, когда вкладка скрыта.
+// reduced-motion / ?nomotion=1 — только заставка (первый кадр), видео не грузится.
 import { accentTitles } from '../core/title-accent.js';
 import { reduced } from '../core/motion.js';
-import { SILK, UNIT_H, silkY, sheenOf, lineCount, hexRgb } from './cta-silk.js';
+import { publicUrl } from '../core/public-url.js';
 
-/** «Лагает экран»: шёлк рисуется не чаще 30 раз в секунду и в разрешении не выше 1,25 пикселя на точку. */
-const FPS = 30;
-const DPR_MAX = 1.25;
+/** Широкий альбомный экран — горизонтальная петля, иначе (телефон, портрет) — вертикальная. Как раскладка блока. */
+export const SILK_MEDIA = '(min-width: 900px) and (orientation: landscape)';
+
+/** Файл петли без расширения: .mp4 — видео, .jpg — заставка. */
+export const silkFile = (wide) => `/video/silk-${wide ? 1920 : 720}`;
 
 export function init(root) {
   accentTitles(root);
@@ -17,93 +24,49 @@ export function init(root) {
 }
 
 function silk(root) {
-  const canvas = document.createElement('canvas');
-  canvas.className = 'cta__silk';
-  canvas.setAttribute('aria-hidden', 'true');
-  root.prepend(canvas);
-  const ctx = canvas.getContext?.('2d');
-  if (!ctx) return;
+  const video = document.createElement('video');
+  video.className = 'cta__silk';
+  video.setAttribute('aria-hidden', 'true');
+  video.muted = true;
+  video.defaultMuted = true;
+  video.loop = true;
+  video.playsInline = true;
+  video.preload = 'none';
+  video.disablePictureInPicture = true;
+  for (const a of ['muted', 'playsinline', 'loop']) video.setAttribute(a, '');
+  root.prepend(video);
 
-  const css = getComputedStyle(document.documentElement);
-  const rgb = (name, fallback) => hexRgb(css.getPropertyValue(name)) ?? fallback;
-  const sun = rgb('--accent', [255, 210, 63]);
-  const ember = rgb('--accent-2', [255, 138, 31]);
-  const n = lineCount();
-
-  let unit = 1; // пикселей холста на единицу блока
-  let widthU = 0; // ширина блока в единицах
+  const mq = window.matchMedia?.(SILK_MEDIA);
+  let file = '';
+  let near = false;
   let visible = false;
-  let raf = 0;
-  const start = performance.now();
 
-  function size() {
-    const dpr = Math.min(DPR_MAX, window.devicePixelRatio || 1);
-    const w = Math.round(canvas.clientWidth * dpr);
-    const h = Math.round(canvas.clientHeight * dpr);
-    if (!w || !h) return false;
-    canvas.width = w;
-    canvas.height = h;
-    unit = h / UNIT_H;
-    widthU = w / unit;
-    return true;
-  }
-
-  function draw(now) {
-    if (!widthU) return;
-    const t = reduced ? 4 : (now - start) / 1000;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.setTransform(unit, 0, 0, unit, 0, 0);
-    ctx.lineWidth = SILK.width;
-    for (let i = 0; i < n; i += 1) {
-      const s = sheenOf(i, t);
-      // цвет линии — от тёплого оранжевого (в тени) к жёлтому (на отблеске)
-      const c = ember.map((v, k) => Math.round(v + (sun[k] - v) * s));
-      ctx.strokeStyle = `rgba(${c[0]},${c[1]},${c[2]},${SILK.base + SILK.sheen * s * s})`;
-      ctx.beginPath();
-      for (let x = 0; x <= widthU + SILK.step; x += SILK.step) {
-        const y = silkY(i, x, t);
-        if (x === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.stroke();
-    }
-  }
-
-  let last = 0;
-  function loop(now) {
-    raf = 0;
-    if (!visible || document.hidden || reduced) return;
-    if (now - last >= 1000 / FPS - 1) {
-      last = now;
-      draw(now);
-    }
-    raf = requestAnimationFrame(loop);
-  }
-  const kick = () => {
-    if (!raf && visible && !document.hidden && !reduced) raf = requestAnimationFrame(loop);
+  const pick = () => {
+    const next = silkFile(Boolean(mq?.matches));
+    if (next === file) return;
+    file = next;
+    video.poster = publicUrl(`${file}.jpg`);
+    if (video.getAttribute('src')) video.src = publicUrl(`${file}.mp4`);
+    sync();
   };
 
-  let resizeTimer = 0;
-  const rebuild = () => size() && draw(performance.now());
-  if ('ResizeObserver' in window) {
-    new ResizeObserver(() => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(rebuild, 120);
-    }).observe(canvas);
+  function sync() {
+    if (reduced) return;
+    if (near && !video.getAttribute('src')) video.src = publicUrl(`${file}.mp4`);
+    if (visible && !document.hidden) video.play?.()?.catch?.(() => {});
+    else if (!video.paused) video.pause();
   }
-  rebuild();
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        kick();
-      },
-      { threshold: 0.05 },
-    ).observe(root);
-  } else {
-    visible = true;
-    kick();
+
+  pick();
+  if (reduced) return;
+  mq?.addEventListener?.('change', pick);
+  document.addEventListener('visibilitychange', sync);
+  if (!('IntersectionObserver' in window)) {
+    near = visible = true;
+    sync();
+    return;
   }
-  document.addEventListener('visibilitychange', kick);
+  // загрузка — заранее, за полэкрана до блока; проигрывание — только пока блок на экране
+  new IntersectionObserver(([e]) => { if (e.isIntersecting) { near = true; sync(); } }, { rootMargin: '50% 0px' }).observe(root);
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; sync(); }, { threshold: 0.02 }).observe(root);
 }
