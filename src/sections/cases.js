@@ -269,6 +269,21 @@ function ride(root, trackEl) {
     );
   }
 
+  // 2026-11-12 клиент (телефон, браузер Telegram): «в этом блоке не с первого кейса начинается» — в Chrome не
+  // воспроизводится; вероятно, встроенный браузер восстанавливает прокрутку или косой свайп при прокрутке страницы
+  // сдвигает ленту на карточку (scroll-snap). Поэтому каждый раз, когда блок въезжает в экран, побывав за ним,
+  // обычная лента встаёт на первый кейс; пока блок на экране, положение пальца не трогаем.
+  if (viewport && 'IntersectionObserver' in window) {
+    let inView = false;
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !inView && !(riding && wide()) && viewport.scrollLeft) {
+        viewport.scrollLeft = 0;
+        paintBar(0);
+      }
+      inView = entry.isIntersecting;
+    }).observe(viewport);
+  }
+
   // ←/→ — к соседней карточке; Home/End — к крайним
   on(trackEl, 'keydown', (e) => {
     const list = faces();

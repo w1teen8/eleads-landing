@@ -242,3 +242,10 @@ test('канал клиента: кружок Telegram в углу карточ�
   for (const dict of [ua, en]) assert.ok(dict.cases.link && dict.cases.linkPrivate);
 });
 
+
+// 2026-11-12 клиент: «в этом блоке не с первого кейса начинается» — обычная лента встаёт на первый кейс,
+// когда блок въезжает в экран, побывав за ним
+test('лента кейсов: при входе блока в экран — с первого кейса; пока блок на экране, свайп не сбрасывается', () => {
+  assert.match(js, /if \(entry\.isIntersecting && !inView && !\(riding && wide\(\)\) && viewport\.scrollLeft\) \{\s*viewport\.scrollLeft = 0;/);
+  assert.match(js, /inView = entry\.isIntersecting;/);
+});
