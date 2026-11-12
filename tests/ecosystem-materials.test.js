@@ -3,6 +3,7 @@
 // (reference/run3/materials-A-chosen.png), лента по прокрутке — общий showcaseScroll.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { read, readJson } from './helpers.js';
 import { PULSE_MS, nextStep } from '../src/sections/ecosystem-model.js';
 
@@ -115,8 +116,9 @@ test('12: четыре карточки-поста — обложка-слот �
     const cover = i === 0 ? 'materials\\.items\\.0\\.cover' : 'materials\\.post';
     assert.match(post, new RegExp(`<div class="mat__cover" aria-hidden="true" data-mat-image="${i}"><span class="mat__cover-title" data-i18n="${cover}">`));
     assert.match(post, /<p class="mat__channel"><span class="mat__avatar" aria-hidden="true" data-mat-channel-image><\/span><span class="mat__channel-name" data-i18n="materials\.channel"><\/span><span class="mat__kind" data-i18n="materials\.post"><\/span><\/p>/);
-    assert.match(post, new RegExp(`<h3 class="mat__title${i === 0 ? '' : ' is-tbd'}" data-i18n="materials\\.items\\.${i}\\.title">`));
-    assert.match(post, new RegExp(`<p class="mat__text is-tbd" data-i18n="materials\\.items\\.${i}\\.text">`));
+    // 2026-11-12 клиент прислал все 4 поста — заглушек «уточнити» больше нет
+    assert.match(post, new RegExp(`<h3 class="mat__title" data-i18n="materials\\.items\\.${i}\\.title">`));
+    assert.match(post, new RegExp(`<p class="mat__text" data-i18n="materials\\.items\\.${i}\\.text">`));
     assert.match(post, new RegExp(`<a class="mat__link" href="\\{\\{config\\.telegramUrl\\}\\}" target="_blank" rel="noopener" data-place="materials" data-mat-url="${i}"><span data-i18n="materials\\.read"><\\/span><svg`));
     const order = ['mat__cover', 'mat__channel', 'mat__title', 'mat__text', 'mat__link'].map((c) => post.indexOf(`class="${c}`));
     assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок частей поста');
@@ -130,11 +132,13 @@ test('12: тексты обложек и строки канала — из сл
   for (const dict of [ua, en]) {
     const m = dict.materials;
     assert.equal(m.channel, 'єЛіди! → [маркетинг]', '«фото та назва Telegram-каналу «єЛіди! → [маркетинг]»»');
-    assert.equal(m.channelImage, '', 'фото канала ещё нет — круг-заглушка');
+    // 2026-11-12: посты прислал клиент; обложки и фото канала — из самого канала t.me/eleads_marketing (800 px)
+    assert.equal(m.channelImage, 'img/posts/channel.webp');
     for (const item of m.items) {
-      assert.equal(item.text, dict === ua ? 'уточнити' : 'TBD', 'опис поста — от клиента');
-      assert.equal(item.image, '', 'зображення поста — от клиента (public/img/posts/)');
-      assert.equal(item.url, '', 'ссылки на пост ещё нет — кнопка ведёт на общий telegramUrl');
+      assert.ok(item.text && !/^(уточнити|TBD)$/.test(item.text), 'опис поста — от клиента');
+      assert.match(item.image, /^img\/posts\/[a-z0-9-]+\.webp$/);
+      assert.ok(existsSync(new URL(`../public/${item.image}`, import.meta.url)), item.image);
+      assert.match(item.url, /^https:\/\/t\.me\/eleads_marketing\/\d+$/);
     }
     assert.ok(m.post && m.read);
     assert.ok(m.items[0].title.startsWith(m.items[0].cover), `${m.items[0].cover} ⊂ ${m.items[0].title}`);

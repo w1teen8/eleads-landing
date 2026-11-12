@@ -101,6 +101,8 @@
         "Global Auto Logistic",
         "Oleksandr Mukhin",
         "Viktor Dombovetskyi",
+        "Trackdesk",
+        "G+ CRM",
         "Monolit",
         "Anna Khaustova"
       ]
@@ -412,14 +414,14 @@
       {
         "name": "Oleksandr Mukhin",
         "role": "Expert",
-        "quote": "TBD",
+        "quote": "One of Ukraine’s best-known trainers in sales, negotiation and sales management. His ProSales project helps entrepreneurs and companies systematically level up their sales teams and grow profits.",
         "case": "mukhin",
         "video": "video/reviews/mukhin.mp4"
       },
       {
         "name": "Viktor Dombovetskyi",
         "role": "Expert",
-        "quote": "TBD",
+        "quote": "A coach and mentor on networking and goals, and a speaker for business communities, who works with owners, top managers and teams and also supports M&A deals. His approach is about a contact strategy, “warm” connections and consistent action. Viktor helps entrepreneurs make breakthrough moves through the right connections.",
         "case": "dombovetskyi",
         "video": "video/reviews/dombovetskyi.mp4"
       }
@@ -472,33 +474,33 @@
     "titleAccent": "on Telegram",
     "post": "POST",
     "channel": "єЛіди! → [маркетинг]",
-    "channelImage": "",
+    "channelImage": "img/posts/channel.webp",
     "read": "Read on Telegram",
     "items": [
       {
-        "title": "8 ways to promote a business via Telegram",
+        "title": "8 ways to promote a business through Telegram",
         "cover": "8 ways",
-        "text": "TBD",
-        "image": "",
-        "url": ""
+        "text": "Telegram Ads is far from the only way to attract clients. In this post I break down 8 promotion options: from ads and paid placements to organic traffic, collaborations and partnerships.",
+        "image": "img/posts/8-sposobiv.webp",
+        "url": "https://t.me/eleads_marketing/193"
       },
       {
-        "title": "TBD",
-        "text": "TBD",
-        "image": "",
-        "url": ""
+        "title": "Which businesses is Telegram Ads right for?",
+        "text": "Telegram works especially well in niches where clients don’t decide at first touch. In this post I break down 4 reasons why Telegram helps a business build trust, warm up its audience and win clients.",
+        "image": "img/posts/dlia-yakykh-biznesiv.webp",
+        "url": "https://t.me/eleads_marketing/196"
       },
       {
-        "title": "TBD",
-        "text": "TBD",
-        "image": "",
-        "url": ""
+        "title": "How to package a Telegram channel so that promoting it pays off?",
+        "text": "Before launching ads, it’s important to prepare the channel properly. In this post I break down 5 key steps that help spark new subscribers’ interest and turn them into potential clients.",
+        "image": "img/posts/yak-upakuvaty-kanal.webp",
+        "url": "https://t.me/eleads_marketing/107"
       },
       {
-        "title": "TBD",
-        "text": "TBD",
-        "image": "",
-        "url": ""
+        "title": "Who is behind eLeads?",
+        "text": "How did I get into marketing, which businesses do I work with and why did I focus on Telegram? In this post I share my experience, projects and approach to promotion.",
+        "image": "img/posts/khto-za-eleads.webp",
+        "url": "https://t.me/eleads_marketing/197"
       }
     ]
   },

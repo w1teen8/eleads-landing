@@ -97,10 +97,11 @@ test('тексты: ключевые дословные строки UA и EN-ч
   assert.notEqual(en.stats.ua.main.label, ua.stats.ua.main.label);
 });
 
-test('нет выдуманных фактов: отзывы и посты без клиентского текста — заглушки', () => {
-  for (const item of ua.reviews.items) assert.equal(item.quote, 'уточнити');
-  for (const item of en.reviews.items) assert.equal(item.quote, 'TBD');
-  assert.deepEqual(ua.materials.items.slice(1).map((i) => i.title), ['уточнити', 'уточнити', 'уточнити']);
+test('нет выдуманных фактов: отзывы и посты — тексты клиента (2026-11-12), заглушек не осталось', () => {
+  for (const item of [...ua.reviews.items, ...en.reviews.items]) assert.ok(item.quote && !/^(уточнити|TBD)$/.test(item.quote));
+  // 2026-11-12: клиент прислал 4 поста (ссылки /107 и /196 он перепутал местами — сверено по текстам постов в канале)
+  assert.deepEqual(ua.materials.items.map((i) => i.url), ['https://t.me/eleads_marketing/193', 'https://t.me/eleads_marketing/196', 'https://t.me/eleads_marketing/107', 'https://t.me/eleads_marketing/197']);
+  assert.ok(ua.materials.items.every((i) => i.title !== 'уточнити' && i.text !== 'уточнити'));
   // T42: два слота видео-отзывов (клиент: «Додати два відеовідгуки») — третьего нет, видео пока нет
   assert.equal(ua.reviews.items.length, 2);
   // видео прислал пользователь (2026-11-11) — путь к реальному файлу, не заглушка

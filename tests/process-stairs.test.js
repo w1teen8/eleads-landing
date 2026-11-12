@@ -102,11 +102,17 @@ test('motion-kit: pinScrub — общий помощник: pin + pinSpacing + s
   for (const key of ['ready', 'refresh', 'destroy']) assert.match(fn, new RegExp(`\\b${key}\\b`), key);
 });
 
-// 2026-11-12 «теперь не поднимается при скроле» → «Вернуть как было»
-test('блок 07: закрепление включено (PINNED = true) — pinScrub на путь pinLength(7) окна', () => {
-  assert.match(js, /export const PINNED = true;/);
-  assert.match(js, /if \(!PINNED\) return;\n  pinScrub\(/);
-  assert.match(js, /import \{ pinScrub \} from '\.\.\/core\/motion-kit\.js'/);
+// 2026-11-12 утром «теперь не поднимается при скроле» → вернули закрепление; вечером клиент: «відв'язати скрол від
+// блока. Щоб воно само з'являлось» — закрепление выключено, ступени растут сами за APPEAR_MS, когда блок в экране
+test('блок 07: без закрепления (PINNED = false) — ступени вырастают сами один раз; если включить — pinScrub на pinLength(7) окна', () => {
+  assert.match(js, /export const PINNED = false;/);
+  assert.match(js, /if \(!PINNED\) \{\n    appear\(root, paint, measure\);\n    return;\n  \}/);
+  assert.match(js, /export const APPEAR_MS = \d+;/);
+  const fn = js.slice(js.indexOf('function appear('));
+  assert.match(fn, /if \(reduced \|\| !window\.matchMedia\?\.\(SHOWCASE_MEDIA\)\.matches/, 'телефон и reduced-motion — конечный вид');
+  assert.match(fn, /io\.disconnect\(\);/, 'один раз');
+  assert.match(fn, /paint\(p\);/);
+  assert.match(js, /import \{ pinScrub, SHOWCASE_MEDIA \} from '\.\.\/core\/motion-kit\.js'/);
   assert.match(js, /pinScrub\(root, \{\s*length: \(\) => window\.innerHeight \* pinLength\(n\),/);
   assert.match(js, /onProgress: paint,/);
   assert.match(js, /onRevert: revert,/);

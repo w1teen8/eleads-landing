@@ -109,9 +109,11 @@ test('отзывы справа: метка, tablist из кружков, кар
   assert.doesNotMatch(s.replace(/<svg[\s\S]*?<\/svg>/g, ''), />\s*[^\s<{][^<]*</, 'текст в разметке мимо словаря');
 });
 
-test('данные не выдуманы: тексты — заглушки, авторы — Мухін и Домбовецький, аватары — только подтверждённых кейсов', () => {
-  for (const item of ua.reviews.items) assert.equal(item.quote, 'уточнити');
-  for (const item of en.reviews.items) assert.equal(item.quote, 'TBD');
+test('данные не выдуманы: тексты — от клиента, авторы — Мухін и Домбовецький, аватары — только подтверждённых кейсов', () => {
+  // 2026-11-12: клиент прислал описания вместо «уточнити»
+  assert.match(ua.reviews.items[0].quote, /^Один з найвідоміших тренерів в Україні з продажів/);
+  assert.match(ua.reviews.items[1].quote, /^Коуч, ментор з нетворкінгу та цілей/);
+  for (const item of [...ua.reviews.items, ...en.reviews.items]) assert.ok(!/^(уточнити|TBD)$/.test(item.quote));
   assert.deepEqual(ua.reviews.items.map((i) => i.case), ['mukhin', 'dombovetskyi']);
   assert.deepEqual(en.reviews.items.map((i) => i.case), ['mukhin', 'dombovetskyi']);
   assert.deepEqual(ua.reviews.items.map((i) => i.name), ['Олександр Мухін', 'Віктор Домбовецький']);

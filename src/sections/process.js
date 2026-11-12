@@ -9,15 +9,23 @@
 //                ступени стоят у основания, тусклые. Отрезки и позы — process-model.js;
 //   узкий / портретный экран, reduced-motion, ?nomotion=1, сбой загрузки GSAP — без закрепления, ступени сразу
 //                в конечном виде (стиль ставит только JS).
+// 2026-11-12 клиент: «Тут відв'язати скрол від блока. Щоб воно само з'являлось» — закрепление выключено (PINNED = false);
+//   на широком альбомном экране ступени вырастают сами, когда блок въезжает в экран (appear: та же раскадровка
+//   01 → 07, только прогресс идёт по времени APPEAR_MS, а не по прокрутке), один раз. До этого стоят у основания.
 // Только transform и opacity; номер и подпись не искажаются (растёт отдельный слой фона).
 import { $, $$ } from '../core/dom.js';
 import { accentTitles } from '../core/title-accent.js';
-import { pinScrub } from '../core/motion-kit.js';
+import { pinScrub, SHOWCASE_MEDIA } from '../core/motion-kit.js';
+import { reduced } from '../core/motion.js';
 import { stepProgress, stepPose, pinLength, GROW_MIN } from './process-model.js';
 
-/** Закрепление с ростом ступеней по прокрутке. 2026-11-11 выключали (клиент: «во втором — убрать. Не так важно,
- *  чтобы они это читали прям»); 2026-11-12 клиент: «теперь не поднимается при скроле» — пользователь: «Вернуть как было». */
-export const PINNED = true;
+/** Закрепление с ростом ступеней по прокрутке. 2026-11-11 выключали («во втором — убрать»), утром 2026-11-12 вернули
+ *  («теперь не поднимается при скроле»), вечером 2026-11-12 клиент: «відв'язати скрол від блока. Щоб воно само
+ *  з'являлось» — выключено, ступени растут сами (appear). */
+export const PINNED = false;
+
+/** Сколько длится рост всех семи ступеней, когда они появляются сами, мс. */
+export const APPEAR_MS = 2600;
 
 /** Минимальный зазор между номером и подписью, px. */
 const GAP = 8;
@@ -79,7 +87,10 @@ export function init(root) {
     if (base) base.style.transform = '';
   };
 
-  if (!PINNED) return;
+  if (!PINNED) {
+    appear(root, paint, measure);
+    return;
+  }
   pinScrub(root, {
     length: () => window.innerHeight * pinLength(n),
     onRefresh: () => {
@@ -89,4 +100,28 @@ export function init(root) {
     onProgress: paint,
     onRevert: revert,
   });
+}
+
+/** Ступени вырастают сами, когда блок въезжает в экран: прогресс 0 → 1 за APPEAR_MS, один раз. Только на широком
+ *  альбомном экране (на телефоне ступени — список полос, стоят в конечном виде); reduced-motion — конечный вид. */
+function appear(root, paint, measure) {
+  if (reduced || !window.matchMedia?.(SHOWCASE_MEDIA).matches || !('IntersectionObserver' in window)) return;
+  measure();
+  paint(0);
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      measure(); // шрифты уже загружены — размеры конечного вида точнее
+      const start = performance.now();
+      const tick = (now) => {
+        const p = Math.min(1, (now - start) / APPEAR_MS);
+        paint(p);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    },
+    { threshold: 0.45 },
+  );
+  io.observe(root);
 }
