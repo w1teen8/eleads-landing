@@ -25,7 +25,7 @@ import { stepProgress, stepPose, pinLength, GROW_MIN } from './process-model.js'
 export const PINNED = false;
 
 /** Сколько длится рост всех семи ступеней, когда они появляются сами, мс. */
-export const APPEAR_MS = 2600;
+export const APPEAR_MS = 870; // 2026-11-13 «скорость сделаем в 3 раза быстрее анимации»: было 2600
 
 /** Минимальный зазор между номером и подписью, px. */
 const GAP = 8;
