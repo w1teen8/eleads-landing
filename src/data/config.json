@@ -1,8 +1,26 @@
 {
   "telegramUrl": "https://t.me/Kucherflow",
   "telegramHandle": "@Kucherflow",
+  "siteUrl": "https://w1teen8.github.io/eleads-landing",
   "sections": {
-    "enabled": ["hero", "ribbons", "stats", "niches", "formats", "calculator", "cases", "process", "geo", "targeting", "reviews", "ecosystem", "materials", "faq", "cta", "footer"]
+    "enabled": [
+      "hero",
+      "ribbons",
+      "stats",
+      "niches",
+      "formats",
+      "calculator",
+      "cases",
+      "process",
+      "geo",
+      "targeting",
+      "reviews",
+      "ecosystem",
+      "materials",
+      "faq",
+      "cta",
+      "footer"
+    ]
   },
   "analytics": {
     "ga4Id": "",

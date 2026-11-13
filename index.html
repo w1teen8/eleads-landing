@@ -13,7 +13,8 @@
     <meta property="og:locale" content="" data-i18n-attr="content:meta.locale" />
     <meta property="og:title" content="" data-i18n-attr="content:meta.ogTitle" />
     <meta property="og:description" content="" data-i18n-attr="content:meta.ogDescription" />
-    <meta property="og:image" content="/og.jpg" />
+    <meta property="og:url" content="{{config.siteUrl}}/" />
+    <meta property="og:image" content="{{config.siteUrl}}/og.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="676" />
     <meta property="og:image:alt" content="" data-i18n-attr="content:meta.ogImageAlt" />
@@ -111,14 +112,25 @@
       </div>
     </div>
 
-    <!-- Шапка (T23): узкая строка — логотип слева, UA/EN и «Написати» справа; ссылок-разделов нет (H16),
-         все разделы — в меню-бургере -->
+    <!-- Шапка (T23): узкая строка — логотип слева, UA/EN и «Написати» справа. 2026-11-13 клиент выбрал вариант
+         «Класика» (макет «Шапка A»): на широком экране — быстрые ссылки по центру, текущий раздел подсвечен;
+         уже — бургер с полным списком разделов -->
     <header class="header" data-section="header">
       <div class="header__bar">
         <div class="header__inner container">
           <a class="logo header__logo" href="#hero" data-i18n-attr="aria-label:common.home">
             <span class="logo__word" data-i18n="common.brand"></span>
           </a>
+
+          <nav class="header__nav" data-header-nav data-i18n-attr="aria-label:nav.label">
+            <a class="header__link" href="#hero" data-spy="hero"><span data-i18n="nav.links.home"></span></a>
+            <a class="header__link" href="#stats" data-spy="stats"><span data-i18n="nav.links.experience"></span></a>
+            <a class="header__link" href="#calculator" data-spy="calculator"><span data-i18n="nav.links.calculator"></span></a>
+            <a class="header__link" href="#cases" data-spy="cases"><span data-i18n="nav.links.results"></span></a>
+            <a class="header__link" href="#reviews" data-spy="reviews"><span data-i18n="nav.links.reviews"></span></a>
+            <a class="header__link" href="#faq" data-spy="faq"><span data-i18n="nav.links.faq"></span></a>
+            <span class="header__link is-soon" aria-disabled="true"><span data-i18n="nav.links.blog"></span><span class="header__soon" data-i18n="nav.links.soon"></span></span>
+          </nav>
 
           <div class="header__actions">
             <div class="lang-switch" role="group" data-lang-switch data-active="ua" data-i18n-attr="aria-label:common.langLabel">

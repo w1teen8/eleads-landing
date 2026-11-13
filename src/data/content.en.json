@@ -10,6 +10,16 @@
   },
   "nav": {
     "label": "Main navigation",
+    "links": {
+      "home": "Home",
+      "experience": "Experience",
+      "calculator": "Calculator",
+      "results": "Results",
+      "reviews": "Reviews",
+      "faq": "FAQ",
+      "blog": "Blog",
+      "soon": "soon"
+    },
     "menuLabel": "Sections menu",
     "menuOpen": "Open menu",
     "menuClose": "Close menu",

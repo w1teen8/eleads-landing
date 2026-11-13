@@ -35,9 +35,13 @@ test('сборка: выключенные секции и ссылки шапк
   const links = [...out.matchAll(/<li\b([^>]*)>\s*<a\b[^>]*\shref="#([\w-]+)"/g)];
   assert.ok(links.length > 10);
   for (const [, attrs, id] of links) assert.equal(/\shidden/.test(attrs), !ON.includes(id), `пункт #${id}`);
-  // T23 (H16): в шапке ссылок-разделов нет вовсе — разделы только в меню
+  // 2026-11-13 «Шапка A · Класика»: быстрые ссылки шапки ведут на включённые разделы; выключенный — ссылка hidden
   const bar = out.match(/<header\b[\s\S]*?<div class="menu"/)[0];
-  assert.doesNotMatch(bar, /class="header__link"/);
+  const quick = [...bar.matchAll(/<a class="header__link"([^>]*)\shref="#([\w-]+)"/g)];
+  assert.deepEqual(quick.map((m) => m[2]), ['hero', 'stats', 'calculator', 'cases', 'reviews', 'faq']);
+  for (const [, attrs, id] of quick) assert.equal(/\shidden/.test(attrs), !ON.includes(id), `ссылка шапки #${id}`);
+  const offFaq = disableSections(html, { sections: { enabled: names.filter((n) => n !== 'faq') } });
+  assert.match(offFaq, /<a class="header__link" hidden href="#faq"/, 'раздел выключен — ссылка шапки скрыта');
   assert.doesNotMatch(out, /data-hero-on|data-hero-sections/);
   // включить обратно — одна строка
   assert.equal(disableSections(html, { sections: { enabled: names } }), html);

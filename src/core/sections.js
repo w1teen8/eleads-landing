@@ -21,11 +21,12 @@ export function isSectionEnabled(name, config) {
 
 const SECTION_TAG = /<(section|footer|div|aside|nav)\b([^>]*\sdata-section="([\w-]+)"[^>]*)>/g;
 const ANCHOR_ITEM = /<li\b([^>]*)>(\s*<a\b[^>]*\shref="#([\w-]+)")/g;
+const HEADER_LINK = /<a class="header__link"([^>]*)\shref="#([\w-]+)"/g;
 const HAS_HIDDEN = /\shidden(\s|=|$)/;
 
 const hide = (attrs) => (HAS_HIDDEN.test(attrs) ? attrs : `${attrs} hidden`);
 
-/** html → html. Выключенная секция — `hidden`; пункт навигации со ссылкой на неё — тоже `hidden`. */
+/** html → html. Выключенная секция — `hidden`; пункт меню и ссылка шапки на неё — тоже `hidden`. */
 export function disableSections(html, config) {
   const off = new Set(); // id выключенных секций
   const out = html.replace(SECTION_TAG, (tag, name, attrs, section) => {
@@ -35,5 +36,7 @@ export function disableSections(html, config) {
     return `<${name}${hide(attrs)}>`;
   });
   if (!off.size) return out;
-  return out.replace(ANCHOR_ITEM, (item, attrs, link, id) => (off.has(id) ? `<li${hide(attrs)}>${link}` : item));
+  return out
+    .replace(ANCHOR_ITEM, (item, attrs, link, id) => (off.has(id) ? `<li${hide(attrs)}>${link}` : item))
+    .replace(HEADER_LINK, (link, attrs, id) => (off.has(id) ? `<a class="header__link"${hide(attrs)} href="#${id}"` : link));
 }

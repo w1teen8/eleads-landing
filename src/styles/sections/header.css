@@ -1,6 +1,8 @@
 /* Шапка (T23): узкая строка высотой --header-h (H12) — слева логотип (знак Telegram в акцентном кружке + «eLeads»),
-   справа «UA / EN» с глобусом и акцентная пилюля «Написати» с тёмным кружком-стрелкой. Ссылок-разделов в шапке нет
-   (H16: «не надо подписывать») — полный список разделов в меню-бургере (< 900px). Цвета — палитра канала (H14).
+   справа «UA / EN» с глобусом и акцентная пилюля «Написати» с тёмным кружком-стрелкой. 2026-11-13 клиент выбрал макет
+   «Шапка A · Класика»: от NAV_MEDIA (1280px) по центру быстрые ссылки, текущий раздел — светлым текстом и жёлтой точкой
+   (header.js, по прокрутке — H16 «чтоб оно нормально менялось»); «Блог» — с пометкой «скоро», пока нет страницы.
+   Уже 1280px — ссылок нет, полный список разделов в меню-бургере. Цвета — палитра канала (H14).
    Липкая; при прокрутке проявляется подложка с размытием (единственное место с backdrop-filter).
    Иконки — inline SVG с currentColor или маска: цвет приходит из переменных, в CSS нет ни одного литерала. */
 .header {
@@ -167,6 +169,71 @@
   transform: rotate(45deg);
 }
 
+/* — быстрые ссылки (макет «Шапка A · Класика») — */
+.header__nav {
+  display: none;
+}
+
+.header__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+a.header__link:hover,
+a.header__link:focus-visible {
+  color: var(--text);
+}
+
+/* текущий раздел — светлый текст и жёлтая точка под словом */
+.header__link::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  transform: scale(0.4);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+
+.header__link.is-current {
+  color: var(--text);
+}
+
+.header__link.is-current::after {
+  opacity: 1;
+  transform: none;
+}
+
+/* «Блог» — страницы пока нет: не ссылка, с пометкой «скоро» */
+.header__link.is-soon {
+  cursor: default;
+}
+
+.header__soon {
+  padding: 2px 7px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+
 /* — бургер: кружок с тонкой обводкой — */
 .burger {
   display: none;
@@ -296,16 +363,28 @@
 }
 
 /* — адаптив — */
-@media (max-width: 899px) {
+@media (max-width: 1279px) {
   .burger {
     display: block;
   }
 }
 
-@media (min-width: 900px) {
+/* широкий экран — быстрые ссылки по центру строки, меню-бургер не нужен */
+@media (min-width: 1280px) {
+  .header__nav {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: center;
+    gap: clamp(1rem, 1.7vw, 2rem);
+    min-width: 0;
+  }
+
   .menu {
     display: none !important;
   }
+}
+
+@media (min-width: 900px) {
 
   /* поля строки — как у первого экрана (логотип и «Написати» на 5,4% от краёв) */
   .header__inner {

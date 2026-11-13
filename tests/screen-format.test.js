@@ -37,16 +37,22 @@ test('якоря и прокрутка учитывают шапку: scroll-mar
   assert.match(layout, /\.section\s*\{[^}]*scroll-margin-top:\s*var\(--header-h\)/);
 });
 
-test('H16: в шапке нет ссылок-разделов — логотип, UA/EN, «Написати», бургер; разделы — в меню', () => {
+// 2026-11-13 клиент выбрал макет «Шапка A · Класика» (H16 «не надо подписывать… или хотя бы чтоб оно нормально
+// менялось»: подпись текущего раздела меняется по прокрутке): логотип → быстрые ссылки → язык → «Написати» → бургер
+test('шапка A: быстрые ссылки на широком экране, текущий раздел подсвечен; «Блог» — «скоро»; полный список — в меню', () => {
   const header = html.match(/<header\b[\s\S]*?<\/header>/)[0];
   const [bar, menu] = header.split(/<div class="menu"/);
-  assert.doesNotMatch(bar, /header__nav|header__link/, 'ссылки-разделы в шапке');
-  assert.doesNotMatch(bar, /href="#(?!hero")/, 'в шапке только логотип ведёт к началу страницы');
-  const order = ['header__logo', 'lang-switch', 'header__cta', 'burger'].map((cls) => bar.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
+  const order = ['header__logo', 'header__nav', 'lang-switch', 'header__cta', 'burger'].map((cls) => bar.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
   for (const i of order) assert.ok(i > -1, 'нет элемента шапки');
-  assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок: логотип → язык → «Написати» → бургер');
+  assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок: логотип → ссылки → язык → «Написати» → бургер');
+  const quick = [...bar.matchAll(/<a class="header__link" href="#([\w-]+)" data-spy="\1"><span data-i18n="nav\.links\.(\w+)"><\/span><\/a>/g)];
+  assert.deepEqual(quick.map((m) => [m[1], m[2]]), [['hero', 'home'], ['stats', 'experience'], ['calculator', 'calculator'], ['cases', 'results'], ['reviews', 'reviews'], ['faq', 'faq']]);
+  assert.match(bar, /<span class="header__link is-soon" aria-disabled="true"><span data-i18n="nav\.links\.blog"><\/span><span class="header__soon" data-i18n="nav\.links\.soon"><\/span><\/span>/, 'блога пока нет — не ссылка');
   assert.equal((menu.match(/class="menu__link"/g) || []).length, 14, 'в меню — все 14 разделов');
-  assert.doesNotMatch(headerCss, /\.header__(nav|link)\b/, 'стили ссылок шапки убраны');
+  assert.match(headerCss, /\.header__nav\s*\{\s*display:\s*none;/);
+  assert.match(headerCss, /@media \(min-width: 1280px\)\s*\{\s*\.header__nav\s*\{\s*display:\s*flex/);
+  assert.match(headerCss, /@media \(max-width: 1279px\)\s*\{\s*\.burger\s*\{\s*display:\s*block/);
+  assert.match(headerCss, /\.header__link\.is-current\s*\{\s*color:\s*var\(--text\)/);
 });
 
 test('H14: весь сайт в палитре канала — цветов первого экрана «Синий» (--v4-*, --paper) нет нигде, hex только в tokens.css', () => {

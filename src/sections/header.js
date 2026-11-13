@@ -1,12 +1,16 @@
 // Шапка: липнет и проявляет подложку при скролле (не прячется никогда), переключает язык,
-// на < 900px — бургер с полноэкранным меню. Ссылок-разделов в самой шапке нет (T23, H16) — подсвечивать нечего.
+// уже NAV_MEDIA — бургер с полноэкранным меню. 2026-11-13 (макет «Шапка A · Класика»): на широком экране — быстрые
+// ссылки, текущий раздел подсвечивается по прокрутке (spy): так подпись в шапке всегда совпадает с тем, что на экране
+// (H16: «или хотя бы чтоб оно нормально менялось, я вернулся обратно на хиро сайта, а там написано калькулятор»).
 import { $, $$, focusables, trapFocus } from '../core/dom.js';
 import { t, onLangChange } from '../core/i18n.js';
 import { lockScroll } from '../core/motion.js';
 import { bindLangSwitch } from '../core/lang-switch.js';
 import { bindSweepLinks } from '../core/transition.js';
 
-const DESKTOP = '(min-width: 900px)';
+/** С какой ширины в шапке быстрые ссылки, а меню-бургер не нужен. */
+export const NAV_MEDIA = '(min-width: 1280px)';
+const DESKTOP = NAV_MEDIA;
 
 export function init(root) {
   const burger = $('.burger', root);
@@ -15,6 +19,7 @@ export function init(root) {
   for (const sw of $$('[data-lang-switch]', root)) bindLangSwitch(sw);
 
   initScrollState(root);
+  initSpy(root);
   if (burger && menu) initMenu(root, burger, menu);
   // якоря шапки и мобильного меню — фирменной полосой (меню успевает закрыться своим обработчиком раньше)
   bindSweepLinks(root);
@@ -104,4 +109,44 @@ function initMenu(root, burger, menu) {
   mq.addEventListener?.('change', (e) => e.matches && close({ returnFocus: false }));
 
   onLangChange(setLabel);
+}
+
+/** Текущий раздел для ссылок шапки: последний из ids, чей верх уже выше линии line (доля высоты окна);
+ *  tops — положения верхов разделов относительно окна, по порядку на странице. Ничего не прошло линию — первый. */
+export function currentSection(ids, tops, line) {
+  let current = ids[0] ?? null;
+  ids.forEach((id, i) => {
+    if (tops[i] !== null && tops[i] <= line) current = id;
+  });
+  return current;
+}
+
+function initSpy(root) {
+  const links = [...root.querySelectorAll('[data-spy]')];
+  if (!links.length) return;
+  const ids = links.map((a) => a.dataset.spy);
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const tops = ids.map((id) => {
+      const el = document.getElementById(id);
+      return el && !el.hidden ? el.getBoundingClientRect().top : null;
+    });
+    const current = currentSection(ids, tops, window.innerHeight * 0.4);
+    for (const a of links) {
+      const on = a.dataset.spy === current;
+      a.classList.toggle('is-current', on);
+      if (on) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
+    }
+  };
+  const schedule = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  };
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  update();
 }

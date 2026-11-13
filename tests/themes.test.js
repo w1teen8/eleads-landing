@@ -93,15 +93,14 @@ test('шапка, загрузка с полосой, подвал и ленты
   }
 });
 
-// T23 (H16): «И не надо подписывать это все» — ссылок-разделов в шапке нет, разделы — в меню-бургере
-test('шапка: слева логотип, справа UA/EN и пилюля «Написати» в Telegram; ссылок-разделов нет', () => {
+// T23 (H16) → 2026-11-13 «Шапка A · Класика»: между логотипом и языком — быстрые ссылки (screen-format.test.js)
+test('шапка: слева логотип, справа UA/EN и пилюля «Написати» в Telegram', () => {
   const html = read('index.html');
   const header = html.match(/<header\b[\s\S]*?<\/header>/)[0];
   const bar = header.split(/<div class="menu"/)[0];
   const order = ['logo', 'lang-switch', 'header__cta'].map((cls) => bar.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
   for (const i of order) assert.ok(i > -1);
   assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок: логотип → язык → кнопка');
-  assert.doesNotMatch(bar, /header__nav|header__link/);
   assert.match(bar, /class="btn btn--pill[^"]*header__cta"[^>]*href="\{\{config\.telegramUrl\}\}"/);
 });
 
