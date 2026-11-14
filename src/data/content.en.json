@@ -63,7 +63,7 @@
     "titleLine1": "Promotion via",
     "titleLine2": "Telegram",
     "titleAccent": "Ads",
-    "subtitle": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide",
+    "subtitle": "I bring subscribers, leads and customers through official Telegram advertising in Ukraine and worldwide.",
     "cta": "Discuss a project",
     "facts": {
       "budgets": {
@@ -149,16 +149,16 @@
     "ua": {
       "main": {
         "value": "81%",
-        "label": "of messenger users aged 18–70 used Telegram within a day"
+        "label": "of messenger users aged 18–70 used Telegram within a day."
       },
       "mapLabel": "Dotted map of Ukraine: 81 of every 100 dots are lit — that many messenger users use Telegram",
       "age": {
         "value": "18–70",
-        "label": "high Telegram penetration in all main age groups"
+        "label": "high Telegram penetration in all main age groups."
       },
       "rank": {
         "value": "#1",
-        "label": "messenger in Ukraine by popularity among users"
+        "label": "messenger in Ukraine by popularity among users."
       },
       "note": {
         "tag": "UA",
@@ -168,16 +168,16 @@
     "ww": {
       "main": {
         "value": "1B+",
-        "label": "monthly active users worldwide"
+        "label": "monthly active users worldwide."
       },
       "mapLabel": "Dotted world map",
       "top": {
         "value": "TOP-5",
-        "label": "one of the most downloaded apps in the world"
+        "label": "one of the most downloaded apps in the world."
       },
       "geo": {
         "value": "200+ GEO",
-        "label": "international advertising campaigns"
+        "label": "international advertising campaigns."
       },
       "what": {
         "title": "What we advertise",

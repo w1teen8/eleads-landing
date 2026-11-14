@@ -45,8 +45,9 @@ test('шапка A: быстрые ссылки на широком экране
   const order = ['header__logo', 'header__nav', 'lang-switch', 'header__cta', 'burger'].map((cls) => bar.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
   for (const i of order) assert.ok(i > -1, 'нет элемента шапки');
   assert.deepEqual([...order].sort((a, b) => a - b), order, 'порядок: логотип → ссылки → язык → «Написати» → бургер');
-  const quick = [...bar.matchAll(/<a class="header__link" href="#([\w-]+)" data-spy="\1"><span data-i18n="nav\.links\.(\w+)"><\/span><\/a>/g)];
-  assert.deepEqual(quick.map((m) => [m[1], m[2]]), [['hero', 'home'], ['stats', 'experience'], ['calculator', 'calculator'], ['cases', 'results'], ['reviews', 'reviews'], ['faq', 'faq']]);
+  const quick = [...bar.matchAll(/<a class="header__link" href="#([\w-]+)"( data-spy="\1")?><span data-i18n="nav\.links\.(\w+)"><\/span><\/a>/g)];
+  // 2026-11-14 клиент: «При нажатии на "Досвід" пускай тоже на первый блок закидывает» — без подсветки (её даёт «Головна»)
+  assert.deepEqual(quick.map((m) => [m[1], m[3], Boolean(m[2])]), [['hero', 'home', true], ['hero', 'experience', false], ['calculator', 'calculator', true], ['cases', 'results', true], ['reviews', 'reviews', true], ['faq', 'faq', true]]);
   assert.match(bar, /<span class="header__link is-soon" aria-disabled="true"><span data-i18n="nav\.links\.blog"><\/span><span class="header__soon" data-i18n="nav\.links\.soon"><\/span><\/span>/, 'блога пока нет — не ссылка');
   assert.equal((menu.match(/class="menu__link"/g) || []).length, 14, 'в меню — все 14 разделов');
   assert.match(headerCss, /\.header__nav\s*\{\s*display:\s*none;/);

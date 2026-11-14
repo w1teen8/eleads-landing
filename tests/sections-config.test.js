@@ -38,7 +38,7 @@ test('сборка: выключенные секции и ссылки шапк
   // 2026-11-13 «Шапка A · Класика»: быстрые ссылки шапки ведут на включённые разделы; выключенный — ссылка hidden
   const bar = out.match(/<header\b[\s\S]*?<div class="menu"/)[0];
   const quick = [...bar.matchAll(/<a class="header__link"([^>]*)\shref="#([\w-]+)"/g)];
-  assert.deepEqual(quick.map((m) => m[2]), ['hero', 'stats', 'calculator', 'cases', 'reviews', 'faq']);
+  assert.deepEqual(quick.map((m) => m[2]), ['hero', 'hero', 'calculator', 'cases', 'reviews', 'faq']);
   for (const [, attrs, id] of quick) assert.equal(/\shidden/.test(attrs), !ON.includes(id), `ссылка шапки #${id}`);
   const offFaq = disableSections(html, { sections: { enabled: names.filter((n) => n !== 'faq') } });
   assert.match(offFaq, /<a class="header__link" hidden href="#faq"/, 'раздел выключен — ссылка шапки скрыта');

@@ -126,7 +126,7 @@ test('раскладка по образцу: карточка с цифрой �
     assert.equal(dict.stats.footnote, undefined);
     assert.doesNotMatch(JSON.stringify(dict.stats), /\*/, 'звёздочка-сноска');
   }
-  assert.equal(ua.stats.ww.geo.label, 'робота з міжнародними рекламними кампаніями');
+  assert.equal(ua.stats.ww.geo.label, 'робота з міжнародними рекламними кампаніями.');
   assert.doesNotMatch(css, /legend|footnote/);
   // строки справа — без рамок и фона, с тонкой линией сверху
   const row = css.match(/\.stats__row\s*\{([^}]*)\}/)[1];
@@ -154,10 +154,15 @@ test('вкладки: одна карта сменяет другую через
 
 // Дополнение 2026-11-09 — правки текста от Володимира: «вместо «року» — «дня»», «№1 … — вместо 4500 и тот мелкий текст»
 test('правки клиента: «протягом дня»; вместо «4 500» — «№1 месенджер в Україні…»', () => {
-  assert.equal(ua.stats.ua.main.label, 'користувачів месенджерів 18–70 використовували Telegram протягом дня');
-  assert.match(en.stats.ua.main.label, /used Telegram within a day$/);
-  assert.deepEqual(ua.stats.ua.rank, { value: '№1', label: 'месенджер в Україні за популярністю серед користувачів' });
-  assert.deepEqual(en.stats.ua.rank, { value: '#1', label: 'messenger in Ukraine by popularity among users' });
+  // 2026-11-14 клиент: «в этих местах еще точки поставить» — подписи под цифрами заканчиваются точкой
+  assert.equal(ua.stats.ua.main.label, 'користувачів месенджерів 18–70 використовували Telegram протягом дня.');
+  assert.match(en.stats.ua.main.label, /used Telegram within a day\.$/);
+  assert.deepEqual(ua.stats.ua.rank, { value: '№1', label: 'месенджер в Україні за популярністю серед користувачів.' });
+  assert.deepEqual(en.stats.ua.rank, { value: '#1', label: 'messenger in Ukraine by popularity among users.' });
+  for (const dict of [ua, en]) {
+    assert.ok(dict.hero.subtitle.endsWith('.'), 'подзаголовок первого экрана — с точкой');
+    for (const tab of ['ua', 'ww']) for (const v of Object.values(dict.stats[tab])) if (v?.label) assert.ok(v.label.endsWith('.'), v.label);
+  }
   assert.equal(ua.stats.ua.sample, undefined);
   assert.equal(en.stats.ua.sample, undefined);
   assert.doesNotMatch(JSON.stringify(ua.stats.ua) + JSON.stringify(en.stats.ua), /Gradus|протягом року|during the year/);
