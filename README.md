@@ -141,7 +141,8 @@ node scripts/ua-dots.js ne_ukr.geojson
    например `www/eleads-marketing.com/`) и **доступы FTP**: адрес сервера и логин (пароль — ваш FTP-пароль).
 2. **DNS**: у регистратора домена направить `eleads-marketing.com` на Fornex — NS-серверы Fornex или A-запись на IP
    из панели (как подсказывает панель). Обновляется от нескольких минут до суток.
-   Сейчас по этому адресу старая страница «Навігація»: после переключения её заменит лендинг — сохраните её, если нужна.
+   Уже сделано: домен на DNS Fornex и смотрит на хостинг. Старая страница «Навігація», которая была в корне домена,
+   сохранена в `public/navigatsiya/` и после выкладки открывается по адресу `eleads-marketing.com/navigatsiya/`.
 3. **GitHub** → репозиторий → Settings → Secrets and variables → Actions:
    - вкладка **Secrets**: `FORNEX_FTP_SERVER` (адрес FTP-сервера), `FORNEX_FTP_USERNAME`, `FORNEX_FTP_PASSWORD`;
    - вкладка **Variables**: `FORNEX_FTP_DIR` — папка сайта из п. 1, со «/» в конце; если хостинг не принимает
