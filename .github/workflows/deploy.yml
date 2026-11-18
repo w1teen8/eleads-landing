@@ -1,4 +1,5 @@
-# Публикация на GitHub Pages: https://w1teen8.github.io/eleads-landing/
+# Публикация на GitHub Pages: https://w1teen8.github.io/eleads-landing/ — тестовая копия (2026-11-18).
+# Основной сайт — eleads-marketing.com на Fornex (deploy-fornex.yml); canonical обеих копий — основной домен.
 # Сайт живёт в подпапке — сборка идёт с BASE_PATH=/eleads-landing/ (см. vite.config.js).
 name: Deploy to GitHub Pages
 
@@ -30,6 +31,7 @@ jobs:
         run: npm run check
         env:
           BASE_PATH: /eleads-landing/
+          SITE_URL: https://w1teen8.github.io/eleads-landing
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

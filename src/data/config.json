@@ -1,7 +1,8 @@
 {
   "telegramUrl": "https://t.me/Kucherflow",
   "telegramHandle": "@Kucherflow",
-  "siteUrl": "https://w1teen8.github.io/eleads-landing",
+  "canonicalUrl": "https://eleads-marketing.com",
+  "siteUrl": "https://eleads-marketing.com",
   "sections": {
     "enabled": [
       "hero",

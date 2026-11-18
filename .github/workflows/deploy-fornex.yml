@@ -1,0 +1,56 @@
+# Публикация на Fornex (хостинг): основной сайт https://eleads-marketing.com (2026-11-18).
+# Каждый пуш в main (и сохранение в /admin/) собирает сайт для корня домена и выкладывает dist/ по FTP.
+# Доступы FTP — только в настройках репозитория (Settings → Secrets and variables → Actions), в коде их нет:
+#   секреты:    FORNEX_FTP_SERVER, FORNEX_FTP_USERNAME, FORNEX_FTP_PASSWORD
+#   переменные: FORNEX_FTP_DIR — папка сайта на хостинге (например, «www/eleads-marketing.com/»), обязательна;
+#               FORNEX_FTP_PROTOCOL — ftps (по умолчанию) или ftp, если хостинг не умеет FTP с шифрованием.
+# Пока секреты и папка не заданы, выкладка пропускается с пояснением в журнале — пуш не падает.
+# Выкладка обновляет и добавляет файлы; чужие файлы в папке не удаляет.
+name: Deploy to Fornex
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fornex
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      READY: ${{ secrets.FORNEX_FTP_SERVER != '' && secrets.FORNEX_FTP_USERNAME != '' && secrets.FORNEX_FTP_PASSWORD != '' && vars.FORNEX_FTP_DIR != '' }}
+    steps:
+      - name: FTP ещё не настроен
+        if: env.READY != 'true'
+        run: echo "::notice title=Fornex::Выкладка пропущена — задайте секреты FORNEX_FTP_SERVER, FORNEX_FTP_USERNAME, FORNEX_FTP_PASSWORD и переменную FORNEX_FTP_DIR (README, «Хостинг Fornex»)."
+      - uses: actions/checkout@v4
+        if: env.READY == 'true'
+      - uses: actions/setup-node@v4
+        if: env.READY == 'true'
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        if: env.READY == 'true'
+      - name: Tests and build
+        if: env.READY == 'true'
+        run: npm run check
+        env:
+          BASE_PATH: /
+          SITE_URL: https://eleads-marketing.com
+      - name: Upload to Fornex
+        if: env.READY == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FORNEX_FTP_SERVER }}
+          username: ${{ secrets.FORNEX_FTP_USERNAME }}
+          password: ${{ secrets.FORNEX_FTP_PASSWORD }}
+          protocol: ${{ vars.FORNEX_FTP_PROTOCOL || 'ftps' }}
+          local-dir: ./dist/
+          server-dir: ${{ vars.FORNEX_FTP_DIR }}

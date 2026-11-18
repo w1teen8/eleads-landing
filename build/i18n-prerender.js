@@ -17,6 +17,13 @@ const TEXT_NODE = /<([a-zA-Z][\w-]*)((?:\s[^>]*?)?)(\sdata-i18n=")([^"]+)("[^>]*
 const ATTR_TAG = /<[a-zA-Z][^>]*\sdata-i18n-attr="([^"]+)"[^>]*>/g;
 const CONFIG_TOKEN = /\{\{\s*config\.([a-zA-Z0-9_.]+)\s*\}\}/g;
 
+/** Адрес выкладки для превью ссылки (og:url, og:image): переменная окружения SITE_URL сборки, иначе config.siteUrl.
+ *  GitHub Pages собирается с SITE_URL своей копии, Fornex — с основным доменом; «/» в конце срезается. */
+export function withSiteUrl(settings, env = process.env) {
+  const url = typeof env?.SITE_URL === 'string' ? env.SITE_URL.trim().replace(/\/+$/, '') : '';
+  return url ? { ...settings, siteUrl: url } : settings;
+}
+
 /** "hero.stats.years.value" → значение из словаря или undefined. Числовые сегменты — индексы массива. */
 export function lookup(dict, path) {
   return path.split('.').reduce((node, part) => (node == null ? undefined : node[part]), dict);
@@ -118,7 +125,7 @@ export default function i18nPrerender({
       handler(html) {
         try {
           const strings = readJson(resolvePath(root, dict));
-          const settings = readJson(resolvePath(root, config));
+          const settings = withSiteUrl(readJson(resolvePath(root, config)));
           return prerender(disableSections(html, settings), strings, settings, {
             strict: isBuild,
             warn: (msg) => logger.warn(msg),
